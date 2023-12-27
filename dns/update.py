@@ -1,45 +1,27 @@
-import requests
 import json
+from public_ip import get_public_ip
+import dns
 
-IP_URL = "https://ifconfig.me"
 
-BASE_URL = "https://www.spaceship.com"
-LOGIN_API = "/connect/token"
-UPDATE_API = "/gateway/api/v1/advanceddnsbff/dnsrecords/bulkUpdate"
+def get_config(config_path: str) -> dict:
+    with open(config_path, "r") as config_file:
+        return json.load(config_file)
 
-public_ip = requests.request("GET", IP_URL).text
 
-with open("payload_template.json", "r") as payload_template:
-    payload = json.load(payload_template)
-    payload["recordsToUpdate"]["0819888a-318a-433d-84f6-c39f706190ea"]["address"] = public_ip
+public_ip = get_public_ip()
+config = get_config("secrets.json")
 
-with open("secrets.json", "r") as secrets:
-    config = json.load(secrets)
-    params = {
-        "client_id": "spaceship",
-        "grant_type": "password",
-        "username": config['username'],
-        "password": config['password'],
-    }
-
-    cookies = {
-        "z-account-deviceid": config['z-account-deviceid'],
-    }
-
-login_response = requests.request(method="POST", url=BASE_URL + LOGIN_API, data=params, cookies=cookies)
-bearer_token = json.loads(login_response.text)["access_token"]
-
-headers = {
-    "Content-Type": "application/json",
-    "Authorization": f"Bearer {bearer_token}",
-}
-
-update = requests.request(
-    method="POST",
-    url=BASE_URL + UPDATE_API,
-    headers=headers,
-    json=payload,
-    cookies=cookies,
+dns_token = dns.get_dns_token(
+    username=config["username"],
+    password=config["password"],
+    device_token=config["device_token"]
 )
 
-print(update.status_code, update.text)
+for entry in config["records"]:
+    payload = dns.get_payload(template_path="payload_template.json", public_ip=public_ip, record_id=entry["id"])
+    update_dns_status = dns.update_dns_entry(
+        bearer_token=dns_token,
+        device_token=config["device_token"],
+        payload=payload,
+    )
+    print(update_dns_status)
