@@ -1,5 +1,6 @@
 {
   "log_level": "INFO",
+  "ip_history_path": "../logs/public_ip_history",
   "records": [
     {
       "id": "0819888a-318a-433d-84f6-c39f706190ea"

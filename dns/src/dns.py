@@ -1,6 +1,7 @@
 import json
-import requests
 import logging
+
+import requests
 
 BASE_URL = "https://www.spaceship.com"
 LOGIN_API = "/connect/token"
