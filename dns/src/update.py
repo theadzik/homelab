@@ -1,6 +1,7 @@
 import json
 from public_ip import get_public_ip
 import dns
+import logging
 
 
 def get_config(config_path: str) -> dict:
@@ -8,13 +9,22 @@ def get_config(config_path: str) -> dict:
         return json.load(config_file)
 
 
+secrets = get_config("../config/secrets.json")
+config = get_config("../config/config.json")
+
+logging.basicConfig(
+    format='%(asctime)s %(levelname)s: %(message)s',
+    # filename='../logs/log',
+    encoding='utf-8',
+    level=config["log_level"]
+)
+
 public_ip = get_public_ip()
-config = get_config("../config/secrets.json")
 
 dns_token = dns.get_dns_token(
-    username=config["username"],
-    password=config["password"],
-    device_token=config["device_token"]
+    username=secrets["username"],
+    password=secrets["password"],
+    device_token=secrets["device_token"]
 )
 
 for entry in config["records"]:
@@ -24,7 +34,8 @@ for entry in config["records"]:
     )
     update_dns_status = dns.update_dns_entry(
         bearer_token=dns_token,
-        device_token=config["device_token"],
+        device_token=secrets["device_token"],
         payload=payload,
     )
-    print(update_dns_status)
+    logging.info("Updated DNS record.")
+    logging.debug(update_dns_status)
