@@ -24,5 +24,8 @@ class PublicIP:
 
     def get_previous_public_ip(self) -> str:
         log_path = self.config["ip_history_path"]
-        with open(log_path, "r") as ip_log:
-            return list(ip_log)[-1]
+        try:
+            with open(log_path, "r") as ip_log:
+                return list(ip_log)[-1]
+        except FileNotFoundError:
+            return ""
