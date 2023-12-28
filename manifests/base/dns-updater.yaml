@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: dns-updater
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: updater
+            image: theadzik/dnsupdater:1.0
+            imagePullPolicy: IfNotPresent
+          restartPolicy: Never
