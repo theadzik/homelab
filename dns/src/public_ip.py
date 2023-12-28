@@ -26,6 +26,6 @@ class PublicIP:
         log_path = self.config["ip_history_path"]
         try:
             with open(log_path, "r") as ip_log:
-                return list(ip_log)[-2]  # There is a new line at the end of the file so the last IP is in 2nd to last
+                return list(ip_log)[-1].strip()
         except FileNotFoundError:
             return ""

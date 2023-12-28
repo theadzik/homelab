@@ -3,14 +3,16 @@ kind: CronJob
 metadata:
   name: dns-updater
 spec:
-  schedule: "* * * * *"
+  schedule: "*/5 * * * *"
+  successfulJobsHistoryLimit: 5
+  failedJobsHistoryLimit: 10
   jobTemplate:
     spec:
       template:
         spec:
           containers:
           - name: updater
-            image: theadzik/dnsupdater:1.1.0
+            image: theadzik/dnsupdater:1.1.1
             imagePullPolicy: IfNotPresent
             volumeMounts:
               - mountPath: /config
@@ -25,6 +27,6 @@ spec:
                 type: Directory
             - name: logs
               hostPath:
-                path: /home/adzik/logs
+                path: /var/log
                 type: Directory
           restartPolicy: Never
