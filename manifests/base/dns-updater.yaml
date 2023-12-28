@@ -2,6 +2,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: dns-updater
+  namespace: dns-updater
 spec:
   schedule: "*/5 * * * *"
   successfulJobsHistoryLimit: 5
@@ -11,15 +12,15 @@ spec:
       template:
         spec:
           containers:
-          - name: updater
-            image: theadzik/dnsupdater:1.1.2
-            imagePullPolicy: IfNotPresent
-            volumeMounts:
-              - mountPath: /config
-                name: config
-                readOnly: true
-              - mountPath: /logs
-                name: logs
+            - name: updater
+              image: theadzik/dnsupdater:1.1.2
+              imagePullPolicy: IfNotPresent
+              volumeMounts:
+                - mountPath: /config
+                  name: config
+                  readOnly: true
+                - mountPath: /logs
+                  name: logs
           volumes:
             - name: config
               hostPath:
