@@ -20,12 +20,12 @@ class PublicIP:
     def save_public_ip(self, public_ip: str) -> None:
         log_path = self.config["ip_history_path"]
         with open(log_path, "a") as ip_log:
-            ip_log.write("\n" + public_ip)  # The IP address has to be in the last line of the file
+            ip_log.write(public_ip + "\n")
 
     def get_previous_public_ip(self) -> str:
         log_path = self.config["ip_history_path"]
         try:
             with open(log_path, "r") as ip_log:
-                return list(ip_log)[-1]
+                return list(ip_log)[-2]  # There is a new line at the end of the file so the last IP is in 2nd to last
         except FileNotFoundError:
             return ""
