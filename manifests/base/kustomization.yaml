@@ -4,3 +4,4 @@ resources:
   - dns-updater
   - pihole
   - traefik
+  - cert-manager
