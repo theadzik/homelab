@@ -5,4 +5,5 @@ resources:
   - namespace.yaml
   - secret.yaml
   - nwp.yaml
+  - ingress.yaml
   - vaultwarden.yaml

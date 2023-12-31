@@ -4,5 +4,6 @@ namespace: pihole
 resources:
   - namespace.yaml
   - secret.yaml
-  - pihole.yaml
+  - ingress.yaml
   - nwp.yaml
+  - pihole.yaml
