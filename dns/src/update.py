@@ -11,8 +11,8 @@ def get_config(config_path: str) -> dict:
         return json.load(config_file)
 
 
-secrets = get_config("../config/secrets.json")
-config = get_config("../config/config.json")
+secrets = get_config("/config/secrets.json")
+config = get_config("/config/config.json")
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)s: %(message)s',
@@ -29,7 +29,7 @@ if current_ip == previous_ip:
     logging.info("IP Address unchanged")
     quit(0)
 
-dns_handler = HandlerDNS(template_path="../config/payload_template.json", secrets=secrets, config=config)
+dns_handler = HandlerDNS(template_path="/config/payload_template.json", secrets=secrets, config=config)
 
 for entry in config["records"]:
     payload = dns_handler.get_payload(

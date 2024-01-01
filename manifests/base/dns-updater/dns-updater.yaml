@@ -15,14 +15,18 @@ spec:
         spec:
           containers:
             - name: updater
-              image: theadzik/dnsupdater:1.1.2
-              imagePullPolicy: IfNotPresent
+              image: theadzik/dnsupdater:1.2.0
+              imagePullPolicy: Always
               volumeMounts:
                 - mountPath: /config
                   name: config
                   readOnly: true
                 - mountPath: /logs
                   name: logs
+          securityContext:
+            runAsUser: 10003
+            runAsGroup: 20004
+            fsGroup: 30005
           volumes:
             - name: config
               hostPath:
