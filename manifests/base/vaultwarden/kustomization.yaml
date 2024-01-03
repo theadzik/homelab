@@ -7,3 +7,4 @@ resources:
   - nwp.yaml
   - ingress.yaml
   - vaultwarden.yaml
+  - backup.yaml

@@ -1,0 +1,51 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: vw-backup
+spec:
+  schedule: "0 */6 * * *"
+  successfulJobsHistoryLimit: 5
+  failedJobsHistoryLimit: 10
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        spec:
+          containers:
+            - name: backup
+              image: theadzik/vw-backup:0.2.1
+              imagePullPolicy: IfNotPresent
+              volumeMounts:
+                - mountPath: /backup
+                  name: backup
+                - mountPath: /data
+                  name: data
+                  readOnly: true
+                - mountPath: /tmp
+                  name: tmp
+              env:
+                - name: BACKUP_ENCRYPTION_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: vw-config
+                      key: BACKUP_ENCRYPTION_KEY
+              securityContext:
+                readOnlyRootFilesystem: true
+                allowPrivilegeEscalation: false
+          securityContext:
+            runAsUser: 10001
+            runAsGroup: 20001
+            fsGroup: 20001
+          volumes:
+            - name: data
+              hostPath:
+                path: /home/adzik/docker/vw-data
+                type: Directory
+            - name: backup
+              hostPath:
+                path: /backup
+                type: Directory
+            - name: tmp
+              emptyDir: {}
+          restartPolicy: Never
