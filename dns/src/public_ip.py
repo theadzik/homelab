@@ -11,11 +11,13 @@ class PublicIP:
     def get_public_ip() -> str:
         ip_url = "https://ifconfig.me"
         public_ip = requests.request("GET", ip_url)
-        if public_ip.ok:
+        try:
+            public_ip.raise_for_status()
             logging.info(f"Current Public IP - {public_ip.text}")
             return public_ip.text
-        else:
+        except Exception as e:
             logging.error(f"Failed getting Public IP. Status code {public_ip.status_code}, Response: {public_ip.text}")
+            raise e
 
     def save_public_ip(self, public_ip: str) -> None:
         log_path = self.config["ip_history_path"]
