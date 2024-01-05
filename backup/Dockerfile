@@ -10,5 +10,5 @@ RUN addgroup --gid 20001 --system nonroot && \
 
 COPY --chown=nonroot:nonroot vaultwarden.sh vaultwarden.sh
 USER nonroot:nonroot
-
-ENTRYPOINT ["sh", "vaultwarden.sh"]
+RUN chmod +x /vaultwarden.sh
+ENTRYPOINT ["/vaultwarden.sh"]
