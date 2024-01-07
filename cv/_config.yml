@@ -123,13 +123,21 @@ content:
     layout: list
     content:
       - layout: left
+        title: The Linux Foundation
+        link: https://www.credly.com/badges/804a86d3-1122-40e6-a62e-d8c26c9632bd
+        link_text: Certified Kubernetes Administrator
+        description: |
+          CKA: Certified Kubernetes Administrator
+
+          Issued August 2023 - Expires August 2026
+      - layout: left
         title: Microsoft
-        link: https://www.credly.com/badges/f9839ca4-bea8-4c3d-aa20-f68d4112d0b7
+        link: https://learn.microsoft.com/api/credentials/share/en-gb/adzik/AF04973EF3AFC327?sharingId=F3AE2E099B355938
         link_text: AZ-104
         description: |
           Microsoft Certified: Azure Administrator Associate
 
-          Issued July 2022 - Expires July 2023
+          Issued July 2022 - Expires July 2024
       - layout: left
         title: Microsoft
         link: https://www.credly.com/badges/0e24c489-a607-4959-84be-fbb216114a51
