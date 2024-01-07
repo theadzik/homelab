@@ -22,28 +22,38 @@ linkedin_username: adam-zmuda
 # about_title: About Me (Use this to override about section title)
 about_profile_image: assets/photo.jpg
 about_content: |
-  I'm a DevOps Engineer experienced with **Azure Cloud**. I think that **Everything as a Code** is the best way to manage... everything.
-  That's why I use the **GitOps** methodology, with a mix of tools like **Terraform** and **Azure DevOps Pipelines** to deploy infrastructure.
-  **FluxCD** and **Mozilla SOPS** to manage **Kubernetes** clusters.
+  As a Senior DevOps Engineer specializing in **Kubernetes** and **Azure Cloud**,
+  I offer a wealth of experience in designing and implementing cost-effective cloud solutions.
+  Proficient in orchestrating **containerized applications** and adhering to the **Everything as Code** philosophy,
+  I excel in optimizing systems for performance, reliability, and financial efficiency.
 
-  Whenever an opportunity arises I contribute to open-source projects, mostly by updating documentation.
+  My expertise involves active participation in platform engineering, utilizing **Python**, **PowerShell**, and **Bash** for automation.
+  Tools like **Terraform** streamline deployment pipelines, contributing to continuous improvement.
 
-  I have some **Python** knowledge that I use in my current role to create and maintain applications and CLI tools.
+  I consistently seek ways to enhance operational efficiency while ensuring scalability and sustainability.
 content:
   - title: Experience
     layout: list
     content:
       - layout: left
+        title: Ørsted
+        sub_title: Senior DevOps Engineer
+        caption: August 2023 - present
+        link: https://orsted.com/
+        description: |
+          * DevOps enablement
+          * Kubernetes
+      - layout: left
         title: DNV
         sub_title: Senior DevOps Engineer
-        caption: April 2021 - present
+        caption: April 2021 - July 2023
         link: https://dnv.com/
         description: |
           * Creating and maintaining CI/CD pipelines in Azure DevOps
           * Deploying Azure infrastructure (Terraform, Terragrunt, ARM)
           * Maintaining Kubernetes clusters, using GitOps methodology (FluxCD, ArgoCD, Mozilla SOPS)
           * Administration of Azure DevOps and GitHub enterprise organizations
-          * Developing a monitoring solution based on the Azure Monitor toolset and Grafana stack
+          * Developing a monitoring solution based on the Azure Monitor toolset and Grafana Labs stack
           * Maintaining and developing Python applications and CLI tools
       - layout: left
         title: DNV
