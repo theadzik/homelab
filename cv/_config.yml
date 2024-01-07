@@ -1,0 +1,212 @@
+# Site
+repository: theadzik/cv
+# favicon: Directory of your favicon (eg. images/favicon.ico)(optional)
+
+# Content configuration version
+version: 2
+
+# Personal info
+name: Adam Żmuda
+title: DevOps Engineer
+email: adam.zmuda@outlook.com
+# email_title: Email (Email title override)
+# phone: Your phone number (optional)
+# phone_title: Phone (Phone title override)
+# website: Your website (eg. https://google.com)(optional)
+# website_title: Web (Website title override)
+
+# Dark Mode (true/false/never)
+darkmode: never
+
+# Social links
+#twitter_username: jekyllrb
+github_username: theadzik
+stackoverflow_username: "theadzik"
+#dribbble_username: jekyll
+#facebook_username: jekyll
+#flickr_username: jekyll
+#instagram_username: jekyll
+linkedin_username: adam-zmuda
+#xing_username: jekyll
+#pinterest_username: jekyll
+#youtube_username: jekyll
+#orcid_username: 0000-0000-0000-0000
+#googlescholar_username: D847cGsAAAAJ
+
+# Additional icon links
+#additional_links:
+#- title: Link name
+#  icon: Font Awesome brand icon name (eg. fab fa-twitter) (https://fontawesome.com/icons?d=gallery&s=brands&m=free)
+#  url: Link url (eg. https://google.com)
+# - title: another link
+#   icon: font awesome brand icon name (eg. fab fa-twitter) (https://fontawesome.com/icons?d=gallery&s=brands&m=free)
+#   url: Link url (eg. https://google.com)
+
+# Google Analytics and Tag Manager
+# Using more than one of these may cause issues with reporting
+# gtm: "GTM-0000000"
+# gtag: "UA-00000000-0"
+# google_analytics: "UA-00000000-0"
+
+# About Section
+# about_title: About Me (Use this to override about section title)
+#about_profile_image: Directory of profile image (eg. images/profile.jpg)
+about_content: |
+  I'm a DevOps Engineer experienced with **Azure Cloud**. I think that **Everything as a Code** is the best way to manage... everything.
+  That's why I use the **GitOps** methodology, with a mix of tools like **Terraform** and **Azure DevOps Pipelines** to deploy infrastructure.
+  **FluxCD** and **Mozilla SOPS** to manage **Kubernetes** clusters.
+
+  Whenever an opportunity arises I contribute to open-source projects, mostly by updating documentation.
+
+  I have some **Python** knowledge that I use in my current role to create and maintain applications and CLI tools.
+content:
+  - title: Experience
+    layout: list
+    content:
+      - layout: left
+        title: DNV
+        sub_title: Senior DevOps Engineer
+        caption: April 2021 - present
+        link: https://dnv.com/
+        description: |
+          * Creating and maintaining CI/CD pipelines in Azure DevOps
+          * Deploying Azure infrastructure (Terraform, Terragrunt, ARM)
+          * Maintaining Kubernetes clusters, using GitOps methodology (FluxCD, ArgoCD, Mozilla SOPS)
+          * Administration of Azure DevOps and GitHub enterprise organizations
+          * Developing a monitoring solution based on the Azure Monitor toolset and Grafana stack
+          * Maintaining and developing Python applications and CLI tools
+      - layout: left
+        title: DNV
+        sub_title: DevOps Engineer
+        caption: July 2019 - April 2021
+        link: https://dnv.com/
+        description: |
+          * Operation of Azure cloud-based services
+          * Creating and maintaining CI/CD pipelines
+          * Deploying Azure infrastructure with Terraform, ARM templates.
+          * Scripting and automating (including integrations of cloud and on-premise components)
+          * Development of monitoring solution based on Azure Monitor toolset
+          * Daily cooperation with monitoring operators
+          * Producing design and operational documentation
+      - layout: left
+        title: DNV
+        sub_title: IT Monitoring Engineer
+        caption: October 2018 - July 2019
+        link: https://dnv.com/
+        description: |
+          * Backup operations monitoring
+          * Incidents troubleshooting and root cause analysis
+          * Server and application monitoring
+          * Print queues management
+          * Security patching
+          * Server software & firmware patching
+          * Conducting and supervising monthly maintenance process
+          * Working in Windows Server and Linux Server environments
+      - layout: left
+        title: DNV
+        sub_title: IT Support Analyst
+        caption: October 2015 - October 2018
+        link: https://dnv.com/
+        description: |
+          * Provide second-line support with Exchange Online issues, setup, and permissions.
+          * Automating tasks and creating tools for the User Administration team
+          * Provide first-line support with common issues, e.g. workstation incidents, password changes, software/OS configuration, granting permissions, and access to different resources
+          * Create and update knowledge base articles
+      - layout: left
+        title: Sii Poland
+        sub_title: Service Desk Specialist
+        caption: April 2014 - October 2015
+        link: https://sii.pl/en/
+        description: |
+          * Record, analyze and categorize service calls, requests for change
+          * Provide first-line support with common issues, e.g. workstation incidents, password changes, software/os configuration, grant permissions/access to the project area
+          * Assign incidents and/or problems further either to technical operations or on-site personnel
+          * Give feedback and updates to the end-user on resolution progress
+          * Document user acceptance and close related incidents and/or problems
+  - title: Education
+    layout: list
+    content:
+      - layout: left
+        title: infoShare Academy
+        sub_title: Junior Python Developer Weekend Bootcamp
+        caption: 2021
+        description: |
+          It was intense, 445-hours course where I learned about web development with Django, design patterns, unit testing, UX.
+
+      - layout: left
+        title: University of Gdańsk
+        sub_title: Bachelor's Degree, Computer Science
+        caption: 2009 - 2014
+        description: |
+          During my time at University of Gdańsk I learnt many skills that have I use throughout my career such as teamwork and working to tight deadlines.
+  - title: Certification
+    layout: list
+    content:
+      - layout: left
+        title: Microsoft
+        link: https://www.credly.com/badges/f9839ca4-bea8-4c3d-aa20-f68d4112d0b7
+        link_text: AZ-104
+        description: |
+          Microsoft Certified: Azure Administrator Associate
+
+          Issued July 2022 - Expires July 2023
+      - layout: left
+        title: Microsoft
+        link: https://www.credly.com/badges/0e24c489-a607-4959-84be-fbb216114a51
+        link_text: AZ-900
+        description: |
+          Microsoft Certified: Azure Fundamentals
+
+          Issued June 2020 - No Expiration Date
+      - layout: left
+        title: ITIL
+        link: https://candidate.peoplecert.org/MobileReports.aspx?id=20E5673CE3D9A782451E54EAE09162FFAF5E545FA3469137C10A269E1036646A8BC5F2CEC503AAEA41605C96EE34F7EF774B5332B0B633E98051BD63D288CA1829F601904CCE3BDB7A3BB5353EEC7F7A63D0C1245536EB7FC032A770B64C28945B6FBA8FE17ED8E9965A8958ACB52161CF97B538B76B3814
+        link_text: 'GR750130235AZ'
+        description: |
+          ITIL® Foundation Certificate in IT Service Management ITIL
+
+          Issued March 2021 - No Expiration Date
+      - layout: left
+        title: 'infoShare Academy'
+        link: https://raw.githubusercontent.com/theadzik/cv/gh-pages/certificates/isa_jpd.pdf
+        link_text: 'iSA/2021/460'
+        description: |
+          Junior Python Developer
+
+          Issued July 2021 - No Expiration Date
+      - layout: left
+        title: Microsoft
+        link: https://www.youracclaim.com/badges/ac19ca93-0488-4cd1-8b69-c4a9ab70ffc8
+        link_text: 'Exam 698: Installing and Configuring Windows 10'
+        description: |
+          Exam 698: Installing and Configuring Windows 10
+
+          Issued May 2017 - No Expiration Date
+
+# Footer
+# footer_show_references: true
+# references_title: References on request (Override references text)
+
+# Build settings
+# theme: modern-resume-theme (Use this is you are hosting your resume yourself)
+# remote_theme: sproogen/modern-resume-theme (Use this if you are hosting your resume on GitHub)
+
+sass:
+  sass_dir: _sass
+  style: compressed
+
+plugins:
+  - jekyll-seo-tag
+
+exclude: [
+    "Gemfile",
+    "Gemfile.lock",
+    "node_modules",
+    "vendor/bundle/",
+    "vendor/cache/",
+    "vendor/gems/",
+    "vendor/ruby/",
+    "lib/",
+    "scripts/",
+    "docker-compose.yml",
+]
