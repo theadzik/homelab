@@ -31,6 +31,7 @@ about_content: |
   Tools like **Terraform** streamline deployment pipelines, contributing to continuous improvement.
 
   I consistently seek ways to enhance operational efficiency while ensuring scalability and sustainability.
+
 content:
   - title: Experience
     layout: list
@@ -103,6 +104,7 @@ content:
           * Assign incidents and/or problems further either to technical operations or on-site personnel
           * Give feedback and updates to the end-user on resolution progress
           * Document user acceptance and close related incidents and/or problems
+
   - title: Education
     layout: list
     content:
@@ -111,14 +113,16 @@ content:
         sub_title: Junior Python Developer Weekend Bootcamp
         caption: 2021
         description: |
-          It was intense, 445-hours course where I learned about web development with Django, design patterns, unit testing, UX.
+          It was an intense, 445-hours course where I learned about web development with Django, design patterns, unit testing, UX.
 
       - layout: left
         title: University of Gdańsk
         sub_title: Bachelor's Degree, Computer Science
         caption: 2009 - 2014
         description: |
-          During my time at University of Gdańsk I learnt many skills that have I use throughout my career such as teamwork and working to tight deadlines.
+          During my time at University of Gdańsk I learnt many skills that have I use throughout my career
+          such as teamwork and working to tight deadlines.
+
   - title: Certification
     layout: list
     content:
@@ -140,7 +144,7 @@ content:
           Issued July 2022 - Expires July 2024
       - layout: left
         title: Microsoft
-        link: https://www.credly.com/badges/0e24c489-a607-4959-84be-fbb216114a51
+        link: https://learn.microsoft.com/api/credentials/share/en-gb/adzik/480CBA5BA25E763E?sharingId=F3AE2E099B355938
         link_text: AZ-900
         description: |
           Microsoft Certified: Azure Fundamentals

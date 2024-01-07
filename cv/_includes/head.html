@@ -4,7 +4,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>{{ site.name }} | {{ site.title }}</title>
-  {%- seo title=false -%}
 
   <link rel="stylesheet" href="{{ '/assets/main.css' | relative_url }}">
   <link rel="shortcut icon" type="image/x-icon" href="{{ site.favicon | default: '/assets/favicon.ico' | relative_url }}">
@@ -18,4 +17,5 @@
   {%- if jekyll.environment == 'production' and site.gtag -%}
     {%- include gtag.html -%}
   {%- endif -%}
+  {% seo %}
 </head>
