@@ -23,14 +23,16 @@ linkedin_username: adam-zmuda
 about_profile_image: assets/photo.jpg
 about_content: |
   As a Senior DevOps Engineer specializing in **Kubernetes** and **Azure Cloud**,
-  I offer a wealth of experience in designing and implementing cost-effective cloud solutions.
+  I offer a wealth of experience in designing and implementing secure, cost-effective cloud solutions.
   Proficient in orchestrating **containerized applications** and adhering to the **Everything as Code** philosophy,
-  I excel in optimizing systems for performance, reliability, and financial efficiency.
-
-  My expertise involves active participation in platform engineering, utilizing **Python**, **PowerShell**, and **Bash** for automation.
-  Tools like **Terraform** streamline deployment pipelines, contributing to continuous improvement.
-
-  I consistently seek ways to enhance operational efficiency while ensuring scalability and sustainability.
+  I consistently seek ways to enhance performance, reliability, and financial efficiency of all systems.
+  
+  My expertise involves active participation in platform engineering, utilizing **Python**, **PowerShell**, and **Bash** for automation,
+  along with industry-standard tools such as **Terraform**, **Helm**, and **Docker**.
+  
+  In my free time, I enjoy tinkering and experimenting with my personal Kubernetes cluster built on Raspberry Pi.
+  It's a hands-on hobby that not only serves as a platform for exploration but also hosts various applications, such as this resume,
+  showcasing my commitment to continuous learning and technical proficiency beyond the professional realm.
 
 content:
   - title: Experience
@@ -42,8 +44,11 @@ content:
         caption: August 2023 - present
         link: https://orsted.com/
         description: |
-          * DevOps enablement
-          * Kubernetes
+          * Implementing improvements in the CI/CD process for building and upgrading clusters to assure zero-downtime operations.
+          * Optimize the cost efficiency of running workloads by implementing strategic measures and ensuring secure and reliable operations.   
+          * Collaborate with product teams, providing guidance on best practices for containerized applications.
+          * Contributing to shared Terraform modules used across the company, introducing new features and addressing bugs to improve overall infrastructure efficiency.
+          * Performing day-to-day cluster administrative and operational tasks, ensuring the efficient and reliable functioning of the infrastructure.
       - layout: left
         title: DNV
         sub_title: Senior DevOps Engineer
@@ -59,7 +64,7 @@ content:
       - layout: left
         title: DNV
         sub_title: DevOps Engineer
-        caption: July 2019 - April 2021
+        caption: July 2019 - March 2021
         link: https://dnv.com/
         description: |
           * Operation of Azure cloud-based services
@@ -72,7 +77,7 @@ content:
       - layout: left
         title: DNV
         sub_title: IT Monitoring Engineer
-        caption: October 2018 - July 2019
+        caption: October 2018 - June 2019
         link: https://dnv.com/
         description: |
           * Backup operations monitoring
@@ -86,7 +91,7 @@ content:
       - layout: left
         title: DNV
         sub_title: IT Support Analyst
-        caption: October 2015 - October 2018
+        caption: October 2015 - September 2018
         link: https://dnv.com/
         description: |
           * Provide second-line support with Exchange Online issues, setup, and permissions.
@@ -96,7 +101,7 @@ content:
       - layout: left
         title: Sii Poland
         sub_title: Service Desk Specialist
-        caption: April 2014 - October 2015
+        caption: April 2014 - September 2015
         link: https://sii.pl/en/
         description: |
           * Record, analyze and categorize service calls, requests for change
