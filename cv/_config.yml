@@ -180,6 +180,19 @@ content:
 
           Issued May 2017 - No Expiration Date
 
+  - title: Hobbies
+    layout: text
+    content: |
+      In my free time, I like messing around with my personal Kubernetes cluster. 
+      I use it to host things like a password manager, a DNS server, and even this resume.
+      You can check out the code on [theadzik/homelab](https://github.com/theadzik/homelab).
+
+      I'm into staying active, especially long-distance running. 
+      I'm proud of hitting milestones like the Crown of the Polish Half Marathons and finishing a Warsaw Marathon.
+
+      On a different note, I'm a big Formula 1 fan and have been watching since 2006.
+      I got to attend the Austrian Grand Prix in 2019, and it was awesome!
+
 # Footer
 # footer_show_references: true
 # references_title: References on request (Override references text)
