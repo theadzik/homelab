@@ -20,12 +20,12 @@ class PublicIP:
             raise e
 
     def save_public_ip(self, public_ip: str) -> None:
-        log_path = self.config["ip_history_path"]
+        log_path = self.config["IP_HISTORY_PATH"]
         with open(log_path, "a") as ip_log:
             ip_log.write(public_ip + "\n")
 
     def get_previous_public_ip(self) -> str:
-        log_path = self.config["ip_history_path"]
+        log_path = self.config["IP_HISTORY_PATH"]
         try:
             with open(log_path, "r") as ip_log:
                 return list(ip_log)[-1].strip()

@@ -3,4 +3,6 @@ kind: Kustomization
 namespace: dns-updater
 resources:
   - namespace.yaml
+  - configmaps.yaml
+  - secrets.yaml
   - dns-updater.yaml

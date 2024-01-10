@@ -5,8 +5,8 @@ metadata:
   namespace: dns-updater
 spec:
   schedule: "*/5 * * * *"
-  successfulJobsHistoryLimit: 5
-  failedJobsHistoryLimit: 10
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 5
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -15,11 +15,16 @@ spec:
         spec:
           containers:
             - name: updater
-              image: theadzik/dnsupdater:1.2.2
+              image: theadzik/dnsupdater:2.3.0
               imagePullPolicy: IfNotPresent
+              envFrom:
+                - secretRef:
+                    name: spaceship-dns-secret
+                - configMapRef:
+                    name: spaceship-dns-cm
               volumeMounts:
                 - mountPath: /config
-                  name: config
+                  name: config-volume
                   readOnly: true
                 - mountPath: /logs
                   name: logs
@@ -31,10 +36,9 @@ spec:
             runAsGroup: 20004
             fsGroup: 30005
           volumes:
-            - name: config
-              hostPath:
-                path: /home/adzik/git/homelab/dns/config
-                type: Directory
+            - name: config-volume
+              configMap:
+                name: spaceship-dns-payload-cm
             - name: logs
               hostPath:
                 path: /var/log

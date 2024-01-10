@@ -5,25 +5,26 @@ import requests
 
 
 class HandlerDNS:
-    def __init__(self, template_path: str, secrets: dict, config: dict):
+    def __init__(self, config: dict):
         self.base_url = "https://www.spaceship.com"
-        self.template_path = template_path
         self.config = config
-        self.secrets = secrets
         self.cookies = self.get_cookies()
         self.headers = self.get_headers()
 
-    def get_payload(self, public_ip: str, record_id: str) -> dict:
-        with open(self.template_path, "r") as payload_template:
+    def get_payload(self, public_ip: str) -> dict:
+        with open(self.config["DNS_TEMPLATE_PATH"], "r") as payload_template:
             payload = json.load(payload_template)
 
-        payload["recordsToUpdate"][record_id]["address"] = public_ip
+        # Only 1 key is expected in recordsToUpdate
+        record_key = list(payload["recordsToUpdate"].keys())[0]
+
+        payload["recordsToUpdate"][record_key]["address"] = public_ip
         logging.debug(f"Generated payload={payload}")
         return payload
 
     def get_cookies(self) -> dict:
         cookies = {
-            "z-account-deviceid": self.secrets['device_token'],
+            "z-account-deviceid": self.config['DNS_DEVICE_TOKEN'],
         }
         return cookies
 
@@ -40,10 +41,11 @@ class HandlerDNS:
         params = {
             "client_id": "spaceship",
             "grant_type": "password",
-            "username": self.secrets['username'],
-            "password": self.secrets['password'],
+            "username": self.config['DNS_USERNAME'],
+            "password": self.config['DNS_PASSWORD'],
         }
 
+        logging.debug(f"Params: {params}")
         login_response = requests.request(
             method="POST",
             url=self.base_url + login_api,
@@ -52,6 +54,7 @@ class HandlerDNS:
         )
 
         try:
+            logging.debug(login_response)
             login_response.raise_for_status()
             bearer_token = json.loads(login_response.text)["access_token"]
             logging.debug("Got bearer token")

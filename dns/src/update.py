@@ -1,24 +1,31 @@
-import json
 import logging
+import os
 
 from public_ip import PublicIP
 
 from dns import HandlerDNS
 
 
-def get_config(config_path: str) -> dict:
-    with open(config_path, "r") as config_file:
-        return json.load(config_file)
+def get_config() -> dict:
+    return {
+        "LOG_LEVEL": os.getenv("LOG_LEVEL", "INFO"),
+        "IP_HISTORY_PATH": os.getenv("IP_HISTORY_PATH", "/logs/public_ip_history"),
+        # "DNS_TEMPLATE_PATH": os.getenv("DNS_TEMPLATE_PATH", "/config/payload_template.json"),
+        # "DNS_USERNAME": os.environ["DNS_USERNAME"],
+        # "DNS_PASSWORD": os.environ["DNS_PASSWORD"],
+        # "DNS_DEVICE_TOKEN": os.environ["DNS_DEVICE_TOKEN"],
+    }
 
 
-secrets = get_config("/config/secrets.json")
-config = get_config("/config/config.json")
+config = get_config()
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)s: %(message)s',
     encoding='utf-8',
-    level=config["log_level"]
+    level=config["LOG_LEVEL"]
 )
+
+logging.debug(f"Config: {config}")
 
 ip_handler = PublicIP(config)
 
@@ -28,16 +35,15 @@ previous_ip = ip_handler.get_previous_public_ip()
 if current_ip == previous_ip:
     logging.info("IP Address unchanged")
     quit(0)
+else:
+    logging.error("IP Address changed. Please update manually")
+    quit(1)
 
-dns_handler = HandlerDNS(template_path="/config/payload_template.json", secrets=secrets, config=config)
-
-for entry in config["records"]:
-    payload = dns_handler.get_payload(
-        public_ip=current_ip, record_id=entry["id"],
-    )
-    update_dns_status = dns_handler.update_dns_entry(
-        payload=payload,
-    )
-    logging.info(f"Updated DNS record. EntryID: {entry['id']}. PublicIP: {current_ip}")
-    logging.debug(update_dns_status)
-    ip_handler.save_public_ip(public_ip=current_ip)
+# dns_handler = HandlerDNS(config=config)
+#
+# payload = dns_handler.get_payload(public_ip=current_ip)
+# update_dns_status = dns_handler.update_dns_entry(payload=payload)
+#
+# logging.info(f"Updated DNS record. PublicIP: {current_ip}")
+# logging.debug(update_dns_status)
+# ip_handler.save_public_ip(public_ip=current_ip)

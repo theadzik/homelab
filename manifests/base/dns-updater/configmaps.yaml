@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spaceship-dns-cm
+data:
+  LOG_LEVEL: "DEBUG"
+  IP_HISTORY_PATH: "/logs/public_ip_history"
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spaceship-dns-payload-cm
+data:
+  payload_template.json: |
+    {
+      "domainName": "zmuda.pro",
+      "recordsToUpdate": {
+        "0819888a-318a-433d-84f6-c39f706190ea": {
+          "address": "",
+          "host": "@",
+          "domainName": "zmuda.pro",
+          "type": "A",
+          "ttl": 60
+        }
+      }
+    }
