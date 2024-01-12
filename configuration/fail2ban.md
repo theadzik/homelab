@@ -20,9 +20,13 @@
 3. My preferred settings: `sudo vim jail.local`
    ```text
    ignoreip = 192.168.0.0/16
-   bantime  = 60m
-   findtime = 15m
+   findtime  = 24h
    maxretry = 3
+   bantime  = 1h
+   bantime.increment = true
+   bantime.factor = 4
+   bantime.maxtime = 4w
+   bantime.rndtime = 1h
    ```
 4. `sudo systemctl restart fail2ban`
 
