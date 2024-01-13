@@ -40,5 +40,5 @@ class HandlerDNS:
             logging.error(f"Failed to update dns. Status code {update.status_code}, Response: {update.text}")
             raise e
 
-        logging.debug(f"Updated DNS. Status code {update.status_code}, Response: {update.text}")
+        logging.info(f"Updated DNS. Status code {update.status_code}, Response: {update.text}")
         return update.ok
