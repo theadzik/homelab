@@ -41,7 +41,7 @@ def get_previous_public_ip() -> str:
             logging.info(f"Previous IP: {previous_ip}")
             return previous_ip
     except FileNotFoundError:
-        logging.warning(f"No previous IP found")
+        logging.warning("No previous IP found")
         return ""
 
 
