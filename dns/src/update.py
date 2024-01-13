@@ -27,7 +27,7 @@ if __name__ == '__main__':
             dns_handler = HandlerDNS(public_ip=current_ip)
             dns_handler.update_dns_entry()
             public_ip.save_public_ip(public_ip=current_ip)
-            time.sleep(600) # Allow extra time for TTL to pass
+            time.sleep(600) # Allow extra time for TTL to expire
         else:
             logging.debug("IP Address unchanged")
 
