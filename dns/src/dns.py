@@ -27,18 +27,23 @@ class HandlerDNS:
         }
         return headers
 
-    def update_dns_entry(self) -> bool:
+    def update_dns_entry(self):
         update = requests.request(
             method="GET",
             url=self.update_url,
             headers=self.get_headers()
         )
 
-        try:
-            update.raise_for_status()
-        except requests.HTTPError as e:
-            logging.error(f"Failed to update dns. Status code {update.status_code}, Response: {update.text}")
-            raise e
+        result = self.handle_response(update)
+        return result
 
-        logging.info(f"Updated DNS. Status code {update.status_code}, Response: {update.text}")
-        return update.ok
+    def handle_response(self, response: requests.Response):
+        match response.text:
+            case r"good.*":
+                logging.info(f"Updated DNS. {response.status_code} {response.text}")
+                return 0
+            case r"nochg.*":
+                logging.warning(f"No changes. {response.status_code} {response.text}")
+            case _:
+                logging.error(f"Failed to update dns. Status code {response.status_code}, Response: {response.text}")
+            # TODO: Add all errors and correct handling
