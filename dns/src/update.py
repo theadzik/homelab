@@ -13,8 +13,9 @@ logging.basicConfig(
 
 current_ip = public_ip.get_public_ip()
 previous_ip = public_ip.get_previous_public_ip()
+resolved_ip = public_ip.resolve_dns(environ["HOSTNAME"])
 
-if current_ip == previous_ip:
+if current_ip == previous_ip == resolved_ip:
     logging.info("IP Address unchanged")
     quit(0)
 

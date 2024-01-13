@@ -1,4 +1,5 @@
 import logging
+import socket
 from os import environ
 
 import requests
@@ -36,6 +37,15 @@ def get_previous_public_ip() -> str:
     log_path = environ["IP_HISTORY_PATH"]
     try:
         with open(log_path, "r") as ip_log:
-            return list(ip_log)[-1].strip()
+            previous_ip = list(ip_log)[-1].strip()
+            logging.info(f"Previous IP: {previous_ip}")
+            return previous_ip
     except FileNotFoundError:
+        logging.warning(f"No previous IP found")
         return ""
+
+
+def resolve_dns(hostname: str) -> str:
+    resolved_ip = socket.gethostbyname(hostname)
+    logging.info(f"{hostname} resolved to {resolved_ip}")
+    return resolved_ip
