@@ -16,7 +16,7 @@ previous_ip = public_ip.get_previous_public_ip()
 
 if current_ip == previous_ip:
     logging.info("IP Address unchanged")
-    #quit(0)
+    quit(0)
 
 dns_handler = HandlerDNS(public_ip=current_ip)
 dns_handler.update_dns_entry()

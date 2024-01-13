@@ -1,8 +1,9 @@
-import json
 import logging
-import requests
 import os
+import platform
 from base64 import b64encode
+
+import requests
 
 
 class HandlerDNS:
@@ -22,7 +23,7 @@ class HandlerDNS:
         basic_auth = b64encode(f"{self.username}:{self.password}".encode()).decode()
         headers = {
             "Authorization": f"Basic {basic_auth}",
-            "User-Agent": f"Homelab DNS-Updater/Docker-3.0.0 {self.maintainer_email}"
+            "User-Agent": f"Homelab DNS-Updater/{platform.system()}{platform.release()}-3.0.0 {self.maintainer_email}"
         }
         return headers
 
