@@ -19,8 +19,8 @@ spec:
           image: theadzik/dnsupdater:3.2.2
           imagePullPolicy: IfNotPresent
           envFrom:
-            secretRef:
-              name: dns-updater-secret
+            - secretRef:
+                name: dns-updater-secret
           volumeMounts:
             - mountPath: /logs
               name: logs
