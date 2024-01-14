@@ -23,6 +23,7 @@ class HandlerDNS:
         )
 
     def get_headers(self) -> dict:
+        # encode -> encode -> decode to get string -> bytes -> base64 bytes -> base64 string
         basic_auth = b64encode(f"{self.username}:{self.password}".encode()).decode()
         headers = {
             "Authorization": f"Basic {basic_auth}",
