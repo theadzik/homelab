@@ -27,6 +27,15 @@ if __name__ == '__main__':
             logging.debug("Nothing to update")
             time.sleep(300)
             continue
+        elif current_ip == resolved_ip != previous_ip:
+            logging.warning(
+                "DNS resolves correctly but doesn't match saved Public IP.\n"
+                "It was either updated externally or saving failed."
+            )
+            dns_handler = HandlerDNS(public_ip=current_ip)
+            public_ip.save_public_ip(public_ip=current_ip)
+            time.sleep(300)
+            continue
 
         dns_handler = HandlerDNS(public_ip=current_ip)
         update_success = dns_handler.update_dns_entry()
