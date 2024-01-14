@@ -23,14 +23,18 @@ if __name__ == '__main__':
         previous_ip = public_ip.get_previous_public_ip()
         resolved_ip = public_ip.resolve_dns(environ["HOSTNAME"])
 
-        if not (current_ip == previous_ip == resolved_ip):
-            dns_handler = HandlerDNS(public_ip=current_ip)
-            dns_handler.update_dns_entry()
-            public_ip.save_public_ip(public_ip=current_ip)
-            time.sleep(600) # Allow extra time for TTL to expire
-        else:
-            logging.debug("IP Address unchanged")
+        if current_ip == previous_ip == resolved_ip:
+            logging.debug("Nothing to update")
+            time.sleep(300)
+            continue
 
-        time.sleep(300)
+        dns_handler = HandlerDNS(public_ip=current_ip)
+        update_success = dns_handler.update_dns_entry()
+        if update_success:
+            public_ip.save_public_ip(public_ip=current_ip)
+            time.sleep(600)
+        else:
+            logging.warning("Something bad happened. Waiting 30 minutes")
+            time.sleep(1800)
 
     logging.info("Shutting down.")

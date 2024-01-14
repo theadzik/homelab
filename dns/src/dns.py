@@ -1,6 +1,7 @@
 import logging
 import os
 import platform
+import signal
 from base64 import b64encode
 
 import requests
@@ -27,23 +28,32 @@ class HandlerDNS:
         }
         return headers
 
-    def update_dns_entry(self):
+    def update_dns_entry(self) -> bool:
         update = requests.request(
             method="GET",
-            url=self.update_url,
+            url="https://httpstat.us/500",  # self.update_url,
             headers=self.get_headers()
         )
 
         result = self.handle_response(update)
         return result
 
-    def handle_response(self, response: requests.Response):
+    def handle_response(self, response: requests.Response) -> bool:
+        # https://www.noip.com/integrate/response
         match response.text:
             case r"good.*":
-                logging.info(f"Updated DNS. {response.status_code} {response.text}")
-                return 0
+                logging.info(f"Updated DNS. [{response.status_code}] {response.text}")
+                return True
             case r"nochg.*":
-                logging.warning(f"No changes. {response.status_code} {response.text}")
+                logging.warning(f"No changes. [{response.status_code}] {response.text}")
+                return True
+            case r"nohost|badauth|badagent|\!donator|abuse":
+                logging.critical(f"Failed to update DNS: [{response.status_code}] {response.text}")
+                # TODO: Send email
+                logging.info(f"Send an email to {self.maintainer_email}")
+                signal.pause()
+            case "911":
+                logging.warning(f"Failed to update DNS: [{response.status_code}] {response.text}")
             case _:
-                logging.error(f"Failed to update dns. Status code {response.status_code}, Response: {response.text}")
-            # TODO: Add all errors and correct handling
+                logging.error(f"Did not understand response: [{response.status_code}] {response.text}")
+        return False
