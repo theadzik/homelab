@@ -26,14 +26,17 @@ class HandlerDNS:
         basic_auth = b64encode(f"{self.username}:{self.password}".encode()).decode()
         headers = {
             "Authorization": f"Basic {basic_auth}",
-            "User-Agent": f"Homelab DNS-Updater/{platform.system()}{platform.release()}-3.0.0 {self.maintainer_email}"
+            "User-Agent": f"homelab dns-updater/"
+                          f"{platform.system()}{platform.release()}"
+                          f"-{os.environ['APP_VERSION']}"
+                          f" {self.maintainer_email}"
         }
         return headers
 
     def update_dns_entry(self) -> bool:
         update = requests.request(
             method="GET",
-            url="https://httpstat.us/500",  # self.update_url,
+            url=self.update_url,
             headers=self.get_headers()
         )
 
@@ -63,8 +66,8 @@ class HandlerDNS:
     def send_error_email(self, status_code: int, response_text: str):
         message = EmailMessage()
         message.set_content(
-            f"We failed to update your DNS entries."
-            f"Public IP: {self.public_ip}"
+            f"We failed to update your DNS entries.\n"
+            f"Public IP: {self.public_ip}\n"
             f"Response: [{status_code}] {response_text}"
         )
         message['Subject'] = f"[DDNS] Failed to update IP ({response_text})"

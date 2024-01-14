@@ -15,7 +15,7 @@ spec:
         spec:
           containers:
             - name: updater
-              image: theadzik/dnsupdater:1.2.2
+              image: theadzik/dnsupdater:3.2.0
               imagePullPolicy: IfNotPresent
               volumeMounts:
                 - mountPath: /config

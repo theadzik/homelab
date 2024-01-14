@@ -1,5 +1,8 @@
 FROM --platform="linux/arm64" python:3.12-alpine
 
+ARG APP_VERSION
+ENV APP_VERSION=$APP_VERSION
+
 RUN apk upgrade --no-cache
 
 RUN addgroup --gid 20001 --system nonroot && \
