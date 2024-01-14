@@ -7,9 +7,6 @@ from graceful_shutdown import GracefulKiller
 
 from dns import HandlerDNS
 
-# TODO: Add no-ip response handling https://www.noip.com/integrate/response
-# TODO: Add sending email on selected responses from no-ip
-
 logging.basicConfig(
     format='%(asctime)s %(levelname)s: %(message)s',
     encoding='utf-8',
