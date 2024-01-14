@@ -1,42 +1,38 @@
-apiVersion: batch/v1
-kind: CronJob
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: dns-updater
-  namespace: dns-updater
+  labels:
+    app: dns-updater
 spec:
-  schedule: "*/5 * * * *"
-  successfulJobsHistoryLimit: 5
-  failedJobsHistoryLimit: 10
-  concurrencyPolicy: Forbid
-  jobTemplate:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dns-updater
+  template:
+    metadata:
+      labels:
+        app: dns-updater
     spec:
-      backoffLimit: 0
-      template:
-        spec:
-          containers:
-            - name: updater
-              image: theadzik/dnsupdater:1.2.2
-              imagePullPolicy: IfNotPresent
-              volumeMounts:
-                - mountPath: /config
-                  name: config
-                  readOnly: true
-                - mountPath: /logs
-                  name: logs
-              securityContext:
-                readOnlyRootFilesystem: true
-                allowPrivilegeEscalation: false
+      containers:
+        - name: updater
+          image: theadzik/dnsupdater:3.2.2
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            secretRef:
+              name: dns-updater-secret
+          volumeMounts:
+            - mountPath: /logs
+              name: logs
           securityContext:
-            runAsUser: 10003
-            runAsGroup: 20004
-            fsGroup: 30005
-          volumes:
-            - name: config
-              hostPath:
-                path: /home/adzik/git/homelab/dns/config
-                type: Directory
-            - name: logs
-              hostPath:
-                path: /var/log
-                type: Directory
-          restartPolicy: Never
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+      securityContext:
+        runAsUser: 10003
+        runAsGroup: 20004
+        fsGroup: 30005
+      volumes:
+        - name: logs
+          hostPath:
+            path: /var/log
+            type: Directory

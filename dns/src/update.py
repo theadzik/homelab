@@ -1,43 +1,46 @@
-import json
 import logging
+import time
+from os import environ
 
-from public_ip import PublicIP
+import public_ip
+from graceful_shutdown import GracefulKiller
 
 from dns import HandlerDNS
-
-
-def get_config(config_path: str) -> dict:
-    with open(config_path, "r") as config_file:
-        return json.load(config_file)
-
-
-secrets = get_config("/config/secrets.json")
-config = get_config("/config/config.json")
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)s: %(message)s',
     encoding='utf-8',
-    level=config["log_level"]
+    level=environ["LOG_LEVEL"]
 )
 
-ip_handler = PublicIP(config)
+if __name__ == '__main__':
+    killer = GracefulKiller()
+    while not killer.kill_now:
+        current_ip = public_ip.get_public_ip()
+        previous_ip = public_ip.get_previous_public_ip()
+        resolved_ip = public_ip.resolve_dns(environ["HOSTNAME"])
 
-current_ip = ip_handler.get_public_ip()
-previous_ip = ip_handler.get_previous_public_ip()
+        if current_ip == previous_ip == resolved_ip:
+            logging.debug("Nothing to update")
+            time.sleep(300)
+            continue
+        elif current_ip == resolved_ip != previous_ip:
+            logging.warning(
+                "DNS resolves correctly but doesn't match saved Public IP.\n"
+                "It was either updated externally or saving failed."
+            )
+            dns_handler = HandlerDNS(public_ip=current_ip)
+            public_ip.save_public_ip(public_ip=current_ip)
+            time.sleep(300)
+            continue
 
-if current_ip == previous_ip:
-    logging.info("IP Address unchanged")
-    quit(0)
+        dns_handler = HandlerDNS(public_ip=current_ip)
+        update_success = dns_handler.update_dns_entry()
+        if update_success:
+            public_ip.save_public_ip(public_ip=current_ip)
+            time.sleep(600)
+        else:
+            logging.warning("Something bad happened. Waiting 30 minutes")
+            time.sleep(1800)
 
-dns_handler = HandlerDNS(template_path="/config/payload_template.json", secrets=secrets, config=config)
-
-for entry in config["records"]:
-    payload = dns_handler.get_payload(
-        public_ip=current_ip, record_id=entry["id"],
-    )
-    update_dns_status = dns_handler.update_dns_entry(
-        payload=payload,
-    )
-    logging.info(f"Updated DNS record. EntryID: {entry['id']}. PublicIP: {current_ip}")
-    logging.debug(update_dns_status)
-    ip_handler.save_public_ip(public_ip=current_ip)
+    logging.info("Shutting down.")
