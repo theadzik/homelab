@@ -2,7 +2,9 @@ import logging
 import os
 import platform
 import signal
+import smtplib
 from base64 import b64encode
+from email.message import EmailMessage
 
 import requests
 
@@ -49,11 +51,27 @@ class HandlerDNS:
                 return True
             case r"nohost|badauth|badagent|\!donator|abuse":
                 logging.critical(f"Failed to update DNS: [{response.status_code}] {response.text}")
-                # TODO: Send email
-                logging.info(f"Send an email to {self.maintainer_email}")
+                self.send_error_email(status_code=response.status_code, response_text=response.text)
+                logging.warning("Waiting indefinitely.")
                 signal.pause()
             case "911":
                 logging.warning(f"Failed to update DNS: [{response.status_code}] {response.text}")
             case _:
                 logging.error(f"Did not understand response: [{response.status_code}] {response.text}")
         return False
+
+    def send_error_email(self, status_code: int, response_text: str):
+        message = EmailMessage()
+        message.set_content(
+            f"We failed to update your DNS entries."
+            f"Public IP: {self.public_ip}"
+            f"Response: [{status_code}] {response_text}"
+        )
+        message['Subject'] = f"[DDNS] Failed to update IP ({response_text})"
+        message['From'] = os.environ["SMTP_USERNAME"]
+        message['To'] = os.environ["MAINTAINER_EMAIL"]
+
+        mailer = smtplib.SMTP_SSL(host=os.environ["SMTP_HOST"], port=os.environ["SMTP_PORT"])
+        mailer.login(user=os.environ["SMTP_USERNAME"], password=os.environ["SMTP_PASSWORD"])
+        mailer.send_message(msg=message)
+        logging.info(f"Sent an email to {message['To']}")
