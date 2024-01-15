@@ -2,22 +2,28 @@
 
 ## Installation
 
-> https://github.com/fail2ban/fail2ban/wiki/How-to-install-fail2ban-packages
+> <https://github.com/fail2ban/fail2ban/wiki/How-to-install-fail2ban-packages>
+
 1. `sudo apt update && sudo apt upgrade -y && sudo apt install fail2ban`
 
 ## Configuration
 
 1. Change backend: `sudo vim /etc/fail2ban/jail.conf`
-    ```text
+
+   ```text
     [DEFAULT]
     backend = systemd
     ```
-2. Copy jail config to create custom:
+
+1. Copy jail config to create custom:
+
    ```bash
    cd /etc/fail2ban
    sudo cp jail.conf jail.local
    ```
-3. My preferred settings: `sudo vim jail.local`
+
+1. My preferred settings: `sudo vim jail.local`
+
    ```text
    ignoreip = 192.168.0.0/16
    findtime  = 24h
@@ -28,7 +34,8 @@
    bantime.maxtime = 4w
    bantime.rndtime = 1h
    ```
-4. `sudo systemctl restart fail2ban`
+
+1. `sudo systemctl restart fail2ban`
 
 ## Check status
 
