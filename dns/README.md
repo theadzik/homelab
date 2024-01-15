@@ -1,4 +1,4 @@
-# Building 
+# Building
 
 ```bash
 APP_VERSION=3.2.0

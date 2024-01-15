@@ -26,10 +26,10 @@ about_content: |
   I offer a wealth of experience in designing and implementing secure, cost-effective cloud solutions.
   Proficient in orchestrating **containerized applications** and adhering to the **Everything as Code** philosophy,
   I consistently seek ways to enhance performance, reliability, and financial efficiency of all systems.
-  
+
   My expertise involves active participation in platform engineering, utilizing **Python**, **PowerShell**, and **Bash** for automation,
   along with industry-standard tools such as **Terraform**, **Helm**, and **Docker**.
-  
+
   In my free time, I enjoy tinkering and experimenting with my personal Kubernetes cluster built on Raspberry Pi.
   It's a hands-on hobby that not only serves as a platform for exploration but also hosts various applications, such as this resume,
   showcasing my commitment to continuous learning and technical proficiency beyond the professional realm.
@@ -45,7 +45,7 @@ content:
         link: https://orsted.com/
         description: |
           * Implementing improvements in the CI/CD process for building and upgrading clusters to assure zero-downtime operations.
-          * Optimize the cost efficiency of running workloads by implementing strategic measures and ensuring secure and reliable operations.   
+          * Optimize the cost efficiency of running workloads by implementing strategic measures and ensuring secure and reliable operations.
           * Collaborate with product teams, providing guidance on best practices for containerized applications.
           * Contributing to shared Terraform modules used across the company, introducing new features and addressing bugs to improve overall infrastructure efficiency.
           * Performing day-to-day cluster administrative and operational tasks, ensuring the efficient and reliable functioning of the infrastructure.
@@ -183,11 +183,11 @@ content:
   - title: Hobbies
     layout: text
     content: |
-      In my free time, I like messing around with my personal Kubernetes cluster. 
+      In my free time, I like messing around with my personal Kubernetes cluster.
       I use it to host things like a password manager, a DNS server, and even this resume.
       You can check out the code on [theadzik/homelab](https://github.com/theadzik/homelab).
 
-      I'm into staying active, especially long-distance running. 
+      I'm into staying active, especially long-distance running.
       I'm proud of hitting milestones like the Crown of the Polish Half Marathons and finishing a Warsaw Marathon.
 
       On a different note, I'm a big Formula 1 fan and have been watching since 2006.
