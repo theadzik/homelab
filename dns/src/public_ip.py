@@ -55,5 +55,5 @@ def get_previous_public_ip() -> str:
 
 def resolve_dns(hostname: str) -> str:
     resolved_ip = socket.gethostbyname(hostname)
-    logging.info(f"{hostname} resolved to {resolved_ip}")
+    logging.debug(f"{hostname} resolved to {resolved_ip}")
     return resolved_ip
