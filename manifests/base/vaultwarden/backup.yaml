@@ -4,8 +4,8 @@ metadata:
   name: vw-backup
 spec:
   schedule: "0 */6 * * *"
-  successfulJobsHistoryLimit: 5
-  failedJobsHistoryLimit: 10
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 4
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -14,7 +14,7 @@ spec:
         spec:
           containers:
             - name: backup
-              image: theadzik/vw-backup:0.2.4
+              image: theadzik/vw-backup:0.2.5
               imagePullPolicy: IfNotPresent
               volumeMounts:
                 - mountPath: /backup
