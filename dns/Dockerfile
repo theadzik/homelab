@@ -1,4 +1,4 @@
-FROM --platform="linux/arm64" python:3.12-alpine
+FROM python:3.12-alpine
 
 RUN apk upgrade --no-cache
 
