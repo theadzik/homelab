@@ -1,6 +1,7 @@
 import logging
 import os
 import platform
+import re
 import signal
 import smtplib
 from base64 import b64encode
@@ -46,22 +47,21 @@ class HandlerDNS:
 
     def handle_response(self, response: requests.Response) -> bool:
         # https://www.noip.com/integrate/response
-        match response.text:
-            case r"good.*":
-                logging.info(f"Updated DNS. [{response.status_code}] {response.text}")
-                return True
-            case r"nochg.*":
-                logging.warning(f"No changes. [{response.status_code}] {response.text}")
-                return True
-            case r"nohost|badauth|badagent|\!donator|abuse":
-                logging.critical(f"Failed to update DNS: [{response.status_code}] {response.text}")
-                self.send_error_email(status_code=response.status_code, response_text=response.text)
-                logging.warning("Waiting indefinitely.")
-                signal.pause()
-            case "911":
-                logging.warning(f"Failed to update DNS: [{response.status_code}] {response.text}")
-            case _:
-                logging.error(f"Did not understand response: [{response.status_code}] {response.text}")
+        if re.match(r"good.*", response.text):
+            logging.info(f"Updated DNS. [{response.status_code}] {response.text}")
+            return True
+        elif re.match(r"nochg.*", response.text):
+            logging.warning(f"No changes. [{response.status_code}] {response.text}")
+            return True
+        elif re.match(r"nohost|badauth|badagent|!donator|abuse", response.text):
+            logging.critical(f"Failed to update DNS: [{response.status_code}] {response.text}")
+            self.send_error_email(status_code=response.status_code, response_text=response.text)
+            logging.warning("Waiting indefinitely.")
+            signal.pause()
+        elif re.match(r"911", response.text):
+            logging.warning(f"Failed to update DNS: [{response.status_code}] {response.text}")
+        else:
+            logging.error(f"Did not understand response: [{response.status_code}] {response.text}")
         return False
 
     def send_error_email(self, status_code: int, response_text: str):
