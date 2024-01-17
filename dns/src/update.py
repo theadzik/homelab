@@ -26,8 +26,7 @@ if __name__ == '__main__':
             continue
         elif current_ip == resolved_ip != previous_ip:
             logging.warning(
-                "DNS resolves correctly but doesn't match saved Public IP.\n"
-                "It was either updated externally or saving failed."
+                "DNS resolves correctly but doesn't match saved Public IP."
             )
             dns_handler = HandlerDNS(public_ip=current_ip)
             public_ip.save_public_ip(public_ip=current_ip)
