@@ -14,6 +14,7 @@ logging.basicConfig(
 )
 
 if __name__ == '__main__':
+    logging.info("Starting listening to Public IP changes")
     killer = GracefulKiller()
     while not killer.kill_now:
         current_ip = public_ip.get_public_ip()
