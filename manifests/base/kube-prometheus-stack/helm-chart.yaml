@@ -7,6 +7,9 @@ spec:
   chart: kube-prometheus-stack
   version: 56.0.1
   valuesContent: |-
+    prometheus:
+      prometheusSpec:
+        retentionSize: 1GiB
     grafana:
       defaultDashboardsTimezone: Europe/Warsaw
       defaultDashboardsEditable: true
