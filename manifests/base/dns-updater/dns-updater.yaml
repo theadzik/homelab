@@ -17,7 +17,7 @@ spec:
       containers:
         - name: updater
           image: theadzik/dnsupdater:3.2.6
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           envFrom:
             - secretRef:
                 name: dns-updater-secret
