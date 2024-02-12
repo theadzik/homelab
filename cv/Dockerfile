@@ -1,12 +1,13 @@
 FROM ruby:3.3.0-bookworm AS builder
 
+RUN gem install jekyll bundler
+
 COPY . app
 WORKDIR app
 
-RUN gem install jekyll bundler
-RUN bundle install
-RUN bundle exec jekyll build
+RUN bundle install && \
+    bundle exec jekyll build
 
-FROM nginxinc/nginx-unprivileged:1.25.3
+FROM nginxinc/nginx-unprivileged:1.25
 
 COPY --from=builder "/app/_site" /usr/share/nginx/html
