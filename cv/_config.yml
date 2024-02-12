@@ -165,7 +165,7 @@ content:
           Issued March 2021 - No Expiration Date
       - layout: left
         title: 'infoShare Academy'
-        link: https://raw.githubusercontent.com/theadzik/cv/gh-pages/certificates/isa_jpd.pdf
+        link: /assets/isa_jpd.pdf
         link_text: 'iSA/2021/460'
         description: |
           Junior Python Developer
