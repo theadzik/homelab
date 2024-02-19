@@ -7,8 +7,10 @@ spec:
   schedule: "*/5 * * * *"
   successfulJobsHistoryLimit: 5
   failedJobsHistoryLimit: 10
+  concurrencyPolicy: Forbid
   jobTemplate:
     spec:
+      backoffLimit: 0
       template:
         spec:
           containers:
