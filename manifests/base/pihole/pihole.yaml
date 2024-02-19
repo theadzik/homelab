@@ -90,6 +90,7 @@ metadata:
     app: pihole
   name: pihole-dns
 spec:
+  externalTrafficPolicy: Local
   ports:
     - port: 53
       protocol: UDP
