@@ -39,7 +39,7 @@ spec:
             - name: PIHOLE_DNS_
               value: '1.1.1.1;8.8.8.8'
             - name: VIRTUAL_HOST
-              value: 'zmuda.pro'
+              value: 'pihole.zmuda.pro'
             - name: WEBTHEME
               value: 'default-dark'
             - name: WEBPASSWORD
@@ -112,9 +112,16 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: pihole
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt-prod"
 spec:
+  tls:
+    - hosts:
+        - pihole.zmuda.pro
+      secretName: pihole-tls
   rules:
-    - http:
+    - host: pihole.zmuda.pro
+      http:
         paths:
           - path: /
             pathType: Prefix
