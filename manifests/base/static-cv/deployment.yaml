@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: static-cv
+  labels:
+    app: static-cv
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: static-cv
+  template:
+    metadata:
+      labels:
+        app: static-cv
+    spec:
+      containers:
+        - name: nginx
+          image: theadzik/static-cv:0.5.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              protocol: "TCP"
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+      securityContext:
+        runAsUser: 10001
+        runAsGroup: 20001
+        fsGroup: 20001
+      volumes:
+        - name: tmp
+          emptyDir: {}
