@@ -16,13 +16,16 @@ spec:
           containers:
             - name: updater
               image: theadzik/dnsupdater:1.2.0
-              imagePullPolicy: Always
+              imagePullPolicy: IfNotPresent
               volumeMounts:
                 - mountPath: /config
                   name: config
                   readOnly: true
                 - mountPath: /logs
                   name: logs
+              securityContext:
+                readOnlyRootFilesystem: true
+                allowPrivilegeEscalation: false
           securityContext:
             runAsUser: 10003
             runAsGroup: 20004
