@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: vw-backup
 spec:
-  schedule: "0 */6 * * *"
+  schedule: "0 */1 * * *"
   successfulJobsHistoryLimit: 5
   failedJobsHistoryLimit: 10
   concurrencyPolicy: Forbid
