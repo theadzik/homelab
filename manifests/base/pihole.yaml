@@ -1,0 +1,127 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: pihole
+  namespace: pihole
+  labels:
+    app: pihole
+spec:
+  selector:
+    matchLabels:
+      app: pihole
+  template:
+    metadata:
+      labels:
+        app: pihole
+    spec:
+      containers:
+        - name: pihole
+          image: pihole/pihole:latest
+          ports:
+            - containerPort: 53
+              protocol: "TCP"
+            - containerPort: 53
+              protocol: "UDP"
+            - containerPort: 67
+              protocol: "UDP"
+            - containerPort: 80
+              protocol: "TCP"
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          env:
+            - name: TZ
+              value: 'Europe/Warsaw'
+            - name: FTLCONF_LOCAL_IPV4
+              value: '192.168.1.22'
+            - name: PIHOLE_DNS_
+              value: '1.1.1.1;8.8.8.8'
+            - name: VIRTUAL_HOST
+              value: 'zmuda.pro'
+            - name: WEBTHEME
+              value: 'default-dark'
+            - name: WEBPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: web-password
+                  key: WEBPASSWORD
+          volumeMounts:
+            - mountPath: /etc/pihole
+              name: pihole
+            - mountPath: /etc/dnsmasq.d
+              name: dnsmasq
+      volumes:
+        - name: pihole
+          hostPath:
+            path: /home/adzik/docker/etc-pihole
+            type: Directory
+        - name: dnsmasq
+          hostPath:
+            path: /home/adzik/docker/etc-dnsmasq.d
+            type: Directory
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: pihole
+  name: pihole-http
+  namespace: pihole
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+      name: http
+  selector:
+    app: pihole
+  type: ClusterIP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: pihole
+  name: pihole-dns
+  namespace: pihole
+spec:
+  ports:
+    - port: 53
+      protocol: UDP
+      targetPort: 53
+      name: dns-udp
+    - port: 53
+      protocol: TCP
+      targetPort: 53
+      name: dns-tcp
+    - port: 67
+      protocol: UDP
+      targetPort: 67
+      name: dhcp
+  selector:
+    app: pihole
+  type: LoadBalancer
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pihole
+  namespace: pihole
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: pihole-http
+                port:
+                  number: 80
