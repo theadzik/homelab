@@ -1,0 +1,9 @@
+---
+- name: "Ensure kubernetes data directory exist."
+  ansible.builtin.file:
+    path: "{{ local_data_base_directory }}/{{ item.name }}"
+    owner: "{{ item.uid }}"
+    group: "{{ item.gid }}"
+    mode: "{{ local_data_permissions }}"
+    state: directory
+  loop: "{{ local_data_directories }}"

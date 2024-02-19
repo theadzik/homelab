@@ -28,9 +28,9 @@ spec:
             - mountPath: /tmp
               name: tmp
       securityContext:
-        runAsUser: 10001
-        runAsGroup: 20001
-        fsGroup: 20001
+        runAsUser: 10003
+        runAsGroup: 20003
+        fsGroup: 20003
       volumes:
         - name: tmp
           emptyDir: {}

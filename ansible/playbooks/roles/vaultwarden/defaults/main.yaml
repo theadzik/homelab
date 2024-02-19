@@ -1,0 +1,9 @@
+---
+rclone_version: 1.65.2
+vaultwarden_data_path: /mnt/kubernetes-disks/vaultwarden/main
+vaultwarden_backup_path: /mnt/kubernetes-disks/vaultwarden/backup
+vaultwarden_backup_cronjob_path: /usr/local/bin/rclone-cronjob.sh
+vaultwarden_backup_cronjob_log: /var/log/vaultwarden-backup.log
+vaultwarden_force_restore: false
+vaultwarden_user: vaultwarden
+vaultwarden_group: vaultwarden

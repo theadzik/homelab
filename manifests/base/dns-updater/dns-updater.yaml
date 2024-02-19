@@ -28,11 +28,9 @@ spec:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
       securityContext:
-        runAsUser: 10003
-        runAsGroup: 20004
-        fsGroup: 30005
+        runAsUser: 10002
+        runAsGroup: 20002
+        fsGroup: 20002
       volumes:
         - name: logs
-          hostPath:
-            path: /var/log
-            type: Directory
+          emptyDir: {}

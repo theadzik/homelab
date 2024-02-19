@@ -1,0 +1,55 @@
+---
+- name: Replace RSA keypair.
+  community.crypto.openssh_keypair:
+    state: present
+    type: rsa
+    size: "4096"
+    path: "/etc/ssh/ssh_host_rsa_key"
+    force: false
+    comment: "{{ ansible_hostname }}"
+    regenerate: partial_idempotence
+  notify: Restart ssh
+
+- name: Replace ED25519 keypair.
+  community.crypto.openssh_keypair:
+    state: present
+    type: ed25519
+    size: "521"
+    path: "/etc/ssh/ssh_host_ed25519_key"
+    force: false
+    comment: "{{ ansible_hostname }}"
+    regenerate: partial_idempotence
+  notify: Restart ssh
+
+- name: Remove EDCSA keypair.
+  community.crypto.openssh_keypair:
+    state: absent
+    type: ecdsa
+    path: "/etc/ssh/ssh_host_ecdsa_key"
+    force: true
+  notify: Restart ssh
+
+- name: Check for small Diffie-Hellman moduli.
+  ansible.builtin.shell: awk '$5 < 3071' /etc/ssh/moduli
+  register: sshd_register_moduli
+  changed_when: false
+  check_mode: false
+  notify: Restart ssh
+
+- name: Remove small Diffie-Hellman moduli. # noqa no-changed-when
+  ansible.builtin.shell: >
+    awk '$5 >= 3071' /etc/ssh/moduli > /etc/ssh/moduli.new ;
+    [ -r /etc/ssh/moduli.new -a -s /etc/ssh/moduli.new ] &&
+    mv /etc/ssh/moduli.new /etc/ssh/moduli || true
+  notify: Restart ssh
+  when:
+    - sshd_register_moduli.stdout
+
+- name: Copy hardened sshd config.
+  ansible.builtin.copy:
+    src: ./files/ssh-hardening.conf
+    dest: /etc/ssh/sshd_config.d/ssh-hardening.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart ssh

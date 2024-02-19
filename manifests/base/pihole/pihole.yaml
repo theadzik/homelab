@@ -50,18 +50,14 @@ spec:
                   key: WEBPASSWORD
           volumeMounts:
             - mountPath: /etc/pihole
-              name: pihole
+              name: pihole-main
             - mountPath: /etc/dnsmasq.d
-              name: dnsmasq
+              name: pihole-dnsmasq
       volumes:
-        - name: pihole
-          hostPath:
-            path: /home/adzik/docker/etc-pihole
-            type: Directory
-        - name: dnsmasq
-          hostPath:
-            path: /home/adzik/docker/etc-dnsmasq.d
-            type: Directory
+        - name: pihole-main
+          emptyDir: {}
+        - name: pihole-dnsmasq
+          emptyDir: {}
 
 ---
 

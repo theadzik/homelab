@@ -40,11 +40,11 @@ spec:
           volumes:
             - name: data
               hostPath:
-                path: /home/adzik/docker/vw-data
+                path: /mnt/kubernetes-disks/vaultwarden/main
                 type: Directory
             - name: backup
               hostPath:
-                path: /backup
+                path: /mnt/kubernetes-disks/vaultwarden/backup
                 type: Directory
             - name: tmp
               emptyDir: {}

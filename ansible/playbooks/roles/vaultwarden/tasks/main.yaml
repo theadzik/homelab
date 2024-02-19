@@ -1,0 +1,113 @@
+---
+- name: Ensure "{{ vaultwarden_group }}" group exists with correct gid.
+  ansible.builtin.group:
+    gid: 20001
+    name: "{{ vaultwarden_group }}"
+    state: present
+
+- name: Ensure "{{ vaultwarden_user }}" user exists with correct uid.
+  ansible.builtin.user:
+    name: "{{ vaultwarden_user }}"
+    group: "{{ vaultwarden_group }}"
+    uid: 10001
+    comment: Used for Vaultwarden file permissions
+    create_home: false
+    system: true
+
+- name: Ensure Vaultwarden data directory exists.
+  ansible.builtin.file:
+    path: "{{ vaultwarden_data_path }}"
+    owner: "{{ vaultwarden_user }}"
+    group: "{{ vaultwarden_group }}"
+    mode: 0770
+    state: directory
+
+- name: Ensure unzip is present.
+  ansible.builtin.apt:
+    name: unzip
+    state: present
+
+- name: Setting rclone_arch based on system architecture
+  ansible.builtin.set_fact:
+    rclone_arch: "{{ ansible_architecture | rclone_translate_arch }}"
+
+- name: "Get rclone stable version {{ rclone_version }}."
+  ansible.builtin.unarchive:
+    src: "https://downloads.rclone.org/v{{ rclone_version }}/rclone-v{{ rclone_version }}-linux-{{ rclone_arch }}.zip"
+    dest: "{{ ansible_downloads_tmp_dir }}"
+    remote_src: true
+    mode: 0744
+    creates: "{{ ansible_downloads_tmp_dir }}/rclone-v{{ rclone_version }}-linux-{{ rclone_arch }}"
+
+- name: Copy rclone binary.
+  ansible.builtin.copy:
+    src: "{{ ansible_downloads_tmp_dir }}/rclone-v{{ rclone_version }}-linux-{{ rclone_arch }}/rclone"
+    dest: "/usr/local/bin/rclone"
+    mode: "0755"
+    owner: root
+    group: root
+    remote_src: true
+
+- name: Find expected rclone config path.
+  shell: rclone config file | tail -1
+  register: rclone_config_file
+  changed_when: false
+
+- name: Copy rclone config.
+  ansible.builtin.copy:
+    src: "./files/rclone.secret.conf"
+    dest: "{{ rclone_config_file.stdout }}"
+    mode: "0660"
+    force: false
+
+- name: Copy rclone backup script.
+  ansible.builtin.template:
+    src: "./files/rclone-cronjob.j2"
+    dest: "{{ vaultwarden_backup_cronjob_path }}"
+    mode: "0774"
+
+- name: Ensure backup cronjob exists.
+  ansible.builtin.cron:
+    name: "vaultwarden-backup"
+    minute: "5"
+    hour: "*/6"
+    user: "root"
+    job: "{{ vaultwarden_backup_cronjob_path }} >> {{ vaultwarden_backup_cronjob_log }} 2>&1"
+
+- name: Check if vaultwarden data exists.
+  ansible.builtin.stat:
+    path: "{{ vaultwarden_data_path }}/db.sqlite3"
+  register: db
+
+- name: Restore Vaultwarden database from backup if it doesn't exist.
+  when: db.stat.exists == False or vaultwarden_force_restore
+  block:
+    - name: Find newest backup file.
+      shell: rclone lsf gdrive:backup | tail -1 | grep "vaultwarden-[0-9\-]*\.tar\.gz"
+      register: backup_name
+      changed_when: false
+      failed_when: backup_name.stdout | length == 0
+
+    - name: Download newest backup.
+      command:
+        cmd: "rclone copy gdrive:backup/{{ backup_name.stdout }} /tmp"
+        creates: "/tmp/{{ backup_name.stdout }}"
+
+    - name: Decrypt backup file.
+      shell:
+        cmd: >
+          openssl enc -d -aes256 -salt -pbkdf2 -pass pass:{{ vaultwarden_backup_encryption_key }}
+          -in /tmp/{{ backup_name.stdout }}
+          | tar xz --strip-components=1 --owner={{ vaultwarden_user }} --group={{ vaultwarden_group }}
+          --directory={{ vaultwarden_data_path }}
+        creates: "{{ vaultwarden_data_path }}/db.sqlite3"
+      no_log: true
+
+    - name: Ensure Vaultwarden file permissions are set correctly.
+      ansible.builtin.file:
+        path: "{{ vaultwarden_data_path }}"
+        owner: "{{ vaultwarden_user }}"
+        group: "{{ vaultwarden_group }}"
+        mode: 0770
+        state: directory
+        recurse: true

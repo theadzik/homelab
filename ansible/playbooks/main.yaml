@@ -1,0 +1,42 @@
+- name: Configure all nodes.
+  hosts: k3s_cluster
+  become: true
+
+  roles:
+    - prereq
+    - raspberrypi
+    - fail2ban
+    - ssh_hardening
+    - vaultwarden
+
+  pre_tasks:
+    - name: Load variable files.
+      include_vars: "{{ item }}"
+      with_items:
+        - "vars/common.yaml"
+        - "vars/secrets.yaml"
+
+    - name: Upgrade system with apt.
+      ansible.builtin.apt:
+        upgrade: true
+        cache_valid_time: 3600
+
+    - name: Ensure ansible-downloads directory exists.
+      ansible.builtin.file:
+        path: "{{ ansible_downloads_tmp_dir }}"
+        mode: 664
+        state: directory
+
+- name: Setup K3S server.
+  hosts: server
+  become: true
+  vars:
+    kubeconfig: ~/.kube/config
+  roles:
+    - role: k3s_server
+
+- name: Setup K3S agent
+  hosts: agent
+  become: true
+  roles:
+    - role: k3s_agent

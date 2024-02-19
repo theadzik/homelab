@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: vaultwarden
   labels:
@@ -74,16 +74,21 @@ spec:
                   key: SMTP_PASSWORD
           volumeMounts:
             - mountPath: /data
-              name: data
+              name: vaultwarden-main
       securityContext:
         runAsUser: 10001
         runAsGroup: 20001
         fsGroup: 20001
-      volumes:
-        - name: data
-          hostPath:
-            path: /home/adzik/docker/vw-data
-            type: Directory
+  volumeClaimTemplates:
+    - metadata:
+        name: vaultwarden-main
+      spec:
+        accessModes: ["ReadWriteMany"]
+        storageClassName: "local-storage"
+        volumeName: vaultwarden-main
+        resources:
+          requests:
+            storage: 128Mi
 
 ---
 

@@ -1,11 +1,4 @@
-# Setup
-
-1. Schedule vaultwarden.sh (using cronjob in k8s)
-1. Install `rclone` on rpi
-1. Add `gdrive` drive with `rclone config`
-1. Run `crontab -e` on rpi and add `5 */6 * * * /home/adzik/git/homelab/backup/gdrive-upload.sh`
-
-## Restore
+# Manual restore from backup
 
 1. Stop vaultwarden `kubectl scale deployment -n vaultwarden --replicas=0 vaultwarden`
 1. Find newest (and correct) backup `rclone ls gdrive:/backup`

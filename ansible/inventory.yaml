@@ -1,0 +1,20 @@
+---
+k3s_cluster:
+  children:
+    server:
+      hosts:
+        192.168.1.22:
+
+  # Required Vars
+  vars:
+    ansible_port: 22
+    ansible_user: adzik
+    k3s_version: v1.29.0+k3s1
+    api_endpoint: "{{ hostvars[groups['server'][0]]['ansible_host'] | default(groups['server'][0]) }}"
+    extra_server_args: ""
+    extra_agent_args: ""
+    ansible_private_key_file: ~/.ssh/raspberry_strong
+    # server_config_yaml:  |
+      # This is now an inner yaml file. Maintain the indentation.
+      # YAML here will be placed as the content of /etc/rancher/k3s/config.yaml
+      # See https://docs.k3s.io/installation/configuration#configuration-file

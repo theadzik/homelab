@@ -24,6 +24,3 @@ spec:
         - podSelector:
             matchLabels:
               type: ingress
-      ports:
-        - port: 80
-          protocol: TCP

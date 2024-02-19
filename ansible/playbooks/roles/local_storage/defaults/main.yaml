@@ -1,0 +1,10 @@
+---
+local_data_base_directory: /mnt/kubernetes-disks
+local_data_permissions: 0770
+local_data_directories:
+  - name: vaultwarden/main
+    uid: 10001
+    gid: 20001
+  - name: vaultwarden/backup
+    uid: 10001
+    gid: 20001

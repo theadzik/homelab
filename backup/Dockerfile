@@ -5,10 +5,10 @@ RUN apk add --no-cache --upgrade \
     bash \
     openssl
 
-RUN addgroup --gid 20001 --system nonroot && \
-    adduser --uid 10001 --system --ingroup nonroot --disabled-password --no-create-home --gecos "" nonroot
+RUN addgroup --gid 20001 --system vaultwarden && \
+    adduser --uid 10001 --system --ingroup vaultwarden --disabled-password --no-create-home --gecos "" vaultwarden
 
-COPY --chown=nonroot:nonroot vaultwarden.sh vaultwarden.sh
-USER nonroot:nonroot
+COPY --chown=vaultwarden:vaultwarden vaultwarden.sh vaultwarden.sh
+USER vaultwarden:vaultwarden
 RUN chmod +x /vaultwarden.sh
 ENTRYPOINT ["/vaultwarden.sh"]
