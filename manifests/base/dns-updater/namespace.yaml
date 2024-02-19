@@ -4,8 +4,3 @@ metadata:
   name: dns-updater
 
 ---
-
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: pihole

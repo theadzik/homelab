@@ -1,11 +1,11 @@
 apiVersion: apps/v1
-kind: DaemonSet
+kind: Deployment
 metadata:
   name: pihole
-  namespace: pihole
   labels:
     app: pihole
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: pihole
@@ -69,7 +69,6 @@ metadata:
   labels:
     app: pihole
   name: pihole-http
-  namespace: pihole
 spec:
   ports:
     - port: 80
@@ -88,7 +87,6 @@ metadata:
   labels:
     app: pihole
   name: pihole-dns
-  namespace: pihole
 spec:
   ports:
     - port: 53
@@ -113,7 +111,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: pihole
-  namespace: pihole
 spec:
   rules:
     - http:
