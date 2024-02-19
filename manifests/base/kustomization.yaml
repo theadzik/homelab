@@ -7,3 +7,4 @@ resources:
   - cert-manager
   - vaultwarden
   - static-cv
+  - kube-prometheus-stack
