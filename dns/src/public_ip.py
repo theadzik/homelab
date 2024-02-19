@@ -20,7 +20,7 @@ class PublicIP:
     def save_public_ip(self, public_ip: str) -> None:
         log_path = self.config["ip_history_path"]
         with open(log_path, "a") as ip_log:
-            ip_log.write(public_ip)
+            ip_log.write("\n" + public_ip)  # The IP address has to be in the last line of the file
 
     def get_previous_public_ip(self) -> str:
         log_path = self.config["ip_history_path"]

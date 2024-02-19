@@ -3,64 +3,81 @@ import logging
 
 import requests
 
-BASE_URL = "https://www.spaceship.com"
-LOGIN_API = "/connect/token"
-UPDATE_API = "/gateway/api/v1/advanceddnsbff/dnsrecords/bulkUpdate"
 
+class HandlerDNS:
+    def __init__(self, template_path: str, secrets: dict, config: dict):
+        self.base_url = "https://www.spaceship.com"
+        self.template_path = template_path
+        self.config = config
+        self.secrets = secrets
+        self.cookies = self.get_cookies()
+        self.headers = self.get_headers()
 
-def get_payload(template_path: str, public_ip: str, record_id: str) -> dict:
-    with open(template_path, "r") as payload_template:
-        payload = json.load(payload_template)
+    def get_payload(self, public_ip: str, record_id: str) -> dict:
+        with open(self.template_path, "r") as payload_template:
+            payload = json.load(payload_template)
 
-    payload["recordsToUpdate"][record_id]["address"] = public_ip
-    logging.debug(f"Generated payload={payload}")
-    return payload
+        payload["recordsToUpdate"][record_id]["address"] = public_ip
+        logging.debug(f"Generated payload={payload}")
+        return payload
 
+    def get_cookies(self) -> dict:
+        cookies = {
+            "z-account-deviceid": self.secrets['device_token'],
+        }
+        return cookies
 
-def get_dns_token(username: str, password: str, device_token: str) -> str:
-    params = {
-        "client_id": "spaceship",
-        "grant_type": "password",
-        "username": username,
-        "password": password,
-    }
+    def get_headers(self) -> dict:
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {self.get_dns_token()}",
+        }
+        return headers
 
-    cookies = {
-        "z-account-deviceid": device_token,
-    }
+    def get_dns_token(self) -> str:
+        login_api = "/connect/token"
 
-    login_response = requests.request(method="POST", url=BASE_URL + LOGIN_API, data=params, cookies=cookies)
-    if login_response.ok:
-        bearer_token = json.loads(login_response.text)["access_token"]
-        logging.debug("Got bearer token")
-        return bearer_token
-    else:
-        logging.error(f"Failed to get bearer token. Status code {login_response.status_code}, Response: {login_response.text}")
+        params = {
+            "client_id": "spaceship",
+            "grant_type": "password",
+            "username": self.secrets['username'],
+            "password": self.secrets['password'],
+        }
 
-
-def update_dns_entry(bearer_token: str, device_token: str, payload: dict):
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {bearer_token}",
-    }
-
-    cookies = {
-        "z-account-deviceid": device_token,
-    }
-
-    update = requests.request(
+        login_response = requests.request(
             method="POST",
-            url=BASE_URL + UPDATE_API,
-            headers=headers,
-            json=payload,
-            cookies=cookies,
+            url=self.base_url + login_api,
+            data=params,
+            cookies=self.cookies
         )
 
-    try:
-        update.raise_for_status()
-    except Exception as e:
-        logging.error(f"Failed to update dns. Status code {update.status_code}, Response: {update.text}")
-        raise e
+        try:
+            login_response.raise_for_status()
+            bearer_token = json.loads(login_response.text)["access_token"]
+            logging.debug("Got bearer token")
+            return bearer_token
+        except Exception as e:
+            logging.error(
+                f"Failed to get bearer token. "
+                f"Status code {login_response.status_code}, Response: {login_response.text}"
+            )
+            raise e
 
-    logging.debug(f"Updated DNS. Status code {update.status_code}, Response: {update.text}")
-    return update.json()
+    def update_dns_entry(self, payload: dict):
+        update_api = "/gateway/api/v1/advanceddnsbff/dnsrecords/bulkUpdate"
+        update = requests.request(
+            method="POST",
+            url=self.base_url + update_api,
+            headers=self.headers,
+            json=payload,
+            cookies=self.cookies,
+        )
+
+        try:
+            update.raise_for_status()
+        except Exception as e:
+            logging.error(f"Failed to update dns. Status code {update.status_code}, Response: {update.text}")
+            raise e
+
+        logging.debug(f"Updated DNS. Status code {update.status_code}, Response: {update.text}")
+        return update.json()
