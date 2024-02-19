@@ -10,6 +10,21 @@ spec:
         spec:
           containers:
           - name: updater
-            image: theadzik/dnsupdater:1.0
+            image: theadzik/dnsupdater:1.1.0
             imagePullPolicy: IfNotPresent
+            volumeMounts:
+              - mountPath: /config
+                name: config
+                readOnly: true
+              - mountPath: /logs
+                name: logs
+          volumes:
+            - name: config
+              hostPath:
+                path: /home/adzik/git/homelab/dns/config
+                type: Directory
+            - name: logs
+              hostPath:
+                path: /home/adzik/logs
+                type: Directory
           restartPolicy: Never
