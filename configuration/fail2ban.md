@@ -40,3 +40,4 @@
 ## Check status
 
 * `sudo fail2ban-client status sshd`
+* `sudo fail2ban-client get sshd banip --with-time`
