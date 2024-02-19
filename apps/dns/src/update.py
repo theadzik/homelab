@@ -3,9 +3,8 @@ import time
 from os import environ
 
 import public_ip
-from graceful_shutdown import GracefulKiller
-
 from dns import HandlerDNS
+from graceful_shutdown import GracefulKiller
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)s: %(message)s',
