@@ -5,6 +5,9 @@ metadata:
   namespace: kube-system
 spec:
   valuesContent: |-
+    deployment:
+      podLabels:
+        type: ingress
     logs:
       access:
         enabled: true

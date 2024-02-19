@@ -7,7 +7,7 @@ My playground :)
 
 ## TODO
 
-* Network policies
+* vaultwarden
 * Build and host some website (cv?)
 * pre-commit hooks (yamllint, isort, flake8)
 * CI/CD (GH Actions + ArgoCD?)
