@@ -1,9 +1,16 @@
-FROM --platform="linux/arm64" python:3.10-alpine
+FROM --platform="linux/arm64" python:3.12-alpine
+
+RUN apk upgrade --no-cache
+
+RUN addgroup --gid 20001 --system nonroot && \
+    adduser --uid 10001 --system --ingroup nonroot --disabled-password --no-create-home --gecos "" nonroot
 
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
-COPY src src
+COPY --chown=nonroot:nonroot src src
+
+USER nonroot:nonroot
 
 WORKDIR src
 ENTRYPOINT ["python", "update.py"]
