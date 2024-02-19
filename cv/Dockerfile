@@ -8,6 +8,6 @@ WORKDIR app
 RUN bundle install && \
     bundle exec jekyll build
 
-FROM nginxinc/nginx-unprivileged:1.25
+FROM nginxinc/nginx-unprivileged:alpine-slim
 
 COPY --from=builder "/app/_site" /usr/share/nginx/html
