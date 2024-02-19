@@ -1,6 +1,7 @@
 #!/bin/sh
 # https://github.com/dani-garcia/vaultwarden/wiki/Backing-up-your-vault
 
+set -e
 BACKUP_FILE="vaultwarden-$(date "+%F--%H%M")"
 
 sqlite3 /data/db.sqlite3 ".backup '/tmp/db.sqlite3'"

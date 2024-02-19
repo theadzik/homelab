@@ -3,7 +3,7 @@
 1. Schedule vaultwarden.sh (using cronjob in k8s)
 2. Install `rclone` on rpi
 3. Add `gdrive` drive with `rclone config`
-4. Run `crontab -e` on rpi and add `5 */6 * * * /home/adzik/git/homelab/gdrive-upload.sh &>> /var/log/cron.log`
+4. Run `crontab -e` on rpi and add `5 */6 * * * /home/adzik/git/homelab/backup/gdrive-upload.sh`
 
 ## Restore
 

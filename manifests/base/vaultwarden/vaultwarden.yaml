@@ -75,6 +75,10 @@ spec:
           volumeMounts:
             - mountPath: /data
               name: data
+      securityContext:
+        runAsUser: 10001
+        runAsGroup: 20001
+        fsGroup: 20001
       volumes:
         - name: data
           hostPath:
