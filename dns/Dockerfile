@@ -12,5 +12,4 @@ COPY --chown=nonroot:nonroot src src
 
 USER nonroot:nonroot
 
-WORKDIR src
-ENTRYPOINT ["python", "update.py"]
+ENTRYPOINT ["python", "src/update.py"]
