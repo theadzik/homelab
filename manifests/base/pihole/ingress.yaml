@@ -30,7 +30,7 @@ kind: Ingress
 metadata:
   name: pihole-redirect-http
   annotations:
-    traefik.ingress.kubernetes.io/router.middlewares: redirect-to-https@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: pihole-redirect-to-https@kubernetescrd # <namespace>-<middleware_name>@kubernetescrd
     traefik.ingress.kubernetes.io/router.entrypoints: web
 spec:
   rules:
@@ -54,3 +54,4 @@ metadata:
 spec:
   redirectScheme:
     scheme: https
+    permanent: true
