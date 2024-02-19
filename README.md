@@ -23,7 +23,8 @@ A full automation for provisioning k3s cluster.
 ### Roles copied from other repositories
 
 Roles `k3s_agent`, `k3s_server`, `k3s_upgrade`, `prereq`, and `raspberry`
-were copied from [k3s-ansible](https://github.com/k3s-io/k3s-ansible) repo.
+were copied from [k3s-ansible](https://github.com/k3s-io/k3s-ansible).
+Contributors listed in this repository are authors of commits in k3s-ansible repo.
 
 ## `/apps`
 
