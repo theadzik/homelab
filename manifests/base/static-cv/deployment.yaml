@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: theadzik/static-cv:0.5.1
+          image: theadzik/static-cv:0.5.2
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
