@@ -38,7 +38,7 @@ def save_public_ip(public_ip: str) -> None:
     log_path = environ["IP_HISTORY_PATH"]
     with open(log_path, "a") as ip_log:
         ip_log.write(public_ip + "\n")
-    logging.debug("Saved new public IP to file")
+    logging.info(f"Saved {public_ip} IP to the history file")
 
 
 def get_previous_public_ip() -> str:
