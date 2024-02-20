@@ -1,6 +1,6 @@
 ---
 local_data_base_directory: /mnt/kubernetes-disks
-local_data_permissions: 0770
+local_data_permissions: 02770
 local_data_directories:
   - name: vaultwarden/main
     uid: 10001
