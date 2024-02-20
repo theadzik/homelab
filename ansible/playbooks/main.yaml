@@ -30,8 +30,6 @@
 - name: Setup K3S server.
   hosts: server
   become: true
-  vars:
-    kubeconfig: ~/.kube/config
   roles:
     - role: k3s_server
 

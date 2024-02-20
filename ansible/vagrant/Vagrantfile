@@ -32,7 +32,8 @@ def provision(vm, role, node_num)
       # Required to use the private network configured above
       extra_server_args: "--node-external-ip #{node_ip} --flannel-iface eth1",
       extra_agent_args: "--node-external-ip #{node_ip} --flannel-iface eth1",
-      user_kubectl: "adzik"
+      user_kubectl: "adzik",
+      kubeconfig: "~/.kube/config-vagrant"
       # Optional, left as reference for ruby-ansible syntax
       # extra_service_envs: [ "NO_PROXY='localhost'" ],
       # server_config_yaml: <<~YAML
