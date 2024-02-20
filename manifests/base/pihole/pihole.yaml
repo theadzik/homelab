@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: pihole
   labels:
@@ -28,7 +28,7 @@ spec:
             - containerPort: 80
               protocol: "TCP"
           securityContext:
-            allowPrivilegeEscalation: false
+            allowPrivilegeEscalation: true
             capabilities:
               add:
                 - NET_ADMIN
@@ -48,16 +48,34 @@ spec:
                 secretKeyRef:
                   name: web-password
                   key: WEBPASSWORD
+            - name: PIHOLE_UID
+              value: "10004"
+            - name: PIHOLE_GID
+              value: "20004"
           volumeMounts:
             - mountPath: /etc/pihole
               name: pihole-main
             - mountPath: /etc/dnsmasq.d
-              name: pihole-dnsmasq
-      volumes:
-        - name: pihole-main
-          emptyDir: {}
-        - name: pihole-dnsmasq
-          emptyDir: {}
+              name: pihole-dnsmasqd
+  volumeClaimTemplates:
+    - metadata:
+        name: pihole-main
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: "local-storage"
+        volumeName: pihole-main
+        resources:
+          requests:
+            storage: 128Mi
+    - metadata:
+        name: pihole-dnsmasqd
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: "local-storage"
+        volumeName: pihole-dnsmasqd
+        resources:
+          requests:
+            storage: 128Mi
 
 ---
 

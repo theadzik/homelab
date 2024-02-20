@@ -7,7 +7,21 @@
     - raspberrypi
     - fail2ban
     - ssh_hardening
-    - vaultwarden
+    - role: vaultwarden
+      vars:
+        local_data_directories:
+          - name: vaultwarden/main
+            uid: 10001
+            gid: 20001
+          - name: vaultwarden/backup
+            uid: 10001
+            gid: 20001
+          - name: pihole/main
+            uid: 10004
+            gid: 20004
+          - name: pihole/dnsmasq.d
+            uid: 10004
+            gid: 20004
 
   pre_tasks:
     - name: Load variable files.

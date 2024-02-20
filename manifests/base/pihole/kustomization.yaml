@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: pihole
 resources:
   - namespace.yaml
+  - pv.yaml
   - secret.yaml
   - ingress.yaml
   - nwp.yaml
