@@ -28,7 +28,7 @@ spec:
             - containerPort: 80
               protocol: "TCP"
           securityContext:
-            allowPrivilegeEscalation: false
+            allowPrivilegeEscalation: true
             capabilities:
               add:
                 - NET_ADMIN
