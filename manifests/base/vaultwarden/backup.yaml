@@ -41,13 +41,11 @@ spec:
             fsGroup: 20001
           volumes:
             - name: data
-              hostPath:
-                path: /mnt/kubernetes-disks/vaultwarden/main
-                type: Directory
+              persistentVolumeClaim:
+                claimName: vaultwarden-main-cronjob
             - name: backup
-              hostPath:
-                path: /mnt/kubernetes-disks/vaultwarden/backup
-                type: Directory
+              persistentVolumeClaim:
+                claimName: vaultwarden-backup-cronjob
             - name: rclone-conf
               secret:
                 secretName: rclone-secret
