@@ -53,20 +53,6 @@
     mode: "0660"
     force: false
 
-- name: Copy rclone backup script.
-  ansible.builtin.template:
-    src: "./files/rclone-cronjob.j2"
-    dest: "{{ vaultwarden_backup_cronjob_path }}"
-    mode: "0774"
-
-- name: Ensure backup cronjob exists.
-  ansible.builtin.cron:
-    name: "vaultwarden-backup"
-    minute: "5"
-    hour: "*/6"
-    user: "root"
-    job: "{{ vaultwarden_backup_cronjob_path }} >> {{ vaultwarden_backup_cronjob_log }} 2>&1"
-
 - name: Check if vaultwarden data exists.
   ansible.builtin.stat:
     path: "{{ vaultwarden_data_path }}/db.sqlite3"
