@@ -42,10 +42,10 @@ spec:
           volumes:
             - name: data
               persistentVolumeClaim:
-                claimName: vaultwarden-main-cronjob
+                claimName: vaultwarden-main
             - name: backup
               persistentVolumeClaim:
-                claimName: vaultwarden-backup-cronjob
+                claimName: vaultwarden-backup
             - name: rclone-conf
               secret:
                 secretName: rclone-secret

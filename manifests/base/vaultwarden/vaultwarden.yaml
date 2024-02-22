@@ -74,21 +74,15 @@ spec:
                   key: SMTP_PASSWORD
           volumeMounts:
             - mountPath: /data
-              name: vaultwarden-main
+              name: data
       securityContext:
         runAsUser: 10001
         runAsGroup: 20001
         fsGroup: 20001
-  volumeClaimTemplates:
-    - metadata:
-        name: vaultwarden-main
-      spec:
-        accessModes: ["ReadWriteMany"]
-        storageClassName: "local-storage"
-        volumeName: vaultwarden-main
-        resources:
-          requests:
-            storage: 128Mi
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: vaultwarden-main
 
 ---
 

@@ -53,8 +53,13 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: vaultwarden-main-cronjob
+  name: vaultwarden-main
 spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 128Mi
   storageClassName: "local-storage"
   volumeName: vaultwarden-main
 
@@ -63,7 +68,12 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: vaultwarden-backup-cronjob
+  name: vaultwarden-backup
 spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 128Mi
   storageClassName: "local-storage"
   volumeName: vaultwarden-backup
