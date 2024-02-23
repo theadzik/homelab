@@ -7,7 +7,7 @@
     - raspberrypi
     - fail2ban
     - ssh_hardening
-    - role: vaultwarden
+    - role: local_storage
       vars:
         local_data_directories:
           - name: vaultwarden/main
