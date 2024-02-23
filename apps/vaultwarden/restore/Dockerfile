@@ -1,7 +1,6 @@
 FROM alpine:3.19
 
 RUN apk add --no-cache --upgrade \
-    sqlite \
     bash \
     openssl \
     rclone
@@ -9,6 +8,6 @@ RUN apk add --no-cache --upgrade \
 RUN addgroup --gid 20001 --system vaultwarden && \
     adduser --uid 10001 --system --ingroup vaultwarden --disabled-password --gecos "" vaultwarden
 
-COPY --chown=vaultwarden:vaultwarden --chmod=774 backup.sh backup.sh
+COPY --chown=vaultwarden:vaultwarden --chmod=774 restore.sh restore.sh
 USER vaultwarden:vaultwarden
-ENTRYPOINT ["/backup.sh"]
+ENTRYPOINT ["/restore.sh"]

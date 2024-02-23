@@ -14,6 +14,26 @@ spec:
       labels:
         app: vaultwarden
     spec:
+      initContainers:
+        - name: restore
+          image: theadzik/vw-restore:0.0.1
+          imagePullPolicy: Always
+          volumeMounts:
+            - mountPath: /home/vaultwarden
+              name: rclone-conf
+            - mountPath: /data
+              name: data
+            - mountPath: /tmp
+              name: tmp
+          env:
+            - name: BACKUP_ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: vw-config
+                  key: BACKUP_ENCRYPTION_KEY
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
       containers:
         - name: vaultwarden
           image: vaultwarden/server:latest
@@ -83,6 +103,11 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: vaultwarden-main
+        - name: rclone-conf
+          secret:
+            secretName: rclone-secret
+        - name: tmp
+          emptyDir: {}
 
 ---
 
