@@ -16,7 +16,7 @@ spec:
     spec:
       initContainers:
         - name: restore
-          image: theadzik/vw-restore:0.0.1
+          image: theadzik/vw-restore:2024.02.1
           imagePullPolicy: Always
           volumeMounts:
             - mountPath: /home/vaultwarden
