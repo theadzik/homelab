@@ -1,5 +1,0 @@
-#!/bin/bash
-
-set -e
-/usr/local/bin/rclone move -v {{ vaultwarden_backup_path }} gdrive:backup
-echo "$(date "+%F-%H:%M:%S") Files uploaded"

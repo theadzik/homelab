@@ -14,11 +14,13 @@ spec:
         spec:
           containers:
             - name: backup
-              image: theadzik/vw-backup:0.2.5
+              image: theadzik/vw-backup:2024.02.1
               imagePullPolicy: Always
               volumeMounts:
                 - mountPath: /backup
                   name: backup
+                - mountPath: /home/vaultwarden
+                  name: rclone-conf
                 - mountPath: /data
                   name: data
                   readOnly: true
@@ -39,13 +41,14 @@ spec:
             fsGroup: 20001
           volumes:
             - name: data
-              hostPath:
-                path: /mnt/kubernetes-disks/vaultwarden/main
-                type: Directory
+              persistentVolumeClaim:
+                claimName: vaultwarden-main
             - name: backup
-              hostPath:
-                path: /mnt/kubernetes-disks/vaultwarden/backup
-                type: Directory
+              persistentVolumeClaim:
+                claimName: vaultwarden-backup
+            - name: rclone-conf
+              secret:
+                secretName: rclone-secret
             - name: tmp
               emptyDir: {}
           restartPolicy: Never

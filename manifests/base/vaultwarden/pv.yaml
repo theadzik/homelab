@@ -6,6 +6,7 @@ metadata:
     type: local
 spec:
   storageClassName: local-storage
+  persistentVolumeReclaimPolicy: Retain
   capacity:
     storage: 128Mi
   accessModes:
@@ -31,6 +32,7 @@ metadata:
     type: local
 spec:
   storageClassName: local-storage
+  persistentVolumeReclaimPolicy: Retain
   capacity:
     storage: 128Mi
   accessModes:
@@ -45,3 +47,33 @@ spec:
                 - server-1
   local:
     path: "/mnt/kubernetes-disks/vaultwarden/backup"
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: vaultwarden-main
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 128Mi
+  storageClassName: "local-storage"
+  volumeName: vaultwarden-main
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: vaultwarden-backup
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 128Mi
+  storageClassName: "local-storage"
+  volumeName: vaultwarden-backup
