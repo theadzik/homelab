@@ -1,5 +1,6 @@
 #!/bin/sh
 # https://github.com/dani-garcia/vaultwarden/wiki/Backing-up-your-vault
+# https://github.com/rclone/rclone/issues/3655
 
 set -e
 BACKUP_FILE="vaultwarden-$(date "+%F--%H%M")"
