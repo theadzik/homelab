@@ -45,3 +45,33 @@ spec:
                 - server-1
   local:
     path: "/mnt/kubernetes-disks/pihole/dnsmasq.d"
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pihole-main
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 128Mi
+  storageClassName: "local-storage"
+  volumeName: pihole-main
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pihole-dnsmasqd
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 128Mi
+  storageClassName: "local-storage"
+  volumeName: pihole-dnsmasqd
