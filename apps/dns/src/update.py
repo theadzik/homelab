@@ -14,6 +14,9 @@ logging.basicConfig(
 
 if __name__ == '__main__':
     logging.info("Starting listening to Public IP changes")
+    check_only_mode = os.getenv("CHECK_ONLY_MODE", False)  # Setting CHECK_ONLY_MODE to any value is considered as True
+    if check_only_mode:
+        logging.info("CHECK_ONLY_MODE is enabled")
     killer = GracefulKiller()
     while not killer.kill_now:
         current_ip = public_ip.get_public_ip()
@@ -34,11 +37,11 @@ if __name__ == '__main__':
             continue
 
         dns_handler = HandlerDNS(public_ip=current_ip)
-        if os.getenv("CHECK_ONLY_MODE", False):
+        if not check_only_mode:
+            update_success = dns_handler.update_dns_entry()
+        else:
             logging.info("CHECK_ONLY_MODE: Skipping update")
             update_success = True
-        else:
-            update_success = dns_handler.update_dns_entry()
         if update_success:
             public_ip.save_public_ip(public_ip=current_ip)
             time.sleep(600)
