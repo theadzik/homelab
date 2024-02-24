@@ -1,6 +1,6 @@
 import logging
+import os
 import socket
-from os import environ
 
 import requests
 
@@ -35,14 +35,14 @@ def get_public_ip() -> str:
 
 
 def save_public_ip(public_ip: str) -> None:
-    log_path = environ["IP_HISTORY_PATH"]
+    log_path = os.environ["IP_HISTORY_PATH"]
     with open(log_path, "a") as ip_log:
         ip_log.write(public_ip + "\n")
     logging.info(f"Saved {public_ip} IP to the history file")
 
 
 def get_previous_public_ip() -> str:
-    log_path = environ["IP_HISTORY_PATH"]
+    log_path = os.environ["IP_HISTORY_PATH"]
     try:
         with open(log_path, "r") as ip_log:
             previous_ip = list(ip_log)[-1].strip()
