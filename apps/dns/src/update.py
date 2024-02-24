@@ -14,7 +14,7 @@ logging.basicConfig(
 
 if __name__ == '__main__':
     logging.info("Starting listening to Public IP changes")
-    check_only_mode = os.getenv("CHECK_ONLY_MODE", False)  # Setting CHECK_ONLY_MODE to any value is considered as True
+    check_only_mode = "CHECK_ONLY_MODE" in os.environ
     if check_only_mode:
         logging.info("CHECK_ONLY_MODE is enabled")
     killer = GracefulKiller()
