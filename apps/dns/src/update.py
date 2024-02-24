@@ -1,6 +1,6 @@
 import logging
+import os
 import time
-from os import environ
 
 import public_ip
 from dns import HandlerDNS
@@ -9,7 +9,7 @@ from graceful_shutdown import GracefulKiller
 logging.basicConfig(
     format='%(asctime)s %(levelname)s: %(message)s',
     encoding='utf-8',
-    level=environ["LOG_LEVEL"]
+    level=os.environ["LOG_LEVEL"]
 )
 
 if __name__ == '__main__':
@@ -18,7 +18,7 @@ if __name__ == '__main__':
     while not killer.kill_now:
         current_ip = public_ip.get_public_ip()
         previous_ip = public_ip.get_previous_public_ip()
-        resolved_ip = public_ip.resolve_dns(environ["HOSTNAME"])
+        resolved_ip = public_ip.resolve_dns(os.environ["HOSTNAME"])
 
         if current_ip == previous_ip == resolved_ip:
             logging.debug("Nothing to update")
@@ -34,7 +34,11 @@ if __name__ == '__main__':
             continue
 
         dns_handler = HandlerDNS(public_ip=current_ip)
-        update_success = dns_handler.update_dns_entry()
+        if os.getenv("CHECK_ONLY_MODE", False):
+            logging.info("CHECK_ONLY_MODE: Skipping update")
+            update_success = True
+        else:
+            update_success = dns_handler.update_dns_entry()
         if update_success:
             public_ip.save_public_ip(public_ip=current_ip)
             time.sleep(600)
