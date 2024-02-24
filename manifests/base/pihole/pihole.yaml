@@ -57,25 +57,13 @@ spec:
               name: pihole-main
             - mountPath: /etc/dnsmasq.d
               name: pihole-dnsmasqd
-  volumeClaimTemplates:
-    - metadata:
-        name: pihole-main
-      spec:
-        accessModes: ["ReadWriteOnce"]
-        storageClassName: "local-storage"
-        volumeName: pihole-main
-        resources:
-          requests:
-            storage: 128Mi
-    - metadata:
-        name: pihole-dnsmasqd
-      spec:
-        accessModes: ["ReadWriteOnce"]
-        storageClassName: "local-storage"
-        volumeName: pihole-dnsmasqd
-        resources:
-          requests:
-            storage: 128Mi
+      volumes:
+        - name: pihole-main
+          persistentVolumeClaim:
+            claimName: pihole-main
+        - name: pihole-dnsmasqd
+          persistentVolumeClaim:
+            claimName: pihole-dnsmasqd
 
 ---
 
