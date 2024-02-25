@@ -46,6 +46,8 @@
   become: true
   roles:
     - role: k3s_server
+      vars:
+        cluster_name: "home-prod"
 
 - name: Setup K3S agent
   hosts: agent

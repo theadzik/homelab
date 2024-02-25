@@ -13,27 +13,26 @@ A full automation for provisioning k3s cluster.
 * [ssh_hardening](ansible/playbooks/roles/ssh_hardening) -
   Applies more secure ssh configuration from
   [sshaudit.com](https://www.sshaudit.com/hardening_guides.html#debian_12) guide.
-* [vaultwarden](ansible/playbooks/roles/vaultwarden) -
-  Sets up environment required for
-  [vaultwarden](https://github.com/dani-garcia/vaultwarden).
-  It restores data and enables backup scripts.
 * [local_storage](ansible/playbooks/roles/local_storage) - Creates directories
   for persistent local volumes used later by kubernetes.
 
 ### Roles copied from other repositories
 
 Roles `k3s_agent`, `k3s_server`, `k3s_upgrade`, `prereq`, and `raspberry`
-were copied from [k3s-ansible](https://github.com/k3s-io/k3s-ansible).
-Contributors listed in this repository are authors of commits in k3s-ansible repo.
+were originally copied from [k3s-ansible](https://github.com/k3s-io/k3s-ansible).
+I modified code of those roles to fit my needs.
 
 ## `/apps`
 
 Containerized applications:
 
-* `backups` - Running backups for VaultWarden and uploading to Google Drive
+* `vaultwarden` - Backup and restore scripts made for vaultwarden,
+  running as initContainer and CronJob
 * `cv` - My resume built with Jekyll
 * `dns` - Dynamic DNS updater working with `no-ip`
 
 ## `/manifests`
 
-Kubernetes manifests deploying all configuration.
+Kubernetes manifests deploying all resources.
+`dev` overlay is used mostly for vagrant vms, while `prod` runs
+on the raspberry.
