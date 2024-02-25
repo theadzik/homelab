@@ -30,7 +30,7 @@ def provision(vm, role, node_num)
       api_endpoint: "#{NETWORK_PREFIX}.100",
       token: "myvagrant",
       # Required to use the private network configured above
-      extra_server_args: "--node-external-ip #{node_ip} --flannel-iface eth1",
+      extra_server_args: "--node-external-ip #{node_ip} --flannel-iface eth1 --disable=traefik",
       extra_agent_args: "--node-external-ip #{node_ip} --flannel-iface eth1",
       user_kubectl: "adzik",
       kubeconfig: "~/.kube/config",
