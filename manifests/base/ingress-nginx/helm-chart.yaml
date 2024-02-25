@@ -13,3 +13,5 @@ spec:
       enableAnnotationValidations: true
       image:
         chroot: true
+      podLabels:
+        type: ingress
