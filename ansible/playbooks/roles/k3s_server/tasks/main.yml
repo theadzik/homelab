@@ -196,3 +196,9 @@
         path: ~{{ ansible_user }}/.bashrc
         regexp: '\.\s+<\(kubectl completion bash\)'
         line: ". <(kubectl completion bash)  # Added by k3s-ansible"
+
+    - name: Configure k=kubectl alias
+      ansible.builtin.lineinfile:
+        path: ~{{ ansible_user }}/.bashrc
+        regexp: '^alias k='
+        line: 'alias k="kubectl"  # Added by k3s-ansible'
