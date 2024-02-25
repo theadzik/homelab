@@ -5,4 +5,3 @@ resources:
   - namespace.yaml
   - secret.yaml
   - helm-chart.yaml
-  - ingress.yaml
