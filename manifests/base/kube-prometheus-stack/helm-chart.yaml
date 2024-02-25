@@ -19,6 +19,7 @@ spec:
         passwordKey: admin-password
       ingress:
         enabled: true
+        ingressClassName: nginx
         annotations:
           cert-manager.io/cluster-issuer: "lets-encrypt-prod"
         hosts:
