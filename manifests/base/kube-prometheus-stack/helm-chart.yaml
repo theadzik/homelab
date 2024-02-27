@@ -19,10 +19,9 @@ spec:
         passwordKey: admin-password
       ingress:
         enabled: true
+        ingressClassName: nginx
         annotations:
           cert-manager.io/cluster-issuer: "lets-encrypt-prod"
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          traefik.ingress.kubernetes.io/router.tls: "true"
         hosts:
           - dashboards.zmuda.pro
         tls:
