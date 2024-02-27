@@ -1,4 +1,6 @@
 ---
 ansible_downloads_tmp_dir: /var/lib/ansible-downloads
 vaultwarden_force_restore: false
-extra_server_args: "--disable=traefik" # TODO: https://docs.k3s.io/installation/configuration#configuration-file
+server_config_yaml: |
+  disable:
+    - traefik
