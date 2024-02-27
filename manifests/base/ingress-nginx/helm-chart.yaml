@@ -15,3 +15,5 @@ spec:
         chroot: true
       podLabels:
         type: ingress
+      service:
+        externalTrafficPolicy: Local
