@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: vw-backup
 spec:
-  schedule: "0 */6 * * *"
+  schedule: "0 */12 * * *"
   successfulJobsHistoryLimit: 2
   failedJobsHistoryLimit: 4
   concurrencyPolicy: Forbid
@@ -14,8 +14,8 @@ spec:
         spec:
           containers:
             - name: backup
-              image: theadzik/vw-backup:2024.02.1
-              imagePullPolicy: Always
+              image: theadzik/vw-backup:2024.04.1
+              imagePullPolicy: IfNotPresent
               volumeMounts:
                 - mountPath: /backup
                   name: backup
