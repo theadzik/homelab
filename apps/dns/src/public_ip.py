@@ -1,8 +1,11 @@
 import logging
 import os
 import socket
+import time
 
 import requests
+
+MAX_BACKOFF_TIME = 300
 
 
 def get_public_ip() -> str:
@@ -12,7 +15,7 @@ def get_public_ip() -> str:
         "https://ipecho.net/plain",
         "http://ip1.dynupdate.no-ip.com",
     ]
-    for ip_url in remote_ip_detection_hosts:
+    for idx, ip_url in enumerate(remote_ip_detection_hosts):
         logging.debug(f"Requesting IP from {ip_url}")
         try:
             public_ip = requests.request("GET", ip_url)
@@ -25,8 +28,18 @@ def get_public_ip() -> str:
                 f"Status code: {public_ip.status_code}\n"
                 f"Response: {public_ip.text}"
             )
-        except Exception as e:
+        except requests.exceptions.ConnectionError:
             logging.warning(
+                f"Failed do get IP from {ip_url}. No internet connection?"
+            )
+            if idx < len(remote_ip_detection_hosts) - 1:
+                sleep_time = min(MAX_BACKOFF_TIME, 10 ** (idx + 1))  # 10, 100, 300, 300...
+                logging.debug(
+                    f"Waiting for {sleep_time} seconds."
+                )
+                time.sleep(sleep_time)
+        except Exception as e:
+            logging.error(
                 f"Failed do get IP from {ip_url}.\n"
                 f"{e}"
             )
