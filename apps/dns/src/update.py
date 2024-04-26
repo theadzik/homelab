@@ -9,7 +9,7 @@ from graceful_shutdown import GracefulKiller
 logging.basicConfig(
     format='%(asctime)s %(levelname)s: %(message)s',
     encoding='utf-8',
-    level=os.environ["LOG_LEVEL"]
+    level=os.getenv("LOG_LEVEL", logging.WARNING)
 )
 
 if __name__ == '__main__':
