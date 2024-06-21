@@ -14,8 +14,8 @@ spec:
         spec:
           containers:
             - name: backup
-              image: theadzik/vw-backup:2024.04.1
-              imagePullPolicy: IfNotPresent
+              image: theadzik/vw-backup:2024.06.1
+              imagePullPolicy: Always
               volumeMounts:
                 - mountPath: /backup
                   name: backup
