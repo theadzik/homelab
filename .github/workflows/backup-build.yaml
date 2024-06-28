@@ -1,4 +1,4 @@
-name: vw-build
+name: vw-backup-build
 on:
   push:
     tags:

@@ -1,4 +1,4 @@
-name: vw-build
+name: vw-restore-build
 on:
   push:
     tags:
