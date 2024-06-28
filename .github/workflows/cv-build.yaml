@@ -24,4 +24,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           context: "{{defaultContext}}:apps/cv"
           push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/static-cv:2024.05.1
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/static-cv:2024.06.1
