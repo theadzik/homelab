@@ -44,11 +44,17 @@ content:
         caption: August 2023 - present
         link: https://orsted.com/
         description: |
-          * Implementing improvements in the CI/CD process for building and upgrading clusters to assure zero-downtime operations.
-          * Optimize the cost efficiency of running workloads by implementing strategic measures and ensuring secure and reliable operations.
-          * Collaborate with product teams, providing guidance on best practices for containerized applications.
-          * Contributing to shared Terraform modules used across the company, introducing new features and addressing bugs to improve overall infrastructure efficiency.
-          * Performing day-to-day cluster administrative and operational tasks, ensuring the efficient and reliable functioning of the infrastructure.
+          * Implementing improvements in the CI/CD process for building
+             and upgrading clusters to assure zero-downtime operations.
+          * Optimize the cost efficiency of running workloads by implementing strategic measures
+             and ensuring secure and reliable operations.
+          * Collaborate with product teams, providing guidance on good practices and architecture
+             for containerized applications.
+          * Preparing and running upskill sessions about Kubernetes for product teams.
+          * Contributing to shared Terraform modules used across the company,
+             introducing new features and addressing bugs to improve overall infrastructure efficiency.
+          * Performing day-to-day cluster administrative and operational tasks,
+             ensuring the efficient and reliable functioning of the infrastructure.
       - layout: left
         title: DNV
         sub_title: Senior DevOps Engineer
