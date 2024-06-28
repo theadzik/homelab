@@ -2,7 +2,7 @@ name: vw-backup-build
 on:
   push:
     tags:
-      - "vw-backup-[0-9]+.[0-9]+.[0-9]+"
+      - "vw-backup-*"
 #  schedule:
 #    - cron: "0 10 * * 6"
   workflow_dispatch:
