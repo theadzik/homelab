@@ -1,0 +1,36 @@
+name: vw-build
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "apps/vaultwarden/**"
+      - "!apps/vaultwarden/README.md"
+  schedule:
+    - cron: "0 10 * * 6"
+  workflow_dispatch:
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Backup - Build and push
+        uses: docker/build-push-action@v6
+        with:
+          platforms: "linux/amd64,linux/arm64"
+          context: "{{defaultContext}}:apps/vaultwarden/backup"
+          push: true
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/vw-backup:2024.06.1
+      - name: Restore - Build and push
+        uses: docker/build-push-action@v6
+        with:
+          platforms: "linux/amd64,linux/arm64"
+          context: "{{defaultContext}}:apps/vaultwarden/restore"
+          push: true
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/vw-restore:2024.06.1
