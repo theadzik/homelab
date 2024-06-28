@@ -1,18 +1,18 @@
-name: dns-updater-build
+name: vw-build
 on:
   push:
     tags:
-      - 'dnsupdater-[0-9]{4}.[0-9]{2}.[0-9]+'
+      - 'vw-backup-[0-9]{4}.[0-9]{2}.[0-9]+'
 #  schedule:
 #    - cron: "0 10 * * 6"
   workflow_dispatch:
 jobs:
-  docker:
+  backup-build:
     runs-on: ubuntu-latest
     steps:
       - name: Get image tag
         id: vars
-        run: echo "docker_tag=$(echo ${GITHUB_REF} | cut -d'-' -f2)" >> $GITHUB_OUTPUT
+        run: echo "docker_tag=$(echo ${GITHUB_REF} | cut -d'-' -f3)" >> $GITHUB_OUTPUT
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Login to Docker Hub
@@ -20,10 +20,10 @@ jobs:
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push
+      - name: Backup - Build and push
         uses: docker/build-push-action@v6
         with:
           platforms: "linux/amd64,linux/arm64"
-          context: "{{defaultContext}}:apps/dns"
+          context: "{{defaultContext}}:apps/vaultwarden/backup"
           push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/dnsupdater:${{steps.vars.outputs.docker_tag }}
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/vw-backup:${{steps.vars.outputs.docker_tag }}
