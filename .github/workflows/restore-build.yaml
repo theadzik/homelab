@@ -2,7 +2,7 @@ name: vw-restore-build
 on:
   push:
     tags:
-      - 'vw-restore-[0-9]{4}.[0-9]{2}.[0-9]+'
+      - 'vw-restore-[0-9]+.[0-9]+.[0-9]+'
 #  schedule:
 #    - cron: "0 10 * * 6"
   workflow_dispatch:
