@@ -2,7 +2,11 @@ name: cv-build
 on:
   push:
     tags:
-      - "refs/tags/static-cv-[0-9]+.[0-9]+.[0-9]+"
+      # - "**static-cv-[0-9]+.[0-9]+.[0-9]+"
+      # - "**static-cv-[0-9]+.[0-9]+.[0-9]+*"
+      #- "**static-cv**"
+      # - "static*"
+      - "static-cv-*"
 #  schedule:
 #    - cron: "0 10 * * 6"
   workflow_dispatch:
