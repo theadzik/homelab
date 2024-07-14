@@ -1,7 +1,7 @@
 ---
 title: Adres
-feature_image: "../assets/images/solniczki.jpg"
-image: "../assets/images/solniczki.jpg"
+feature_image: "/assets/images/solniczki.jpg"
+image: "/assets/images/solniczki.jpg"
 ---
 
 <p style='text-align: center'>Ślub odbędzie się w Urzędzie Stanu Cywilnego w Gdyni. <br/>

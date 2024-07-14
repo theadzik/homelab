@@ -22,10 +22,10 @@ plugins:
   - fastimage
 
 # Site settings
-url: "https://zmuda.pro/slub"
+url: "localhost:4000"
 baseurl: ""
 title: "Ślub Karoliny i Adama"
-image: "../assets/images/sweden-aperol.jpg"
+image: "./assets/images/fontanna.jpg"
 description: "Kilka informacji"
 permalink: pretty
 #logo: "/assets/logos/white_icon.svg" # Site logo, also used in jekyll-seo-tag

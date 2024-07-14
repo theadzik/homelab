@@ -1,8 +1,8 @@
 ---
 title: Ślub Karoliny i Adama
 description: 💍 Sobota 21-go Września 2024
-image: "../assets/images/fontanna.jpg"
-feature_image: "../assets/images/fontanna.jpg"
+image: "/assets/images/fontanna.jpg"
+feature_image: "/assets/images/fontanna.jpg"
 feature_text: |
   <h1 style="color: #000"> Karolina i Adam </h1>
 ---
