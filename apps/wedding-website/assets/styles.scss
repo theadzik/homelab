@@ -1,0 +1,124 @@
+---
+title: false
+styles: true
+---
+
+// Background colours
+$backgroundColour: #FAF9F6 !default;
+$codeBackgroundColour: #fafafa !default;
+$featureBackgroundColour: #f9fafa !default;
+$accentColour: #306090 !default;
+
+// Text colours
+$headingColour: #242e2b !default;
+$bodyColour: #384743 !default;
+$linkColour: #306090 !default;
+$hoverColour: #304878 !default;
+$focusColour: #a8adac !default;
+$captionColour: #a8adac !default;
+$white: #ffffff !default;
+
+//Choosing the fonts
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,300;0,400;1,300;1,400');
+$headingtype: (font-family: '"Josefin Sans", sans-serif',
+  regular: 300,
+  bold: 300,
+  cap-height: 0.5) !default;
+
+$bodytype: (font-family: '"Josefin Sans", sans-serif',
+  regular: 300,
+  bold: 400,
+  italic: italic,
+  cap-height: 0.5) !default;
+
+
+
+@import "sassline-base";
+
+:root {
+  font-size: 70%; // 0px                    ~ Mobile first
+
+  @include breakpoint(break-1) {
+    // 640px   ~ Small tablet up
+    font-size: 70%;
+  }
+
+  @include breakpoint(break-2) {
+    // 800px   ~ Large tablet up
+    font-size: 80%;
+  }
+
+  @include breakpoint(break-3) {
+    // 1024px  ~ Desktop up
+    font-size: 90%;
+  }
+
+  @include breakpoint(break-4) {
+    // 1600px  ~ Large desktop up
+    font-size: 100%;
+  }
+}
+
+
+
+//Need to include this before styling the nav
+@mixin justify-content($value: flex-start) {
+  @if $value==flex-start {
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+  }
+
+  @else if $value==flex-end {
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+  }
+
+  @else if $value==space-between {
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+  }
+
+  @else if $value==space-around {
+    -ms-flex-pack: distribute;
+  }
+
+  @else {
+    -webkit-box-pack: $value;
+    -ms-flex-pack: $value;
+  }
+
+  -webkit-justify-content: $value !important;
+  -moz-justify-content: $value !important;
+  justify-content: $value !important;
+}
+
+
+
+//Nav styling
+.header {
+  .nav {
+    text-align: center !important;
+  }
+
+  .container {
+    @include justify-content(center);
+  }
+}
+
+.header .nav {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center !important;
+  justify-content: center;
+  overflow: hidden;
+}
+
+//Feature Styling
+.feature {
+  color: #FFFFFF !important;
+}
+
+
+
+
+@import "alembic";

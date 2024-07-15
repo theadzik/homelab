@@ -1,0 +1,65 @@
+# Set theme
+theme: alembic-jekyll-theme
+
+# File excludes
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - netlify.toml
+
+# Set plugins
+plugins:
+  - jekyll-sitemap
+  - jekyll-mentions
+  - jekyll-paginate
+  - jekyll-seo-tag
+  - jekyll-redirect-from
+  - jekyll-feed
+  - jekyll-commonmark
+  - jekyll-include-cache
+  - jemoji
+  - fastimage
+
+# Site settings
+url: "zmuda.pro/slub"
+baseurl: ""
+title: "Ślub Karoliny i Adama"
+image: "./assets/images/fontanna.jpg"
+description: "Kilka informacji"
+permalink: pretty
+#logo: "/assets/logos/white_icon.svg" # Site logo, also used in jekyll-seo-tag
+
+# Header nav
+navigation_header:
+  - title: Strona główna
+    url: /
+  - title: Adres
+    url: /adres/
+  - title: Prezenty
+    url: /prezenty/
+
+
+# Footer nav
+navigation_footer:
+  - title: Wróć na górę
+    url: "#top"
+
+# Collection settings
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: post # Set the default layout for posts
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: page # Set the default layout for pages
+
+fonts:
+  preconnect_urls:
+    - https://fonts.gstatic.com
+  font_urls:
+    - https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,300;0,400;1,300;1,400

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wedding-website
+  labels:
+    app: wedding-website
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wedding-website
+  template:
+    metadata:
+      labels:
+        app: wedding-website
+    spec:
+      containers:
+        - name: nginx
+          image: theadzik/wedding-website:2024.07.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: "TCP"
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+      securityContext:
+        runAsUser: 10003
+        runAsGroup: 20003
+        fsGroup: 20003
+      volumes:
+        - name: tmp
+          emptyDir: {}
