@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wedding-website
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt-prod"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - zmuda.pro
+      secretName: wedding-website-tls
+  rules:
+    - host: zmuda.pro
+      http:
+        paths:
+          - path: /slub
+            pathType: Prefix
+            backend:
+              service:
+                name: wedding-website-http
+                port:
+                  number: 8080
