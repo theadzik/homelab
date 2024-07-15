@@ -1,7 +1,7 @@
 ---
 title: Adres
-feature_image: "/assets/images/solniczki.jpg"
-image: "/assets/images/solniczki.jpg"
+feature_image: "/slub/assets/images/solniczki.jpg"
+image: "/slub/assets/images/solniczki.jpg"
 ---
 
 <p style='text-align: center'>
@@ -20,5 +20,5 @@ image: "/assets/images/solniczki.jpg"
 </p>
 
 <p style='text-align: right'>
-{% include button.html text="<b>Prezenty »</b>" link="../prezenty"%}
+{% include button.html text="<b>Prezenty »</b>" link="/slub/prezenty"%}
 </p>

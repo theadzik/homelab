@@ -1,7 +1,7 @@
 ---
 title: Prezenty
-feature_image: "/assets/images/wzgorze.jpg"
-image: "/assets/images/wzgorze.jpg"
+feature_image: "/slub/assets/images/wzgorze.jpg"
+image: "/slub/assets/images/wzgorze.jpg"
 ---
 
 <p style='text-align: center'>
