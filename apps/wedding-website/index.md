@@ -13,5 +13,5 @@ w Urzędzie Stanu Cywilnego w Gdyni.
 </p>
 
 <p style='text-align: right'>
-{% include button.html text="<b>Adres »</b>" link="/slub/adres" %}
+{% include button.html text="<b>Adres »</b>" link="/slub/adres/" %}
 </p>

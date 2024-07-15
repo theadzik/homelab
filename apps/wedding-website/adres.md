@@ -20,5 +20,5 @@ image: "/slub/assets/images/solniczki.jpg"
 </p>
 
 <p style='text-align: right'>
-{% include button.html text="<b>Prezenty »</b>" link="/slub/prezenty"%}
+{% include button.html text="<b>Prezenty »</b>" link="/slub/prezenty/"%}
 </p>
