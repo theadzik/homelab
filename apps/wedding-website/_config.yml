@@ -22,7 +22,7 @@ plugins:
   - fastimage
 
 # Site settings
-url: "localhost:4000"
+url: "zmuda.pro/slub"
 baseurl: ""
 title: "Ślub Karoliny i Adama"
 image: "./assets/images/fontanna.jpg"
