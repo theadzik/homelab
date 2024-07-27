@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: theadzik/wedding-website:2024.07.1
+          image: theadzik/wedding-website:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

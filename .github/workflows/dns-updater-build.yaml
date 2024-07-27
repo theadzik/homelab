@@ -28,4 +28,6 @@ jobs:
           build-args: |
             APP_VERSION=${{steps.vars.outputs.docker_tag }}
           push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/dnsupdater:${{steps.vars.outputs.docker_tag }}
+          tags: |
+            ${{ vars.DOCKERHUB_USERNAME }}/dnsupdater:${{steps.vars.outputs.docker_tag }}
+            ${{ vars.DOCKERHUB_USERNAME }}/dnsupdater:latest
