@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: updater
-          image: theadzik/dnsupdater:2024.06.1
+          image: theadzik/dnsupdater:latest
           imagePullPolicy: Always
           envFrom:
             - secretRef:
