@@ -3,7 +3,9 @@ kind: NetworkPolicy
 metadata:
   name: vaultwarden-nwp
 spec:
-  podSelector: {}
+  podSelector:
+    matchLabels:
+      ingress: exposed
   policyTypes:
     - Ingress
   ingress:
@@ -14,3 +16,14 @@ spec:
         - podSelector:
             matchLabels:
               type: ingress
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress-nwp
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress

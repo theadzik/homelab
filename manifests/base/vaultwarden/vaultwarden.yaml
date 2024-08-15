@@ -9,10 +9,12 @@ spec:
   selector:
     matchLabels:
       app: vaultwarden
+      ingress: exposed
   template:
     metadata:
       labels:
         app: vaultwarden
+        ingress: exposed
     spec:
       initContainers:
         - name: restore
