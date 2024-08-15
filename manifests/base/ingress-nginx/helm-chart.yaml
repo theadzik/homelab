@@ -15,8 +15,3 @@ spec:
         type: ingress
       service:
         externalTrafficPolicy: Local
-      config:
-        enable-modsecurity: "true"
-        modsecurity-snippet: |
-          Include /etc/nginx/owasp-modsecurity-crs/nginx-modsecurity.conf
-          SecRuleEngine On
