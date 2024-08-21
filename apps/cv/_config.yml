@@ -116,6 +116,20 @@ content:
           * Give feedback and updates to the end-user on resolution progress
           * Document user acceptance and close related incidents and/or problems
 
+  - title: Achievements
+    layout: list
+    content:
+      - layout: left
+        title: Making the world more secure
+        description: |
+          In 2022, while working on a project using Azure Kubernetes Service I found a security vulnerability
+          in [azurefile CSI driver](https://github.com/kubernetes-sigs/azurefile-csi-driver/tree/master)
+          that could be used for information disclosure. It was assigned a **High Severity** rating
+          and I was awarded $9000 in Microsoft's bug bounty program.
+
+          It allowed abusing caching mechanism to gain access to fileshares mounted in different namespaces
+          on a shared cluster.
+
   - title: Education
     layout: list
     content:
