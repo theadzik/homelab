@@ -27,6 +27,4 @@ jobs:
           platforms: "linux/amd64,linux/arm64"
           context: "{{defaultContext}}:apps/wedding-website"
           push: true
-          tags:
-            - ${{ vars.DOCKERHUB_USERNAME }}/wedding-website:${{steps.vars.outputs.docker_tag }}
-            - ${{ vars.DOCKERHUB_USERNAME }}/wedding-website:latest
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/wedding-website:${{steps.vars.outputs.docker_tag }},${{ vars.DOCKERHUB_USERNAME }}/wedding-website:latest

@@ -26,6 +26,4 @@ jobs:
           platforms: "linux/amd64,linux/arm64"
           context: "{{defaultContext}}:apps/vaultwarden/backup"
           push: true
-          tags:
-            - ${{ vars.DOCKERHUB_USERNAME }}/vw-backup:${{steps.vars.outputs.docker_tag }}
-            - ${{ vars.DOCKERHUB_USERNAME }}/vw-backup:latest
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/vw-backup:${{steps.vars.outputs.docker_tag }},${{ vars.DOCKERHUB_USERNAME }}/vw-backup:latest
