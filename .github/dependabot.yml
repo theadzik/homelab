@@ -5,7 +5,15 @@
 
 version: 2
 updates:
-  - package-ecosystem: "bundler" # See documentation for possible values
-    directory: "/apps/cv/Gemfile" # Location of package manifests
+  - package-ecosystem: "bundler"
+    directory: "/apps/cv/Gemfile"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "bundler"
+    directory: "/apps/wedding-website/Gemfile"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "pip"
+    directory: "/apps/dns/requirements.txt"
     schedule:
       interval: "weekly"
