@@ -23,9 +23,7 @@ jobs:
       - name: Restore - Build and push
         uses: docker/build-push-action@v6
         with:
-          platforms:
-            - "linux/amd64"
-            - "linux/arm64"
+          platforms: "linux/amd64,linux/arm64"
           context: "{{defaultContext}}:apps/vaultwarden/restore"
           push: true
           tags:
