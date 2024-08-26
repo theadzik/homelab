@@ -6,14 +6,13 @@
 version: 2
 updates:
   - package-ecosystem: "bundler"
-    directory: "/apps/cv/Gemfile"
-    schedule:
-      interval: "weekly"
-  - package-ecosystem: "bundler"
-    directory: "/apps/wedding-website/Gemfile"
+    directories:
+      - "/apps/cv"
+      - "/apps/wedding-website"
     schedule:
       interval: "weekly"
   - package-ecosystem: "pip"
-    directory: "/apps/dns/requirements.txt"
+    directories:
+      - "/apps/dns"
     schedule:
       interval: "weekly"
