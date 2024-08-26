@@ -29,6 +29,7 @@ Containerized applications:
 * `vaultwarden` - Backup and restore scripts made for vaultwarden,
   running as initContainer and CronJob
 * `cv` - My resume built with Jekyll
+* `wedding-website` - A site I made for my wedding
 * `dns` - Dynamic DNS updater working with `no-ip`
 
 ## `/manifests`
