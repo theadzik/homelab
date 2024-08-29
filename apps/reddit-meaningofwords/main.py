@@ -75,8 +75,8 @@ for comment in reddit.subreddit(SUBREDDIT).stream.comments(skip_existing=True):
         if response := openai_word_checker(body=comment.body, word=keyword_found):
             logging.info("Replying.")
             response += f"\n\n{bot_commenter.signature}"
-            logging.info(response)
-            comment.reply(response)
+            reply_comment = comment.reply(response)
+            logging.info(reply_comment.permalink)
         else:
             logging.info("Not replying.")
             continue
