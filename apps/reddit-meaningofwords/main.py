@@ -5,6 +5,7 @@ import json
 import logging
 import os
 
+import langdetect
 import praw
 import prawcore
 from dotenv import load_dotenv
@@ -21,13 +22,29 @@ class CommentValidator:
     def normalize_comment(body: str) -> str:
         return body.lower()
 
-    def should_comment(self, body: str, word: str) -> bool:
+    def match_language(self, body: str, word: str) -> bool:
+        comment_language = langdetect.detect(body)
+        word_language = self.dictionary.get(word).get("language")
+        if comment_language == word_language:
+            logging.info(f"Languages match ({comment_language})")
+            return True
+        logging.info(f"Languages do not match. Comment: {comment_language}, Dictionary: {word_language}")
+        return False
+
+    def match_ignored_words(self, body: str, word: str) -> bool:
         ignore_list = self.dictionary.get(word).get("ignore")
         for ignore_word in ignore_list:
             if ignore_word in body:
                 logging.info(f"Ignoring comment! It has \"{ignore_word}\" in it.")
-                return False
+                return True
         logging.info("No ignored words found.")
+        return False
+
+    def should_comment(self, body: str, word: str) -> bool:
+        if self.match_ignored_words(body=body, word=word):
+            return False
+        if not self.match_language(body=body, word=word):
+            return False
         return True
 
     def find_keywords(self, body: str) -> str:
@@ -45,7 +62,7 @@ load_dotenv()
 logging.basicConfig(
     level=logging.INFO,
     handlers=[
-        logging.FileHandler("meaningofwords.log"),
+        logging.FileHandler("meaningofwords.log", "a", "utf-8"),
         logging.StreamHandler()
     ],
     format="%(asctime)s %(levelname)s %(msg)s"
@@ -86,4 +103,7 @@ try:
 except prawcore.exceptions.TooManyRequests:
     end_time = datetime.datetime.now()
     end_seconds = (end_time - start_time).total_seconds()
-    logging.error(f"TooManyRequests: {counter} iterations over {end_seconds}s, {(counter / end_seconds):.2f}req/s.")
+    logging.error(
+        f"TooManyRequests: {counter} iterations over {datetime.timedelta(seconds=end_seconds)},"
+        f"{(counter / end_seconds):.2f}req/s."
+    )

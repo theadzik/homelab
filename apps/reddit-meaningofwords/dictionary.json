@@ -1,5 +1,6 @@
 {
   "factoid": {
+    "language": "en",
     "type": "noun",
     "meaning": "an item of unreliable information that is reported and repeated so often that it becomes accepted as fact",
     "ignore": [
