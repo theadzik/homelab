@@ -5,47 +5,23 @@ import json
 import logging
 import os
 
-import langdetect
 import praw
 import prawcore
 from dotenv import load_dotenv
+from openaihelper import openai_word_checker
 
 
-class CommentValidator:
+class BotCommenter:
     def __init__(self):
-        with open("dictionary.json", mode="r") as file:
-            self.dictionary = json.load(file)
+        with open("wordlist.json", mode="r") as file:
+            self.words_to_check = json.load(file)
 
-        self.words_to_check = [word for word in self.dictionary.keys()]
+        self.signature = "Bip bop, jestem bot. Wybacz jeśli się pomyliłem."
+        self.bot_name = "MeaningOfWordsBot"
 
     @staticmethod
     def normalize_comment(body: str) -> str:
         return body.lower()
-
-    def match_language(self, body: str, word: str) -> bool:
-        comment_language = langdetect.detect(body)
-        word_language = self.dictionary.get(word).get("language")
-        if comment_language == word_language:
-            logging.info(f"Languages match ({comment_language})")
-            return True
-        logging.info(f"Languages do not match. Comment: {comment_language}, Dictionary: {word_language}")
-        return False
-
-    def match_ignored_words(self, body: str, word: str) -> bool:
-        ignore_list = self.dictionary.get(word).get("ignore")
-        for ignore_word in ignore_list:
-            if ignore_word in body:
-                logging.info(f"Ignoring comment! It has \"{ignore_word}\" in it.")
-                return True
-        logging.info("No ignored words found.")
-        return False
-
-    def should_comment(self, body: str, word: str) -> bool:
-        if self.match_ignored_words(body=body, word=word):
-            return False
-        if not self.match_language(body=body, word=word):
-            return False
-        return True
 
     def find_keywords(self, body: str) -> str:
         for word in self.words_to_check:
@@ -74,6 +50,7 @@ CLIENT_ID = os.environ.get("CLIENT_ID", None)
 CLIENT_SECRET = os.environ.get("CLIENT_SECRET", None)
 USERNAME = os.environ.get("USERNAME", None)
 PASSWORD = os.environ.get("PASSWORD", None)
+SUBREDDIT = os.environ.get("SUBREDDIT", "all")
 
 reddit = praw.Reddit(
     client_id=CLIENT_ID,
@@ -83,23 +60,30 @@ reddit = praw.Reddit(
     user_agent=USER_AGENT,
 )
 
-comment_validator = CommentValidator()
+bot_commenter = BotCommenter()
 
 counter = 0
 start_time = datetime.datetime.now()
 try:
-    for comment in reddit.subreddit("test").stream.comments(skip_existing=True):
+    for comment in reddit.subreddit(SUBREDDIT).stream.comments(skip_existing=True):
         counter += 1
-        normalized_comment = comment_validator.normalize_comment(comment.body)
+        normalized_comment = bot_commenter.normalize_comment(comment.body)
 
         current_time = datetime.datetime.now()
         current_seconds = (current_time - start_time).total_seconds()
         logging.debug(f"Total counter: {counter} at rate: {(counter / current_seconds):.2f} req/s")
-        if keyword_found := comment_validator.find_keywords(body=normalized_comment):
-            if comment_validator.should_comment(body=normalized_comment, word=keyword_found):
-                logging.info("Commenting!")
+        if keyword_found := bot_commenter.find_keywords(body=normalized_comment):
+            if comment.author.name == bot_commenter.bot_name:
+                logging.info("It's my own comment! Not Replying!")
+                continue
+            if response := openai_word_checker(body=comment.body, word=keyword_found):
+                logging.info("Found word misuse. Replying!")
+                response += f"\n\n{bot_commenter.signature}"
+                logging.info(response)
+                comment.reply(response)
             else:
-                logging.info("Ignoring.")
+                logging.info("Word used correctly. Skipping")
+                continue
 except prawcore.exceptions.TooManyRequests:
     end_time = datetime.datetime.now()
     end_seconds = (end_time - start_time).total_seconds()
