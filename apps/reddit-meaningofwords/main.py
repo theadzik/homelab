@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 
+import datetime
 import json
 import logging
 import os
 
 import praw
+import prawcore
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -31,13 +33,21 @@ reddit = praw.Reddit(
     user_agent=USER_AGENT,
 )
 
-for comment in reddit.subreddit("all").stream.comments():
-    normalized_comment = comment.body.lower()
+counter = 0
+start_time = datetime.datetime.now()
+try:
+    for comment in reddit.subreddit("all").stream.comments(skip_existing=True):
+        counter += 1
+        normalized_comment = comment.body.lower()
 
-    logging.debug(f"Checking comment {comment.id}")
-    for word in words_to_check:
-        if word in normalized_comment:
-            logging.info(comment.permalink)
-            logging.info(normalized_comment)
-
-# Got prawcore.exceptions.TooManyRequests
+        current_time = datetime.datetime.now()
+        current_seconds = (current_time - start_time).total_seconds()
+        logging.info(f"Total counter: {counter} at rate: {(counter/current_seconds):.2f} req/s")
+        for word in words_to_check:
+            if word in normalized_comment:
+                logging.warning(comment.permalink)
+                logging.warning(normalized_comment)
+except prawcore.exceptions.TooManyRequests:
+    end_time = datetime.datetime.now()
+    end_seconds = (end_time-start_time).total_seconds()
+    logging.error(f"TooManyRequests: {counter} iterations over {end_seconds}s, {(counter/end_seconds):.2f}req/s")
