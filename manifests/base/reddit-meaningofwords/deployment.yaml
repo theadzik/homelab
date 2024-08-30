@@ -21,6 +21,9 @@ spec:
           envFrom:
             - secretRef:
                 name: reddit-meaningofwords-secret
+          volumeMounts:
+            - mountPath: /tmp
+              name: temp
           securityContext:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
@@ -28,3 +31,6 @@ spec:
         runAsUser: 10002
         runAsGroup: 20002
         fsGroup: 20002
+      volumes:
+        - name: temp
+          emptyDir: {}
