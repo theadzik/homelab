@@ -3,6 +3,7 @@
 import json
 import logging
 import os
+import re
 import unicodedata
 
 import praw
@@ -14,6 +15,7 @@ class BotCommenter:
     def __init__(self):
         with open("wordlist.json", mode="r") as file:
             self.words_to_check = json.load(file)
+        self.patterns_to_check = {word: r"\b"+word+r"\b" for word in self.words_to_check}
 
         self.signature = "🤖 Bip bop, jestem bot. Wybacz, jeśli się pomyliłem. 🤖"
         self.bot_name = "MeaningOfWordsBot"
@@ -28,7 +30,7 @@ class BotCommenter:
 
     def find_keywords(self, body: str) -> str:
         for word in self.words_to_check:
-            if word in body:
+            if re.search(self.patterns_to_check.get(word), body):
                 logging.info(f"Found a comment with {word}!")
                 logging.info(REDDIT_BASE_URL + comment.permalink)
                 logging.debug(body)

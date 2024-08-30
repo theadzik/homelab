@@ -12,30 +12,28 @@ def openai_word_checker(word: str, body: str) -> str or None:
     chat_completion = client.chat.completions.create(
         model="gpt-4o",
         max_tokens=256,
-        temperature=1.0,
         messages=[
             {"role": "system",
-             "content": "Wciel się w rolę nauczyciela języka polskiego. "
-                        "Na końcu tej komendy, w nowej lini podam ci wyrażenie, "
+             "content": "Na końcu tej komendy, w nowej lini podam ci wyrażenie, "
                         "które zawiera błąd lub jest błędnie użyte w kolejnej wiadomości. "
                         "Zapomnij o zdaniach, które nie zawierały podanego wyrażenia. "
                         "Nie odnoś się do, ani nie powtarzaj pozostałych zdań nigdzie w swojej odpowiedzi. "
                         "Sprawdź czy podane przeze mnie wyrażenie nie miało błędów "
-                        "i czy było użyte poprawnie w zdaniu w któym występuje. "
-                        # Response line 0
+                        "i czy było użyte poprawnie w zdaniu w któym występuje. \n"
+             # Response line 0
                         "Jeżeli tak, odpowiedz słowem 'True', "
                         "jeżeli było użyte błędnie odpowiedz słowem 'False', "
-                        "bez dodatkowej interpunkcji. "
-                        # Response line 1
-                        "W kolejnej linii napisz '* Niepoprawna forma: ' i podaj formę niepoprawnie użytą w zdaniu. "
-                        # Response line 2
-                        "W kolejnej linii napisz '* Poprawna forma: ' i podaj poprawną formę. "
-                        # Response line 3
-                        "W kolejnej linii napisz '* Wyjaśnienie: ' i wyjaśnij dlaczego użyta forma jest niepoprawna. "
-                        # Response line 4
+                        "bez dodatkowej interpunkcji.\n"
+             # Response line 1
+                        "W kolejnej linii napisz '* Niepoprawna forma: ' i podaj formę niepoprawnie użytą w zdaniu.\n"
+             # Response line 2
+                        "W kolejnej linii napisz '* Poprawna forma: ' i podaj poprawną formę.\n"
+             # Response line 3
+                        "W kolejnej linii napisz '* Wyjaśnienie: ' i wyjaśnij dlaczego użyta forma jest niepoprawna.\n"
+             # Response line 4
                         "W kolejnej linii napisz '* Poprawne zdanie:' i podaj poprawioną wersję zdania, "
-                        "które zawierało błędne użycie wyrażenia. Popraw wszystkie błędy występujące w tym zdaniu. "
-                        # Response line 5
+                        "które zawierało błędne użycie wyrażenia. Popraw wszystkie błędy występujące w tym zdaniu. \n"
+             # Response line 5
                         "W ostatniej linii napisz tylko ciąg znaków 'meaningofwords', bez dodatkowej interpunkcji."
              },
             {"role": "system", "content": f"<wyrażenie>{word}</wyrażenie>"},
