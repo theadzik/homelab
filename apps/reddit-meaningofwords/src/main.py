@@ -8,6 +8,7 @@ import unicodedata
 
 import praw
 from dotenv import load_dotenv
+from openaihelper import WordChecker
 from openaihelper import openai_word_checker
 
 
@@ -15,9 +16,14 @@ class BotCommenter:
     def __init__(self):
         with open("wordlist.json", mode="r") as file:
             self.words_to_check = json.load(file)
-        self.patterns_to_check = {word: r"\b"+word+r"\b" for word in self.words_to_check}
+        self.patterns_to_check = {word: r"\b" + word + r"\b" for word in self.words_to_check}
 
-        self.signature = "🤖 Bip bop, jestem bot. Wybacz, jeśli się pomyliłem. 🤖"
+        self.signature = (
+            "🤖 Bip bop, jestem bot. 🤖\n\n"
+            "Szukam najczęściej popełnianych błędów w internecie. "
+            "[2022](https://nadwyraz.com/blog-raport-100-najczesciej-popelnianych-bledow-w-internecie-w-2022), "
+            "[2023](https://nadwyraz.com/blog-raport-50-najczesciej-popelnianych-bledow-w-internecie-w-2023)"
+        )
         self.bot_name = "MeaningOfWordsBot"
 
     @staticmethod
@@ -36,6 +42,16 @@ class BotCommenter:
                 logging.debug(body)
                 return word
         return ""
+
+    def parse_reddt_comment(self, content: WordChecker) -> str:
+        message = (
+            f"{self.signature}"
+            f"\n* Niepoprawna forma: {content.incorrect_word}"
+            f"\n* Poprawna forma: {content.correct_word}"
+            f"\n* Wyjaśnienie: {content.explanation}"
+            f"\n* Poprawione zdanie: {content.corrected_sentence}"
+        )
+        return message
 
 
 load_dotenv()
@@ -74,13 +90,10 @@ for comment in reddit.subreddit(SUBREDDIT).stream.comments(skip_existing=True):
 
     if keyword_found := bot_commenter.find_keywords(body=normalized_comment):
         if comment.author.name == bot_commenter.bot_name:
-            logging.info("It's my own comment! Not Replying!")
+            logging.info("It's my own comment! Skipping.")
             continue
-        if response := openai_word_checker(body=comment.body, word=keyword_found):
-            logging.info("Replying.")
-            response += f"\n\n{bot_commenter.signature}"
-            reply_comment = comment.reply(response)
-            logging.info(REDDIT_BASE_URL + reply_comment.permalink)
-        else:
-            logging.info("Not replying.")
-            continue
+        content = openai_word_checker(body=comment.body, word=keyword_found)
+        response = bot_commenter.parse_reddt_comment(content)
+        logging.info("Replying.")
+        reply_comment = comment.reply(response)
+        logging.info(REDDIT_BASE_URL + reply_comment.permalink)
