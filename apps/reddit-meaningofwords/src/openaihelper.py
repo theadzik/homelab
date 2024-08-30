@@ -9,18 +9,18 @@ load_dotenv()
 client = OpenAI()
 
 
-class WordChecker(BaseModel):
+class WordCheckerResponse(BaseModel):
     incorrect_word: str
     correct_word: str
     explanation: str
     corrected_sentence: str
 
 
-def openai_word_checker(word: str, body: str) -> WordChecker:
+def openai_word_checker(word: str, body: str) -> WordCheckerResponse:
     chat_completion = client.beta.chat.completions.parse(
         model="gpt-4o-2024-08-06",
         max_tokens=256,
-        response_format=WordChecker,
+        response_format=WordCheckerResponse,
         messages=[
             {"role": "system",
              "content": "Na końcu tej komendy podam ci wyrażenie. "
@@ -40,7 +40,3 @@ def openai_word_checker(word: str, body: str) -> WordChecker:
     logging.info(content)
 
     return content
-
-
-if __name__ == "__main__":
-    print(openai_word_checker("z przed", "Chcial bym się dowiedziec czy rowerry z przed wieku były szybkie?"))

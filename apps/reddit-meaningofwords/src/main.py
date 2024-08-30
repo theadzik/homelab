@@ -8,7 +8,7 @@ import unicodedata
 
 import praw
 from dotenv import load_dotenv
-from openaihelper import WordChecker
+from openaihelper import WordCheckerResponse
 from openaihelper import openai_word_checker
 
 
@@ -43,7 +43,7 @@ class BotCommenter:
                 return word
         return ""
 
-    def parse_reddt_comment(self, content: WordChecker) -> str:
+    def parse_reddt_comment(self, content: WordCheckerResponse) -> str:
         message = (
             f"{self.signature}"
             f"\n* Niepoprawna forma: {content.incorrect_word}"
@@ -65,27 +65,23 @@ logging.basicConfig(
     format="%(asctime)s %(levelname)s %(msg)s"
 )
 
-USER_AGENT = "linux:meaning-of-words:2024.08.1 (by u/MalinowyChlopak)"
-
-CLIENT_ID = os.environ.get("CLIENT_ID", None)
-CLIENT_SECRET = os.environ.get("CLIENT_SECRET", None)
-USERNAME = os.environ.get("USERNAME", None)
-PASSWORD = os.environ.get("PASSWORD", None)
-SUBREDDIT = os.environ.get("SUBREDDIT", "all")
 REDDIT_BASE_URL = "https://reddit.com"
+SUBREDDITS = os.getenv("REDDIT_SUBREDDITS", "polska")
+
+USER_AGENT = f"linux:meaning-of-words:{os.environ.get('APP_VERSION')} (by u/MalinowyChlopak)"
 
 reddit = praw.Reddit(
-    client_id=CLIENT_ID,
-    client_secret=CLIENT_SECRET,
-    username=USERNAME,
-    password=PASSWORD,
+    client_id=os.getenv("REDDIT_CLIENT_ID"),
+    client_secret=os.getenv("REDDIT_CLIENT_SECRET"),
+    username=os.getenv("REDDIT_USERNAME"),
+    password=os.getenv("REDDIT_PASSWORD"),
     user_agent=USER_AGENT,
 )
 
 bot_commenter = BotCommenter()
 
 logging.info("Scanning comments.")
-for comment in reddit.subreddit(SUBREDDIT).stream.comments(skip_existing=True):
+for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
     normalized_comment = bot_commenter.normalize_comment(comment.body)
 
     if keyword_found := bot_commenter.find_keywords(body=normalized_comment):
