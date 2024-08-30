@@ -16,7 +16,7 @@ class BotCommenter:
     def __init__(self):
         with open("wordlist.json", mode="r") as file:
             self.words_to_check = json.load(file)
-        self.patterns_to_check = {word: r"\b" + word + r"\b" for word in self.words_to_check}
+        self.patterns_to_check = {word: r"\b" + word + r"\b" for word in self.words_to_check.keys()}
 
         self.signature = (
             "🤖 Bip bop, jestem bot. 🤖\n\n"
@@ -53,6 +53,9 @@ class BotCommenter:
         )
         return message
 
+    def get_extra_info(self, word: str) -> str:
+        return " ".join(self.words_to_check.get(word))
+
 
 load_dotenv()
 
@@ -85,8 +88,16 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
         if comment.author.name == bot_commenter.bot_name:
             logging.info("It's my own comment! Skipping.")
             continue
-        content = openai_word_checker(body=comment.body, word=keyword_found)
-        response = bot_commenter.parse_reddt_comment(content)
-        logging.info("Replying.")
-        reply_comment = comment.reply(response)
-        logging.info(REDDIT_BASE_URL + reply_comment.permalink)
+
+        extra_info = bot_commenter.get_extra_info(keyword_found)
+        content = openai_word_checker(body=comment.body, word=keyword_found, extra_info=extra_info)
+
+        if not content.is_correct:
+            logging.info("Phrase used incorrectly. Replying!")
+            response = bot_commenter.parse_reddt_comment(content)
+
+            reply_comment = comment.reply(response)
+            logging.info(REDDIT_BASE_URL + reply_comment.permalink)
+        else:
+            logging.info("Phrase used correctly. Skipping.")
+            logging.info(content)
