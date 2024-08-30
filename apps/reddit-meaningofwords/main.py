@@ -29,9 +29,9 @@ class BotCommenter:
     def find_keywords(self, body: str) -> str:
         for word in self.words_to_check:
             if word in body:
-                logging.info("Found a comment!")
+                logging.info(f"Found a comment with {word}!")
                 logging.info(comment.permalink)
-                logging.info(body)
+                logging.debug(body)
                 return word
         return ""
 
