@@ -15,7 +15,7 @@ class BotCommenter:
         with open("wordlist.json", mode="r") as file:
             self.words_to_check = json.load(file)
 
-        self.signature = "🤖 Bip bop, jestem bot. Wybacz jeśli się pomyliłem. 🤖"
+        self.signature = "🤖 Bip bop, jestem bot. Wybacz, jeśli się pomyliłem. 🤖"
         self.bot_name = "MeaningOfWordsBot"
 
     @staticmethod
