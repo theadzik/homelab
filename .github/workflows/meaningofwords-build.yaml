@@ -1,4 +1,4 @@
-name: dns-updater-build
+name: meaning-of-words-build
 on:
   push:
     tags:
@@ -24,7 +24,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           platforms: "linux/amd64,linux/arm64"
-          context: "{{defaultContext}}:apps/dns"
+          context: "{{defaultContext}}:apps/reddit-meaningofwords"
           build-args: |
             APP_VERSION=${{steps.vars.outputs.docker_tag }}
           push: true
