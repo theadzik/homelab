@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reddit-meaningofwords
+  labels:
+    app: reddit-meaningofwords
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reddit-meaningofwords
+  template:
+    metadata:
+      labels:
+        app: reddit-meaningofwords
+    spec:
+      containers:
+        - name: reddit-bot
+          image: theadzik/meaningofwords:latest
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: reddit-meaningofwords-secret
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+      securityContext:
+        runAsUser: 10002
+        runAsGroup: 20002
+        fsGroup: 20002
