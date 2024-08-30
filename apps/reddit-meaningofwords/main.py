@@ -66,6 +66,7 @@ reddit = praw.Reddit(
 
 bot_commenter = BotCommenter()
 
+logging.info("Scanning comments.")
 for comment in reddit.subreddit(SUBREDDIT).stream.comments(skip_existing=True):
     normalized_comment = bot_commenter.normalize_comment(comment.body)
 

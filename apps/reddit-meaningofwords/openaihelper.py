@@ -55,4 +55,6 @@ def openai_word_checker(word: str, body: str) -> str or None:
             return None
     else:
         logging.warning("Something went wrong. No checkword at the end.")
+        logging.warning(f"Comment:\n{body}")
+        logging.warning(f"Reply content:\n{content}")
         return None
