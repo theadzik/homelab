@@ -24,7 +24,7 @@ class BotCommenter:
             "[2022](https://nadwyraz.com/blog-raport-100-najczesciej-popelnianych-bledow-w-internecie-w-2022), "
             "[2023](https://nadwyraz.com/blog-raport-50-najczesciej-popelnianych-bledow-w-internecie-w-2023)"
         )
-        self.bot_name = "MeaningOfWordsBot"
+        self.bot_name = os.getenv("REDDIT_USERNAME")
 
     @staticmethod
     def normalize_comment(body: str) -> str:
@@ -57,12 +57,9 @@ class BotCommenter:
 load_dotenv()
 
 logging.basicConfig(
-    level=logging.INFO,
-    handlers=[
-        logging.FileHandler("meaningofwords.log", "a", "utf-8"),
-        logging.StreamHandler()
-    ],
-    format="%(asctime)s %(levelname)s %(msg)s"
+    format='%(asctime)s %(levelname)s: %(message)s',
+    encoding='utf-8',
+    level=os.getenv("LOG_LEVEL", logging.INFO)
 )
 
 REDDIT_BASE_URL = "https://reddit.com"
