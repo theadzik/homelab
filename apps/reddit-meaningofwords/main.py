@@ -15,7 +15,7 @@ class BotCommenter:
         with open("wordlist.json", mode="r") as file:
             self.words_to_check = json.load(file)
 
-        self.signature = "Bip bop, jestem bot. Wybacz jeśli się pomyliłem."
+        self.signature = "🤖 Bip bop, jestem bot. Wybacz jeśli się pomyliłem. 🤖"
         self.bot_name = "MeaningOfWordsBot"
 
     @staticmethod
@@ -30,7 +30,7 @@ class BotCommenter:
         for word in self.words_to_check:
             if word in body:
                 logging.info(f"Found a comment with {word}!")
-                logging.info(comment.permalink)
+                logging.info(REDDIT_BASE_URL + comment.permalink)
                 logging.debug(body)
                 return word
         return ""
@@ -54,6 +54,7 @@ CLIENT_SECRET = os.environ.get("CLIENT_SECRET", None)
 USERNAME = os.environ.get("USERNAME", None)
 PASSWORD = os.environ.get("PASSWORD", None)
 SUBREDDIT = os.environ.get("SUBREDDIT", "all")
+REDDIT_BASE_URL = "https://reddit.com"
 
 reddit = praw.Reddit(
     client_id=CLIENT_ID,
@@ -76,7 +77,7 @@ for comment in reddit.subreddit(SUBREDDIT).stream.comments(skip_existing=True):
             logging.info("Replying.")
             response += f"\n\n{bot_commenter.signature}"
             reply_comment = comment.reply(response)
-            logging.info(reply_comment.permalink)
+            logging.info(REDDIT_BASE_URL + reply_comment.permalink)
         else:
             logging.info("Not replying.")
             continue
