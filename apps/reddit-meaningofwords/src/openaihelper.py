@@ -18,6 +18,7 @@ class WordCheckerResponse(BaseModel):
 
 
 def openai_word_checker(word: str, body: str, extra_info: str = "") -> WordCheckerResponse:
+    logging.debug(f"I got this body:\n{body}")
     prompt = [
         {"role": "system",
          "content": "Podam ci wyrażenie w poprawnej lub błędnej formie.\n"
