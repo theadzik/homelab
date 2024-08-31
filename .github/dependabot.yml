@@ -17,3 +17,8 @@ updates:
       - "/apps/reddit-meaningofwords"
     schedule:
       interval: "weekly"
+  - package-ecosystem: "docker"
+    directories:
+      - "/apps/*"
+    schedule:
+      interval: "weekly"
