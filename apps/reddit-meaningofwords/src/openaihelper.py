@@ -28,7 +28,7 @@ def openai_word_checker(word: str, body: str, extra_info: str = "") -> WordCheck
                     "opierając się o zasady, które ci podam.\n"
                     "Podaj poprawną wersję zdania, które zawierało użyte wyrażenie. "
                     "Ogranicz się tylko do tego jednego zdania. "
-                    "Popraw wszystkie błędy występujące w tym zdaniu."
+                    "Popraw wszystkie błędy występujące w tym zdaniu, włączając błędy interpunkcyjne."
          },
         {"role": "system", "content": f"<zasady języka>{extra_info}</zasady języka>"},
         {"role": "system", "content": f"<wyrażenie>{word}</wyrażenie>"},
