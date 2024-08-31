@@ -37,7 +37,8 @@
   },
   "na prawdę": {
     "explanations": [
-      "'Naprawdę' pisane łącznie to partykuła potwierdzająca, że to, o czym mowa, jest prawdą, lub wyrażenie zdziwienia, zaskoczenia, niedowierzania; wprawdzie, szczerze, dokładnie.",
+      "'Naprawdę' pisane łącznie to partykuła, za pomocą której możemy kogoś przekonać, że mamy rację, i potwierdzić prawdziwość tego, co mówimy, np. 'Naprawdę byłam wczoraj w domu i nigdzie nie wychodziłam'",
+      "Przy użyciu 'naprawdę' możemy także wyrazić niedowierzanie lub zdziwienie, np. 'Nie wierzę, że naprawdę to powiedziałaś.'",
       "Zapis 'na prawdę' zastosujemy wyłącznie w przypadkach, gdy mowa o rzeczowniku 'prawda' w bierniku liczby pojedynczej ('prawdę') zestawionym z przyimkiem 'na'."
     ],
     "search_rule": "\\bna prawde\\b"

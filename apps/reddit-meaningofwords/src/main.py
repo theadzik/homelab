@@ -6,8 +6,10 @@ import os
 import re
 import unicodedata
 
+import nltk
 import praw
 from dotenv import load_dotenv
+from graceful_shutdown import GracefulKiller
 from openaihelper import WordCheckerResponse
 from openaihelper import openai_word_checker
 
@@ -34,14 +36,37 @@ class BotCommenter:
         body = unicodedata.normalize('NFKD', body).encode("ascii", "ignore").decode("ascii")
         return body
 
-    def find_keywords(self, body: str) -> str:
+    def find_keywords(self, body: str) -> (str, str):
         for word in self.patterns_to_check.keys():
-            if re.search(self.patterns_to_check.get(word), body):
+            if match := re.search(self.patterns_to_check.get(word), body):
                 logging.info(f"Found a comment with {word}!")
                 logging.info(REDDIT_BASE_URL + comment.permalink)
                 logging.debug(body)
-                return word
-        return ""
+                return word, match.group(0)
+        return "", ""
+
+    @staticmethod
+    def get_sentence_indexes(word: str, body: str, limit: int = 0) -> (int, int):
+        """Finds a 'word' in 'body' and returns the first sentence with the 'word'.
+        By default, only the sentence with the word is returned.
+        When the limit is >0, the sentence is returned with additional sentences before and after it.
+        """
+        sentences = nltk.tokenize.sent_tokenize(body, language="polish")
+        num_of_sentences = len(sentences)
+        for index, sentence in enumerate(sentences):
+            if word in sentence:
+                start_index = max(0, index - limit)
+                end_index = min(num_of_sentences, index + limit + 1)
+                logging.info(f"Calculated start and end indexes of sentences [{start_index}:{end_index}]")
+                return start_index, end_index
+
+    @staticmethod
+    def get_sentences(body: str, start_index: int, end_index: int) -> str:
+        """We assume that sent_tokenize will always return the same indexes for
+        normalized and non-normalized text.
+        """
+        sentences = nltk.tokenize.sent_tokenize(body, language="polish")
+        return " ".join(sentences[start_index:end_index])
 
     def parse_reddt_comment(self, content: WordCheckerResponse) -> str:
         message = (
@@ -79,18 +104,25 @@ reddit = praw.Reddit(
 )
 
 bot_commenter = BotCommenter()
+killer = GracefulKiller()
 
 logging.info("Scanning comments.")
 for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
+    if killer.kill_now:
+        break
     normalized_comment = bot_commenter.normalize_comment(comment.body)
 
-    if keyword_found := bot_commenter.find_keywords(body=normalized_comment):
+    keyword_found, match = bot_commenter.find_keywords(body=normalized_comment)
+    if keyword_found:
         if comment.author.name == bot_commenter.bot_name:
             logging.info("It's my own comment! Skipping.")
             continue
 
         extra_info = bot_commenter.get_extra_info(keyword_found)
-        content = openai_word_checker(body=comment.body, word=keyword_found, extra_info=extra_info)
+        start_index, end_index = bot_commenter.get_sentence_indexes(word=match, body=normalized_comment, limit=1)
+        limited_body = bot_commenter.get_sentences(body=comment.body, start_index=start_index, end_index=end_index)
+
+        content = openai_word_checker(body=limited_body, word=keyword_found, extra_info=extra_info)
 
         if not content.is_correct:
             logging.info("Phrase used incorrectly. Replying!")
@@ -100,3 +132,5 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
         else:
             logging.info("Phrase used correctly. Skipping.")
             logging.info(content)
+
+logging.info("Received kill signal. Shutting down.")
