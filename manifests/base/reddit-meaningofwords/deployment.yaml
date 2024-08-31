@@ -24,6 +24,8 @@ spec:
           volumeMounts:
             - mountPath: /tmp
               name: temp
+            - mountPath: /nltk_data
+              name: nltk-data
           securityContext:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
@@ -33,4 +35,6 @@ spec:
         fsGroup: 20002
       volumes:
         - name: temp
+          emptyDir: {}
+        - name: nltk-data
           emptyDir: {}

@@ -13,9 +13,6 @@ COPY --chown=nonroot:nonroot src src
 
 USER nonroot:nonroot
 
-# Downloading models for NLTK
-RUN python -c "import nltk; nltk.download('punkt_tab');"
-
 ARG APP_VERSION
 ENV APP_VERSION=$APP_VERSION
 
