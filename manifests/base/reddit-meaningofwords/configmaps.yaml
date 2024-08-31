@@ -11,7 +11,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: reddit-meaningofwords-dictionary
+  name: reddit-meaningofwords-files
 data:
   dictionary.json: |
     {
@@ -126,14 +126,6 @@ data:
         "search_rule": "\\bzlodzieji\\b"
       }
     }
-
----
-
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: reddit-meaningofwords-prompt
-data:
   prompt.txt: |
     Podam ci wyrażenie w poprawnej lub błędnej formie.
     Nastpęnie podam ci zasady języka polskiego dotyczące tego lub podobnych wyrażeń.

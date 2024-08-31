@@ -30,12 +30,8 @@ spec:
               name: temp
             - mountPath: /nltk_data
               name: nltk-data
-            - name: dictionary
+            - name: config-volume
               mountPath: "/reddit"
-              readOnly: true
-            - name: prompt
-              mountPath: "/reddit"
-              readOnly: true
           securityContext:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
@@ -48,9 +44,6 @@ spec:
           emptyDir: {}
         - name: nltk-data
           emptyDir: {}
-        - name: dictionary
+        - name: config-volume
           configMap:
-            name: reddit-meaningofwords-dictionary
-        - name: prompt
-          configMap:
-            name: reddit-meaningofwords-prompt
+            name: reddit-meaningofwords-files
