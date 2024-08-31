@@ -5,13 +5,13 @@
     ],
     "search_rule": "\\bconajmniej\\b"
   },
-  "dlatego ze": {
+  "dlatego że": {
     "explanations": [
       "Poprawnym zapisem jest forma 'dlatego że', ponieważ jest to spójnik składający się z dwóch nierozłącznych spójników, które razem tworzą całość znaczeniową. 'Dlatego bo' jest niepoprawne ze względu na podkreślenie relacji przyczynowej, które wyraża zarówno 'dlatego', jak i 'bo', a więc są synonimami, zaś całe wyrażenie 'dlatego bo' jest pleonazmem. Warto zwrócić uwagę na umiejscowienie przecinka. Wyrażenia 'dlatego że' nie rozdziela się przecinkiem, ponieważ stawia się go przed całym spójnikiem lub pod zdaniu podrzędnym, które on wprowadza."
     ],
     "search_rule": "\\bdlatego([,]{0,1} bo|, ze)\\b"
   },
-  "dzien dzisiejszy": {
+  "dzień dzisiejszy": {
     "explanations": [
       "Połączenie 'w dniu dzisiejszym' jest nacechowane oficjalnością i pojawić się może jedynie w tekstach oficjalnych i urzędowych, choć nie można zapomnieć, że słowniki poprawnej polszczyzny przestrzegają przed konstrukcją 'dzień dzisiejszy', która jest nadużywana właśnie w wypowiedziach utrzymanych w stylu oficjalnym i urzędowym. Przysłówki dzisiaj i dziś są wyrazami o znaczeniu neutralnym, są zatem poprawne w każdym tekście."
     ],
@@ -23,7 +23,7 @@
     ],
     "search_rule": "\\bin[vw]itro\\b"
   },
-  "na co dzien": {
+  "na co dzień": {
     "explanations": [
       "Zapis rozłączny 'na co dzień' określa zasada konwencjonalna. Oznacza to, że przyjętej pisowni nie rozstrzyga ani wymowa, ani pochodzenie historyczne. Warto jednak zwrócić uwagę na budowę tego wyrażenia: 'na' jest przyimkiem, który bardzo często wchodzi w skład wyrażeń przyimkowych, jakie zawsze zapisujemy rozłącznie. Natomiast 'co dzień' należy do wyrażeń zaimkowych również pisanych rozłącznie. Zatem każdy element tej frazy musi zostać zapisany oddzielnie. Błędne 'nacodzień' wynika najpewniej z analogii do 'codziennie', jednak rozkład części mowy wskazuje, że są to trzy osobne wyrazy."
     ],
@@ -35,7 +35,7 @@
     ],
     "search_rule": "\\bnapewno\\b"
   },
-  "na prawde": {
+  "na prawdę": {
     "explanations": [
       "'Naprawdę' pisane łącznie to partykuła potwierdzająca, że to, o czym mowa, jest prawdą, lub wyrażenie zdziwienia, zaskoczenia, niedowierzania; wprawdzie, szczerze, dokładnie.",
       "Zapis 'na prawdę' zastosujemy wyłącznie w przypadkach, gdy mowa o rzeczowniku 'prawda' w bierniku liczby pojedynczej ('prawdę') zestawionym z przyimkiem 'na'."
@@ -78,13 +78,13 @@
     ],
     "search_rule": "\\b(do|wy|p(o|rzy)){0,1}szlem\\b"
   },
-  "w ogole": {
+  "w ogóle": {
     "explanations": [
       "Wyrażenie przyimkowe 'w ogóle' piszemy rozdzielnie. Podobnie jak 'na ogół' i 'z ogółem'. Wszystkie bowiem pochodzą od rzeczownika 'ogół'."
     ],
     "search_rule": "\\bwog[ou]le\\b"
   },
-  "wziac": {
+  "wziąć": {
     "explanations": [
       "Jedyną dozwoloną jest 'wziąć'. W wielu przypadkach 'wziąść' tworzone jest przez podobieństwo do innych czasowników zakończonych na '-ść', takich jak: 'pójść' czy 'usiąść'. Aby ułatwić zapamiętanie tej formy, polecam skojarzenie z czasownikiem 'brać': 'wziąć', a nie 'wziąść', bo nie można czegoś 'braść'."
     ],
@@ -96,13 +96,13 @@
     ],
     "search_rule": "\\b[sz]powrotem\\b"
   },
-  "z rzedu": {
+  "z rzędu": {
     "explanations": [
       "Wyrażenie przyimkowe 'pod rząd' traktowane jest jako kalka rosyjskiego 'подряд', a zatem polega na dokładnym odwzorowaniu obcej konstrukcji i przeniesieniu jej na rodzimy grunt. Mamy tu więc do czynienia z nieakceptowanym przez normatywistów zapożyczeniem strukturalnym. Wzorcowe odpowiedniki tego sformułowania to: 'z rzędu', 'po kolei', 'kolejno', 'jeden po drugim'."
     ],
     "search_rule": "\\bpod rzad\\b"
   },
-  "zlodziei": {
+  "złodziei": {
     "explanations": [
       "Prawidłowa pisownia tego rzeczownika to 'złodziei'. Błędny zapis wynika z analogii do reguły ortograficznej mówiącej, że po samogłoskach pisane jest 'j', oraz wymowy, gdzie 'j' jest wyraźnie słyszane ze względu na uproszczenia w artykulacji."
     ],

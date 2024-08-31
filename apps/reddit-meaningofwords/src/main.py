@@ -17,7 +17,7 @@ class BotCommenter:
         with open(os.path.join(os.path.dirname(__file__), 'dictionary.json'), mode="r", encoding="utf-8") as file:
             self.words_to_check = json.load(file)
         self.patterns_to_check = {word: value.get("search_rule") for word, value in self.words_to_check.items()}
-
+        logging.info(f"Loaded {len(self.words_to_check)} rules.")
         self.signature = (
             "🤖 Bip bop, jestem bot. 🤖\n\n"
             "Szukam najczęściej popełnianych błędów w internecie. "
