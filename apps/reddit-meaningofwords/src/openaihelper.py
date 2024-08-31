@@ -1,4 +1,5 @@
 import logging
+import os
 
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -12,39 +13,33 @@ client = OpenAI()
 class WordCheckerResponse(BaseModel):
     explanation: str
     is_correct: bool
-    corrected_sentence: str
     correct_word: str
     incorrect_word: str
 
 
-def openai_word_checker(word: str, body: str, extra_info: str = "") -> WordCheckerResponse:
-    logging.debug(f"I got this body:\n{body}")
-    prompt = [
-        # TODO: Move system prompt to config file
-        {"role": "system",
-         "content": "Podam ci wyrażenie w poprawnej lub błędnej formie.\n"
-                    "Nastpęnie podam ci zasady języka polskiego dotyczące tego lub podobnych wyrażeń.\n"
-                    "Sprawdź czy podanym przeze mnie tekście zostanie użyta poprawna forma "
-                    "w zależności od kontekstu zdania.\n"
-                    "Wyjaśnij jakie zasady poprawnej pisowni dotyczną tego wyrażenia, "
-                    "opierając się o zasady, które ci podam.\n"
-                    "Podaj poprawną wersję zdania, które zawierało użyte wyrażenie. "
-                    "Pamiętaj o poprawnym użyciu przecinków. "
-                    "Ogranicz się tylko do tego jednego zdania. "
-         },
-        {"role": "system", "content": f"<zasady języka>{extra_info}</zasady języka>"},
-        {"role": "system", "content": f"<wyrażenie>{word}</wyrażenie>"},
-        {"role": "user", "content": body}
-    ]
+class OpenAIChecker:
+    def __init__(self):
+        with open(os.getenv("REDDIT_PROMPT_PATH"), mode="r", encoding="utf-8") as file:
+            self.prompt = file.read()
+            logging.info(f"Loaded prompt:\n{self.prompt}")
 
-    chat_completion = client.beta.chat.completions.parse(
-        model="gpt-4o-2024-08-06",
-        max_tokens=256,
-        response_format=WordCheckerResponse,
-        messages=prompt
-    )
+    def get_explanation(self, word: str, body: str, extra_info: str = "") -> WordCheckerResponse:
+        logging.debug(f"I got this body:\n{body}")
+        prompt = [
+            {"role": "system", "content": self.prompt},
+            {"role": "system", "content": f"<zasady języka>{extra_info}</zasady języka>"},
+            {"role": "system", "content": f"<wyrażenie>{word}</wyrażenie>"},
+            {"role": "user", "content": body}
+        ]
 
-    content = chat_completion.choices[0].message.parsed
-    logging.info(content)
+        chat_completion = client.beta.chat.completions.parse(
+            model="gpt-4o-2024-08-06",
+            max_tokens=256,
+            response_format=WordCheckerResponse,
+            messages=prompt
+        )
 
-    return content
+        content = chat_completion.choices[0].message.parsed
+        logging.info(content)
+
+        return content

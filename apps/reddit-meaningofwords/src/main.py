@@ -10,20 +10,19 @@ import nltk
 import praw
 from dotenv import load_dotenv
 from graceful_shutdown import GracefulKiller
+from openaihelper import OpenAIChecker
 from openaihelper import WordCheckerResponse
-from openaihelper import openai_word_checker
 
 
 class BotCommenter:
     def __init__(self):
-        # TODO: Load config file from mounted directory
-        with open(os.path.join(os.path.dirname(__file__), 'dictionary.json'), mode="r", encoding="utf-8") as file:
+        with open(os.getenv("REDDIT_DICTIONARY_PATH"), mode="r", encoding="utf-8") as file:
             self.words_to_check = json.load(file)
         self.patterns_to_check = {word: value.get("search_rule") for word, value in self.words_to_check.items()}
         logging.info(f"Loaded {len(self.words_to_check)} rules.")
         self.signature = (
             "🤖 Bip bop, jestem bot. 🤖\n\n"
-            "Szukam najczęściej popełnianych błędów w internecie. "
+            "Szukam najczęściej popełnianych błędów w internecie: "
             "[2022](https://nadwyraz.com/blog-raport-100-najczesciej-popelnianych-bledow-w-internecie-w-2022), "
             "[2023](https://nadwyraz.com/blog-raport-50-najczesciej-popelnianych-bledow-w-internecie-w-2023)"
         )
@@ -75,7 +74,6 @@ class BotCommenter:
             f"\n* Niepoprawna forma: {content.incorrect_word}"
             f"\n* Poprawna forma: {content.correct_word}"
             f"\n* Wyjaśnienie: {content.explanation}"
-            f"\n* Poprawione zdanie: {content.corrected_sentence}"
         )
         return message
 
@@ -107,6 +105,7 @@ reddit = praw.Reddit(
 )
 
 bot_commenter = BotCommenter()
+openai_checker = OpenAIChecker()
 killer = GracefulKiller()
 
 logging.info("Scanning comments.")
@@ -125,7 +124,7 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
         start_index, end_index = bot_commenter.get_sentence_indexes(word=match, body=normalized_comment, limit=1)
         limited_body = bot_commenter.get_sentences(body=comment.body, start_index=start_index, end_index=end_index)
 
-        content = openai_word_checker(body=limited_body, word=keyword_found, extra_info=extra_info)
+        content = openai_checker.get_explanation(body=limited_body, word=keyword_found, extra_info=extra_info)
 
         if not content.is_correct:
             logging.info("Phrase used incorrectly. Replying!")
