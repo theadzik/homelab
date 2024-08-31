@@ -7,7 +7,7 @@ repos:
       - id: pretty-format-json
         args:
           - "--autofix"
-          - "--no-sort-keys"
+          - "--no-ensure-ascii"
       - id: end-of-file-fixer
       - id: trailing-whitespace
   - repo: https://github.com/adrienverge/yamllint

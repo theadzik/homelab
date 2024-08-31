@@ -1,0 +1,111 @@
+{
+  "co najmniej": {
+    "explanations": [
+      "Zgodnie z zasadami ortografii języka polskiego 'co najmniej' powinniśmy zapisywać osobno, oddzielając partykułę wzmacniającą 'co' od przysłówka 'najmniej'. Nakazuje to reguła mówiąca, że poszczególne człony wyrażenia zaimkowego, czyli połączenia zaimka i następującej po nim innej części mowy, piszemy rozdzielnie."
+    ],
+    "search_rule": "\\bconajmniej\\b"
+  },
+  "dlatego że": {
+    "explanations": [
+      "Poprawnym zapisem jest forma 'dlatego że', ponieważ jest to spójnik składający się z dwóch nierozłącznych spójników, które razem tworzą całość znaczeniową. 'Dlatego bo' jest niepoprawne ze względu na podkreślenie relacji przyczynowej, które wyraża zarówno 'dlatego', jak i 'bo', a więc są synonimami, zaś całe wyrażenie 'dlatego bo' jest pleonazmem. Warto zwrócić uwagę na umiejscowienie przecinka. Wyrażenia 'dlatego że' nie rozdziela się przecinkiem, ponieważ stawia się go przed całym spójnikiem lub pod zdaniu podrzędnym, które on wprowadza."
+    ],
+    "search_rule": "\\bdlatego([,]{0,1} bo|, ze)\\b"
+  },
+  "dzień dzisiejszy": {
+    "explanations": [
+      "Połączenie 'w dniu dzisiejszym' jest nacechowane oficjalnością i pojawić się może jedynie w tekstach oficjalnych i urzędowych, choć nie można zapomnieć, że słowniki poprawnej polszczyzny przestrzegają przed konstrukcją 'dzień dzisiejszy', która jest nadużywana właśnie w wypowiedziach utrzymanych w stylu oficjalnym i urzędowym. Przysłówki dzisiaj i dziś są wyrazami o znaczeniu neutralnym, są zatem poprawne w każdym tekście."
+    ],
+    "search_rule": "\\b(dniu|dzien) (dzisiejszy|jutrzejszy|wczorajszy)[m]{0,1}\\b"
+  },
+  "in vitro": {
+    "explanations": [
+      "'In vitro' wywodzi się z języka łacińskiego, gdzie dosłownie tłumaczone jest jako 'w szkle'. Składa się z przyimka 'in' oraz rzeczownika 'vitro', stąd polszczyzna przejęła zapis rozłączny."
+    ],
+    "search_rule": "\\bin[vw]itro\\b"
+  },
+  "na co dzień": {
+    "explanations": [
+      "Zapis rozłączny 'na co dzień' określa zasada konwencjonalna. Oznacza to, że przyjętej pisowni nie rozstrzyga ani wymowa, ani pochodzenie historyczne. Warto jednak zwrócić uwagę na budowę tego wyrażenia: 'na' jest przyimkiem, który bardzo często wchodzi w skład wyrażeń przyimkowych, jakie zawsze zapisujemy rozłącznie. Natomiast 'co dzień' należy do wyrażeń zaimkowych również pisanych rozłącznie. Zatem każdy element tej frazy musi zostać zapisany oddzielnie. Błędne 'nacodzień' wynika najpewniej z analogii do 'codziennie', jednak rozkład części mowy wskazuje, że są to trzy osobne wyrazy."
+    ],
+    "search_rule": "\\bna[ ]{0,1}codzien\\b"
+  },
+  "na pewno": {
+    "explanations": [
+      "Wyrażenie 'na pewno' wywodzi się od prasłowiańskiej formy przymiotnika rodzaju nijakiego 'pewno'. Zarówno w przypadku tego sformułowania, jak i podobnych: na lewo, na prawo, na okrągło, na nowo, obowiązuje pisownia rozdzielna."
+    ],
+    "search_rule": "\\bnapewno\\b"
+  },
+  "na prawdę": {
+    "explanations": [
+      "'Naprawdę' pisane łącznie to partykuła potwierdzająca, że to, o czym mowa, jest prawdą, lub wyrażenie zdziwienia, zaskoczenia, niedowierzania; wprawdzie, szczerze, dokładnie.",
+      "Zapis 'na prawdę' zastosujemy wyłącznie w przypadkach, gdy mowa o rzeczowniku 'prawda' w bierniku liczby pojedynczej ('prawdę') zestawionym z przyimkiem 'na'."
+    ],
+    "search_rule": "\\bna prawde\\b"
+  },
+  "na razie": {
+    "explanations": [
+      "Wyrażenie przyimkowe 'na razie', pełniące funkcje przysłówka, używamy w znaczeniu: tymczasem, teraz, jeszcze. Jest to również potoczna formuła pożegnalna. W obu powyższych znaczeniach poprawny jest rozdzielny zapis."
+    ],
+    "search_rule": "\\bnarazie\\b"
+  },
+  "naprzeciwko": {
+    "explanations": [
+      "Niegdyś 'naprzeciwko' było połączeniem przyimkowym. We współczesnej polszczyźnie funkcjonuje jako zrost wyrazów 'na' i 'przeciw'. Takie konstrukcje zawsze zapisywane są łącznie."
+    ],
+    "search_rule": "\\bna przeciwko\\b"
+  },
+  "nie wiem": {
+    "explanations": [
+      "Zgodnie z obowiązującymi w języku polskim zasadami ortograficznymi partykułę nie będącą wykładnikiem zaprzeczenia piszemy rozdzielnie przed czasownikami."
+    ],
+    "search_rule": "\\bniewiem\\b"
+  },
+  "poza tym": {
+    "explanations": [
+      "Zwrot 'poza tym' jest tak zwanym wyrażeniem przyimkowym. W języku polskim większość tych wyrażeń zapisujemy rozdzielnie."
+    ],
+    "search_rule": "\\b(po za tym|pozatym)\\b"
+  },
+  "sprzed": {
+    "explanations": [
+      "Przyimek 'spod' i przyimek 'sprzed' zawsze piszemy łącznie i przez 's-'. Nie ma takiego kontekstu, w których mogło by zostać uznane za poprawne napisanie 'z pod' lub 'z przed'. Od 1936 roku, czyli od czasu reformy ortografii, przyimki 'spod' i 'sprzed' są zrostami i należy je zapisywać łącznie."
+    ],
+    "search_rule": "\\bz[ ]{0,1}(przed|pod)\\b"
+  },
+  "szedłem": {
+    "explanations": [
+      "Formy 'szedłem', 'poszedłem', 'doszedłem' są zgodne z systemem gramatycznym polszczyzny, a formy 'szłem', 'poszłem', 'doszłem' są niepoprawne. Skoro mówimy: 'on szedł', na nie: on 'szł', to poprawnie mówimy i piszemy również: 'ja szedłem'."
+    ],
+    "search_rule": "\\b(do|wy|p(o|rzy)){0,1}szlem\\b"
+  },
+  "w ogóle": {
+    "explanations": [
+      "Wyrażenie przyimkowe 'w ogóle' piszemy rozdzielnie. Podobnie jak 'na ogół' i 'z ogółem'. Wszystkie bowiem pochodzą od rzeczownika 'ogół'."
+    ],
+    "search_rule": "\\bwog[ou]le\\b"
+  },
+  "wziąć": {
+    "explanations": [
+      "Jedyną dozwoloną jest 'wziąć'. W wielu przypadkach 'wziąść' tworzone jest przez podobieństwo do innych czasowników zakończonych na '-ść', takich jak: 'pójść' czy 'usiąść'. Aby ułatwić zapamiętanie tej formy, polecam skojarzenie z czasownikiem 'brać': 'wziąć', a nie 'wziąść', bo nie można czegoś 'braść'."
+    ],
+    "search_rule": "\\bwzia[sz]c\\b"
+  },
+  "z powrotem": {
+    "explanations": [
+      "Zgodnie z zasadami języka polskiego wyrażenie 'z powrotem' powinniśmy zapisać rozdzielnie z przyimkiem 'z'. Nietrudno w tym przypadku o pomyłkę. Część wyrażeń pisanych etymologicznie osobno (reguła obowiązywała do 1938 roku) zgodnie z obowiązującymi zasadami zapisuje się łączenie w takiej postaci: 'sponad' dawniej: 'z ponad' 'sprzed' dawniej: 'z przed'. Jednak wyrażenie 'z powrotem' nie zmieniło swojej formy."
+    ],
+    "search_rule": "\\b[sz]powrotem\\b"
+  },
+  "z rzędu": {
+    "explanations": [
+      "Wyrażenie przyimkowe 'pod rząd' traktowane jest jako kalka rosyjskiego 'подряд', a zatem polega na dokładnym odwzorowaniu obcej konstrukcji i przeniesieniu jej na rodzimy grunt. Mamy tu więc do czynienia z nieakceptowanym przez normatywistów zapożyczeniem strukturalnym. Wzorcowe odpowiedniki tego sformułowania to: 'z rzędu', 'po kolei', 'kolejno', 'jeden po drugim'."
+    ],
+    "search_rule": "\\bpod rzad\\b"
+  },
+  "złodziei": {
+    "explanations": [
+      "Prawidłowa pisownia tego rzeczownika to 'złodziei'. Błędny zapis wynika z analogii do reguły ortograficznej mówiącej, że po samogłoskach pisane jest 'j', oraz wymowy, gdzie 'j' jest wyraźnie słyszane ze względu na uproszczenia w artykulacji."
+    ],
+    "search_rule": "\\bzlodzieji\\b"
+  }
+}

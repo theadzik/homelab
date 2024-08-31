@@ -14,10 +14,10 @@ from openaihelper import openai_word_checker
 
 class BotCommenter:
     def __init__(self):
-        with open("wordlist.json", mode="r") as file:
+        with open(os.path.join(os.path.dirname(__file__), 'dictionary.json'), mode="r", encoding="utf-8") as file:
             self.words_to_check = json.load(file)
-        self.patterns_to_check = {word: r"\b" + word + r"\b" for word in self.words_to_check.keys()}
-
+        self.patterns_to_check = {word: value.get("search_rule") for word, value in self.words_to_check.items()}
+        logging.info(f"Loaded {len(self.words_to_check)} rules.")
         self.signature = (
             "🤖 Bip bop, jestem bot. 🤖\n\n"
             "Szukam najczęściej popełnianych błędów w internecie. "
@@ -35,7 +35,7 @@ class BotCommenter:
         return body
 
     def find_keywords(self, body: str) -> str:
-        for word in self.words_to_check:
+        for word in self.patterns_to_check.keys():
             if re.search(self.patterns_to_check.get(word), body):
                 logging.info(f"Found a comment with {word}!")
                 logging.info(REDDIT_BASE_URL + comment.permalink)
@@ -54,7 +54,7 @@ class BotCommenter:
         return message
 
     def get_extra_info(self, word: str) -> str:
-        return " ".join(self.words_to_check.get(word))
+        return " ".join(self.words_to_check.get(word).get("explanations"))
 
 
 load_dotenv()
@@ -95,7 +95,6 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
         if not content.is_correct:
             logging.info("Phrase used incorrectly. Replying!")
             response = bot_commenter.parse_reddt_comment(content)
-
             reply_comment = comment.reply(response)
             logging.info(REDDIT_BASE_URL + reply_comment.permalink)
         else:
