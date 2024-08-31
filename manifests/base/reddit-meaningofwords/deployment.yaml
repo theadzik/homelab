@@ -21,11 +21,19 @@ spec:
           envFrom:
             - secretRef:
                 name: reddit-meaningofwords-secret
+            - configMapRef:
+                name: reddit-meaningofwords-config
           volumeMounts:
             - mountPath: /tmp
               name: temp
             - mountPath: /nltk_data
               name: nltk-data
+            - name: dictionary
+              mountPath: "/reddit"
+              readOnly: true
+            - name: prompt
+              mountPath: "/reddit"
+              readOnly: true
           securityContext:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
@@ -38,3 +46,9 @@ spec:
           emptyDir: {}
         - name: nltk-data
           emptyDir: {}
+        - name: dictionary
+          configMap:
+            name: reddit-meaningofwords-dictionary
+        - name: prompt
+          configMap:
+            name: reddit-meaningofwords-prompt
