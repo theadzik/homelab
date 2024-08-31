@@ -16,6 +16,7 @@ from openaihelper import openai_word_checker
 
 class BotCommenter:
     def __init__(self):
+        # TODO: Load config file from mounted directory
         with open(os.path.join(os.path.dirname(__file__), 'dictionary.json'), mode="r", encoding="utf-8") as file:
             self.words_to_check = json.load(file)
         self.patterns_to_check = {word: value.get("search_rule") for word, value in self.words_to_check.items()}

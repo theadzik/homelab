@@ -20,6 +20,7 @@ class WordCheckerResponse(BaseModel):
 def openai_word_checker(word: str, body: str, extra_info: str = "") -> WordCheckerResponse:
     logging.debug(f"I got this body:\n{body}")
     prompt = [
+        # TODO: Move system prompt to config file
         {"role": "system",
          "content": "Podam ci wyrażenie w poprawnej lub błędnej formie.\n"
                     "Nastpęnie podam ci zasady języka polskiego dotyczące tego lub podobnych wyrażeń.\n"
@@ -28,8 +29,8 @@ def openai_word_checker(word: str, body: str, extra_info: str = "") -> WordCheck
                     "Wyjaśnij jakie zasady poprawnej pisowni dotyczną tego wyrażenia, "
                     "opierając się o zasady, które ci podam.\n"
                     "Podaj poprawną wersję zdania, które zawierało użyte wyrażenie. "
+                    "Pamiętaj o poprawnym użyciu przecinków. "
                     "Ogranicz się tylko do tego jednego zdania. "
-                    "Popraw wszystkie błędy występujące w tym zdaniu, włączając błędy interpunkcyjne."
          },
         {"role": "system", "content": f"<zasady języka>{extra_info}</zasady języka>"},
         {"role": "system", "content": f"<wyrażenie>{word}</wyrażenie>"},
