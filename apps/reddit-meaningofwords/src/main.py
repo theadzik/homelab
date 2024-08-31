@@ -8,6 +8,7 @@ import unicodedata
 
 import praw
 from dotenv import load_dotenv
+from graceful_shutdown import GracefulKiller
 from openaihelper import WordCheckerResponse
 from openaihelper import openai_word_checker
 
@@ -79,9 +80,12 @@ reddit = praw.Reddit(
 )
 
 bot_commenter = BotCommenter()
+killer = GracefulKiller()
 
 logging.info("Scanning comments.")
 for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
+    if killer.kill_now:
+        break
     normalized_comment = bot_commenter.normalize_comment(comment.body)
 
     if keyword_found := bot_commenter.find_keywords(body=normalized_comment):
@@ -100,3 +104,5 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
         else:
             logging.info("Phrase used correctly. Skipping.")
             logging.info(content)
+
+logging.info("Received kill signal. Shutting down.")
