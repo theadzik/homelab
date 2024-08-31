@@ -4,7 +4,10 @@ metadata:
   name: reddit-meaningofwords-config
 data:
   REDDIT_PROMPT_PATH: /reddit/prompt.txt
+  REDDIT_SIGNATURE_PATH: /reddit/signature.md
   REDDIT_DICTIONARY_PATH: /reddit/dictionary.json
+  REDDIT_SUBREDDITS: "polska+bydgoszcz+bytom+gdansk+krakow+lodz+poznan+szczecin+trojmiasto+warsaw+wroclaw+learnpolish+polskanaluzie+polskapolityka+polska_wpz"
+  LOG_LEVEL: INFO
 
 ---
 
@@ -132,3 +135,10 @@ data:
     Sprawdź czy podanym przeze mnie tekście zostanie użyta poprawna forma w zależności od kontekstu zdania.
     Wyjaśnij jaka forma powinna być użyta w i dlaczego.
     Możesz opierać się o zasady poprawnej pisowni, które ci podam, jak i o wiedzę którą zdobyłeś gdzie indziej.
+    Ogranicz wyjaśnienie do jednego akapitu.
+  signature.md: |
+    🤖 Bip bop, jestem bot. 🤖
+
+    Szukam najczęściej popełnianych błędów w internecie:
+    [2022](https://nadwyraz.com/blog-raport-100-najczesciej-popelnianych-bledow-w-internecie-w-2022),
+    [2023](https://nadwyraz.com/blog-raport-50-najczesciej-popelnianych-bledow-w-internecie-w-2023)

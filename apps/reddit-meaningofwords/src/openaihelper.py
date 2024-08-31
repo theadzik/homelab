@@ -21,7 +21,7 @@ class OpenAIChecker:
     def __init__(self):
         with open(os.getenv("REDDIT_PROMPT_PATH"), mode="r", encoding="utf-8") as file:
             self.prompt = file.read()
-            logging.info(f"Loaded prompt:\n{self.prompt}")
+            logging.debug(f"Loaded prompt:\n{self.prompt}")
 
     def get_explanation(self, word: str, body: str, extra_info: str = "") -> WordCheckerResponse:
         logging.debug(f"I got this body:\n{body}")
