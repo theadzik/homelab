@@ -6,6 +6,8 @@ metadata:
     app: reddit-meaningofwords
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: reddit-meaningofwords
@@ -21,11 +23,15 @@ spec:
           envFrom:
             - secretRef:
                 name: reddit-meaningofwords-secret
+            - configMapRef:
+                name: reddit-meaningofwords-config
           volumeMounts:
             - mountPath: /tmp
               name: temp
             - mountPath: /nltk_data
               name: nltk-data
+            - name: config-volume
+              mountPath: "/reddit"
           securityContext:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
@@ -38,3 +44,6 @@ spec:
           emptyDir: {}
         - name: nltk-data
           emptyDir: {}
+        - name: config-volume
+          configMap:
+            name: reddit-meaningofwords-files
