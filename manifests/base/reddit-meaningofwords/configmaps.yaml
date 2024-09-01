@@ -6,6 +6,6 @@ data:
   REDDIT_PROMPT_PATH: /reddit/prompt.txt
   REDDIT_SIGNATURE_PATH: /reddit/signature.md
   REDDIT_DICTIONARY_PATH: /reddit/dictionary.json
-  REDDIT_SUBREDDITS: "polska+bydgoszcz+bytom+gdansk+krakow+lodz+poznan+szczecin+trojmiasto+warsaw+wroclaw+learnpolish+polskanaluzie+polskapolityka+polska_wpz"
+  REDDIT_SUBREDDITS: "polska+bydgoszcz+bytom+gdansk+krakow+lodz+poznan+szczecin+trojmiasto+warsaw+wroclaw+polskanaluzie+polskapolityka+polska_wpz"
   LOG_LEVEL: INFO
   NLTK_DIRECTORY: /nltk_data
