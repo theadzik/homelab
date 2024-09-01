@@ -7,3 +7,10 @@ resources:
   - secret.yaml
   - deployment.yaml
   - nwp.yaml
+
+configMapGenerator:
+  - name: reddit-meaningofwords-files
+    files:
+      - configs/dictionary.json
+      - configs/prompt.txt
+      - configs/signature.md

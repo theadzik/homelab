@@ -84,10 +84,22 @@ class BotCommenter:
     def get_extra_info(self, word: str) -> str:
         return " ".join(self.words_to_check.get(word).get("explanations"))
 
+    def is_my_comment_chain(self, comment: praw.models.Comment) -> bool:
+        ancestor = comment
+        refresh_counter = 0
+        while not ancestor.is_root:
+            ancestor = ancestor.parent()
+            if ancestor.author == self.bot_name:
+                return True
+            if refresh_counter % 9 == 0:
+                ancestor.refresh()
+            refresh_counter += 1
+        return False
+
 
 load_dotenv()
 
-nltk.download('punkt_tab', download_dir="/nltk_data")
+nltk.download('punkt_tab', download_dir=os.getenv("NLTK_DIRECTORY"))
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)s: %(message)s',
@@ -121,6 +133,10 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
     if keyword_found:
         if comment.author.name == bot_commenter.bot_name:
             logging.info("It's my own comment! Skipping.")
+            continue
+
+        if bot_commenter.is_my_comment_chain(comment):
+            logging.info("It's a reply to my comment! Skipping")
             continue
 
         extra_info = bot_commenter.get_extra_info(keyword_found)
