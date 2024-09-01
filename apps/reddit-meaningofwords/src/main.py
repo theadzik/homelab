@@ -87,7 +87,7 @@ class BotCommenter:
 
 load_dotenv()
 
-nltk.download('punkt_tab', download_dir="/nltk_data")
+nltk.download('punkt_tab', download_dir=os.getenv("NLTK_DIRECTORY"))
 
 logging.basicConfig(
     format='%(asctime)s %(levelname)s: %(message)s',
