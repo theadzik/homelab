@@ -18,6 +18,19 @@ metadata:
 data:
   dictionary.json: |
     {
+      "a propos": {
+        "explanations": [
+          "'A propos' jest sformułowaniem, które wprowadzane jest do wypowiedzi w momencie, w którym coś sobie przypomnimy. To wtrącenie oznacza 'w związku z lub o czymś, na marginesie, przy okazji'. W polszczyźnie jest to również wyrażenie wprowadzające temat wypowiedzi.",
+          "Pisownię łączną wyjaśnia etymologia. Wyraz ten pochodzi z języka francuskiego, w którym oznacza wykrzyknienie 'O!'. W oryginalnej pisowni występuje również akcent nad samogłoską 'a' - 'à propos'. Natomiast błędny zapis 'apropo' wynika z francuskiej wymowy."
+        ],
+        "search_rule": "\\b(apropo(s|)|a propo)\\b"
+      },
+      "będę": {
+        "explanations": [
+          "'Będę' to czasownik w 1 osobie liczby pojedynczej. Pochodzi od bezokolicznika być. Oznacza trwanie, istnienie, obecność lub bycie w określonym miejscu. Poprawna forma zapisu to 'będę' z użyciem 'ę' w środku i na końcu wyrazu. Błędny zapis może wynikać z wymowy, w której 'ę' traci nosowość."
+        ],
+        "search_rule": "\\bbende\\b"
+      },
       "co najmniej": {
         "explanations": [
           "Zgodnie z zasadami ortografii języka polskiego 'co najmniej' powinniśmy zapisywać osobno, oddzielając partykułę wzmacniającą 'co' od przysłówka 'najmniej'. Nakazuje to reguła mówiąca, że poszczególne człony wyrażenia zaimkowego, czyli połączenia zaimka i następującej po nim innej części mowy, piszemy rozdzielnie."
@@ -30,6 +43,12 @@ data:
         ],
         "search_rule": "\\bdlatego[,]{0,1} bo\\b"
       },
+      "dopóki": {
+        "explanations": [
+          "'Dopóki' należy do wyrażeń przyimkowych, które we współczesnej polszczyźnie przekształciły się we zrosty. Takie konstrukcje, niezależnie od uwarunkowań historycznych, zapisuje się zawsze łącznie."
+        ],
+        "search_rule": "\\b(do p[ou]ki|dopuki)\\b"
+      },
       "dzień dzisiejszy": {
         "explanations": [
           "Połączenie 'w dniu dzisiejszym' jest nacechowane oficjalnością i pojawić się może jedynie w tekstach oficjalnych i urzędowych, choć nie można zapomnieć, że słowniki poprawnej polszczyzny przestrzegają przed konstrukcją 'dzień dzisiejszy', która jest nadużywana właśnie w wypowiedziach utrzymanych w stylu oficjalnym i urzędowym. Przysłówki dzisiaj i dziś są wyrazami o znaczeniu neutralnym, są zatem poprawne w każdym tekście."
@@ -41,6 +60,12 @@ data:
           "'In vitro' wywodzi się z języka łacińskiego, gdzie dosłownie tłumaczone jest jako 'w szkle'. Składa się z przyimka 'in' oraz rzeczownika 'vitro', stąd polszczyzna przejęła zapis rozłączny."
         ],
         "search_rule": "\\bin[vw]itro\\b"
+      },
+      "już": {
+        "explanations": [
+          "Poprawną pisownię wyjaśnia etymologia. Dzisiejsze 'już' jest skróconą formą staropolskiego 'juże', a więc zapis z użyciem 'ż' jest uwarunkowany historycznie."
+        ],
+        "search_rule": "\\bjusz\\b"
       },
       "na co dzień": {
         "explanations": [
@@ -72,7 +97,7 @@ data:
         "explanations": [
           "Niegdyś 'naprzeciwko' było połączeniem przyimkowym. We współczesnej polszczyźnie funkcjonuje jako zrost wyrazów 'na' i 'przeciw'. Takie konstrukcje zawsze zapisywane są łącznie."
         ],
-        "search_rule": "\\bna przeciwko\\b"
+        "search_rule": "\\bna przeciw(ko|)\\b"
       },
       "nie wiem": {
         "explanations": [
@@ -80,11 +105,30 @@ data:
         ],
         "search_rule": "\\bniewiem\\b"
       },
+      "notabene": {
+        "explanations": [
+          "'Notabene' zostało zapożyczone z języka łacińskiego (łac. 'nota bene') i dosłownie oznacza 'zauważ dobrze'.",
+          "Choć wyrażenie to zostało w całości przejęte z łaciny, to oryginalna pisownia została zmieniona decyzją Rady Języka Polskiego na zapis łączny, stąd poprawną formą jest 'notabene'."
+        ],
+        "search_rule": "\\bnota bene\\b"
+      },
+      "okres": {
+        "explanations": [
+          "'Okres czasu' jest formą niepoprawną, ponieważ wyrażenie to należy do pleonazmów, czyli 'masła maślanego', w którym oba człony oznaczają to samo. Okres, czyli czas trwania czegoś, odcinek, zatem nie ma potrzeby dodawania do niego określenia 'czas'."
+        ],
+        "search_rule": "\\bokres(|u|owi|em|ie) czasu\\b"
+      },
       "poza tym": {
         "explanations": [
           "Wyrażenie przyimkowe 'poza tym' - będące partykułą wprowadzającą nowe informacje do wypowiedzi – zapisujemy, rozdzielając przyimek 'poza' od zaimka wskazującego 'tym'. Niedopuszczalna jest zarówno pisownia rozdzielna przybierająca formę: 'po za tym', jak również pisownia łączna: 'pozatym' (wzorująca się zapisie wyrazu 'ponadto')."
         ],
         "search_rule": "\\b(po za tym|pozatym)\\b"
+      },
+      "rządzić": {
+        "explanations": [
+          "'Rządzić' to sprawować rządy, stać na czele, posiadać władzę, mieć wpływy. O 'rządzić' zapisywanym z użyciem 'rz' pisał już w 1927 roku Aleksander Brückner w Słowniku etymologicznym języka polskiego. Ponadto 'rządzić' było znane już w staropolszczyźnie pod postacią 'riad'. Oznacza to więc, że zapis z użyciem 'rz' jest motywowany historycznie."
+        ],
+        "search_rule": "\\bzadz(e|isz|i|imy|icie|a)\\b"
       },
       "sprzed": {
         "explanations": [
