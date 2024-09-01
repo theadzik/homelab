@@ -116,12 +116,6 @@ data:
         ],
         "search_rule": "\\b[sz]powrotem\\b"
       },
-      "z rzędu": {
-        "explanations": [
-          "Wyrażenie przyimkowe 'pod rząd' traktowane jest jako kalka rosyjskiego 'подряд', a zatem polega na dokładnym odwzorowaniu obcej konstrukcji i przeniesieniu jej na rodzimy grunt. Mamy tu więc do czynienia z nieakceptowanym przez normatywistów zapożyczeniem strukturalnym. Wzorcowe odpowiedniki tego sformułowania to: 'z rzędu', 'po kolei', 'kolejno', 'jeden po drugim'."
-        ],
-        "search_rule": "\\bpod rzad\\b"
-      },
       "złodziei": {
         "explanations": [
           "Prawidłowa pisownia tego rzeczownika to 'złodziei'. Błędny zapis wynika z analogii do reguły ortograficznej mówiącej, że po samogłoskach pisane jest 'j', oraz wymowy, gdzie 'j' jest wyraźnie słyszane ze względu na uproszczenia w artykulacji."
