@@ -28,7 +28,7 @@ class OpenAIChecker:
         logging.debug(f"I got this body:\n{body}")
         prompt = [
             {"role": "system", "content": self.prompt},
-            {"role": "system", "content": f"<zasady języka>{extra_info}</zasady języka>"},
+            {"role": "system", "content": f"<zasady>{extra_info}</zasady>"},
             {"role": "system", "content": f"<wyrażenie>{word}</wyrażenie>"},
             {"role": "user", "content": body}
         ]

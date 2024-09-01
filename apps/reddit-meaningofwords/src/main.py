@@ -136,7 +136,7 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
             continue
 
         if bot_commenter.is_my_comment_chain(comment):
-            logging.info("It's a reply to my comment! Skipping")
+            logging.info("It's a reply to my comment! Skipping.")
             continue
 
         extra_info = bot_commenter.get_extra_info(keyword_found)
