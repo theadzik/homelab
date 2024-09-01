@@ -82,7 +82,7 @@ data:
       },
       "poza tym": {
         "explanations": [
-          "Zwrot 'poza tym' jest tak zwanym wyrażeniem przyimkowym. W języku polskim większość tych wyrażeń zapisujemy rozdzielnie."
+          "Wyrażenie przyimkowe 'poza tym' - będące partykułą wprowadzającą nowe informacje do wypowiedzi – zapisujemy, rozdzielając przyimek 'poza' od zaimka wskazującego 'tym'. Niedopuszczalna jest zarówno pisownia rozdzielna przybierająca formę: 'po za tym', jak również pisownia łączna: 'pozatym' (wzorująca się zapisie wyrazu 'ponadto')."
         ],
         "search_rule": "\\b(po za tym|pozatym)\\b"
       },
