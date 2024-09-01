@@ -107,8 +107,7 @@ data:
       },
       "notabene": {
         "explanations": [
-          "'Notabene' zostało zapożyczone z języka łacińskiego (łac. 'nota bene') i dosłownie oznacza 'zauważ dobrze'.",
-          "Choć wyrażenie to zostało w całości przejęte z łaciny, to oryginalna pisownia została zmieniona decyzją Rady Języka Polskiego na zapis łączny, stąd poprawną formą jest 'notabene'."
+          "'Notabene' to w języku polskim wyraz wtrącony w tekst zdania, który poprzedza dodatkową, ale ważną informację. Chociaż jego pisownia w języku łacińskim była oddzielna – 'nota bene', czyli 'zauważ dobrze', w polszczyźnie od wielu lat obowiązuje zapis łączny. Wyrażenie to jest bowiem traktowane jako wyraz złożony."
         ],
         "search_rule": "\\bnota bene\\b"
       },
