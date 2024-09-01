@@ -36,6 +36,7 @@ class BotCommenter:
 
     def find_keywords(self, body: str) -> (str, str):
         for word in self.patterns_to_check.keys():
+            logging.debug(f"Looking for {word}")
             if match := re.search(self.patterns_to_check.get(word), body):
                 logging.info(f"Found a comment with {word}!")
                 logging.info(REDDIT_BASE_URL + comment.permalink)
@@ -63,8 +64,10 @@ class BotCommenter:
         """We assume that sent_tokenize will always return the same indexes for
         normalized and non-normalized text.
         """
-        sentences = nltk.tokenize.sent_tokenize(body, language="polish")
-        return " ".join(sentences[start_index:end_index])
+        all_sentences = nltk.tokenize.sent_tokenize(body, language="polish")
+        relevant_sentences = " ".join(all_sentences[start_index:end_index])
+        logging.debug(f"Found relevant sentences:\n{relevant_sentences}")
+        return relevant_sentences
 
     def parse_reddt_comment(self, content: WordCheckerResponse) -> str:
         explanation = content.explanation.replace("\n\n", "\n\n  ")
@@ -111,6 +114,7 @@ killer = GracefulKiller()
 
 logging.info("Scanning comments.")
 for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
+    logging.debug(f"Found comment: {comment.permalink}")
     normalized_comment = bot_commenter.normalize_comment(comment.body)
 
     keyword_found, match = bot_commenter.find_keywords(body=normalized_comment)
