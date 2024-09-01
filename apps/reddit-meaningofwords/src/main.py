@@ -67,11 +67,13 @@ class BotCommenter:
         return " ".join(sentences[start_index:end_index])
 
     def parse_reddt_comment(self, content: WordCheckerResponse) -> str:
+        explanation = content.explanation.replace("\n\n", "\n\n  ")
+
         message = (
             f"{self.signature}"
             f"\n* Niepoprawna forma: {content.incorrect_word}"
             f"\n* Poprawna forma: {content.correct_word}"
-            f"\n* Wyjaśnienie: {content.explanation}"
+            f"\n* Wyjaśnienie: {explanation}"
             f"\n* Poprawione zdanie: {content.corrected_sentence}"
         )
         return message
