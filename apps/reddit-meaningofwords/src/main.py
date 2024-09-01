@@ -72,6 +72,7 @@ class BotCommenter:
             f"\n* Niepoprawna forma: {content.incorrect_word}"
             f"\n* Poprawna forma: {content.correct_word}"
             f"\n* Wyjaśnienie: {content.explanation}"
+            f"\n* Poprawione zdanie: {content.corrected_sentence}"
         )
         return message
 

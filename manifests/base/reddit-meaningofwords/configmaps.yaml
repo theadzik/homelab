@@ -26,9 +26,9 @@ data:
       },
       "dlatego że": {
         "explanations": [
-          "Poprawnym zapisem jest forma 'dlatego że', ponieważ jest to spójnik składający się z dwóch nierozłącznych spójników, które razem tworzą całość znaczeniową. 'Dlatego bo' jest niepoprawne ze względu na podkreślenie relacji przyczynowej, które wyraża zarówno 'dlatego', jak i 'bo', a więc są synonimami, zaś całe wyrażenie 'dlatego bo' jest pleonazmem (czyli na przykład jak 'masło maślane'). Przecinek umieszczamy najczęściej przed całym spójnikiem złożonym 'dlatego że'. Spójnik ten - złożony z dwóch wyrazów, z których żadnego nie można usunąć ani zastąpić innym – wprowadza zdania podrzędne przyczynowe. Na przykład: 'Zabrała ze sobą kota na ferie, dlatego że nie potrafi już się z nim rozstać'. Przesuwamy przecinek, wstawiając go pomiędzy 'dlatego' a 'że', tylko wtedy, gdy kładziemy specjalny nacisk na 'dlatego', na przykład: 'Zabrała ze sobą kota na ferie dlatego, że nie potrafi już się z nim rozstać, a nie dlatego, że bała się go z tobą zostawić'"
+          "Poprawnym zapisem jest forma 'dlatego że', ponieważ jest to spójnik składający się z dwóch nierozłącznych spójników, które razem tworzą całość znaczeniową. 'Dlatego bo' jest niepoprawne ze względu na podkreślenie relacji przyczynowej, które wyraża zarówno 'dlatego', jak i 'bo', a więc są synonimami, zaś całe wyrażenie 'dlatego bo' jest pleonazmem (czyli na przykład jak 'masło maślane'). Przecinek umieszczamy najczęściej przed całym spójnikiem złożonym 'dlatego że'."
         ],
-        "search_rule": "\\bdlatego([,]{0,1} bo|, ze)\\b"
+        "search_rule": "\\bdlatego[,]{0,1} bo\\b"
       },
       "dzień dzisiejszy": {
         "explanations": [
@@ -130,12 +130,13 @@ data:
       }
     }
   prompt.txt: |
+    Wciel się w rolę językoznawcy języka polskiego.
     Podam ci wyrażenie w poprawnej lub błędnej formie.
-    Nastpęnie podam ci zasady języka polskiego dotyczące tego lub podobnych wyrażeń.
-    Sprawdź czy podanym przeze mnie tekście zostanie użyta poprawna forma w zależności od kontekstu zdania.
-    Wyjaśnij jaka forma powinna być użyta w i dlaczego.
-    Możesz opierać się o zasady poprawnej pisowni, które ci podam, jak i o wiedzę którą zdobyłeś gdzie indziej.
+    Nastpęnie podam ci zasady pisowni dotyczące tego lub podobnych wyrażeń.
+    Sprawdź czy podanym przeze mnie tekście zostanie użyta poprawna forma wyrażenia.
+    Wyjaśnij jakie zasady poprawnej pisowni dotyczną tego wyrażenia, opierając się o zasady, które ci podam.
     Ogranicz wyjaśnienie do jednego akapitu.
+    Na koniec podaj poprawną wersję zdania.
   signature.md: |
     🤖 Bip bop, jestem bot. 🤖
 

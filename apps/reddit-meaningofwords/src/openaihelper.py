@@ -15,6 +15,7 @@ class WordCheckerResponse(BaseModel):
     is_correct: bool
     correct_word: str
     incorrect_word: str
+    corrected_sentence: str
 
 
 class OpenAIChecker:
