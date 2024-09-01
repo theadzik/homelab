@@ -106,7 +106,8 @@
   },
   "rządzić": {
     "explanations": [
-      "'Rządzić' to sprawować rządy, stać na czele, posiadać władzę, mieć wpływy. O 'rządzić' zapisywanym z użyciem 'rz' pisał już w 1927 roku Aleksander Brückner w Słowniku etymologicznym języka polskiego. Ponadto 'rządzić' było znane już w staropolszczyźnie pod postacią 'riad'. Oznacza to więc, że zapis z użyciem 'rz' jest motywowany historycznie."
+      "'Rządzić' to sprawować rządy, stać na czele, posiadać władzę, mieć wpływy. O 'rządzić' zapisywanym z użyciem 'rz' pisał już w 1927 roku Aleksander Brückner w Słowniku etymologicznym języka polskiego. Ponadto 'rządzić' było znane już w staropolszczyźnie pod postacią 'riad'. Oznacza to więc, że zapis z użyciem 'rz' jest motywowany historycznie.",
+      "'Żądza' pisana przez 'ż' jest rzeczownikiem oznaczającym niepohamowane pragnienie posiadania lub doznawania czegoś lub silny pociąg fizyczny."
     ],
     "search_rule": "\\bzadz(e|isz|i|imy|icie|a)\\b"
   },
