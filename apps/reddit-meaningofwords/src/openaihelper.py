@@ -19,17 +19,14 @@ class WordCheckerResponse(BaseModel):
 
 
 class OpenAIChecker:
-    def __init__(self, experimental: bool = False):
+    def __init__(self):
         with open(os.getenv("REDDIT_PROMPT_PATH"), mode="r", encoding="utf-8") as file:
             self.prompt = file.read()
             logging.debug(f"Loaded prompt:\n{self.prompt}")
 
-        self.experimental = experimental
-
-        if experimental:
-            self.presence_penalty = float(os.getenv("OPEN_AI_PRESENCE_PENALTY", 0))
-            self.frequency_penalty = float(os.getenv("OPEN_AI_FREQUENCY_PENALTY", 0))
-            self.temperature = float(os.getenv("OPEN_AI_TEMPERATURE", 1))
+        self.presence_penalty = float(os.getenv("OPEN_AI_PRESENCE_PENALTY", 0))
+        self.frequency_penalty = float(os.getenv("OPEN_AI_FREQUENCY_PENALTY", 0))
+        self.temperature = float(os.getenv("OPEN_AI_TEMPERATURE", 1))
 
     def get_explanation(self, word: str, body: str, extra_info: str = "") -> WordCheckerResponse:
         logging.debug(f"I got this body:\n{body}")
@@ -51,6 +48,6 @@ class OpenAIChecker:
         )
 
         content = chat_completion.choices[0].message.parsed
-        logging.info(f"Experimental: {self.experimental}\n{content}")
+        logging.info(content)
 
         return content
