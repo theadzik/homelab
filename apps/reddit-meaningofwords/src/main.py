@@ -145,6 +145,12 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
 
         content = openai_checker.get_explanation(body=limited_body, word=keyword_found, extra_info=extra_info)
 
+        if os.getenv("OPEN_AI_EXPERIMENTAL", False):
+            experimental_openai_checker = OpenAIChecker(experimental=True)
+            _ = experimental_openai_checker.get_explanation(
+                body=limited_body, word=keyword_found, extra_info=extra_info
+            )
+
         if not content.is_correct:
             logging.info("Phrase used incorrectly. Replying!")
             response = bot_commenter.parse_reddt_comment(content)
