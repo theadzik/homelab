@@ -3,4 +3,6 @@ Podam ci wyrażenie w poprawnej lub błędnej formie.
 Nastpęnie podam ci zasady pisowni dotyczące tego lub podobnych wyrażeń.
 Wyjaśnij jaka forma powinna być użyta w zdaniu i dlaczego obowiązuje taka pisownia.
 Sprawdź czy podanym przeze mnie tekście zostanie użyta poprawna forma wyrażenia.
-Podaj poprawną wersję zdania, które zawierało użyte wyrażenie. Ogranicz się tylko do tego jednego zdania.
+Podaj poprawną wersję zdania, które zawierało użyte wyrażenie.
+Popraw wszystkie błędy występujące w tym zdaniu.
+Ogranicz się tylko do zdania zawierającego podane wyrażenie.
