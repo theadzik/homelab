@@ -120,12 +120,11 @@ reddit = praw.Reddit(
     user_agent=USER_AGENT,
 )
 
-bot_commenter = BotCommenter()
-openai_checker = OpenAIChecker()
 killer = GracefulKiller()
 
 logging.info("Scanning comments.")
 for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
+    bot_commenter = BotCommenter()
     logging.debug(f"Found comment: {comment.permalink}")
     normalized_comment = bot_commenter.normalize_comment(comment.body)
 
@@ -143,6 +142,7 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
         start_index, end_index = bot_commenter.get_sentence_indexes(word=match, body=normalized_comment, limit=1)
         limited_body = bot_commenter.get_sentences(body=comment.body, start_index=start_index, end_index=end_index)
 
+        openai_checker = OpenAIChecker()
         content = openai_checker.get_explanation(body=limited_body, word=keyword_found, extra_info=extra_info)
 
         if not content.is_correct:

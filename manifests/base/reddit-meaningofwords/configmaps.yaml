@@ -9,3 +9,6 @@ data:
   REDDIT_SUBREDDITS: "polska+bydgoszcz+bytom+gdansk+krakow+lodz+poznan+szczecin+trojmiasto+warsaw+wroclaw+polskanaluzie+polskapolityka+polska_wpz"
   LOG_LEVEL: INFO
   NLTK_DIRECTORY: /nltk_data
+  OPENAI_FREQUENCY_PENALTY: "0.1"
+  OPENAI_PRESENCE_PENALTY: "0"
+  OPENAI_TEMPERATURE: "1"

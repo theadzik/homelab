@@ -28,9 +28,10 @@
   },
   "dlatego że": {
     "explanations": [
-      "Poprawnym zapisem jest forma 'dlatego że', ponieważ jest to spójnik składający się z dwóch nierozłącznych spójników, które razem tworzą całość znaczeniową.",
-      "'Dlatego bo' jest niepoprawne ze względu na podkreślenie relacji przyczynowej, które wyraża zarówno 'dlatego', jak i 'bo', a więc są synonimami, zaś całe wyrażenie 'dlatego bo' jest pleonazmem (czyli na przykład jak 'masło maślane').",
-      "Przecinek umieszczamy najczęściej przed całym spójnikiem złożonym 'dlatego że', ale nie zawsze."
+      "'Dlatego bo' jest niepoprawne ze względu na podkreślenie relacji przyczynowej, które wyraża zarówno 'dlatego', jak i 'bo', a więc są synonimami, zaś całe wyrażenie 'dlatego bo' jest pleonazmem.",
+      "'dlatego' – wyraz zapowiadający zdanie składowe (podrzędne przyczynowe), wyjaśniające sytuację opisaną w zdaniu głównym. Stawiamy przecinek po 'dlatego', a przed 'że'.",
+      "'dlatego że' – połączenie wyrazów wprowadzające zdanie składowe (podrzędne przyczynowe), wyjaśniające sytuację opisaną w zdaniu głównym. Przecinek stawiamy przed całym wyrażeniem 'dlatego że'.",
+      "Na przykład: 'Zajęła się wolontariatem, dlatego że chciała pomagać ludziom', i 'Zajęła się wolontariatem dlatego, że chciała pomagać ludziom, a nie dlatego, że ją proszono'."
     ],
     "search_rule": "\\bdlatego[,]{0,1} bo\\b"
   },

@@ -24,6 +24,10 @@ class OpenAIChecker:
             self.prompt = file.read()
             logging.debug(f"Loaded prompt:\n{self.prompt}")
 
+        self.presence_penalty = float(os.getenv("OPEN_AI_PRESENCE_PENALTY", 0))
+        self.frequency_penalty = float(os.getenv("OPEN_AI_FREQUENCY_PENALTY", 0))
+        self.temperature = float(os.getenv("OPEN_AI_TEMPERATURE", 1))
+
     def get_explanation(self, word: str, body: str, extra_info: str = "") -> WordCheckerResponse:
         logging.debug(f"I got this body:\n{body}")
         prompt = [
@@ -37,7 +41,10 @@ class OpenAIChecker:
             model="gpt-4o-2024-08-06",
             max_tokens=256,
             response_format=WordCheckerResponse,
-            messages=prompt
+            messages=prompt,
+            presence_penalty=self.presence_penalty,
+            frequency_penalty=self.frequency_penalty,
+            temperature=self.temperature,
         )
 
         content = chat_completion.choices[0].message.parsed
