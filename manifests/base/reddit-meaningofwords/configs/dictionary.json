@@ -44,8 +44,8 @@
   },
   "dzień dzisiejszy": {
     "explanations": [
-      "Połączenie 'w dniu dzisiejszym' jest nacechowane oficjalnością i pojawić się może jedynie w tekstach oficjalnych i urzędowych",
-      "Nie można zapomnieć, że słowniki poprawnej polszczyzny przestrzegają przed konstrukcją 'dzień dzisiejszy', która jest nadużywana w wypowiedziach utrzymanych w stylu oficjalnym i urzędowym.",
+      "Połączenie 'w dniu dzisiejszym' jest nacechowane oficjalnością i pojawić się może jedynie w tekstach oficjalnych i urzędowych, w mowie potocznej jest niedopuszczalne.",
+      "Słowniki poprawnej polszczyzny przestrzegają przed konstrukcją 'dzień dzisiejszy', która jest nadużywana w wypowiedziach utrzymanych w stylu oficjalnym i urzędowym, powinna więc być unikana.",
       "Przysłówki dzisiaj i dziś są wyrazami o znaczeniu neutralnym, są zatem poprawne w każdym tekście."
     ],
     "search_rule": "\\b(dniu|dzien) (dzisiejszy|jutrzejszy|wczorajszy)[m]{0,1}\\b"
