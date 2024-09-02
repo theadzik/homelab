@@ -23,7 +23,7 @@ class BotCommenter:
             self.words_to_check = json.load(file)
 
         self.patterns_to_check = {word: value.get("search_rule") for word, value in self.words_to_check.items()}
-        logging.info(f"Loaded {len(self.words_to_check)} rules.")
+        logging.debug(f"Loaded {len(self.words_to_check)} rules.")
         self.bot_name = os.getenv("REDDIT_USERNAME")
 
     @staticmethod
@@ -110,7 +110,7 @@ logging.basicConfig(
 REDDIT_BASE_URL = "https://reddit.com"
 SUBREDDITS = os.getenv("REDDIT_SUBREDDITS", "polska")
 
-USER_AGENT = f"linux:meaning-of-words:{os.environ.get('APP_VERSION')} (by u/MalinowyChlopak)"
+USER_AGENT = f"linux:{os.getenv('REDDIT_USERNAME')}:{os.environ.get('APP_VERSION')} (by u/MalinowyChlopak)"
 
 reddit = praw.Reddit(
     client_id=os.getenv("REDDIT_CLIENT_ID"),
@@ -122,6 +122,7 @@ reddit = praw.Reddit(
 
 killer = GracefulKiller()
 
+logging.info(f"User-Agent: {USER_AGENT}")
 logging.info("Scanning comments.")
 for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
     bot_commenter = BotCommenter()
