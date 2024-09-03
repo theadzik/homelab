@@ -8,6 +8,9 @@ resources:
   - deployment.yaml
   - nwp.yaml
 
+# Pod automatically loads new files, no need to restart it by adding hash to the name
+generatorOptions:
+  disableNameSuffixHash: true
 configMapGenerator:
   - name: reddit-meaningofwords-files
     files:

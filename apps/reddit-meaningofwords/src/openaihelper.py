@@ -1,13 +1,13 @@
 import logging
 import os
 
+import openai
 from dotenv import load_dotenv
-from openai import OpenAI
 from pydantic import BaseModel
 
 load_dotenv()
 
-client = OpenAI()
+client = openai.OpenAI()
 
 
 class WordCheckerResponse(BaseModel):
@@ -36,16 +36,29 @@ class OpenAIChecker:
             {"role": "system", "content": f"<wyrażenie>{word}</wyrażenie>"},
             {"role": "user", "content": body}
         ]
-
-        chat_completion = client.beta.chat.completions.parse(
-            model="gpt-4o-2024-08-06",
-            max_tokens=256,
-            response_format=WordCheckerResponse,
-            messages=prompt,
-            presence_penalty=self.presence_penalty,
-            frequency_penalty=self.frequency_penalty,
-            temperature=self.temperature,
-        )
+        try:
+            chat_completion = client.beta.chat.completions.parse(
+                model="gpt-4o-2024-08-06",
+                max_tokens=256,
+                response_format=WordCheckerResponse,
+                messages=prompt,
+                presence_penalty=self.presence_penalty,
+                frequency_penalty=self.frequency_penalty,
+                temperature=self.temperature,
+            )
+        except openai.LengthFinishReasonError as e:
+            logging.error("Generated response was too long!")
+            logging.error(e)
+            logging.info("Retrying with higher limit.")
+            chat_completion = client.beta.chat.completions.parse(
+                model="gpt-4o-2024-08-06",
+                max_tokens=512,
+                response_format=WordCheckerResponse,
+                messages=prompt,
+                presence_penalty=self.presence_penalty,
+                frequency_penalty=self.frequency_penalty,
+                temperature=self.temperature,
+            )
 
         content = chat_completion.choices[0].message.parsed
         logging.info(content)

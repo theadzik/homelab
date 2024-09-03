@@ -124,7 +124,9 @@ killer = GracefulKiller()
 
 logging.info(f"User-Agent: {USER_AGENT}")
 logging.info("Scanning comments.")
+
 for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
+    # Initializing on every loop to reload dictionary without restarting.
     bot_commenter = BotCommenter()
     logging.debug(f"Found comment: {comment.permalink}")
     normalized_comment = bot_commenter.normalize_comment(comment.body)
@@ -143,6 +145,7 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
         start_index, end_index = bot_commenter.get_sentence_indexes(word=match, body=normalized_comment, limit=1)
         limited_body = bot_commenter.get_sentences(body=comment.body, start_index=start_index, end_index=end_index)
 
+        # Initializing every time to update prompts without restarting.
         openai_checker = OpenAIChecker()
         content = openai_checker.get_explanation(body=limited_body, word=keyword_found, extra_info=extra_info)
 
