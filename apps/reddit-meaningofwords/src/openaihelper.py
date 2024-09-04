@@ -13,9 +13,8 @@ client = openai.OpenAI()
 class WordCheckerResponse(BaseModel):
     explanation: str
     is_correct: bool
+    used_word: str
     correct_word: str
-    incorrect_word: str
-    corrected_sentence: str
 
 
 class OpenAIChecker:
