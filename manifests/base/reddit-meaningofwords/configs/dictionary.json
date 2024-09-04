@@ -1,12 +1,13 @@
 {
-  "a propos": {
+  "à propos": {
     "explanations": [
-      "'A propos' jest sformułowaniem, które wprowadzane jest do wypowiedzi w momencie, w którym coś sobie przypomnimy.",
+      "'À propos' jest sformułowaniem, które wprowadzane jest do wypowiedzi w momencie, w którym coś sobie przypomnimy.",
       "To wtrącenie oznacza 'w związku z lub o czymś, na marginesie, przy okazji'.",
       "W polszczyźnie jest to również wyrażenie wprowadzające temat wypowiedzi.",
-      "Pisownię łączną wyjaśnia etymologia. Wyraz ten pochodzi z języka francuskiego, w którym oznacza wykrzyknienie 'O!'.",
+      "Wyraz ten pochodzi z języka francuskiego, w którym oznacza wykrzyknienie 'O!'.",
       "W oryginalnej pisowni występuje również akcent nad samogłoską 'a' - 'à propos'.",
-      "Natomiast błędny zapis 'apropo' wynika z francuskiej wymowy."
+      "Tylko taka pisownia, czyli przyswojona bezpośrednio z języka francuskiego, jest uznawana za poprawną (i notowaną przez słowniki). Pozostałe formy są błędne.",
+      "'a propo' i 'apropo' to zapisy fonetyczne i wynikają z francuskiej wymowy."
     ],
     "search_rule": "\\b(apropo(s|)|a propo)\\b"
   },
@@ -76,17 +77,10 @@
   "na pewno": {
     "explanations": [
       "Wyrażenie 'na pewno' wywodzi się od prasłowiańskiej formy przymiotnika rodzaju nijakiego 'pewno'.",
-      "Zarówno w przypadku tego sformułowania, jak i podobnych: na lewo, na prawo, na okrągło, na nowo, obowiązuje pisownia rozdzielna."
+      "Zarówno w przypadku tego sformułowania, jak i podobnych: na lewo, na prawo, na okrągło, na nowo, obowiązuje pisownia rozdzielna.",
+      "'Na pewno' należy do grupy wyrażeń przyimkowych, czyli takich połączeń przyimków z rzeczownikami, przysłówkami, liczebnikami lub zaimkami, które w języku polskim piszemy rozdzielnie."
     ],
     "search_rule": "\\bnapewno\\b"
-  },
-  "na prawdę": {
-    "explanations": [
-      "'Naprawdę' pisane łącznie to partykuła, za pomocą której możemy kogoś przekonać, że mamy rację, i potwierdzić prawdziwość tego, co mówimy, np. 'Naprawdę byłam wczoraj w domu i nigdzie nie wychodziłam'",
-      "Przy użyciu 'naprawdę' możemy także wyrazić niedowierzanie lub zdziwienie, np. 'Nie wierzę, że naprawdę to powiedziałaś.'",
-      "Zapis 'na prawdę' zastosujemy wyłącznie w przypadkach, gdy mowa o rzeczowniku 'prawda' w bierniku liczby pojedynczej ('prawdę') zestawionym z przyimkiem 'na'."
-    ],
-    "search_rule": "\\bna prawde\\b"
   },
   "na razie": {
     "explanations": [
@@ -95,6 +89,14 @@
       "W obu powyższych znaczeniach poprawny jest rozdzielny zapis."
     ],
     "search_rule": "\\bnarazie\\b"
+  },
+  "naprawdę": {
+    "explanations": [
+      "'Naprawdę' pisane łącznie to partykuła potwierdzająca, że to, o czym mowa, jest prawdą, lub wyrażenie zdziwienia, zaskoczenia, niedowierzania; wprawdzie, szczerze, dokładnie.",
+      "Zapis 'na prawdę' zastosujemy wyłącznie w przypadkach, gdy mowa o rzeczowniku 'prawda' w bierniku liczby pojedynczej ('prawdę') zestawionym z przyimkiem 'na'.",
+      "Na przykład 'Słyszę od niej same kłamstwa, więc tym razem liczę na prawdę.'"
+    ],
+    "search_rule": "\\bna prawde\\b"
   },
   "naprzeciwko": {
     "explanations": [
@@ -135,7 +137,6 @@
   "rządzić": {
     "explanations": [
       "'Rządzić' to sprawować rządy, stać na czele, posiadać władzę, mieć wpływy.",
-      "O 'rządzić' zapisywanym z użyciem 'rz' pisał już w 1927 roku Aleksander Brückner w Słowniku etymologicznym języka polskiego.",
       "Ponadto 'rządzić' było znane już w staropolszczyźnie pod postacią 'riad'.",
       "Oznacza to więc, że zapis z użyciem 'rz' jest motywowany historycznie.",
       "'Żądza' pisana przez 'ż' jest rzeczownikiem oznaczającym niepohamowane pragnienie posiadania lub doznawania czegoś lub silny pociąg fizyczny."

@@ -1,9 +1,10 @@
-Wciel się w rolę językoznawcy języka polskiego.
-Podam ci wyrażenie, które mnie interesuje i chciałbym, żebyś sprawdził, czy użyłem go poprawnie w zdaniu.
-Dla ułatwienia podam ci też zasady pisowni dotyczące tego lub podobnych wyrażeń.
+Wciel się w rolę językoznawcy języka polskiego, który sprawdza pisownię wypowiedzi pewnej osoby.
+Podam ci wyrażenie, które mnie interesuje.
 Możliwe, że podam ci więcej niż jedno zdanie, żebyś lepiej zrozumiał kontekst, ale interesuje mnie tylko zdanie, które zawiera wskazane wyrażenie.
-Wyjaśnij jaka forma powinna być użyta w zdaniu i dlaczego obowiązuje taka pisownia.
-Chciałbym zrozumieć powód takiej pisowni, więc wolałbym, żebyś mi to wytłumaczył, zamiast po prostu wymieniać formy niedopuszczalne i prawidłowe.
+Dla ułatwienia podam ci też zasady pisowni dotyczące tego lub podobnych wyrażeń.
+Wyjaśnij jaka forma wyrażenia powinna być użyta w tym zdaniu i dlaczego obowiązuje taka pisownia.
+Wytłumacz poprawną pisownię w taki sposób, aby przeciętna osoba, która może nie znać wszystkich nazw części mowy, ją zrozumiała i zapamiętała.
 Ogranicz wyjaśnienie do maksymalnie czterech zdań.
-Podaj poprawną wersję zdania, które zawierało użyte wyrażenie.
-Pamiętaj, żeby poprawić wszystkie błędy ortograficzne, interpunkcyjne i stylistyczne występujące w tym zdaniu, ale w wyjaśnieniu skup się tylko na podanym wyrażeniu.
+Sprawdź, czy wskazane wyrażenie zostało użyte zgodnie z zasadami w zdaniu, w którym występuje.
+Podaj poprawną wersję zdania (tylko tego zdania), które zawierało użyte wyrażenie.
+Pamiętaj, żeby poprawić wszystkie błędy językowe w tym zdaniu, ale w wyjaśnieniu skup się tylko na podanym wyrażeniu.
