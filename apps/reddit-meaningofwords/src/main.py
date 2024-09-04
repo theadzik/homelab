@@ -70,6 +70,7 @@ class BotCommenter:
         return relevant_sentences
 
     def parse_reddt_comment(self, content: WordCheckerResponse) -> str:
+        # Add two spaces in front of the new paragraph to continue under the same bullet point.
         explanation = content.explanation.replace("\n\n", "\n\n  ")
 
         message = (

@@ -1,16 +1,4 @@
 {
-  "à propos": {
-    "explanations": [
-      "'À propos' jest sformułowaniem, które wprowadzane jest do wypowiedzi w momencie, w którym coś sobie przypomnimy.",
-      "To wtrącenie oznacza 'w związku z lub o czymś, na marginesie, przy okazji'.",
-      "W polszczyźnie jest to również wyrażenie wprowadzające temat wypowiedzi.",
-      "Wyraz ten pochodzi z języka francuskiego, w którym oznacza wykrzyknienie 'O!'.",
-      "W oryginalnej pisowni występuje również akcent nad samogłoską 'a' - 'à propos'.",
-      "Tylko taka pisownia, czyli przyswojona bezpośrednio z języka francuskiego, jest uznawana za poprawną (i notowaną przez słowniki). Pozostałe formy są błędne.",
-      "'a propo' i 'apropo' to zapisy fonetyczne i wynikają z francuskiej wymowy."
-    ],
-    "search_rule": "\\b(apropo(s|)|a propo)\\b"
-  },
   "będę": {
     "explanations": [
       "'Będę' to czasownik w 1 osobie liczby pojedynczej. Pochodzi od bezokolicznika być.",
@@ -43,13 +31,18 @@
     ],
     "search_rule": "\\b(do p[ou]ki|dopuki)\\b"
   },
-  "dzień dzisiejszy": {
+  "dzisiaj": {
     "explanations": [
-      "Połączenie 'w dniu dzisiejszym' jest nacechowane oficjalnością i pojawić się może jedynie w tekstach oficjalnych i urzędowych, w mowie potocznej jest niedopuszczalne.",
-      "Słowniki poprawnej polszczyzny przestrzegają przed konstrukcją 'dzień dzisiejszy', która jest nadużywana w wypowiedziach utrzymanych w stylu oficjalnym i urzędowym, powinna więc być unikana.",
-      "Przysłówki dzisiaj i dziś są wyrazami o znaczeniu neutralnym, są zatem poprawne w każdym tekście."
+      "Przysłówki 'dzisiaj' i 'dziś' są wyrazami o znaczeniu neutralnym, są zatem poprawne w każdym tekście,",
+      "natomiast połączenie 'w dniu dzisiejszym' jest nacechowane oficjalnością i pojawić się może jedynie",
+      "w tekstach oficjalnych, urzędowych, choć nie można zapomnieć, że słowniki poprawnej polszczyzny",
+      "przestrzegają przed konstrukcją 'dzień dzisiejszy', która (podobnie jak 'dzień jutrzejszy', 'dzień wczorajszy')",
+      "jest nadużywana właśnie w wypowiedziach w utrzymanych w stylu oficjalnym i urzędowym."
     ],
-    "search_rule": "\\b(dniu|dzien) (dzisiejszy|jutrzejszy|wczorajszy)[m]{0,1}\\b"
+    "search_rule": "\\b(dniu|dzien) (dzisiejszy|jutrzejszy|wczorajszy)[m]{0,1}\\b",
+    "sources": [
+      "https://fil.ug.edu.pl/strona/15142/wyrazenia_dzien_dzisiejszy_dzien_wczorajszy_dzien_jutrzejszy_poprawne"
+    ]
   },
   "in vitro": {
     "explanations": [
@@ -188,5 +181,23 @@
       "Błędny zapis wynika z analogii do reguły ortograficznej mówiącej, że po samogłoskach pisane jest 'j', oraz wymowy, gdzie 'j' jest wyraźnie słyszane ze względu na uproszczenia w artykulacji."
     ],
     "search_rule": "\\bzlodzieji\\b"
+  },
+  "à propos": {
+    "explanations": [
+      "Poprawną formę stanowi wyłącznie zapis 'à propos'.",
+      "W oryginalnej wersji z języka francuskiego występuje akcent, dlatego pierwszą literą jest 'à'.",
+      "Wszelkie inne warianty są absolutnie niepoprawne i nie wolno ich stosować.",
+      "Wyrażenie 'à propos' jest galicyzmem, czyli zapożyczeniem z języka francuskiego.",
+      "Zwrot 'à propos' nigdy nie uległ spolszczeniu.",
+      "W związku z tym musi być zapisywane wyłącznie w swojej oryginalnej formie.",
+      "W języku polskim jest to nie tylko wtrącenie, ale również wyrażenie wprowadzające temat wypowiedzi.",
+      "Stosuje się je najczęściej, wtedy gdy w chwili gdy coś mówimy, przypomnimy sobie o tym, co jest związane z tym tematem.",
+      "W polszczyźnie obce znaki diakrytyczne są zasadniczo zachowywane w literach wersalikowych, czyli na początku zdania użyjemy pisowni 'À propos'."
+    ],
+    "search_rule": "\\b(apropo(s|)|a propo)\\b",
+    "sources": [
+      "https://polszczyzna.pl/apropo-czy-a-propos-ktora-forma-jest-poprawna/",
+      "https://sjp.pwn.pl/poradnia/haslo/A-propos;22215.html"
+    ]
   }
 }
