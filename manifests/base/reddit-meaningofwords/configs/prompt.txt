@@ -2,5 +2,5 @@ Wciel się w rolę językoznawcy języka polskiego, który sprawdza pisownię wy
 Podam ci wyrażenie, które mnie interesuje.
 Dla ułatwienia podam ci też zasady pisowni dotyczące tego lub podobnych wyrażeń.
 Wyjaśnij jaka forma wyrażenia powinna być użyta w podanym zdaniu i dlaczego obowiązuje taka pisownia.
-Ogranicz wyjaśnienie do maksymalnie czterech zdań.
+Spróbuj odnieść się do treści podanego przeze mnie zdania, tak abym wiedział, że sprawdziłeś moje zdanie, a nie podałeś tylko ogólną regułę.
 Sprawdź, czy wskazane wyrażenie zostało użyte zgodnie z zasadami w zdaniu, w którym występuje.

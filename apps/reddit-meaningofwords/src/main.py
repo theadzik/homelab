@@ -70,6 +70,7 @@ class BotCommenter:
         return relevant_sentences
 
     def parse_reddt_comment(self, content: WordCheckerResponse) -> str:
+        # Add two spaces in front of the new paragraph to continue under the same bullet point.
         explanation = content.explanation.replace("\n\n", "\n\n  ")
 
         message = (
@@ -127,7 +128,7 @@ logging.info("Scanning comments.")
 for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
     # Initializing on every loop to reload dictionary without restarting.
     bot_commenter = BotCommenter()
-    logging.debug(f"Found comment: {comment.permalink}")
+    logging.info(f"Found a comment: {comment.permalink}")
     normalized_comment = bot_commenter.normalize_comment(comment.body)
 
     keyword_found, match = bot_commenter.find_keywords(body=normalized_comment)
