@@ -30,7 +30,7 @@
       "'Dopóki' należy do wyrażeń przyimkowych, które we współczesnej polszczyźnie przekształciły się we zrosty.",
       "Takie konstrukcje, niezależnie od uwarunkowań historycznych, zapisuje się zawsze łącznie."
     ],
-    "search_rule": "\\b(do p[ou]ki|dopuki)\\b",
+    "search_rule": "\\b(do p[oóu]ki|dopuki)\\b",
     "sources": [
       "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-dopoki-czy-do-poki-razem-czy-osobno"
     ]
@@ -42,7 +42,7 @@
       "w tekstach oficjalnych, urzędowych, choć (podobnie jak 'dzień jutrzejszy', 'dzień wczorajszy')",
       "jest w nich nadużywana i powinna być unikana."
     ],
-    "search_rule": "\\b(dniu|dzien) (dzisiejszy|jutrzejszy|wczorajszy)[m]{0,1}\\b",
+    "search_rule": "\\b(dniu|dzie[nń]) (dzisiejszy|jutrzejszy|wczorajszy)[m]{0,1}\\b",
     "sources": [
       "https://fil.ug.edu.pl/strona/15142/wyrazenia_dzien_dzisiejszy_dzien_wczorajszy_dzien_jutrzejszy_poprawne"
     ]
@@ -77,7 +77,7 @@
       "by były one jak najmniejsze (najłatwiejsze), stąd: po linii najmniejszego oporu.",
       "Forma 'po najmniejszej linii oporu' jest więc niepoprawna."
     ],
-    "search_rule": "(naj|)(wiek|mniej)sz(a|ej) lini(|i|a) oporu",
+    "search_rule": "(naj|)(wi[eę]k|mniej)sz(a|ą|ej|) lini(|i|a|ą) oporu",
     "sources": [
       "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-po-linii-najmniejszego-oporu-czy-po-najmniejszej-linii-oporu"
     ]
@@ -89,7 +89,7 @@
       "Natomiast 'co dzień' należy do wyrażeń zaimkowych również pisanych rozłącznie. Zatem każdy element tej frazy musi zostać zapisany oddzielnie.",
       "Błędne 'nacodzień' wynika najpewniej z analogii do 'codziennie', jednak rozkład części mowy wskazuje, że są to trzy osobne wyrazy."
     ],
-    "search_rule": "\\bna[ ]{0,1}codzien\\b",
+    "search_rule": "\\bna[ ]{0,1}codzie[nń]\\b",
     "sources": [
       "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-nacodzien-czy-na-co-dzien"
     ]
@@ -124,7 +124,7 @@
       "Zapis 'na prawdę' zastosujemy wyłącznie w przypadkach, gdy mowa o rzeczowniku 'prawda' w bierniku liczby pojedynczej ('prawdę') zestawionym z przyimkiem 'na'.",
       "Na przykład 'Słyszę od niej same kłamstwa, więc tym razem liczę na prawdę.'"
     ],
-    "search_rule": "\\bna prawde\\b",
+    "search_rule": "\\bna prawd[eę]\\b",
     "sources": [
       "https://sjp.pwn.pl/ciekawostki/haslo/NAPRAWDE;5391567.html",
       "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-naprawde-czy-na-prawde"
@@ -223,7 +223,7 @@
       "Oznacza to więc, że zapis z użyciem 'rz' jest motywowany historycznie.",
       "'Żądza' pisana przez 'ż' jest rzeczownikiem oznaczającym niepohamowane pragnienie posiadania lub doznawania czegoś lub silny pociąg fizyczny."
     ],
-    "search_rule": "\\bzadz(e|isz|i|imy|icie|a|ic)\\b",
+    "search_rule": "\\b[zż][aą]d[zź](|e|ę|isz|i|imy|icie|a|ą|ic|ić)\\b",
     "sources": [
       "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-rzadzic-czy-zadzic",
       "https://sjp.pwn.pl/slowniki/%C5%BC%C4%85dza"
@@ -258,7 +258,7 @@
       "Formy 'szedłem', 'poszedłem', 'doszedłem' są zgodne z systemem gramatycznym polszczyzny, a formy 'szłem', 'poszłem', 'doszłem' są niepoprawne.",
       "Skoro mówimy: 'on szedł', na nie: on 'szł', to poprawnie mówimy i piszemy również: 'ja szedłem'."
     ],
-    "search_rule": "\\b(do|wy|p(o|rzy)){0,1}szlem\\b",
+    "search_rule": "\\b(do|wy|p(o|rzy)){0,1}sz[lł]em\\b",
     "sources": [
       "https://nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/dlaczego-szedlem-a-nie-szlem-,cltt,S"
     ]
@@ -271,7 +271,7 @@
       "Zlepek tychże jest jednak formą nieprawidłową i choć występuje w polszczyźnie potocznej,",
       "należy go unikać. Za każdym razem, kiedy to potrzebne, używajmy więc 'w każdym razie'."
     ],
-    "search_rule": "w kazdym badz razie",
+    "search_rule": "w ka[zż]dym b[aą]d[zź] razie",
     "sources": [
       "https://skrivanek.pl/w-kazdym-badz-razie-czy-w-kazdym-razie/"
     ]
@@ -281,7 +281,7 @@
       "Wyrażenie przyimkowe 'w ogóle' piszemy rozdzielnie.",
       "Podobnie jak 'na ogół' i 'z ogółem'. Wszystkie bowiem pochodzą od rzeczownika 'ogół'."
     ],
-    "search_rule": "\\bwog[ou]le\\b",
+    "search_rule": "\\bwog[oóu]le\\b",
     "sources": [
       "https://www.ortograf.pl/watpliwosci-jezykowe/w-ogole-czy-w-ogole"
     ]
@@ -292,7 +292,7 @@
       "W wielu przypadkach 'wziąść' tworzone jest przez podobieństwo do innych czasowników zakończonych na '-ść', takich jak: 'pójść' czy 'usiąść'.",
       "Aby ułatwić zapamiętanie tej formy, polecam skojarzenie z czasownikiem 'brać': 'wziąć', a nie 'wziąść', bo nie można czegoś 'braść'."
     ],
-    "search_rule": "\\bwzia[sz]c\\b",
+    "search_rule": "\\bwzi[aą][sśzź][cć]\\b",
     "sources": [
       "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-wziac-czy-wziasc"
     ]
@@ -307,7 +307,7 @@
       "rdzenne o nosowe (zapisywane jako 'ą', a wymawiane jako 'on'), które nie podlega wymianie.",
       "Oprócz reguły w zapamiętaniu poprawnej formy pomóc może jeszcze to, że w domu mamy przecież włączniki, a nie 'włanczniki'."
     ],
-    "search_rule": "(?<!budo)wlancz",
+    "search_rule": "(?<!budo)w[lł]ancz",
     "sources": [
       "https://polszczyzna.pl/wlaczac-czy-wlanczac-jak-poprawnie-to-zapisac/"
     ]
@@ -329,7 +329,7 @@
       "Prawidłowa pisownia tego rzeczownika to 'złodziei'.",
       "Błędny zapis wynika z analogii do reguły ortograficznej mówiącej, że po samogłoskach pisane jest 'j', oraz wymowy, gdzie 'j' jest wyraźnie słyszane ze względu na uproszczenia w artykulacji."
     ],
-    "search_rule": "\\bzlodzieji\\b",
+    "search_rule": "\\bz[lł]odzieji\\b",
     "sources": [
       "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-zlodziei-czy-zlodzieji"
     ]

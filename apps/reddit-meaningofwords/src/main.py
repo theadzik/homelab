@@ -4,7 +4,6 @@ import json
 import logging
 import os
 import re
-import unicodedata
 
 import nltk
 import praw
@@ -26,18 +25,10 @@ class BotCommenter:
         logging.debug(f"Loaded {len(self.words_to_check)} rules.")
         self.bot_name = os.getenv("REDDIT_USERNAME")
 
-    @staticmethod
-    def normalize_comment(body: str) -> str:
-        body = body.lower()
-        # Remove Polish accents (ł is a special case)
-        body = body.replace("ł", "l")
-        body = unicodedata.normalize('NFKD', body).encode("ascii", "ignore").decode("ascii")
-        return body
-
     def find_keywords(self, body: str) -> (str, str):
         for word in self.patterns_to_check.keys():
             logging.debug(f"Looking for {word}")
-            if match := re.search(self.patterns_to_check.get(word), body):
+            if match := re.search(self.patterns_to_check.get(word), body, re.IGNORECASE):
                 logging.info(f"Found a comment with {word}!")
                 logging.info(REDDIT_BASE_URL + comment.permalink)
                 logging.debug(body)
@@ -129,9 +120,8 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
     # Initializing on every loop to reload dictionary without restarting.
     bot_commenter = BotCommenter()
     logging.info(f"Found a comment: {comment.permalink}")
-    normalized_comment = bot_commenter.normalize_comment(comment.body)
 
-    keyword_found, match = bot_commenter.find_keywords(body=normalized_comment)
+    keyword_found, match = bot_commenter.find_keywords(body=comment.body)
     if keyword_found:
         if comment.author.name == bot_commenter.bot_name:
             logging.info("It's my own comment! Skipping.")
@@ -142,7 +132,7 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
             continue
 
         extra_info = bot_commenter.get_extra_info(keyword_found)
-        start_index, end_index = bot_commenter.get_sentence_indexes(word=match, body=normalized_comment, limit=1)
+        start_index, end_index = bot_commenter.get_sentence_indexes(word=match, body=comment.body, limit=1)
         limited_body = bot_commenter.get_sentences(body=comment.body, start_index=start_index, end_index=end_index)
 
         # Initializing every time to update prompts without restarting.
