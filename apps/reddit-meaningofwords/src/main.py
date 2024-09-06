@@ -24,13 +24,15 @@ class BotCommenter:
         self.patterns_to_check = {word: value.get("search_rule") for word, value in self.words_to_check.items()}
         logging.debug(f"Loaded {len(self.words_to_check)} rules.")
         self.bot_name = os.getenv("REDDIT_USERNAME")
+        self.REDDIT_BASE_URL = "https://reddit.com"
+        if not os.path.isdir(os.path.join(os.getenv("NLTK_DIRECTORY"), "tokenizers", "punkt_tab")):
+            nltk.download('punkt_tab', download_dir=os.getenv("NLTK_DIRECTORY"))
 
     def find_keywords(self, body: str) -> (str, str):
         for word in self.patterns_to_check.keys():
             logging.debug(f"Looking for {word}")
             if match := re.search(self.patterns_to_check.get(word), body, re.IGNORECASE):
                 logging.info(f"Found a comment with {word}!")
-                logging.info(REDDIT_BASE_URL + comment.permalink)
                 logging.debug(body)
                 return word, match.group(0)
         return "", ""
@@ -90,64 +92,63 @@ class BotCommenter:
 
 load_dotenv()
 
-nltk.download('punkt_tab', download_dir=os.getenv("NLTK_DIRECTORY"))
+if __name__ == "__main__":
+    logging.basicConfig(
+        format='%(asctime)s %(levelname)s: %(message)s',
+        encoding='utf-8',
+        level=os.getenv("LOG_LEVEL", logging.INFO)
+    )
 
-logging.basicConfig(
-    format='%(asctime)s %(levelname)s: %(message)s',
-    encoding='utf-8',
-    level=os.getenv("LOG_LEVEL", logging.INFO)
-)
+    USER_AGENT = f"linux:{os.getenv('REDDIT_USERNAME')}:{os.environ.get('APP_VERSION')} (by u/MalinowyChlopak)"
+    SUBREDDITS = os.getenv("REDDIT_SUBREDDITS", "polska")
 
-REDDIT_BASE_URL = "https://reddit.com"
-SUBREDDITS = os.getenv("REDDIT_SUBREDDITS", "polska")
+    reddit = praw.Reddit(
+        client_id=os.getenv("REDDIT_CLIENT_ID"),
+        client_secret=os.getenv("REDDIT_CLIENT_SECRET"),
+        username=os.getenv("REDDIT_USERNAME"),
+        password=os.getenv("REDDIT_PASSWORD"),
+        user_agent=USER_AGENT,
+    )
 
-USER_AGENT = f"linux:{os.getenv('REDDIT_USERNAME')}:{os.environ.get('APP_VERSION')} (by u/MalinowyChlopak)"
+    killer = GracefulKiller()
 
-reddit = praw.Reddit(
-    client_id=os.getenv("REDDIT_CLIENT_ID"),
-    client_secret=os.getenv("REDDIT_CLIENT_SECRET"),
-    username=os.getenv("REDDIT_USERNAME"),
-    password=os.getenv("REDDIT_PASSWORD"),
-    user_agent=USER_AGENT,
-)
+    logging.info(f"User-Agent: {USER_AGENT}")
+    logging.info("Scanning comments.")
 
-killer = GracefulKiller()
+    for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
+        # Initializing on every loop to reload dictionary without restarting.
+        bot_commenter = BotCommenter()
+        logging.info(f"Found a comment: {comment.permalink}")
 
-logging.info(f"User-Agent: {USER_AGENT}")
-logging.info("Scanning comments.")
+        keyword_found, match = bot_commenter.find_keywords(body=comment.body)
+        if keyword_found:
+            logging.info(bot_commenter.REDDIT_BASE_URL + comment.permalink)
 
-for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
-    # Initializing on every loop to reload dictionary without restarting.
-    bot_commenter = BotCommenter()
-    logging.info(f"Found a comment: {comment.permalink}")
+            if comment.author.name == bot_commenter.bot_name:
+                logging.info("It's my own comment! Skipping.")
+                continue
 
-    keyword_found, match = bot_commenter.find_keywords(body=comment.body)
-    if keyword_found:
-        if comment.author.name == bot_commenter.bot_name:
-            logging.info("It's my own comment! Skipping.")
-            continue
+            if bot_commenter.is_my_comment_chain(comment):
+                logging.info("It's a reply to my comment! Skipping.")
+                continue
 
-        if bot_commenter.is_my_comment_chain(comment):
-            logging.info("It's a reply to my comment! Skipping.")
-            continue
+            extra_info = bot_commenter.get_extra_info(keyword_found)
+            start_index, end_index = bot_commenter.get_sentence_indexes(word=match, body=comment.body, limit=1)
+            limited_body = bot_commenter.get_sentences(body=comment.body, start_index=start_index, end_index=end_index)
 
-        extra_info = bot_commenter.get_extra_info(keyword_found)
-        start_index, end_index = bot_commenter.get_sentence_indexes(word=match, body=comment.body, limit=1)
-        limited_body = bot_commenter.get_sentences(body=comment.body, start_index=start_index, end_index=end_index)
+            # Initializing every time to update prompts without restarting.
+            openai_checker = OpenAIChecker()
+            content = openai_checker.get_explanation(body=limited_body, word=keyword_found, extra_info=extra_info)
 
-        # Initializing every time to update prompts without restarting.
-        openai_checker = OpenAIChecker()
-        content = openai_checker.get_explanation(body=limited_body, word=keyword_found, extra_info=extra_info)
+            if not content.is_correct:
+                logging.info("Phrase used incorrectly. Replying!")
+                response = bot_commenter.parse_reddt_comment(content)
+                reply_comment = comment.reply(response)
+                logging.info(bot_commenter.REDDIT_BASE_URL + reply_comment.permalink)
+            else:
+                logging.warning("Phrase used correctly. Skipping.")
+                logging.warning(content)
 
-        if not content.is_correct:
-            logging.info("Phrase used incorrectly. Replying!")
-            response = bot_commenter.parse_reddt_comment(content)
-            reply_comment = comment.reply(response)
-            logging.info(REDDIT_BASE_URL + reply_comment.permalink)
-        else:
-            logging.warning("Phrase used correctly. Skipping.")
-            logging.warning(content)
-
-    if killer.kill_now:
-        logging.info("Received kill signal. Shutting down.")
-        break
+        if killer.kill_now:
+            logging.info("Received kill signal. Shutting down.")
+            break
