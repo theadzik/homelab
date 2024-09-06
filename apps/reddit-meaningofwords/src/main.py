@@ -155,8 +155,8 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
             reply_comment = comment.reply(response)
             logging.info(REDDIT_BASE_URL + reply_comment.permalink)
         else:
-            logging.info("Phrase used correctly. Skipping.")
-            logging.info(content)
+            logging.warning("Phrase used correctly. Skipping.")
+            logging.warning(content)
 
     if killer.kill_now:
         logging.info("Received kill signal. Shutting down.")

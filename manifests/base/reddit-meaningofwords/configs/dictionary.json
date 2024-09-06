@@ -68,6 +68,20 @@
       "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-juz-czy-jusz"
     ]
   },
+  "linia najmniejszego oporu": {
+    "explanations": [
+      "Iść po linii najmniejszego oporu oznacza wybranie najłatwiejszej drogi, robienie czegoś z najmniejszym wysiłkiem, bez trudu.",
+      "Prawidłową pisownię tłumaczy logika zdania. W tym związku frazeologicznym linia oznacza kierunek działania,",
+      "który jest stały, a którego nie można ocenić w kategorii mniejsze lub większe.",
+      "Natomiast opór odnosi się do przeszkód, które musimy pokonać, zatem chcielibyśmy,",
+      "by były one jak najmniejsze (najłatwiejsze), stąd: po linii najmniejszego oporu.",
+      "Forma 'po najmniejszej linii oporu' jest więc niepoprawna."
+    ],
+    "search_rule": "(naj|)(wiek|mniej)sz(a|ej) lini(|i|a) oporu",
+    "sources": [
+      "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-po-linii-najmniejszego-oporu-czy-po-najmniejszej-linii-oporu"
+    ]
+  },
   "na co dzień": {
     "explanations": [
       "Zapis rozłączny 'na co dzień' określa zasada konwencjonalna, co oznacza, że pisownia nie jest motywowana fonetycznie, morfologicznie, historycznie, lecz jest oparta na arbitralnych ustaleniach.",
@@ -160,6 +174,20 @@
       "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-okres-czasu-pleonazm"
     ]
   },
+  "optymalny": {
+    "explanations": [
+      "Jeżeli coś jest 'optymalne', to znaczy, że osiągnęło swoje optimum,",
+      "to znaczy, że jest najlepsze, najkorzystniejsze, najdogodniejsze w tych właśnie warunkach",
+      "i już lepsze być nie może. Dlatego nie stopniujemy przymiotnika 'optymalny'",
+      "– ani w sposób prosty, ani opisowy. Rażąco niepoprawne są sformułowania typu",
+      "'bardziej optymalny', 'najbardziej optymalny', 'optymalniejszy' czy 'najoptymalniejszy'.",
+      "Jak coś jest 'optymalne', to jest 'optymalne' – i koniec."
+    ],
+    "search_rule": "\\b((naj|)optymalniej|(naj|)bardziej optymaln)",
+    "sources": [
+      "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/optymalny,cltt,o"
+    ]
+  },
   "ponadto": {
     "explanations": [
       "Poprawna forma 'ponadto' i 'ponad to' zależy od kontekstu.",
@@ -212,6 +240,19 @@
       "https://nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/spod-i-sprzed,c,418489104"
     ]
   },
+  "sweter": {
+    "explanations": [
+      "Jedyną poprawną formą zapisu tego rzeczownika jest 'sweter'.",
+      "Jest to wyraz zapożyczony z języka angielskiego w takiej właśnie formie i taką powinna pozostać.",
+      "Niepoprawna forma 'swetr' powstała prawdopodobnie przez analogię do wyrazów zakończonych w odmianie na -tr",
+      "np. wiatr czy litr. Podobieństwa należałoby jednak szukać do szerokiej grupy wyrazów zakończonych na -ter",
+      "np. plaster czy toster."
+    ],
+    "search_rule": "\\bswetr\\b",
+    "sources": [
+      "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-sweter-czy-swetr"
+    ]
+  },
   "szedłem": {
     "explanations": [
       "Formy 'szedłem', 'poszedłem', 'doszedłem' są zgodne z systemem gramatycznym polszczyzny, a formy 'szłem', 'poszłem', 'doszłem' są niepoprawne.",
@@ -220,6 +261,19 @@
     "search_rule": "\\b(do|wy|p(o|rzy)){0,1}szlem\\b",
     "sources": [
       "https://nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/dlaczego-szedlem-a-nie-szlem-,cltt,S"
+    ]
+  },
+  "w każdym razie": {
+    "explanations": [
+      "Według językoznawców błędne wyrażenie 'w każdym bądź razie' powstało tak naprawdę ze skrzyżowania dwóch innych zwrotów:",
+      "'bądź co bądź' i 'w każdym razie'. Oba te sformułowania wyrażają jedno znaczenie: wszystko jedno, jakkolwiek by było,",
+      "czy – mówiąc językiem bardziej formalnym – niezależnie od okoliczności.",
+      "Zlepek tychże jest jednak formą nieprawidłową i choć występuje w polszczyźnie potocznej,",
+      "należy go unikać. Za każdym razem, kiedy to potrzebne, używajmy więc 'w każdym razie'."
+    ],
+    "search_rule": "w kazdym badz razie",
+    "sources": [
+      "https://skrivanek.pl/w-kazdym-badz-razie-czy-w-kazdym-razie/"
     ]
   },
   "w ogóle": {
@@ -241,6 +295,21 @@
     "search_rule": "\\bwzia[sz]c\\b",
     "sources": [
       "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-wziac-czy-wziasc"
+    ]
+  },
+  "włączać": {
+    "explanations": [
+      "Jedyna poprawna forma to oczywiście 'włączać'.",
+      "Pisownia 'włączać' jest uzasadniona regułą ortograficzną, która mówi, że samogłoskę 'ą'",
+      "zapisujemy przed spółgłoskami zwarto-szczelinowymi, do których zaliczają się: 'c', 'ć', 'cz', 'dz', 'dź', 'dż'.",
+      "To samo dotyczy bezokolicznika 'wyłączać'.",
+      "W parach wyrazowych 'włączyć' – 'włączać', 'wyłączyć' – 'wyłączać' zapisujemy 'ą', ponieważ zawierają one",
+      "rdzenne o nosowe (zapisywane jako 'ą', a wymawiane jako 'on'), które nie podlega wymianie.",
+      "Oprócz reguły w zapamiętaniu poprawnej formy pomóc może jeszcze to, że w domu mamy przecież włączniki, a nie 'włanczniki'."
+    ],
+    "search_rule": "(?<!budo)wlancz",
+    "sources": [
+      "https://polszczyzna.pl/wlaczac-czy-wlanczac-jak-poprawnie-to-zapisac/"
     ]
   },
   "z powrotem": {
