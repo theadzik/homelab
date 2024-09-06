@@ -85,19 +85,24 @@ class TestBotCommenter(unittest.TestCase):
         text1 = r"Najoptymalniejszą drogą będzie."
         text2 = r"Po co to robić bardziej optymalnie?"
         text3 = r"Czy ona jest najbardziej optymalniejsza?"
+        text4 = r"Czy ona jest najmniej optymalną?"
 
         keyword_found1, match1 = bot.find_keywords(text1)
         keyword_found2, match2 = bot.find_keywords(text2)
         keyword_found3, match3 = bot.find_keywords(text3)
+        keyword_found4, match4 = bot.find_keywords(text4)
 
         self.assertEqual(keyword_found1, "optymalny")
-        self.assertEqual(match1, "Najoptymalniej")
+        self.assertEqual(match1, "Najoptymalniejszą")
 
         self.assertEqual(keyword_found2, "optymalny")
-        self.assertEqual(match2, "bardziej optymaln")
+        self.assertEqual(match2, "bardziej optymalnie")
 
         self.assertEqual(keyword_found3, "optymalny")
-        self.assertEqual(match3, "najbardziej optymaln")
+        self.assertEqual(match3, "najbardziej optymalniejsza")
+
+        self.assertEqual(keyword_found4, "optymalny")
+        self.assertEqual(match4, "najmniej optymalną")
 
 
 if __name__ == '__main__':
