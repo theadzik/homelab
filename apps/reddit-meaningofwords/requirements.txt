@@ -16,7 +16,7 @@ openai==1.43.0
 praw==7.7.1
 prawcore==2.4.0
 pydantic==2.8.2
-pydantic_core==2.20.1
+pydantic_core==2.23.3
 python-dotenv==1.0.1
 regex==2024.7.24
 requests==2.32.3
