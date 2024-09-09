@@ -31,9 +31,12 @@ Containerized applications:
 * `cv` - My resume built with Jekyll
 * `wedding-website` - A site I made for my wedding
 * `dns` - Dynamic DNS updater working with `no-ip`
+* `reddit-meaningofwords` - A useful (or annoying, depends on your views)
+  bot that fixes most common language mistakes on reddit.com/r/Polska.
+  It uses `openai` api to recognize context, fix mistakes and generate explanation.
 
 ## `/manifests`
 
 Kubernetes manifests deploying all resources.
 `dev` overlay is used mostly for vagrant vms, while `prod` runs
-on the raspberry.
+on raspberry.
