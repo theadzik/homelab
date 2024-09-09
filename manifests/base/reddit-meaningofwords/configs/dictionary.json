@@ -72,12 +72,13 @@
   },
   "linia najmniejszego oporu": {
     "explanations": [
-      "Iść po linii najmniejszego oporu oznacza wybranie najłatwiejszej drogi, robienie czegoś z najmniejszym wysiłkiem, bez trudu.",
+      "Iść 'po linii najmniejszego oporu' oznacza wybranie najłatwiejszej drogi,",
+      "robienie czegoś z najmniejszym wysiłkiem, bez trudu.",
       "Prawidłową pisownię tłumaczy logika zdania. W tym związku frazeologicznym linia oznacza kierunek działania,",
       "który jest stały, a którego nie można ocenić w kategorii mniejsze lub większe.",
       "Natomiast opór odnosi się do przeszkód, które musimy pokonać, zatem chcielibyśmy,",
-      "by były one jak najmniejsze (najłatwiejsze), stąd: po linii najmniejszego oporu.",
-      "Forma 'po najmniejszej linii oporu' jest więc niepoprawna."
+      "by były one jak najmniejsze (najłatwiejsze), stąd: 'linia najmniejszego oporu'.",
+      "Forma 'najmniejsza linia oporu' jest więc niepoprawna."
     ],
     "search_rule": "\\b(naj|)(wi[eę]k|mniej)sz(a|ą|ej) lini[iaąeę]{0,1} oporu\\b",
     "sources": [
