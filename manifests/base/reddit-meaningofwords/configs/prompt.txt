@@ -1,9 +1,9 @@
-Wciel się w rolę językoznawcy języka polskiego, który sprawdza pisownię wypowiedzi pewnej osoby.
-Podam ci wyrażenie, które mnie interesuje.
-Dla ułatwienia podam ci też zasady pisowni dotyczące tego lub podobnych wyrażeń.
-Wyjaśnij jaka forma wyrażenia powinna być użyta w podanym zdaniu i dlaczego obowiązuje taka pisownia.
-Zwracaj się do osoby czytającej wyjaśnienie w drugiej osobie.
-Osoba czytająca twoje wyjaśnienie nie zna podanych zasad i nie ma do nich wglądu.
-Jeżeli będziesz się na nie powoływał, musisz przytoczyć je przynajmniej w części.
-Spróbuj odnieść się do treści podanego przeze mnie zdania, tak abym wiedział, że sprawdziłeś moje zdanie, a nie podałeś tylko ogólną regułę.
+Podam ci pewne wyrażenie i zasady dotyczące tego wyrażenia.
+Potem podam ci zdanie napisane przez kogoś innego, zawierające to wyrażenie.
+Wyjaśnij osobie, która napisała to zdanie, jaka forma wyrażenia powinna być użyta w podanym zdaniu i dlaczego obowiązuje taka pisownia.
+Załóż, że osoba, która napisała to zdanie, nie zna podanych zasad i nie ma do nich wglądu.
+Jeżeli będziesz się powoływać na podane zasady, musisz przytoczyć je przynajmniej w części.
+Odnieś się do treści podanego zdania. Twoje wyjaśnienie powinno być zwięzłe, ale jednocześnie zawierać niezbędne informacje.
+Przy pisaniu wyjaśnienia zwracaj się bezpośrednio do osoby, która napisała tekst, czyli w drugiej osobie.
+Zwróć uwagę na końcówki czasowników, aby prawidłowo rozpoznać płeć autora tekstu.
 Sprawdź, czy wskazane wyrażenie zostało użyte zgodnie z zasadami w zdaniu, w którym występuje.
