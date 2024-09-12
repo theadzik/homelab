@@ -28,14 +28,28 @@ class BotCommenter:
         if not os.path.isdir(os.path.join(os.getenv("NLTK_DIRECTORY"), "tokenizers", "punkt_tab")):
             nltk.download('punkt_tab', download_dir=os.getenv("NLTK_DIRECTORY"))
 
-    def find_keywords(self, body: str) -> (str, str):
+    def find_keywords(self, body: str, skip_citations: bool = True) -> (str, str):
         for word in self.patterns_to_check.keys():
             logging.debug(f"Looking for {word}")
-            if match := re.search(self.patterns_to_check.get(word), body, re.IGNORECASE):
+
+            if skip_citations:
+                pattern = self.get_skip_citation_pattern(self.patterns_to_check.get(word))
+                match_group = 1
+            else:
+                pattern = self.patterns_to_check.get(word)
+                match_group = 0
+
+            if match := re.search(pattern, body, flags=re.IGNORECASE | re.MULTILINE):
                 logging.info(f"Found a comment with {word}!")
                 logging.debug(body)
-                return word, match.group(0)
+                return word, match.group(match_group)
         return "", ""
+
+    @staticmethod
+    def get_skip_citation_pattern(original_pattern: str) -> str:
+        skip_citations_pattern = r"^(?! *?>)(?:.*?)("
+        pattern = f"{skip_citations_pattern}{original_pattern})"
+        return pattern
 
     @staticmethod
     def get_sentence_indexes(word: str, body: str, limit: int = 0) -> (int, int):
