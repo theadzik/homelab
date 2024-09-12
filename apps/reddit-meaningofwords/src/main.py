@@ -132,23 +132,25 @@ if __name__ == "__main__":
     for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
         # Initializing on every loop to reload dictionary without restarting.
         bot_commenter = BotCommenter()
-        logging.info(f"Found a comment: {comment.permalink}")
+        logging.debug(f"Found a comment: {comment.permalink}")
 
         keyword_found, match = bot_commenter.find_keywords(body=comment.body)
         if keyword_found:
-            logging.info(bot_commenter.REDDIT_BASE_URL + comment.permalink)
-
             if comment.author.name == bot_commenter.bot_name:
-                logging.info("It's my own comment! Skipping.")
+                logging.debug("It's my own comment! Skipping.")
                 continue
 
             if bot_commenter.is_my_comment_chain(comment):
-                logging.info("It's a reply to my comment! Skipping.")
+                logging.debug("It's a reply to my comment! Skipping.")
                 continue
+
+            logging.info(bot_commenter.REDDIT_BASE_URL + comment.permalink)
 
             extra_info = bot_commenter.get_extra_info(keyword_found)
             start_index, end_index = bot_commenter.get_sentence_indexes(word=match, body=comment.body, limit=1)
             limited_body = bot_commenter.get_sentences(body=comment.body, start_index=start_index, end_index=end_index)
+
+            logging.info(f"Limited comment body:\n{limited_body}")
 
             # Initializing every time to update prompts without restarting.
             openai_checker = OpenAIChecker()
@@ -158,7 +160,7 @@ if __name__ == "__main__":
                 logging.info("Phrase used incorrectly. Replying!")
                 response = bot_commenter.parse_reddt_comment(content)
                 reply_comment = comment.reply(response)
-                logging.info(bot_commenter.REDDIT_BASE_URL + reply_comment.permalink)
+                logging.debug(bot_commenter.REDDIT_BASE_URL + reply_comment.permalink)
             else:
                 logging.warning("Phrase used correctly. Skipping.")
                 logging.warning(content)
