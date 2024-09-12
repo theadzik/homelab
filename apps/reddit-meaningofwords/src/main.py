@@ -42,6 +42,9 @@ class BotCommenter:
             if match := re.search(pattern, body, flags=re.IGNORECASE | re.MULTILINE):
                 logging.info(f"Found a comment with {word}!")
                 logging.debug(body)
+                logging.debug(match)
+                logging.debug(match.group(match_group))
+
                 return word, match.group(match_group)
         return "", ""
 

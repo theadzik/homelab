@@ -92,7 +92,7 @@
       "Natomiast 'co dzień' należy do wyrażeń zaimkowych również pisanych rozłącznie. Zatem każdy element tej frazy musi zostać zapisany oddzielnie.",
       "Błędne 'nacodzień' wynika najpewniej z analogii do 'codziennie', jednak rozkład części mowy wskazuje, że są to trzy osobne wyrazy."
     ],
-    "search_rule": "\\bna( |)codzie[nń](\\B|\\b)",
+    "search_rule": "\\bna( |)codzie(n\\b|ń\\B)",
     "sources": [
       "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-nacodzien-czy-na-co-dzien"
     ]
@@ -127,7 +127,7 @@
       "Zapis 'na prawdę' zastosujemy wyłącznie w przypadkach, gdy mowa o rzeczowniku 'prawda' w bierniku liczby pojedynczej ('prawdę') zestawionym z przyimkiem 'na'.",
       "Na przykład 'Słyszę od niej same kłamstwa, więc tym razem liczę na prawdę.'"
     ],
-    "search_rule": "\\bna prawd[eę](\\b|\\B)",
+    "search_rule": "\\bna prawd(e\\b|ę\\B)",
     "sources": [
       "https://sjp.pwn.pl/ciekawostki/haslo/NAPRAWDE;5391567.html",
       "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-naprawde-czy-na-prawde"
@@ -295,7 +295,7 @@
       "W wielu przypadkach 'wziąść' tworzone jest przez podobieństwo do innych czasowników zakończonych na '-ść', takich jak: 'pójść' czy 'usiąść'.",
       "Aby ułatwić zapamiętanie tej formy, polecam skojarzenie z czasownikiem 'brać': 'wziąć', a nie 'wziąść', bo nie można czegoś 'braść'."
     ],
-    "search_rule": "\\bwzi[aą][sśzź][cć](\\b|\\B)",
+    "search_rule": "\\bwzi[aą][sśzź](c\\b|ć\\B)",
     "sources": [
       "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-wziac-czy-wziasc"
     ]
