@@ -284,7 +284,7 @@
       "Wyrażenie przyimkowe 'w ogóle' piszemy rozdzielnie.",
       "Podobnie jak 'na ogół' i 'z ogółem'. Wszystkie bowiem pochodzą od rzeczownika 'ogół'."
     ],
-    "search_rule": "\\bwog[oóu]le\\b",
+    "search_rule": "\\bwog[oóu]{0,1}le\\b",
     "sources": [
       "https://www.ortograf.pl/watpliwosci-jezykowe/w-ogole-czy-w-ogole"
     ]
