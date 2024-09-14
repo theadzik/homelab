@@ -183,7 +183,7 @@ if __name__ == "__main__":
             logging.info(bot_commenter.REDDIT_BASE_URL + comment.permalink)
 
             extra_info = bot_commenter.get_extra_info(keyword_found)
-            start_index, end_index = bot_commenter.get_sentence_indexes(word=match, body=comment.body, limit=1)
+            start_index, end_index = bot_commenter.get_sentence_indexes(word=match, body=comment.body, limit=2)
             limited_body = bot_commenter.get_sentences(body=comment.body, start_index=start_index, end_index=end_index)
 
             logging.info(f"Limited comment body:\n{limited_body}")
