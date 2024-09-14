@@ -103,10 +103,12 @@ class BotCommenter:
     def get_extra_info(self, word: str) -> str:
         return " ".join(self.words_to_check.get(word).get("explanations"))
 
-    def is_my_comment_chain(self, comment: praw.models.Comment) -> bool:
+    def is_my_comment_chain(self, comment: praw.models.Comment, direct: bool = False) -> bool:
         ancestor = comment
         refresh_counter = 0
         while not ancestor.is_root:
+            if direct and refresh_counter > 0:
+                return False
             ancestor = ancestor.parent()
             if ancestor.author == self.bot_name:
                 return True
@@ -115,10 +117,15 @@ class BotCommenter:
             refresh_counter += 1
         return False
 
+    def find_bad_bot_comment(self, comment: praw.models.Comment) -> bool:
+        if comment.body.lower() == "bad bot" and self.is_my_comment_chain(comment, direct=True):
+            logging.warning(f"Bad bot detected: {self.REDDIT_BASE_URL + comment.permalink}")
+            return True
 
-load_dotenv()
 
 if __name__ == "__main__":
+    load_dotenv()
+
     logging.basicConfig(
         format='%(asctime)s %(levelname)s: %(message)s',
         encoding='utf-8',
@@ -152,6 +159,11 @@ if __name__ == "__main__":
         # Initializing on every loop to reload dictionary without restarting.
         bot_commenter = BotCommenter()
         logging.debug(f"Found a comment: {comment.permalink}")
+
+        if bot_commenter.find_bad_bot_comment(comment=comment):
+            logging.warning(f"Blocking user {comment.author}")
+            reddit.redditor(comment.author).block()
+            continue
 
         keyword_found, match = bot_commenter.find_keywords(body=comment.body)
         if keyword_found:
