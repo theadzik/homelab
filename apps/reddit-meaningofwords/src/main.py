@@ -118,7 +118,7 @@ class BotCommenter:
         return False
 
     def find_bad_bot_comment(self, comment: praw.models.Comment) -> bool:
-        if comment.body.lower() == "bad bot" and self.is_my_comment_chain(comment, direct=True):
+        if comment.body.lower().startswith("bad bot") and self.is_my_comment_chain(comment, direct=True):
             logging.warning(f"Bad bot detected: {self.REDDIT_BASE_URL + comment.permalink}")
             return True
 
