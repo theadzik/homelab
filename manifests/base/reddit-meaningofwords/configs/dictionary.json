@@ -9,7 +9,8 @@
     ],
     "search_rule": "\\bconajmniej\\b",
     "sources": [
-      "https://polszczyzna.pl/co-najmniej-conajmniej-ktora-forma-poprawna/"
+      "https://poradnia-jezykowa.uni.lodz.pl/faq/przynajmniej-co-najmniej/",
+      "https://sjp.pwn.pl/ciekawostki/haslo/CO-NAJMNIEJ;5391527.html"
     ]
   },
   "dlatego że": {
@@ -32,7 +33,7 @@
     ],
     "search_rule": "\\b(do p[oóu]ki|dopuki)\\b",
     "sources": [
-      "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-dopoki-czy-do-poki-razem-czy-osobno"
+      "https://sjp.pwn.pl/slowniki/dop%C3%B3ki.html"
     ]
   },
   "dzisiaj/obecnie": {
@@ -46,7 +47,8 @@
     "search_rule": "\\bd(niu|zie[nń]) (dzisie|jutrze|wczora)jszy(|m)\\b",
     "sources": [
       "https://fil.ug.edu.pl/strona/15142/wyrazenia_dzien_dzisiejszy_dzien_wczorajszy_dzien_jutrzejszy_poprawne",
-      "http://www.poradniajezykowa.ujd.edu.pl/en/node/105"
+      "http://www.poradniajezykowa.ujd.edu.pl/en/node/105",
+      "https://poradnia-jezykowa.uni.lodz.pl/faq/na-dzien-dzisiejszy/"
     ]
   },
   "in vitro": {
@@ -56,18 +58,7 @@
     ],
     "search_rule": "\\bin(-|)[vw]itro\\b",
     "sources": [
-      "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-in-vitro-czy-invitro-razem-czy-osobno",
       "https://sjp.pwn.pl/sjp/in-vitro;2466782.html"
-    ]
-  },
-  "już": {
-    "explanations": [
-      "Poprawną pisownię wyjaśnia etymologia.",
-      "Dzisiejsze 'już' jest skróconą formą staropolskiego 'juże', a więc zapis z użyciem 'ż' jest uwarunkowany historycznie."
-    ],
-    "search_rule": "\\bjusz\\b",
-    "sources": [
-      "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-juz-czy-jusz"
     ]
   },
   "linia najmniejszego oporu": {
@@ -82,7 +73,8 @@
     ],
     "search_rule": "\\b(naj|)(wi[eę]k|mniej)sz(a|ą|ej) lini[iaąeę]{0,1} oporu\\b",
     "sources": [
-      "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-po-linii-najmniejszego-oporu-czy-po-najmniejszej-linii-oporu"
+      "https://fil.ug.edu.pl/strona/43050/dlaczego_zdanie_straszny_len_wszystko_robi_po_najmniejszej_linii_oporu_jest_niepoprawne",
+      "https://sjp.pwn.pl/poradnia/haslo/po-linii-najmniejszego-oporu;1440.html"
     ]
   },
   "na co dzień": {
@@ -94,7 +86,7 @@
     ],
     "search_rule": "\\bna( |)codzie(n\\b|ń\\B)",
     "sources": [
-      "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-nacodzien-czy-na-co-dzien"
+      "https://sjp.pwn.pl/so/na-co-dzien;4468236.html"
     ]
   },
   "na pewno": {
@@ -105,8 +97,8 @@
     ],
     "search_rule": "\\bnapewno\\b",
     "sources": [
-      "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-na-pewno-czy-napewno-razem-czy-osobno",
-      "https://www.interpunkcja.pl/poradnik-jezykowy/napewno-czy-na-pewno-jak-sie-pisze-razem-czy-osobno"
+      "https://poradnia-jezykowa.uni.lodz.pl/faq/pisownia-naprawde-i-na-pewno/",
+      "https://sjp.pwn.pl/poradnia/haslo/na-pewno;9268.html"
     ]
   },
   "na razie": {
@@ -118,7 +110,7 @@
     "search_rule": "\\bnarazie\\b",
     "sources": [
       "https://sjp.pwn.pl/poradnia/haslo/na-razie-czy-narazie;5326.html",
-      "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-na-razie-czy-narazie-razem-czy-osobno"
+      "https://sjp.pwn.pl/poradnia/haslo/b-Na-razie-b;15447.html"
     ]
   },
   "naprawdę/na prawdę": {
@@ -130,7 +122,7 @@
     "search_rule": "\\bna prawd(e\\b|ę\\B)",
     "sources": [
       "https://sjp.pwn.pl/ciekawostki/haslo/NAPRAWDE;5391567.html",
-      "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-naprawde-czy-na-prawde"
+      "https://poradnia-jezykowa.uni.lodz.pl/faq/pisownia-naprawde-i-na-pewno/"
     ]
   },
   "naprzeciwko": {
@@ -141,18 +133,8 @@
     ],
     "search_rule": "\\bna przeciw(ko|)\\b",
     "sources": [
-      "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-naprzeciwko-czy-na-przeciwko-razem-czy-osobno",
-      "https://sjp.pwn.pl/slowniki/naprzeciwko.html"
-    ]
-  },
-  "nie wiem": {
-    "explanations": [
-      "Zgodnie z obowiązującymi w języku polskim zasadami ortograficznymi",
-      "partykułę 'nie' będącą wykładnikiem zaprzeczenia piszemy rozdzielnie przed czasownikami."
-    ],
-    "search_rule": "\\bniewiem\\b",
-    "sources": [
-      "https://www.interpunkcja.pl/poradnik-jezykowy/niewiem-czy-nie-wiem-jak-sie-pisze-razem-czy-osobno"
+      "https://sjp.pwn.pl/slowniki/naprzeciwko.html",
+      "https://sjp.pwn.pl/szukaj/naprzeciw.html"
     ]
   },
   "notabene": {
@@ -163,18 +145,7 @@
     ],
     "search_rule": "\\bnota bene\\b",
     "sources": [
-      "https://skrivanek.pl/notabene-czy-nota-bene/",
       "https://sjp.pwn.pl/poradnia/haslo/nota-bene-czy-notabene;5501.html"
-    ]
-  },
-  "okres": {
-    "explanations": [
-      "'Okres czasu' jest formą niepoprawną, ponieważ wyrażenie to należy do pleonazmów (np. czyli 'masło maślane'), w którym oba człony oznaczają to samo.",
-      "'Okres', czyli czas trwania czegoś, odcinek, zatem nie ma potrzeby dodawania do niego określenia 'czas'."
-    ],
-    "search_rule": "\\bokres(|u|owi|em|ie) czasu\\b",
-    "sources": [
-      "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-okres-czasu-pleonazm"
     ]
   },
   "optymalny": {
@@ -188,7 +159,8 @@
     ],
     "search_rule": "\\b(naj|)(optymalniej|(bardz|mn)iej optymaln)[a-ząćęłńóśźż]*(\\b|\\B)",
     "sources": [
-      "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/optymalny,cltt,o"
+      "https://sjp.pwn.pl/poradnia/haslo/optymalny;1854.html",
+      "https://fil.ug.edu.pl/strona/15155/wiem_nie_powinno_mowic_najbardziej_optymalny_mozna_jednak_uzyc_konstrukcji_mniej_optymalny"
     ]
   },
   "ponadto/ponad to": {
@@ -205,7 +177,8 @@
     ],
     "search_rule": "\\bpo( |)nad to\\b",
     "sources": [
-      "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-ponadto-czy-ponad-to"
+      "https://sjp.pwn.pl/sjp/ponadto;2504482.html",
+      "https://sjp.pwn.pl/zasady/144-29-2-Dawne-polaczenia-przyimkowe-we-wspolczesnej-polszczyznie-bedace-zrostami;629476.html"
     ]
   },
   "poza tym": {
@@ -215,8 +188,8 @@
     ],
     "search_rule": "\\b(po za tym|pozatym)\\b",
     "sources": [
-      "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-poza-tym-czy-po-za-tym",
-      "https://sjp.pwn.pl/poradnia/haslo/poza-tym;12865.html"
+      "https://sjp.pwn.pl/poradnia/haslo/poza-tym;12865.html",
+      "https://poradnia-jezykowa.uni.lodz.pl/faq/nowe-pytanie-od-uzytkownika-piotr-baleja-balej1010gmail-com/"
     ]
   },
   "rządzić": {
@@ -228,7 +201,7 @@
     ],
     "search_rule": "\\b[zż][aą]d[zź](|e|ę|isz|i|imy|icie|a|ą|ic|ić)\\b",
     "sources": [
-      "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-rzadzic-czy-zadzic",
+      "https://sjp.pwn.pl/szukaj/rz%C4%85dzi%C4%87.html",
       "https://sjp.pwn.pl/slowniki/%C5%BC%C4%85dza"
     ]
   },
@@ -240,7 +213,8 @@
     ],
     "search_rule": "\\bz( |)p(rzed|od)\\b",
     "sources": [
-      "https://nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/spod-i-sprzed,c,418489104"
+      "https://sjp.pwn.pl/sjp/sprzed;2523478.html",
+      "https://sjp.pwn.pl/poradnia/haslo/z-pod-i-spod;395.html"
     ]
   },
   "sweter": {
@@ -253,7 +227,8 @@
     ],
     "search_rule": "\\bswetr\\b",
     "sources": [
-      "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-sweter-czy-swetr"
+      "https://sjp.pwn.pl/poradnia/haslo/sweter-swetra;274.html",
+      "https://sjp.pwn.pl/poradnia/haslo/sweter;181.html"
     ]
   },
   "szedłem": {
@@ -263,7 +238,8 @@
     ],
     "search_rule": "\\b(do|na(|d)|o(b|d)|po(|d)|prz(e|y)|roz|u|w(|y|ze)|z(|a|e)){0,1}sz[lł]em\\b",
     "sources": [
-      "https://nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/dlaczego-szedlem-a-nie-szlem-,cltt,S"
+      "https://sjp.pwn.pl/poradnia/haslo/Od-kiedy-szlem-zamiast-szedlem;19036.html",
+      "https://poradnia-jezykowa.uni.lodz.pl/faq/poszlem/"
     ]
   },
   "w każdym razie": {
@@ -276,7 +252,8 @@
     ],
     "search_rule": "\\bw ka[zż]dym b[aą]d[zź] razie\\b",
     "sources": [
-      "https://skrivanek.pl/w-kazdym-badz-razie-czy-w-kazdym-razie/"
+      "https://sjp.pwn.pl/poradnia/haslo/w-kazdym-badz-razie;624.html",
+      "https://poradnia-jezykowa.uni.lodz.pl/faq/w-kazdym-razie-lub-badz-co-badz-a-nie-w-kazdym-badz-razie/"
     ]
   },
   "w ogóle": {
@@ -286,7 +263,8 @@
     ],
     "search_rule": "\\bwog[oóu]{0,1}le\\b",
     "sources": [
-      "https://www.ortograf.pl/watpliwosci-jezykowe/w-ogole-czy-w-ogole"
+      "https://sjp.pwn.pl/slowniki/w%20og%C3%B3le.html",
+      "https://sjp.pwn.pl/ciekawostki/haslo/W-OGOLE;5391602.html"
     ]
   },
   "wziąć": {
@@ -297,7 +275,7 @@
     ],
     "search_rule": "\\bwzi[aą][sśzź](c\\b|ć\\B)",
     "sources": [
-      "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-wziac-czy-wziasc"
+      "https://sjp.pwn.pl/poradnia/haslo/dlaczego-nie-wziasc;11924.html"
     ]
   },
   "włączać": {
@@ -312,7 +290,9 @@
     ],
     "search_rule": "\\b[a-ząćęłńóśźż]*w[lł]ancz[a-ząćęłńóśźż]*(\\b|\\B)",
     "sources": [
-      "https://polszczyzna.pl/wlaczac-czy-wlanczac-jak-poprawnie-to-zapisac/"
+      "https://sjp.pwn.pl/poradnia/haslo/wlanczac;6221.html",
+      "https://poradnia-jezykowa.uni.lodz.pl/faq/wlaczac/",
+      "https://sjp.pwn.pl/poradnia/haslo/wlaczac;4940.html"
     ]
   },
   "z powrotem": {
@@ -324,7 +304,8 @@
     ],
     "search_rule": "\\b[sz]powrotem\\b",
     "sources": [
-      "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-spowrotem-czy-z-powrotem"
+      "https://sjp.pwn.pl/poradnia/haslo/z-powrotem;1040.html",
+      "https://poradnia-jezykowa.uni.lodz.pl/faq/z-powrotem-zpowrotem-spowrotem/"
     ]
   },
   "złodziei": {
@@ -334,7 +315,7 @@
     ],
     "search_rule": "\\bz[lł]odzieji\\b",
     "sources": [
-      "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-zlodziei-czy-zlodzieji"
+      "https://sjp.pwn.pl/poradnia/haslo/Zlodziei;22156.html"
     ]
   },
   "à propos": {
@@ -351,8 +332,9 @@
     ],
     "search_rule": "\\ba(propo(|s)| propo)\\b",
     "sources": [
-      "https://polszczyzna.pl/apropo-czy-a-propos-ktora-forma-jest-poprawna/",
-      "https://sjp.pwn.pl/poradnia/haslo/A-propos;22215.html"
+      "https://poradnia-jezykowa.uni.lodz.pl/faq/zapis-wykrzyknienia-a-propos/",
+      "https://sjp.pwn.pl/poradnia/haslo/A-propos;22215.html",
+      "https://sjp.pwn.pl/sjp/a-propos;2550591.html"
     ]
   }
 }

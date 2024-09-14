@@ -79,7 +79,7 @@ class BotCommenter:
         logging.debug(f"Found relevant sentences:\n{relevant_sentences}")
         return relevant_sentences
 
-    def parse_reddt_comment(self, content: WordCheckerResponse) -> str:
+    def parse_reddt_comment(self, content: WordCheckerResponse, sources: str) -> str:
         # Add two spaces in front of the new paragraph to continue under the same bullet point.
         explanation = content.explanation.replace("\n\n", "\n\n  ")
 
@@ -88,8 +88,17 @@ class BotCommenter:
             f"\n* Użyta forma: **{content.used_word}**"
             f"\n* Poprawna forma: **{content.correct_word}**"
             f"\n* Wyjaśnienie: {explanation}"
+            f"\n* Źródła: {sources}"
         )
         return message
+
+    def parse_reddit_sources(self, word: str) -> str:
+        markdown_links = []
+        links = self.words_to_check.get(word).get("sources")
+        for idx, source in enumerate(links):
+            markdown_links.append(f"[{idx + 1}]({source})")
+
+        return ", ".join(markdown_links)
 
     def get_extra_info(self, word: str) -> str:
         return " ".join(self.words_to_check.get(word).get("explanations"))
@@ -161,7 +170,8 @@ if __name__ == "__main__":
 
             if not content.is_correct:
                 logging.info("Phrase used incorrectly. Replying!")
-                response = bot_commenter.parse_reddt_comment(content)
+                sources = bot_commenter.parse_reddit_sources(keyword_found)
+                response = bot_commenter.parse_reddt_comment(content, sources)
                 reply_comment = comment.reply(response)
                 logging.debug(bot_commenter.REDDIT_BASE_URL + reply_comment.permalink)
             else:
