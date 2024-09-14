@@ -142,6 +142,13 @@ if __name__ == "__main__":
     logging.info("Scanning comments.")
 
     for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
+        # Terminating process after a new comment is received, but before anything is done with it.
+        # This is because during upgrades there should already be an instance running when we get SIGTERM.
+        # It's better to not post at all than to double post.
+        if killer.kill_now:
+            logging.info("Received kill signal. Shutting down.")
+            break
+
         # Initializing on every loop to reload dictionary without restarting.
         bot_commenter = BotCommenter()
         logging.debug(f"Found a comment: {comment.permalink}")
@@ -177,7 +184,3 @@ if __name__ == "__main__":
             else:
                 logging.warning("Phrase used correctly. Skipping.")
                 logging.warning(content)
-
-        if killer.kill_now:
-            logging.info("Received kill signal. Shutting down.")
-            break
