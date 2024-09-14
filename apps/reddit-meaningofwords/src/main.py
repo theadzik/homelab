@@ -3,6 +3,7 @@
 import json
 import logging
 import os
+import random
 import re
 
 import nltk
@@ -28,8 +29,12 @@ class BotCommenter:
         if not os.path.isdir(os.path.join(os.getenv("NLTK_DIRECTORY"), "tokenizers", "punkt_tab")):
             nltk.download('punkt_tab', download_dir=os.getenv("NLTK_DIRECTORY"))
 
-    def find_keywords(self, body: str, skip_citations: bool = True) -> (str, str):
-        for word in self.patterns_to_check.keys():
+    def find_keywords(self, body: str, skip_citations: bool = True, random_order: bool = True) -> (str, str):
+        words = list(self.patterns_to_check.keys())
+        if random_order:
+            random.shuffle(words)
+
+        for word in words:
             logging.debug(f"Looking for {word}")
 
             if skip_citations:
