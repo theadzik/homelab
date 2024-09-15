@@ -298,14 +298,13 @@
   "z powrotem": {
     "explanations": [
       "Zgodnie z zasadami języka polskiego wyrażenie 'z powrotem' powinniśmy zapisać rozdzielnie z przyimkiem 'z'.",
-      "Nietrudno w tym przypadku o pomyłkę.",
-      "Część wyrażeń pisanych etymologicznie osobno (reguła obowiązywała do 1938 roku) zgodnie z obowiązującymi zasadami zapisuje się łączenie w takiej postaci: 'sponad' dawniej: 'z ponad', 'sprzed' dawniej: 'z przed'.",
-      "Jednak wyrażenie 'z powrotem' nie zmieniło swojej formy."
+      "Pomyłka może wynikać z faktu, że dawne 'ztąd', 'ztamtąd' zaczęliśmy pisać 'stąd', 'stamtąd', ale nadal piszemy 'z powrotem'."
+
     ],
     "search_rule": "\\b[sz]powrotem\\b",
     "sources": [
-      "https://sjp.pwn.pl/poradnia/haslo/z-powrotem;1040.html",
-      "https://poradnia-jezykowa.uni.lodz.pl/faq/z-powrotem-zpowrotem-spowrotem/"
+      "https://poradnia-jezykowa.uni.lodz.pl/faq/z-powrotem-zpowrotem-spowrotem/",
+      "https://sjp.pwn.pl/poradnia/haslo/z-powrotem;1040.html"
     ]
   },
   "złodziei": {
