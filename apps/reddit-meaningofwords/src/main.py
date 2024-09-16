@@ -45,7 +45,7 @@ class BotCommenter:
                 match_group = 0
 
             if match := re.search(pattern, body, flags=re.IGNORECASE | re.MULTILINE):
-                logging.info(f"Found a comment with {word}!")
+                logging.debug(f"Found a comment with {word}!")
                 logging.debug(body)
                 logging.debug(match)
                 logging.debug(match.group(match_group))
@@ -181,6 +181,7 @@ if __name__ == "__main__":
                 continue
 
             logging.info(bot_commenter.REDDIT_BASE_URL + comment.permalink)
+            logging.info(f"Checking comment for correct usage of word: {keyword_found}")
 
             extra_info = bot_commenter.get_extra_info(keyword_found)
             start_index, end_index = bot_commenter.get_sentence_indexes(word=match, body=comment.body, limit=2)
