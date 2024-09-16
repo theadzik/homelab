@@ -7,6 +7,7 @@ resources:
   - secret.yaml
   - deployment.yaml
   - nwp.yaml
+  - service.yaml
 
 # Pod automatically loads new files, no need to restart it by adding hash to the name
 generatorOptions:
