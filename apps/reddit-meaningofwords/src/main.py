@@ -132,7 +132,7 @@ if __name__ == "__main__":
     load_dotenv()
 
     logging.basicConfig(
-        format='%(asctime)s %(levelname)s: %(message)s',
+        format='%(levelname)s: %(message)s',
         encoding='utf-8',
         level=os.getenv("LOG_LEVEL", logging.INFO)
     )
