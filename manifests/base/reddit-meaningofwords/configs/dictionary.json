@@ -2,8 +2,7 @@
   "co najmniej": {
     "explanations": [
       "'Co najmniej' to wyrażenie zaimkowe składające się z zaimka 'co' i przysłówka w stopniu najwyższym 'najmniej'.",
-      "Zgodnie z zasadami języka polskiego wyrażenia zaimkowe zbudowane są z zaimka i innej części mowy",
-      "i zapisujemy je rozdzielnie, np. 'co miesiąc', 'tym bardziej', 'czym prędzej', 'co najwyżej' i oczywiście 'co najmniej'.",
+      "Wyrażenia zaimkowe zapisujemy rozdzielnie, np. 'co miesiąc', 'tym bardziej', 'czym prędzej', 'co najwyżej' i 'co najmniej'.",
       "Popularny błąd zapisu 'conajmniej' wziął się prawdopodobnie z podobieństwa do wyrazów 'przynajmniej' oraz 'bynajmniej'",
       "– to jednak samodzielne słowa, dlatego są zapisywane łącznie."
     ],
@@ -41,8 +40,8 @@
       "Przysłówki 'dzisiaj' i 'dziś' są wyrazami o znaczeniu neutralnym, są zatem poprawne w każdym tekście,",
       "natomiast połączenie 'w dniu dzisiejszym' jest nacechowane oficjalnością i pojawić się może jedynie",
       "w tekstach oficjalnych, urzędowych.",
-      "Trzeba jednak podkreślić, że wyrażenia  'dzień dzisiejszy', w 'dniu dzisiejszym' cechuje nadmiarowość znaczeniowa",
-      "(wyraz 'dzień' powtarza treść przymiotnika 'dzisiejszy') i  można je w związku z tym uznać za pleonazmy."
+      "Wyrażenia  'dzień dzisiejszy', w 'dniu dzisiejszym' cechuje nadmiarowość znaczeniowa",
+      "(wyraz 'dzień' powtarza treść przymiotnika 'dzisiejszy') i można je w związku z tym uznać za pleonazmy."
     ],
     "search_rule": "\\bd(niu|zie[nń]) (dzisie|jutrze|wczora)jszy(|m)\\b",
     "sources": [
@@ -79,8 +78,8 @@
   },
   "na co dzień": {
     "explanations": [
-      "Zapis rozłączny 'na co dzień' określa zasada konwencjonalna, co oznacza, że pisownia nie jest motywowana fonetycznie, morfologicznie, historycznie, lecz jest oparta na arbitralnych ustaleniach.",
-      "Warto jednak zwrócić uwagę na budowę tego wyrażenia: 'na' jest przyimkiem, który bardzo często wchodzi w skład wyrażeń przyimkowych, jakie zawsze zapisujemy rozłącznie.",
+      "Zapis rozłączny 'na co dzień' określa zasada konwencjonalna, co oznacza, że jest oparta na arbitralnych ustaleniach.",
+      "'na' jest przyimkiem, który bardzo często wchodzi w skład wyrażeń przyimkowych, jakie zawsze zapisujemy rozłącznie.",
       "Natomiast 'co dzień' należy do wyrażeń zaimkowych również pisanych rozłącznie. Zatem każdy element tej frazy musi zostać zapisany oddzielnie.",
       "Błędne 'nacodzień' wynika najpewniej z analogii do 'codziennie', jednak rozkład części mowy wskazuje, że są to trzy osobne wyrazy."
     ],
@@ -92,8 +91,7 @@
   "na pewno": {
     "explanations": [
       "Wyrażenie 'na pewno' wywodzi się od prasłowiańskiej formy przymiotnika rodzaju nijakiego 'pewno'.",
-      "Zarówno w przypadku tego sformułowania, jak i podobnych: na lewo, na prawo, na okrągło, na nowo, obowiązuje pisownia rozdzielna.",
-      "'Na pewno' należy do grupy wyrażeń przyimkowych, czyli takich połączeń przyimków z rzeczownikami, przysłówkami, liczebnikami lub zaimkami, które w języku polskim piszemy rozdzielnie."
+      "Zarówno w przypadku tego sformułowania, jak i podobnych: na lewo, na prawo, na okrągło, na nowo, obowiązuje pisownia rozdzielna."
     ],
     "search_rule": "\\bnapewno\\b",
     "sources": [
@@ -103,9 +101,9 @@
   },
   "na razie": {
     "explanations": [
+      "'Na razie' zawsze zapisujemy rozdzielnie, niezależnie od kontekstu.",
       "Wyrażenie przyimkowe 'na razie', pełniące funkcje przysłówka, używamy w znaczeniu: tymczasem, teraz, jeszcze.",
-      "Jest to również potoczna formuła pożegnalna.",
-      "W obu powyższych znaczeniach poprawny jest rozdzielny zapis."
+      "Jest to również potoczna formuła pożegnalna: 'Idę już do domu, na razie!'"
     ],
     "search_rule": "\\bnarazie\\b",
     "sources": [
@@ -145,7 +143,8 @@
     ],
     "search_rule": "\\bnota bene\\b",
     "sources": [
-      "https://sjp.pwn.pl/poradnia/haslo/nota-bene-czy-notabene;5501.html"
+      "https://sjp.pwn.pl/poradnia/haslo/nota-bene-czy-notabene;5501.html",
+      "http://www.poradnia-jezykowa.uz.zgora.pl/wordpress/?p=1999"
     ]
   },
   "optymalny": {
@@ -183,7 +182,7 @@
   },
   "poza tym": {
     "explanations": [
-      "Wyrażenie przyimkowe 'poza tym' - będące partykułą wprowadzającą nowe informacje do wypowiedzi – zapisujemy, rozdzielając przyimek 'poza' od zaimka wskazującego 'tym'.",
+      "Wyrażenie przyimkowe 'poza tym' zawsze zapisujemy, rozdzielając przyimek 'poza' od zaimka wskazującego 'tym'.",
       "Niedopuszczalna jest zarówno pisownia rozdzielna przybierająca formę: 'po za tym', jak również pisownia łączna: 'pozatym' (wzorująca się zapisie wyrazu 'ponadto')."
     ],
     "search_rule": "\\b(po za tym|pozatym)\\b",
@@ -258,7 +257,7 @@
   },
   "w ogóle": {
     "explanations": [
-      "Wyrażenie przyimkowe 'w ogóle' piszemy rozdzielnie.",
+      "Wyrażenie przyimkowe 'w ogóle' zawsze piszemy rozdzielnie.",
       "Podobnie jak 'na ogół' i 'z ogółem'. Wszystkie bowiem pochodzą od rzeczownika 'ogół'."
     ],
     "search_rule": "\\bwog[oóu]{0,1}le\\b",
@@ -275,12 +274,13 @@
     ],
     "search_rule": "\\bwzi[aą][sśzź](c\\b|ć\\B)",
     "sources": [
-      "https://sjp.pwn.pl/poradnia/haslo/dlaczego-nie-wziasc;11924.html"
+      "https://sjp.pwn.pl/poradnia/haslo/dlaczego-nie-wziasc;11924.html",
+      "https://poradnia-jezykowa.uni.lodz.pl/warto-wiedziec/klopotliwe-wyrazy/"
     ]
   },
   "włączać": {
     "explanations": [
-      "Jedyna poprawna forma to oczywiście 'włączać'.",
+      "Jedyna poprawna forma to 'włączać'.",
       "Pisownia 'włączać' jest uzasadniona regułą ortograficzną, która mówi, że samogłoskę 'ą'",
       "zapisujemy przed spółgłoskami zwarto-szczelinowymi, do których zaliczają się: 'c', 'ć', 'cz', 'dz', 'dź', 'dż'.",
       "To samo dotyczy bezokolicznika 'wyłączać'.",
@@ -297,7 +297,7 @@
   },
   "z powrotem": {
     "explanations": [
-      "Zgodnie z zasadami języka polskiego wyrażenie 'z powrotem' powinniśmy zapisać rozdzielnie z przyimkiem 'z'.",
+      "Niezależnie od kontekstu jedyną poprawną postacią zapisu tego wyrażenia przyimkowego jest 'z powrotem'.",
       "Pomyłka może wynikać z faktu, że dawne 'ztąd', 'ztamtąd' zaczęliśmy pisać 'stąd', 'stamtąd', ale nadal piszemy 'z powrotem'."
 
     ],
@@ -325,8 +325,6 @@
       "Wyrażenie 'à propos' jest galicyzmem, czyli zapożyczeniem z języka francuskiego.",
       "Zwrot 'à propos' nigdy nie uległ spolszczeniu.",
       "W związku z tym musi być zapisywane wyłącznie w swojej oryginalnej formie.",
-      "W języku polskim jest to nie tylko wtrącenie, ale również wyrażenie wprowadzające temat wypowiedzi.",
-      "Stosuje się je najczęściej, wtedy gdy w chwili gdy coś mówimy, przypomnimy sobie o tym, co jest związane z tym tematem.",
       "W polszczyźnie obce znaki diakrytyczne są zasadniczo zachowywane w literach wersalikowych, czyli na początku zdania użyjemy pisowni 'À propos'."
     ],
     "search_rule": "\\ba(propo(|s)| propo)\\b",
