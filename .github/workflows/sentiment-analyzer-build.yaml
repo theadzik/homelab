@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Get image tag
         id: vars
-        run: echo "docker_tag=$(echo ${GITHUB_REF} | cut -d'-' -f2)" >> $GITHUB_OUTPUT
+        run: echo "docker_tag=$(echo ${GITHUB_REF} | cut -d'-' -f3)" >> $GITHUB_OUTPUT
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Login to Docker Hub

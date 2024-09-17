@@ -23,7 +23,7 @@ class SentimentClient:
         logging.debug(f"Data object:\n{data}")
         response = requests.post(url=url, json=data, headers={"Content-Type": "application/json"})
         sentiment_score = response.json()
-        logging.debug(f"Predicted sentiment: {sentiment_score}")
+        logging.info(f"Predicted sentiment: {sentiment_score}")
         return sentiment_score
 
     def is_confident_sentiment(self, text: str, sentiment: Literal["positive", "neutral", "negative"]) -> bool:
