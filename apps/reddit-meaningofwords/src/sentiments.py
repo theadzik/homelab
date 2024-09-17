@@ -39,4 +39,4 @@ if __name__ == "__main__":
     )
     load_dotenv()
     sentiment_client = SentimentClient()
-    print(sentiment_client.get_sentiment("Głupi jestes nara"))
+    print(sentiment_client.get_sentiment("Ale fajny ten bot!"))
