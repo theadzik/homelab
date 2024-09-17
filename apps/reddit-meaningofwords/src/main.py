@@ -12,6 +12,7 @@ from dotenv import load_dotenv
 from graceful_shutdown import GracefulKiller
 from openaihelper import OpenAIChecker
 from openaihelper import WordCheckerResponse
+from sentiments import SentimentClient
 
 
 class BotCommenter:
@@ -122,10 +123,11 @@ class BotCommenter:
             refresh_counter += 1
         return False
 
-    def find_bad_bot_comment(self, comment: praw.models.Comment) -> bool:
-        if comment.body.lower().startswith("bad bot") and self.is_my_comment_chain(comment, direct=True):
+    def is_bad_bot_comment(self, comment: praw.models.Comment) -> bool:
+        if comment.body.lower().startswith("bad bot"):
             logging.warning(f"Bad bot detected: {self.REDDIT_BASE_URL + comment.permalink}")
             return True
+        return False
 
 
 if __name__ == "__main__":
@@ -149,6 +151,7 @@ if __name__ == "__main__":
     )
 
     killer = GracefulKiller()
+    sentiment_analyzer = SentimentClient()
 
     logging.info(f"User-Agent: {USER_AGENT}")
     logging.info("Scanning comments.")
@@ -165,10 +168,28 @@ if __name__ == "__main__":
         bot_commenter = BotCommenter()
         logging.debug(f"Found a comment: {comment.permalink}")
 
-        if bot_commenter.find_bad_bot_comment(comment=comment):
-            logging.warning(f"Blocking user {comment.author}")
-            reddit.redditor(comment.author).block()
-            continue
+        # Check replies to my comments
+        if bot_commenter.is_my_comment_chain(comment=comment, direct=True):
+            if bot_commenter.is_bad_bot_comment(comment=comment):
+                logging.warning(f"Blocking user {comment.author}")
+                reddit.redditor(comment.author).block()
+                continue
+
+            sentiment_score = sentiment_analyzer.get_sentiment(text=comment.body)
+
+            match sentiment_score["label"]:
+                case "negative":
+                    logging.warning("Got a negative comment :(")
+                    logging.warning(f"{comment.body}")
+                    continue
+                case "neutral":
+                    logging.warning("Got a neutral comment :|")
+                    logging.warning(f"{comment.body}")
+                    continue
+                case "positive":
+                    logging.warning("Got a positive comment :)")
+                    logging.warning(f"{comment.body}")
+                    continue
 
         keyword_found, match = bot_commenter.find_keywords(body=comment.body)
         if keyword_found:
