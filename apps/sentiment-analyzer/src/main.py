@@ -1,4 +1,3 @@
-import uvicorn
 from fastapi import FastAPI
 from pydantic import BaseModel
 from transformers import pipeline
@@ -19,4 +18,5 @@ def analyze_sentiment(body: Item):
 
 
 if __name__ == "__main__":
+    import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8080)
