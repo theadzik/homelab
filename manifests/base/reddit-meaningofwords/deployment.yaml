@@ -72,9 +72,4 @@ spec:
             - containerPort: 8080
               protocol: "TCP"
           securityContext:
-            readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
-      securityContext:
-        runAsUser: 10002
-        runAsGroup: 20002
-        fsGroup: 20002
