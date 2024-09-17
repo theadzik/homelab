@@ -25,7 +25,5 @@ jobs:
         with:
           platforms: "linux/amd64,linux/arm64"
           context: "{{defaultContext}}:apps/sentiment-analyzer"
-          build-args: |
-            APP_VERSION=${{steps.vars.outputs.docker_tag }}
           push: true
           tags: ${{ vars.DOCKERHUB_USERNAME }}/sentiment-analyzer:${{steps.vars.outputs.docker_tag }},${{ vars.DOCKERHUB_USERNAME }}/sentiment-analyzer:latest
