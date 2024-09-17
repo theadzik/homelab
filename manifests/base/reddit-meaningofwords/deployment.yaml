@@ -45,3 +45,31 @@ spec:
         - name: config-volume
           configMap:
             name: reddit-meaningofwords-files
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sentiment-analyzer
+  labels:
+    app: sentiment-analyzer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sentiment-analyzer
+  template:
+    metadata:
+      labels:
+        app: sentiment-analyzer
+    spec:
+      containers:
+        - name: analyzer
+          image: theadzik/sentiment-analyzer:2024.09.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              protocol: "TCP"
+          securityContext:
+            allowPrivilegeEscalation: false

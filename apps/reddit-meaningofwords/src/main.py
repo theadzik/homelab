@@ -12,22 +12,23 @@ from dotenv import load_dotenv
 from graceful_shutdown import GracefulKiller
 from openaihelper import OpenAIChecker
 from openaihelper import WordCheckerResponse
+from sentiments import SentimentClient
 
 
 class BotCommenter:
     def __init__(self):
-        with open(os.getenv("REDDIT_SIGNATURE_PATH"), mode="r", encoding="utf-8") as file:
+        with open(os.environ["REDDIT_SIGNATURE_PATH"], mode="r", encoding="utf-8") as file:
             self.signature = file.read()
             logging.debug(f"Loaded signature:\n{self.signature}")
-        with open(os.getenv("REDDIT_DICTIONARY_PATH"), mode="r", encoding="utf-8") as file:
+        with open(os.environ["REDDIT_DICTIONARY_PATH"], mode="r", encoding="utf-8") as file:
             self.words_to_check = json.load(file)
 
         self.patterns_to_check = {word: value.get("search_rule") for word, value in self.words_to_check.items()}
         logging.debug(f"Loaded {len(self.words_to_check)} rules.")
-        self.bot_name = os.getenv("REDDIT_USERNAME")
+        self.bot_name = os.environ["REDDIT_USERNAME"]
         self.REDDIT_BASE_URL = "https://reddit.com"
-        if not os.path.isdir(os.path.join(os.getenv("NLTK_DIRECTORY"), "tokenizers", "punkt_tab")):
-            nltk.download('punkt_tab', download_dir=os.getenv("NLTK_DIRECTORY"))
+        if not os.path.isdir(os.path.join(os.environ["NLTK_DIRECTORY"], "tokenizers", "punkt_tab")):
+            nltk.download('punkt_tab', download_dir=os.environ["NLTK_DIRECTORY"])
 
     def find_keywords(self, body: str, skip_citations: bool = True, random_order: bool = True) -> (str, str):
         words = list(self.patterns_to_check.keys())
@@ -122,10 +123,11 @@ class BotCommenter:
             refresh_counter += 1
         return False
 
-    def find_bad_bot_comment(self, comment: praw.models.Comment) -> bool:
-        if comment.body.lower().startswith("bad bot") and self.is_my_comment_chain(comment, direct=True):
+    def is_bad_bot_comment(self, comment: praw.models.Comment) -> bool:
+        if comment.body.lower().startswith("bad bot"):
             logging.warning(f"Bad bot detected: {self.REDDIT_BASE_URL + comment.permalink}")
             return True
+        return False
 
 
 if __name__ == "__main__":
@@ -137,18 +139,19 @@ if __name__ == "__main__":
         level=os.getenv("LOG_LEVEL", logging.INFO)
     )
 
-    USER_AGENT = f"linux:{os.getenv('REDDIT_USERNAME')}:{os.environ.get('APP_VERSION')} (by u/MalinowyChlopak)"
+    USER_AGENT = f"linux:{os.environ['REDDIT_USERNAME']}:{os.environ['APP_VERSION']} (by u/MalinowyChlopak)"
     SUBREDDITS = os.getenv("REDDIT_SUBREDDITS", "polska")
 
     reddit = praw.Reddit(
-        client_id=os.getenv("REDDIT_CLIENT_ID"),
-        client_secret=os.getenv("REDDIT_CLIENT_SECRET"),
-        username=os.getenv("REDDIT_USERNAME"),
-        password=os.getenv("REDDIT_PASSWORD"),
+        client_id=os.environ["REDDIT_CLIENT_ID"],
+        client_secret=os.environ["REDDIT_CLIENT_SECRET"],
+        username=os.environ["REDDIT_USERNAME"],
+        password=os.environ["REDDIT_PASSWORD"],
         user_agent=USER_AGENT,
     )
 
     killer = GracefulKiller()
+    sentiment_analyzer = SentimentClient()
 
     logging.info(f"User-Agent: {USER_AGENT}")
     logging.info("Scanning comments.")
@@ -165,10 +168,28 @@ if __name__ == "__main__":
         bot_commenter = BotCommenter()
         logging.debug(f"Found a comment: {comment.permalink}")
 
-        if bot_commenter.find_bad_bot_comment(comment=comment):
-            logging.warning(f"Blocking user {comment.author}")
-            reddit.redditor(comment.author).block()
-            continue
+        # Check replies to my comments
+        if bot_commenter.is_my_comment_chain(comment=comment, direct=True):
+            if bot_commenter.is_bad_bot_comment(comment=comment):
+                logging.warning(f"Blocking user {comment.author}")
+                reddit.redditor(comment.author).block()
+                continue
+
+            sentiment_score = sentiment_analyzer.get_sentiment(text=comment.body)
+
+            match sentiment_score["label"]:
+                case "negative":
+                    logging.warning("Got a negative comment :(")
+                    logging.warning(f"{comment.body}")
+                    continue
+                case "neutral":
+                    logging.warning("Got a neutral comment :|")
+                    logging.warning(f"{comment.body}")
+                    continue
+                case "positive":
+                    logging.warning("Got a positive comment :)")
+                    logging.warning(f"{comment.body}")
+                    continue
 
         keyword_found, match = bot_commenter.find_keywords(body=comment.body)
         if keyword_found:
