@@ -1,8 +1,18 @@
 import logging
+import os
+import sys
 
 from fastapi import FastAPI
 from pydantic import BaseModel
 from transformers import pipeline
+
+logging.basicConfig(
+    encoding='utf-8',
+    level=os.getenv("LOG_LEVEL", logging.INFO),
+    stream=sys.stdout
+)
+
+logger = logging.getLogger(__name__)
 
 
 class Item(BaseModel):
@@ -15,17 +25,13 @@ app = FastAPI()
 
 @app.post("/")
 def analyze_sentiment(body: Item):
-    logging.debug(body)
     body_dict = body.dict()
-    return nlp(body_dict["text"])[0]
+    prediction = nlp(body_dict["text"])[0]
+    logger.debug(f"Received body: {body_dict['text']}\nPrediction: {prediction}")
+    return prediction
 
 
 if __name__ == "__main__":
     import uvicorn
 
-    logging.basicConfig(
-        format='%(levelname)s: %(message)s',
-        encoding='utf-8',
-        level=logging.DEBUG
-    )
     uvicorn.run(app, host="0.0.0.0", port=8080)

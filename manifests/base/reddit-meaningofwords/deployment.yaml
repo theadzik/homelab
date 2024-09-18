@@ -66,8 +66,11 @@ spec:
     spec:
       containers:
         - name: analyzer
-          image: theadzik/sentiment-analyzer:2024.09.1
+          image: theadzik/sentiment-analyzer:2024.09.2
           imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: sentiment-analyzer-config
           ports:
             - containerPort: 8080
               protocol: "TCP"

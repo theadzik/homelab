@@ -14,3 +14,12 @@ data:
   OPENAI_TEMPERATURE: "1"
   SENTIMENT_ANALYZER_URL: sentiment-analyzer
   SENTIMENT_ANALYZER_PORT: "8080"
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sentiment-analyzer-config
+data:
+  LOG_LEVEL: DEBUG
