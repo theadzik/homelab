@@ -81,7 +81,7 @@
       "Zapis rozłączny 'na co dzień' określa zasada konwencjonalna, co oznacza, że jest oparta na arbitralnych ustaleniach.",
       "'na' jest przyimkiem, który bardzo często wchodzi w skład wyrażeń przyimkowych, jakie zawsze zapisujemy rozłącznie.",
       "Natomiast 'co dzień' należy do wyrażeń zaimkowych również pisanych rozłącznie. Zatem każdy element tej frazy musi zostać zapisany oddzielnie.",
-      "Błędne 'nacodzień' wynika najpewniej z analogii do 'codziennie', jednak rozkład części mowy wskazuje, że są to trzy osobne wyrazy."
+      "Błędne 'nacodzień' lub 'na codzień' wynika najpewniej z analogii do 'codziennie', jednak rozkład części mowy wskazuje, że są to trzy osobne wyrazy."
     ],
     "search_rule": "\\bna( |)codzie(n\\b|ń\\B)",
     "sources": [
@@ -299,7 +299,6 @@
     "explanations": [
       "Niezależnie od kontekstu jedyną poprawną postacią zapisu tego wyrażenia przyimkowego jest 'z powrotem'.",
       "Pomyłka może wynikać z faktu, że dawne 'ztąd', 'ztamtąd' zaczęliśmy pisać 'stąd', 'stamtąd', ale nadal piszemy 'z powrotem'."
-
     ],
     "search_rule": "\\b[sz]powrotem\\b",
     "sources": [

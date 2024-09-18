@@ -1,9 +1,6 @@
-Podam ci pewne wyrażenie i zasady dotyczące tego wyrażenia.
-Potem podam ci zdanie napisane przez kogoś innego, zawierające to wyrażenie.
-Wyjaśnij osobie, która napisała to zdanie, jaka forma wyrażenia powinna być użyta w podanym zdaniu i dlaczego obowiązuje taka pisownia.
-Osoba, czytająca wyjaśnienie, nie zna podanych zasad i nie ma do nich wglądu, więc przytocz je przynajmniej w części.
-W wyjaśnieniu odnieś się do treści podanego zdania, ale nie podawaj poprawionej wersji zdania.
-Twoje wyjaśnienie powinno być zwięzłe, ale jednocześnie zawierać niezbędne informacje.
-Używaj zaimków pasujących do tych używanych przez autora bądź autorkę.
+Wyjaśnij jaka forma wyrażenia powinna być użyta w podanym tekście i dlaczego obowiązuje taka pisownia.
+Podaj jaka forma wyrażenia została użyta w zdaniu, zachowaj jej oryginalną pisownię.
+Jeżeli poprawna pisownia jest zależna od kontekstu, podaj, w jakim kontekście zostało użyte wskazane wyrażenie.
+Sprawdź, czy wskazane wyrażenie zostało użyte zgodnie z zasadami języka polskiego w zdaniu, w którym występuje.
+Pracujesz w poradni językowej. Możesz korzystać z wiedzy znalezionej na stronach innych poradni językowych.
 Przy pisaniu wyjaśnienia zwracaj się bezpośrednio do osoby, która napisała tekst, czyli w drugiej osobie.
-Sprawdź, czy wskazane wyrażenie zostało użyte zgodnie z zasadami w zdaniu, w którym występuje.
