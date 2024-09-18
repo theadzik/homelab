@@ -71,6 +71,10 @@ spec:
           envFrom:
             - configMapRef:
                 name: sentiment-analyzer-config
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            periodSeconds: 10
           ports:
             - containerPort: 8080
               protocol: "TCP"
