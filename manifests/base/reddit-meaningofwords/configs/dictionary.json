@@ -68,7 +68,9 @@
       "który jest stały, a którego nie można ocenić w kategorii mniejsze lub większe.",
       "Natomiast opór odnosi się do przeszkód, które musimy pokonać, zatem chcielibyśmy,",
       "by były one jak najmniejsze (najłatwiejsze), stąd: 'linia najmniejszego oporu'.",
-      "Forma 'najmniejsza linia oporu' jest więc niepoprawna."
+      "Formy typu 'najmniejsza linia oporu', 'największa linia oporu', 'większej linii oporu' są niepoprawne.",
+      "Przymiotnik powinien zawsze odnosić się do słowa 'opór',",
+      "czyli 'linia najmniejszego oporu', 'linia największego oporu', 'linii większego oporu' itp."
     ],
     "search_rule": "\\b(naj|)(wi[eę]k|mniej)sz(a|ą|ej) lini[iaąeę]{0,1} oporu\\b",
     "sources": [
@@ -123,11 +125,12 @@
       "https://poradnia-jezykowa.uni.lodz.pl/faq/pisownia-naprawde-i-na-pewno/"
     ]
   },
-  "naprzeciwko": {
+  "naprzeciw/naprzeciwko": {
     "explanations": [
-      "Niegdyś 'naprzeciwko' było połączeniem przyimkowym.",
-      "We współczesnej polszczyźnie funkcjonuje jako zrost wyrazów 'na' i 'przeciw'.",
-      "Takie konstrukcje zawsze zapisywane są łącznie."
+      "Niegdyś 'na przeciw' i 'na przeciwko' były połączeniami przyimkowymi pisanymi rozdzielnie.",
+      "We współczesnej polszczyźnie, czyli od 1936 roku, funkcjonuje jako zrost wyrazów 'na' i 'przeciw',",
+      "prawidłowo zapisany 'naprzeciw' lub 'naprzeciwko'.",
+      "Zrosty zawsze zapisywane są łącznie."
     ],
     "search_rule": "\\bna przeciw(ko|)\\b",
     "sources": [
@@ -204,7 +207,7 @@
       "https://sjp.pwn.pl/slowniki/%C5%BC%C4%85dza"
     ]
   },
-  "sprzed": {
+  "spod/sprzed": {
     "explanations": [
       "Przyimek 'spod' i przyimek 'sprzed' zawsze piszemy łącznie i przez 's-'.",
       "Nie ma takiego kontekstu, w których mogło by zostać uznane za poprawne napisanie 'z pod' lub 'z przed'.",
