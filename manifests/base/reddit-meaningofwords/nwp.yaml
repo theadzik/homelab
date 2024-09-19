@@ -12,11 +12,11 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-ingress-sentiment-nwp
+  name: allow-ingress-bullying-detector-nwp
 spec:
   podSelector:
     matchLabels:
-      app: sentiment-analyzer
+      app: bullying-detector
   policyTypes:
     - Ingress
   ingress:

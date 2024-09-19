@@ -51,26 +51,26 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sentiment-analyzer
+  name: bullying-detector
   labels:
-    app: sentiment-analyzer
+    app: bullying-detector
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: sentiment-analyzer
+      app: bullying-detector
   template:
     metadata:
       labels:
-        app: sentiment-analyzer
+        app: bullying-detector
     spec:
       containers:
-        - name: analyzer
-          image: theadzik/sentiment-analyzer:2024.09.2
+        - name: model
+          image: theadzik/bullying-detector:2024.09.1
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
-                name: sentiment-analyzer-config
+                name: bullying-detector-config
           readinessProbe:
             tcpSocket:
               port: 8080
