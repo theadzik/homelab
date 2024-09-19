@@ -19,9 +19,13 @@ class WordCheckerResponse(BaseModel):
 
 class OpenAIChecker:
     def __init__(self):
-        with open(os.getenv("REDDIT_PROMPT_PATH"), mode="r", encoding="utf-8") as file:
-            self.prompt = file.read()
-            logging.debug(f"Loaded prompt:\n{self.prompt}")
+        with open(os.getenv("REDDIT_CHECKER_PROMPT_PATH"), mode="r", encoding="utf-8") as file:
+            self.checker_prompt = file.read()
+            logging.debug(f"Loaded checker prompt:\n{self.checker_prompt}")
+
+        with open(os.getenv("REDDIT_BULLY_PROMPT_PATH"), mode="r", encoding="utf-8") as file:
+            self.bully_prompt = file.read()
+            logging.debug(f"Loaded bully prompt:\n{self.bully_prompt}")
 
         self.presence_penalty = float(os.getenv("OPEN_AI_PRESENCE_PENALTY", 0))
         self.frequency_penalty = float(os.getenv("OPEN_AI_FREQUENCY_PENALTY", 0))
@@ -30,7 +34,7 @@ class OpenAIChecker:
     def get_explanation(self, word: str, body: str, extra_info: str = "") -> WordCheckerResponse:
         logging.debug(f"I got this body:\n{body}")
         prompt = [
-            {"role": "system", "content": self.prompt},
+            {"role": "system", "content": self.checker_prompt},
             {"role": "system", "content": f"<zasady>{extra_info}</zasady>"},
             {"role": "system", "content": f"<wyrażenie>{word}</wyrażenie>"},
             {"role": "user", "content": body}

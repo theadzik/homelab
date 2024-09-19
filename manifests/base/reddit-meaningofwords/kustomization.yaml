@@ -16,5 +16,6 @@ configMapGenerator:
   - name: reddit-meaningofwords-files
     files:
       - configs/dictionary.json
-      - configs/prompt.txt
+      - configs/prompt-checker.txt
+      - configs/prompt-bully.txt
       - configs/signature.md
