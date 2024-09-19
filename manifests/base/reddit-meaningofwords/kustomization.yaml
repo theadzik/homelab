@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: reddit-meaningofwords
 resources:
   - namespace.yaml
+  - pv.yaml
   - configmaps.yaml
   - secret.yaml
   - deployment.yaml
@@ -16,5 +17,6 @@ configMapGenerator:
   - name: reddit-meaningofwords-files
     files:
       - configs/dictionary.json
-      - configs/prompt.txt
+      - configs/prompt-checker.txt
+      - configs/prompt-bully.txt
       - configs/signature.md

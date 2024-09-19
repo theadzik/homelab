@@ -1,13 +1,13 @@
-name: sentiment-analyzer-build
+name: bullying-detector-build
 on:
   push:
     tags:
-      - "sentiment-analyzer-*"
+      - "bullying-detector-*"
 #  schedule:
 #    - cron: "0 10 * * 6"
   workflow_dispatch:
 jobs:
-  sentiment-analyzer-build:
+  bullying-detector-build:
     runs-on: ubuntu-latest
     steps:
       - name: Get image tag
@@ -24,6 +24,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           platforms: "linux/amd64,linux/arm64"
-          context: "{{defaultContext}}:apps/sentiment-analyzer"
+          context: "{{defaultContext}}:apps/bullying-detector"
           push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/sentiment-analyzer:${{steps.vars.outputs.docker_tag }},${{ vars.DOCKERHUB_USERNAME }}/sentiment-analyzer:latest
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/bullying-detector:${{steps.vars.outputs.docker_tag }},${{ vars.DOCKERHUB_USERNAME }}/bullying-detector:latest

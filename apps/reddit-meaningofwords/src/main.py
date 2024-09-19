@@ -3,11 +3,11 @@ import os
 import sys
 
 import praw
+from bullying import BullyingClient
 from dotenv import load_dotenv
 from graceful_shutdown import GracefulKiller
 from openai_helper import OpenAIChecker
 from reddit_bot import BotCommenter
-from sentiment import SentimentClient
 
 load_dotenv()
 
@@ -31,7 +31,7 @@ reddit = praw.Reddit(
 )
 
 killer = GracefulKiller()
-sentiment_analyzer = SentimentClient()
+bullying_analyzer = BullyingClient()
 
 logger.info(f"User-Agent: {USER_AGENT}")
 logger.info("Scanning comments.")
@@ -55,21 +55,31 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
             reddit.redditor(comment.author).block()
             continue
 
-        sentiment_score = sentiment_analyzer.get_sentiment(text=comment.body)
+        bullying_score = bullying_analyzer.get_bullying_prediction(text=comment.body)
 
-        match sentiment_score["label"]:
-            case "negative":
-                logger.warning("Got a negative comment :(")
-                logger.warning(f"{comment.body}")
-                continue
-            case "neutral":
-                logger.warning("Got a neutral comment :|")
-                logger.warning(f"{comment.body}")
-                continue
-            case "positive":
-                logger.warning("Got a positive comment :)")
-                logger.warning(f"{comment.body}")
-                continue
+        if bullying_score["label"]:
+            logger.warning("Bullying detected :(")
+            logger.warning(f"{comment.body}")
+            if not bot_commenter.is_warned_bully(comment.author):
+                openai_checker = OpenAIChecker()
+                content = openai_checker.get_bullying_response(comment.body)
+
+                if content.is_bullying:
+                    logger.warning("First warning")
+                    bot_commenter.save_bully(comment.author)
+                    reply_comment = comment.reply(content.response)
+                else:
+                    logger.warning("It wasn't bullying :D")
+                    logger.warning(content)
+
+            else:
+                logger.warning(f"Second warning. Blocking bully {comment.author}")
+                reddit.redditor(comment.author).block()
+            continue
+        else:
+            logger.warning("No bullying :)")
+            logger.warning(f"{comment.body}")
+            continue
 
     keyword_found, match = bot_commenter.find_keywords(body=comment.body)
     if keyword_found:
@@ -97,7 +107,7 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
         if not content.is_correct:
             logger.info("Phrase used incorrectly. Replying!")
             sources = bot_commenter.parse_reddit_sources(keyword_found)
-            response = bot_commenter.parse_reddt_comment(content, sources)
+            response = bot_commenter.parse_reddit_explanation(content, sources)
             reply_comment = comment.reply(response)
             logger.debug(bot_commenter.REDDIT_BASE_URL + reply_comment.permalink)
         else:

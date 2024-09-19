@@ -30,13 +30,16 @@ spec:
               name: nltk-data
             - name: config-volume
               mountPath: "/reddit"
+            - name: bully-block
+              mountPath: /blocklist
+
           securityContext:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
       securityContext:
-        runAsUser: 10002
-        runAsGroup: 20002
-        fsGroup: 20002
+        runAsUser: 10005
+        runAsGroup: 20005
+        fsGroup: 20005
       volumes:
         - name: temp
           emptyDir: {}
@@ -45,32 +48,35 @@ spec:
         - name: config-volume
           configMap:
             name: reddit-meaningofwords-files
+        - name: bully-block
+          persistentVolumeClaim:
+            claimName: bully-block
 
 ---
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sentiment-analyzer
+  name: bullying-detector
   labels:
-    app: sentiment-analyzer
+    app: bullying-detector
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: sentiment-analyzer
+      app: bullying-detector
   template:
     metadata:
       labels:
-        app: sentiment-analyzer
+        app: bullying-detector
     spec:
       containers:
-        - name: analyzer
-          image: theadzik/sentiment-analyzer:2024.09.2
+        - name: model
+          image: theadzik/bullying-detector:2024.09.1
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
-                name: sentiment-analyzer-config
+                name: bullying-detector-config
           readinessProbe:
             tcpSocket:
               port: 8080

@@ -23,6 +23,7 @@ class BotCommenter:
         logger.debug(f"Loaded {len(self.words_to_check)} rules.")
         self.bot_name = os.environ["REDDIT_USERNAME"]
         self.REDDIT_BASE_URL = "https://reddit.com"
+        self.bully_warn_list_path = os.environ["REDDIT_BULLY_LIST_PATH"]
         if not os.path.isdir(os.path.join(os.environ["NLTK_DIRECTORY"], "tokenizers", "punkt_tab")):
             nltk.download('punkt_tab', download_dir=os.environ["NLTK_DIRECTORY"])
 
@@ -81,7 +82,7 @@ class BotCommenter:
         logger.debug(f"Found relevant sentences:\n{relevant_sentences}")
         return relevant_sentences
 
-    def parse_reddt_comment(self, content: WordCheckerResponse, sources: str) -> str:
+    def parse_reddit_explanation(self, content: WordCheckerResponse, sources: str) -> str:
         # Add two spaces in front of the new paragraph to continue under the same bullet point.
         explanation = content.explanation.replace("\n\n", "\n\n  ")
 
@@ -124,3 +125,16 @@ class BotCommenter:
             logger.warning(f"Bad bot detected: {self.REDDIT_BASE_URL + comment.permalink}")
             return True
         return False
+
+    def save_bully(self, username: str) -> None:
+        with open(self.bully_warn_list_path, mode="a", encoding="utf-8") as warn_list:
+            warn_list.write(f"{username}\n")
+        logger.warning(f"Saved warned user {username}")
+
+    def is_warned_bully(self, username: str) -> bool:
+        try:
+            with open(self.bully_warn_list_path, mode="r", encoding="utf-8") as warn_list:
+                return username in warn_list.read().splitlines()
+        except FileNotFoundError:
+            open(self.bully_warn_list_path, mode="a").close()
+            return False

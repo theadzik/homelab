@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+from enum import Enum
 
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -19,14 +20,21 @@ class Item(BaseModel):
     text: str
 
 
-nlp = pipeline("sentiment-analysis", model="bardsai/twitter-sentiment-pl-base")
+class Bullying(Enum):
+    LABEL_0 = False
+    LABEL_1 = True
+
+
+# The model checks if text is cyberbullying (LABEL_1) or not (LABEL_0)
+nlp = pipeline("text-classification", model="ptaszynski/bert-base-polish-cyberbullying")
 app = FastAPI()
 
 
 @app.post("/")
-def analyze_sentiment(body: Item):
+def detect_bullying(body: Item):
     body_dict = body.dict()
     prediction = nlp(body_dict["text"])[0]
+    prediction["label"] = Bullying[prediction["label"]].value
     logger.debug(f"Received body: {body_dict['text']}\nPrediction: {prediction}")
     return prediction
 

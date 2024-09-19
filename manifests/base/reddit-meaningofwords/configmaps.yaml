@@ -3,7 +3,9 @@ kind: ConfigMap
 metadata:
   name: reddit-meaningofwords-config
 data:
-  REDDIT_PROMPT_PATH: /reddit/prompt.txt
+  REDDIT_CHECKER_PROMPT_PATH: /reddit/prompt-checker.txt
+  REDDIT_BULLY_PROMPT_PATH: /reddit/prompt-bully.txt
+  REDDIT_BULLY_LIST_PATH: /blocklist/bullies.txt
   REDDIT_SIGNATURE_PATH: /reddit/signature.md
   REDDIT_DICTIONARY_PATH: /reddit/dictionary.json
   REDDIT_SUBREDDITS: "polska"
@@ -12,14 +14,14 @@ data:
   OPENAI_FREQUENCY_PENALTY: "0"
   OPENAI_PRESENCE_PENALTY: "0"
   OPENAI_TEMPERATURE: "1"
-  SENTIMENT_ANALYZER_URL: sentiment-analyzer
-  SENTIMENT_ANALYZER_PORT: "8080"
+  BULLYING_DETECTOR_URL: bullying-detector
+  BULLYING_DETECTOR_PORT: "8080"
 
 ---
 
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: sentiment-analyzer-config
+  name: bullying-detector-config
 data:
   LOG_LEVEL: DEBUG
