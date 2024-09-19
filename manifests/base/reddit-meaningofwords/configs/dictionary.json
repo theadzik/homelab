@@ -12,6 +12,17 @@
       "https://sjp.pwn.pl/ciekawostki/haslo/CO-NAJMNIEJ;5391527.html"
     ]
   },
+  "cudzysłów": {
+    "explanations": [
+      "Warto zapamiętać: 'cudzysłów' odmienia się jak 'rów', nie jak 'tułów'.",
+      "Poprawnie jest 'w cudzysłowie' nie 'w cudzysłowiu'."
+    ],
+    "search_rule": "\\bcudzys[lł]owi(a(ch|mi|)|u|em|o(m|wi)|)\\b",
+    "sources": [
+      "https://sjp.pwn.pl/poradnia/haslo/w-cudzyslowie;4277.html",
+      "https://sjp.pwn.pl/poradnia/haslo/cudzyslow;8265.html"
+    ]
+  },
   "dlatego że": {
     "explanations": [
       "'Dlatego bo' jest niepoprawne ze względu na podkreślenie relacji przyczynowej, które wyraża zarówno 'dlatego', jak i 'bo', a więc są synonimami, zaś całe wyrażenie 'dlatego bo' jest pleonazmem.",
@@ -165,6 +176,20 @@
       "https://fil.ug.edu.pl/strona/15155/wiem_nie_powinno_mowic_najbardziej_optymalny_mozna_jednak_uzyc_konstrukcji_mniej_optymalny"
     ]
   },
+  "pojedynczy": {
+    "explanations": [
+      "Wszystkie odmiany słowa 'pojedynczy' piszemy tylko i wyłącznie przez 'n', nigdy przez 'ń'.",
+      "Taki sposób zapisu wynika z historii języka: przymiotnik 'pojedynczy' pochodzi od rzeczownika 'pojedynek'",
+      "(pierwotnie 'osoba występującą po jedynku, tzn. w pojedynkę'; obecnie 'walka dwóch osób'), w którym głoska 'n' jest twarda.",
+      "Ta twardość przeszła również na powstały wyraz pochodny, stąd zapis 'pojedynczy'. Dotyczy to także innych wyrazów: 'pojedynczo', 'pojedynczość', 'niepojedynczy' itp.",
+      "Błąd może wynikać z tego, że mówić możemy i tak, i tak, tzn. [pojedynczy] lub [pojedyńczy] – oba sposoby wymawiania są poprawne."
+    ],
+    "search_rule": "\\b(nie|)pojedyń",
+    "sources": [
+      "https://sjp.pwn.pl/so/pojedynczy;4490043.html",
+      "http://pwsz.chelm.pl/poradnia_jezykowa/index_2.php?id_k=1&id_p=76"
+    ]
+  },
   "ponadto/ponad to": {
     "explanations": [
       "Poprawna forma 'ponadto' i 'ponad to' zależy od kontekstu.",
@@ -192,6 +217,20 @@
     "sources": [
       "https://sjp.pwn.pl/poradnia/haslo/poza-tym;12865.html",
       "https://poradnia-jezykowa.uni.lodz.pl/faq/nowe-pytanie-od-uzytkownika-piotr-baleja-balej1010gmail-com/"
+    ]
+  },
+  "przekonujący": {
+    "explanations": [
+      "Poprawnymi formami są: 'przekonujący' i 'przekonywający'. Forma 'przekonywujący' jest niepoprawna.",
+      "Można jednak zauważyć, że w codziennej komunikacji coraz częściej słyszymy i widzimy w tekstach pisanych słowo 'przekonywujący'.",
+      "Warto jednak pamiętać, że forma ta jest wg normy wzorcowej ciągle kwalifikowana jako niepoprawna,",
+      "bowiem jest efektem nieuprawnionej kontaminacji fleksyjnej, tj. połączenia dwóch różnych schematów odmiany."
+    ],
+    "search_rule": "\\bprzekonywuj[aą]cy\\b",
+    "sources": [
+      "https://poradnia-jezykowa.uni.lodz.pl/faq/przekonywujacy-czy-przekonujacy/",
+      "https://sjp.pwn.pl/poradnia/haslo/;10188",
+      "https://poradnia-jezykowa.uni.lodz.pl/faq/przekonywujacy-czy-przekonywajacy/"
     ]
   },
   "rządzić": {
