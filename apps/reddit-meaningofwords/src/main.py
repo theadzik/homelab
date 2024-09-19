@@ -3,11 +3,11 @@ import os
 import sys
 
 import praw
+from bullying import BullyingClient
 from dotenv import load_dotenv
 from graceful_shutdown import GracefulKiller
 from openai_helper import OpenAIChecker
 from reddit_bot import BotCommenter
-from sentiment import SentimentClient
 
 load_dotenv()
 
@@ -31,7 +31,7 @@ reddit = praw.Reddit(
 )
 
 killer = GracefulKiller()
-sentiment_analyzer = SentimentClient()
+bullying_analyzer = BullyingClient()
 
 logger.info(f"User-Agent: {USER_AGENT}")
 logger.info("Scanning comments.")
@@ -55,21 +55,16 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
             reddit.redditor(comment.author).block()
             continue
 
-        sentiment_score = sentiment_analyzer.get_sentiment(text=comment.body)
+        bullying_score = bullying_analyzer.get_bullying_prediction(text=comment.body)
 
-        match sentiment_score["label"]:
-            case "negative":
-                logger.warning("Got a negative comment :(")
-                logger.warning(f"{comment.body}")
-                continue
-            case "neutral":
-                logger.warning("Got a neutral comment :|")
-                logger.warning(f"{comment.body}")
-                continue
-            case "positive":
-                logger.warning("Got a positive comment :)")
-                logger.warning(f"{comment.body}")
-                continue
+        if bullying_score["label"]:
+            logger.warning("Bullying detected :(")
+            logger.warning(f"{comment.body}")
+            continue
+        else:
+            logger.warning("No bullying :)")
+            logger.warning(f"{comment.body}")
+            continue
 
     keyword_found, match = bot_commenter.find_keywords(body=comment.body)
     if keyword_found:
