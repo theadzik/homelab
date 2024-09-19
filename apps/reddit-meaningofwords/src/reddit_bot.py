@@ -23,6 +23,7 @@ class BotCommenter:
         logger.debug(f"Loaded {len(self.words_to_check)} rules.")
         self.bot_name = os.environ["REDDIT_USERNAME"]
         self.REDDIT_BASE_URL = "https://reddit.com"
+        self.bully_warn_list_path = os.environ["REDDIT_WARN_LIST_PATH"]
         if not os.path.isdir(os.path.join(os.environ["NLTK_DIRECTORY"], "tokenizers", "punkt_tab")):
             nltk.download('punkt_tab', download_dir=os.environ["NLTK_DIRECTORY"])
 
@@ -126,10 +127,14 @@ class BotCommenter:
         return False
 
     def save_bully(self, username: str) -> None:
-        pass
+        with open(self.bully_warn_list_path, mode="a", encoding="utf-8") as warn_list:
+            warn_list.write(f"{username}\n")
+        logger.warning(f"Saved warned user {username}")
 
     def is_warned_bully(self, username: str) -> bool:
-        pass
-
-    def warn_bully(self, comment: praw.models.Comment):
-        pass
+        try:
+            with open(self.bully_warn_list_path, mode="r", encoding="utf-8") as warn_list:
+                return username in warn_list
+        except FileNotFoundError:
+            open(os.environ["REDDIT_WARN_LIST_PATH"], mode="a").close()
+            return False

@@ -61,9 +61,17 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
             logger.warning("Bullying detected :(")
             logger.warning(f"{comment.body}")
             if not bot_commenter.is_warned_bully(comment.author):
-                logger.warning("First warning")
-                bot_commenter.save_bully(comment.author)
-                bot_commenter.warn_bully(comment)
+                openai_checker = OpenAIChecker()
+                content = openai_checker.get_bullying_response(comment.body)
+
+                if content.is_bullying:
+                    logger.warning("First warning")
+                    bot_commenter.save_bully(comment.author)
+                    reply_comment = comment.reply(content.response)
+                else:
+                    logger.warning("It wasn't bullying :D")
+                    logger.warning(content)
+
             else:
                 logger.warning(f"Second warning. Blocking bully {comment.author}")
                 reddit.redditor(comment.author).block()
