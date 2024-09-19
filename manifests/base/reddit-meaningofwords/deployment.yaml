@@ -30,13 +30,16 @@ spec:
               name: nltk-data
             - name: config-volume
               mountPath: "/reddit"
+            - name: bully-block
+              mountPath: /blocklist
+
           securityContext:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
       securityContext:
-        runAsUser: 10002
-        runAsGroup: 20002
-        fsGroup: 20002
+        runAsUser: 10005
+        runAsGroup: 20005
+        fsGroup: 20005
       volumes:
         - name: temp
           emptyDir: {}
@@ -45,6 +48,9 @@ spec:
         - name: config-volume
           configMap:
             name: reddit-meaningofwords-files
+        - name: bully-block
+          persistentVolumeClaim:
+            claimName: bully-block
 
 ---
 

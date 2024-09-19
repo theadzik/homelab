@@ -5,6 +5,7 @@ metadata:
 data:
   REDDIT_CHECKER_PROMPT_PATH: /reddit/prompt-checker.txt
   REDDIT_BULLY_PROMPT_PATH: /reddit/prompt-bully.txt
+  REDDIT_BULLY_LIST_PATH: /blocklist/bullies.txt
   REDDIT_SIGNATURE_PATH: /reddit/signature.md
   REDDIT_DICTIONARY_PATH: /reddit/dictionary.json
   REDDIT_SUBREDDITS: "polska"
