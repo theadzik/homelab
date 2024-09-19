@@ -60,6 +60,13 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
         if bullying_score["label"]:
             logger.warning("Bullying detected :(")
             logger.warning(f"{comment.body}")
+            if not bot_commenter.is_warned_bully(comment.author):
+                logger.warning("First warning")
+                bot_commenter.save_bully(comment.author)
+                bot_commenter.warn_bully(comment)
+            else:
+                logger.warning(f"Second warning. Blocking bully {comment.author}")
+                reddit.redditor(comment.author).block()
             continue
         else:
             logger.warning("No bullying :)")
@@ -92,7 +99,7 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
         if not content.is_correct:
             logger.info("Phrase used incorrectly. Replying!")
             sources = bot_commenter.parse_reddit_sources(keyword_found)
-            response = bot_commenter.parse_reddt_comment(content, sources)
+            response = bot_commenter.parse_reddit_explanation(content, sources)
             reply_comment = comment.reply(response)
             logger.debug(bot_commenter.REDDIT_BASE_URL + reply_comment.permalink)
         else:

@@ -81,7 +81,7 @@ class BotCommenter:
         logger.debug(f"Found relevant sentences:\n{relevant_sentences}")
         return relevant_sentences
 
-    def parse_reddt_comment(self, content: WordCheckerResponse, sources: str) -> str:
+    def parse_reddit_explanation(self, content: WordCheckerResponse, sources: str) -> str:
         # Add two spaces in front of the new paragraph to continue under the same bullet point.
         explanation = content.explanation.replace("\n\n", "\n\n  ")
 
@@ -124,3 +124,12 @@ class BotCommenter:
             logger.warning(f"Bad bot detected: {self.REDDIT_BASE_URL + comment.permalink}")
             return True
         return False
+
+    def save_bully(self, username: str) -> None:
+        pass
+
+    def is_warned_bully(self, username: str) -> bool:
+        pass
+
+    def warn_bully(self, comment: praw.models.Comment):
+        pass
