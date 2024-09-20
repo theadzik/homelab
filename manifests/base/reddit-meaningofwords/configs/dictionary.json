@@ -25,15 +25,17 @@
   },
   "dlatego że": {
     "explanations": [
-      "'Dlatego bo' jest niepoprawne ze względu na podkreślenie relacji przyczynowej, które wyraża zarówno 'dlatego', jak i 'bo', a więc są synonimami, zaś całe wyrażenie 'dlatego bo' jest pleonazmem.",
-      "'dlatego' – wyraz zapowiadający zdanie składowe (podrzędne przyczynowe), wyjaśniające sytuację opisaną w zdaniu głównym. Stawiamy przecinek po 'dlatego', a przed 'że'.",
-      "'dlatego że' – połączenie wyrazów wprowadzające zdanie składowe (podrzędne przyczynowe), wyjaśniające sytuację opisaną w zdaniu głównym. Przecinek stawiamy przed całym wyrażeniem 'dlatego że'.",
-      "Na przykład: 'Zajęła się wolontariatem, dlatego że chciała pomagać ludziom', i 'Zajęła się wolontariatem dlatego, że chciała pomagać ludziom, a nie dlatego, że ją proszono'."
+      "'Dlatego, bo' jest niepoprawne ze względu na podkreślenie relacji przyczynowej,",
+      "które wyraża zarówno 'dlatego', jak i 'bo', a więc są synonimami, zaś całe wyrażenie 'dlatego bo' jest pleonazmem.",
+      "Poprawną formą jest 'dlatego że' lub 'dlatego, że'.",
+      "Należy zwracać też uwagę na umiejscowienie przecinka. Może występować między 'dlatego' a 'że',",
+      "lub przed całym wyrażeniem w zależności od kontekstu."
     ],
     "search_rule": "\\bdlatego(,|) bo\\b",
     "sources": [
-      "https://www.ortograf.pl/watpliwosci-jezykowe/jak-piszemy-dlatego-ze-czy-dlatego-bo",
-      "https://sjp.pwn.pl/poradnia/haslo/dlatego-ze;15602.html"
+      "https://sjp.pwn.pl/poradnia/haslo/dlatego-bo;8646.html",
+      "https://sjp.pwn.pl/poradnia/haslo/dlatego-ze;15602.html",
+      "https://sjp.pwn.pl/poradnia/haslo/dlatego-ze;381.html"
     ]
   },
   "dopóki": {

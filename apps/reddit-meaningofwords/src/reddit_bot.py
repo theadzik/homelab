@@ -121,7 +121,7 @@ class BotCommenter:
         return False
 
     def is_bad_bot_comment(self, comment: praw.models.Comment) -> bool:
-        if comment.body.lower().startswith("bad bot"):
+        if "bad bot" in comment.body.lower():
             logger.warning(f"Bad bot detected: {self.REDDIT_BASE_URL + comment.permalink}")
             return True
         return False
