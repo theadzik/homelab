@@ -26,12 +26,12 @@ spec:
           volumeMounts:
             - mountPath: /tmp
               name: temp
-            - mountPath: /nltk_data
+            - mountPath: /home/nonroot/nltk_data
               name: nltk-data
             - name: config-volume
               mountPath: "/reddit"
             - name: bully-block
-              mountPath: /blocklist
+              mountPath: /database
           securityContext:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false

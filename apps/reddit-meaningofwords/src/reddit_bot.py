@@ -23,7 +23,6 @@ class BotCommenter:
         logger.debug(f"Loaded {len(self.words_to_check)} rules.")
         self.bot_name = os.environ["REDDIT_USERNAME"]
         self.REDDIT_BASE_URL = "https://reddit.com"
-        self.bully_warn_list_path = os.environ["REDDIT_BULLY_LIST_PATH"]
         if not os.path.isdir(os.path.join(os.environ["NLTK_DIRECTORY"], "tokenizers", "punkt_tab")):
             nltk.download('punkt_tab', download_dir=os.environ["NLTK_DIRECTORY"])
 

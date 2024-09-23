@@ -5,13 +5,12 @@ metadata:
 data:
   REDDIT_CHECKER_PROMPT_PATH: /reddit/prompt-checker.txt
   REDDIT_BULLY_PROMPT_PATH: /reddit/prompt-bully.txt
-  REDDIT_BULLY_LIST_PATH: /blocklist/bullies.txt
-  DATABASE_PATH: /blocklist/database.db
+  DATABASE_PATH: /database/database.db
   REDDIT_SIGNATURE_PATH: /reddit/signature.md
   REDDIT_DICTIONARY_PATH: /reddit/dictionary.json
   REDDIT_SUBREDDITS: "polska"
   LOG_LEVEL: INFO
-  NLTK_DIRECTORY: /nltk_data
+  NLTK_DIRECTORY: /home/nonroot/nltk_data
   OPENAI_FREQUENCY_PENALTY: "0"
   OPENAI_PRESENCE_PENALTY: "0"
   OPENAI_TEMPERATURE: "1"

@@ -93,14 +93,13 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
             logger.debug("It's a reply to my comment! Skipping.")
             continue
 
-        logger.info(bot_commenter.REDDIT_BASE_URL + comment.permalink)
-        logger.info(f"Checking comment for correct usage of word: {keyword_found}")
-
         extra_info = bot_commenter.get_extra_info(keyword_found)
         start_index, end_index = bot_commenter.get_sentence_indexes(word=match, body=comment.body, limit=2)
         limited_body = bot_commenter.get_sentences(body=comment.body, start_index=start_index, end_index=end_index)
 
         logger.debug(f"Limited comment body:\n{limited_body}")
+        logger.info(bot_commenter.REDDIT_BASE_URL + comment.permalink)
+        logger.info(f"Calling OpenAI for explanation: {keyword_found}")
 
         # Initializing every time to update prompts without restarting.
         openai_checker = OpenAIChecker()
