@@ -33,10 +33,8 @@ for word in words_to_check.keys():
     i += 1
 
     cur.execute(
-        f"""
-        INSERT OR IGNORE INTO words VALUES
-            (null, '{word}', 0, 0)
-        """
+        f"""INSERT OR IGNORE INTO words VALUES
+            (null, '{word}', 0, 0);"""
     )
 
     con.commit()

@@ -26,9 +26,9 @@ class DatabaseClient():
         if descending:
             query += " DESC"
         res = self.cur.execute(query)
-        sorted_words = [result[0] for result in res.fetchall()]
-        logger.info(f"Ordered words: {sorted_words}")
-        return sorted_words
+        words_with_usage = res.fetchall()
+        logger.info(f"Ordered words: {words_with_usage}")
+        return [row[0] for row in words_with_usage]
 
     def increment_word_use(self, word: str, usage: Literal["incorrect_usage", "correct_usage"]):
         query = f"UPDATE words SET {usage} = {usage} + 1 WHERE word = '{word}';"
