@@ -4,7 +4,7 @@ import sys
 
 import praw
 from bullying import BullyingClient
-from database import DatabaseClient
+from database import DatabaseClientSingleton
 from dotenv import load_dotenv
 from graceful_shutdown import GracefulKiller
 from openai_helper import OpenAIChecker
@@ -33,6 +33,7 @@ reddit = praw.Reddit(
 
 killer = GracefulKiller()
 bullying_analyzer = BullyingClient()
+database_client = DatabaseClientSingleton()
 
 logger.info(f"User-Agent: {USER_AGENT}")
 logger.info("Scanning comments.")
@@ -61,13 +62,13 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
         if bullying_score["label"]:
             logger.warning("Bullying detected :(")
             logger.warning(f"{comment.body}")
-            if not bot_commenter.is_warned_bully(comment.author):
+            if not database_client.is_warned_bully(comment.author):
                 openai_checker = OpenAIChecker()
                 content = openai_checker.get_bullying_response(comment.body)
 
                 if content.is_bullying:
                     logger.warning("First warning")
-                    bot_commenter.save_bully(comment.author)
+                    database_client.save_bully(comment.author)
                     reply_comment = comment.reply(content.response)
                 else:
                     logger.warning("It wasn't bullying :D")
@@ -104,8 +105,6 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
         # Initializing every time to update prompts without restarting.
         openai_checker = OpenAIChecker()
         content = openai_checker.get_explanation(body=limited_body, word=keyword_found, extra_info=extra_info)
-
-        database_client = DatabaseClient()
 
         if not content.is_correct:
             logger.info("Phrase used incorrectly. Replying!")

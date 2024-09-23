@@ -1,9 +1,21 @@
+import logging
 import os
 import sqlite3
 from typing import Literal
 
+logger = logging.getLogger(__name__)
 
-class DatabaseClient:
+
+class Singleton(type):
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+        return cls._instances[cls]
+
+
+class DatabaseClient():
     def __init__(self):
         self.con = sqlite3.connect(database=os.environ["DATABASE_PATH"], timeout=10)
         self.cur = self.con.cursor()
@@ -21,9 +33,19 @@ class DatabaseClient:
         self.cur.execute(query)
         self.con.commit()
 
+    def save_bully(self, username: str) -> None:
+        query = f"""INSERT INTO bullies VALUES
+            (null, '{username}')"""
+        self.cur.execute(query)
+        self.con.commit()
 
-if __name__ == "__main__":
-    db_client = DatabaseClient()
-    print(db_client.get_sorted_words())
-    db_client.increment_word_use("notabene", "incorrect_usage")
-    print(db_client.get_sorted_words())
+    def is_warned_bully(self, username: str) -> bool:
+        query = f"""SELECT username FROM bullies
+                    WHERE username = '{username}'
+                """
+        res = self.cur.execute(query)
+        return bool(res.fetchall())
+
+
+class DatabaseClientSingleton(DatabaseClient, metaclass=Singleton):
+    pass

@@ -5,7 +5,7 @@ import re
 
 import nltk
 import praw
-from database import DatabaseClient
+from database import DatabaseClientSingleton
 from openai_helper import WordCheckerResponse
 
 logger = logging.getLogger(__name__)
@@ -28,7 +28,7 @@ class BotCommenter:
             nltk.download('punkt_tab', download_dir=os.environ["NLTK_DIRECTORY"])
 
     def find_keywords(self, body: str, skip_citations: bool = True) -> (str, str):
-        database_client = DatabaseClient()
+        database_client = DatabaseClientSingleton()
         words = database_client.get_sorted_words()
 
         for word in words:
@@ -124,16 +124,3 @@ class BotCommenter:
             logger.warning(f"Bad bot detected: {self.REDDIT_BASE_URL + comment.permalink}")
             return True
         return False
-
-    def save_bully(self, username: str) -> None:
-        with open(self.bully_warn_list_path, mode="a", encoding="utf-8") as warn_list:
-            warn_list.write(f"{username}\n")
-        logger.warning(f"Saved warned user {username}")
-
-    def is_warned_bully(self, username: str) -> bool:
-        try:
-            with open(self.bully_warn_list_path, mode="r", encoding="utf-8") as warn_list:
-                return username in warn_list.read().splitlines()
-        except FileNotFoundError:
-            open(self.bully_warn_list_path, mode="a").close()
-            return False
