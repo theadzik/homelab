@@ -32,7 +32,6 @@ spec:
               mountPath: "/reddit"
             - name: bully-block
               mountPath: /blocklist
-
           securityContext:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false

@@ -2,8 +2,8 @@ FROM python:3.12-alpine
 
 RUN apk upgrade --no-cache
 
-RUN addgroup --gid 20001 --system nonroot && \
-    adduser --uid 10001 --system --ingroup nonroot --disabled-password --gecos "" nonroot && \
+RUN addgroup --gid 20005 --system nonroot && \
+    adduser --uid 10005 --system --ingroup nonroot --disabled-password --gecos "" nonroot && \
     pip install --upgrade pip
 
 COPY --chown=nonroot:nonroot src src
