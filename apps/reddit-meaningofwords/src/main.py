@@ -4,6 +4,7 @@ import sys
 
 import praw
 from bullying import BullyingClient
+from database import DatabaseClientSingleton
 from dotenv import load_dotenv
 from graceful_shutdown import GracefulKiller
 from openai_helper import OpenAIChecker
@@ -32,6 +33,7 @@ reddit = praw.Reddit(
 
 killer = GracefulKiller()
 bullying_analyzer = BullyingClient()
+database_client = DatabaseClientSingleton()
 
 logger.info(f"User-Agent: {USER_AGENT}")
 logger.info("Scanning comments.")
@@ -60,13 +62,13 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
         if bullying_score["label"]:
             logger.warning("Bullying detected :(")
             logger.warning(f"{comment.body}")
-            if not bot_commenter.is_warned_bully(comment.author):
+            if not database_client.is_warned_bully(comment.author):
                 openai_checker = OpenAIChecker()
                 content = openai_checker.get_bullying_response(comment.body)
 
                 if content.is_bullying:
                     logger.warning("First warning")
-                    bot_commenter.save_bully(comment.author)
+                    database_client.save_bully(comment.author)
                     reply_comment = comment.reply(content.response)
                 else:
                     logger.warning("It wasn't bullying :D")
@@ -98,7 +100,7 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
         start_index, end_index = bot_commenter.get_sentence_indexes(word=match, body=comment.body, limit=2)
         limited_body = bot_commenter.get_sentences(body=comment.body, start_index=start_index, end_index=end_index)
 
-        logger.info(f"Limited comment body:\n{limited_body}")
+        logger.debug(f"Limited comment body:\n{limited_body}")
 
         # Initializing every time to update prompts without restarting.
         openai_checker = OpenAIChecker()
@@ -110,6 +112,8 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
             response = bot_commenter.parse_reddit_explanation(content, sources)
             reply_comment = comment.reply(response)
             logger.debug(bot_commenter.REDDIT_BASE_URL + reply_comment.permalink)
+            database_client.increment_word_use(word=keyword_found, usage="incorrect_usage")
         else:
             logger.warning("Phrase used correctly. Skipping.")
             logger.warning(content)
+            database_client.increment_word_use(word=keyword_found, usage="correct_usage")

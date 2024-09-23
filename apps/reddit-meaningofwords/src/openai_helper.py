@@ -8,6 +8,7 @@ from pydantic import BaseModel
 load_dotenv()
 
 client = openai.OpenAI()
+logger = logging.getLogger(__name__)
 
 
 class WordCheckerResponse(BaseModel):
@@ -26,11 +27,11 @@ class OpenAIChecker:
     def __init__(self):
         with open(os.getenv("REDDIT_CHECKER_PROMPT_PATH"), mode="r", encoding="utf-8") as file:
             self.checker_prompt = file.read()
-            logging.debug(f"Loaded checker prompt:\n{self.checker_prompt}")
+            logger.debug(f"Loaded checker prompt:\n{self.checker_prompt}")
 
         with open(os.getenv("REDDIT_BULLY_PROMPT_PATH"), mode="r", encoding="utf-8") as file:
             self.bully_prompt = file.read()
-            logging.debug(f"Loaded bully prompt:\n{self.bully_prompt}")
+            logger.debug(f"Loaded bully prompt:\n{self.bully_prompt}")
 
         self.presence_penalty = float(os.getenv("OPEN_AI_PRESENCE_PENALTY", 0))
         self.frequency_penalty = float(os.getenv("OPEN_AI_FREQUENCY_PENALTY", 0))
@@ -50,17 +51,17 @@ class OpenAIChecker:
                     temperature=self.temperature,
                 )
                 content = chat_completion.choices[0].message.parsed
-                logging.info(content)
+                logger.debug(content)
 
                 return content
             except openai.LengthFinishReasonError as e:
-                logging.error(f"Generated response was longer than {max_tokens} tokens!")
-                logging.error(e)
+                logger.error(f"Generated response was longer than {max_tokens} tokens!")
+                logger.error(e)
                 max_tokens += 256
-                logging.info(f"Retrying with higher limit: {max_tokens}")
+                logger.info(f"Retrying with higher limit: {max_tokens}")
 
     def get_bullying_response(self, body: str) -> BullyingDetectorResponse:
-        logging.debug(f"I got this body:\n{body}")
+        logger.debug(f"I got this body:\n{body}")
 
         prompt = [
             {"role": "system", "content": self.bully_prompt},
@@ -70,7 +71,7 @@ class OpenAIChecker:
         return self.send_request(prompt=prompt, response_format=BullyingDetectorResponse)
 
     def get_explanation(self, word: str, body: str, extra_info: str = "") -> WordCheckerResponse:
-        logging.debug(f"I got this body:\n{body}")
+        logger.debug(f"I got this body:\n{body}")
         prompt = [
             {"role": "system", "content": self.checker_prompt},
             {"role": "system", "content": f"<zasady>{extra_info}</zasady>"},
