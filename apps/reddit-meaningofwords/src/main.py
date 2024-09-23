@@ -100,7 +100,7 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
         start_index, end_index = bot_commenter.get_sentence_indexes(word=match, body=comment.body, limit=2)
         limited_body = bot_commenter.get_sentences(body=comment.body, start_index=start_index, end_index=end_index)
 
-        logger.info(f"Limited comment body:\n{limited_body}")
+        logger.debug(f"Limited comment body:\n{limited_body}")
 
         # Initializing every time to update prompts without restarting.
         openai_checker = OpenAIChecker()

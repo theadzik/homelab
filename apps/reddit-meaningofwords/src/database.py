@@ -21,12 +21,14 @@ class DatabaseClient():
         self.cur = self.con.cursor()
 
     def get_sorted_words(self, descending: bool = False) -> list:
-        query = """SELECT word FROM words
+        query = """SELECT word, incorrect_usage, correct_usage FROM words
                 ORDER BY incorrect_usage"""
         if descending:
             query += " DESC"
         res = self.cur.execute(query)
-        return [result[0] for result in res.fetchall()]
+        sorted_words = [result[0] for result in res.fetchall()]
+        logger.info(f"Ordered words: {sorted_words}")
+        return sorted_words
 
     def increment_word_use(self, word: str, usage: Literal["incorrect_usage", "correct_usage"]):
         query = f"UPDATE words SET {usage} = {usage} + 1 WHERE word = '{word}';"
