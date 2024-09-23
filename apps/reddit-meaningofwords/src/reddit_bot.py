@@ -1,11 +1,11 @@
 import json
 import logging
 import os
-import random
 import re
 
 import nltk
 import praw
+from database import DatabaseClient
 from openai_helper import WordCheckerResponse
 
 logger = logging.getLogger(__name__)
@@ -27,10 +27,9 @@ class BotCommenter:
         if not os.path.isdir(os.path.join(os.environ["NLTK_DIRECTORY"], "tokenizers", "punkt_tab")):
             nltk.download('punkt_tab', download_dir=os.environ["NLTK_DIRECTORY"])
 
-    def find_keywords(self, body: str, skip_citations: bool = True, random_order: bool = True) -> (str, str):
-        words = list(self.patterns_to_check.keys())
-        if random_order:
-            random.shuffle(words)
+    def find_keywords(self, body: str, skip_citations: bool = True) -> (str, str):
+        database_client = DatabaseClient()
+        words = database_client.get_sorted_words()
 
         for word in words:
             logger.debug(f"Looking for {word}")

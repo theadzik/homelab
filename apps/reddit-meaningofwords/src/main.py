@@ -4,6 +4,7 @@ import sys
 
 import praw
 from bullying import BullyingClient
+from database import DatabaseClient
 from dotenv import load_dotenv
 from graceful_shutdown import GracefulKiller
 from openai_helper import OpenAIChecker
@@ -104,12 +105,16 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
         openai_checker = OpenAIChecker()
         content = openai_checker.get_explanation(body=limited_body, word=keyword_found, extra_info=extra_info)
 
+        database_client = DatabaseClient()
+
         if not content.is_correct:
             logger.info("Phrase used incorrectly. Replying!")
             sources = bot_commenter.parse_reddit_sources(keyword_found)
             response = bot_commenter.parse_reddit_explanation(content, sources)
             reply_comment = comment.reply(response)
             logger.debug(bot_commenter.REDDIT_BASE_URL + reply_comment.permalink)
+            database_client.increment_word_use(word=keyword_found, usage="incorrect_usage")
         else:
             logger.warning("Phrase used correctly. Skipping.")
             logger.warning(content)
+            database_client.increment_word_use(word=keyword_found, usage="correct_usage")
