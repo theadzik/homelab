@@ -1,4 +1,4 @@
-fastapi[standard]==0.114.2
+fastapi[standard]==0.115.0
 torch==2.4.1
 torchaudio==2.4.1
 torchvision==0.19.1
