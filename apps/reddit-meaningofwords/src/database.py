@@ -27,7 +27,7 @@ class DatabaseClient():
             query += " DESC"
         res = self.cur.execute(query)
         words_with_usage = res.fetchall()
-        logger.info(f"Ordered words: {words_with_usage}")
+        logger.debug(f"Ordered words: {words_with_usage}")
         return [row[0] for row in words_with_usage]
 
     def increment_word_use(self, word: str, usage: Literal["incorrect_usage", "correct_usage"]):
