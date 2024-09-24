@@ -8,5 +8,4 @@ resources:
   - cert-manager
   - vaultwarden
   - static-cv
-  - wedding-website
   - reddit-meaningofwords
