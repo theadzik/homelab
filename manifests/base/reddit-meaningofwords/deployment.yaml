@@ -28,10 +28,10 @@ spec:
               name: temp
             - mountPath: /home/nonroot/nltk_data
               name: nltk-data
-            - name: config-volume
-              mountPath: "/reddit"
-            - name: bully-block
-              mountPath: /database
+            - mountPath: "/reddit"
+              name: config-volume
+            - mountPath: /database
+              name: bully-block
           securityContext:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
@@ -71,7 +71,7 @@ spec:
     spec:
       containers:
         - name: model
-          image: theadzik/bullying-detector:2024.09.1
+          image: theadzik/bullying-detector:2024.09.2
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
