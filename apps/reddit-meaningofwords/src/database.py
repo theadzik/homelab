@@ -35,15 +35,22 @@ class DatabaseClient():
         self.cur.execute(query)
         self.con.commit()
 
-    def save_bully(self, username: str) -> None:
-        query = f"""INSERT INTO bullies VALUES
-            (null, '{username}')"""
+    def save_bully(self, username: str, banned: bool = False) -> None:
+        query = f"""INSERT OR REPLACE INTO bullies VALUES
+            (null, '{username}', {1 if banned else 0})"""
         self.cur.execute(query)
         self.con.commit()
 
     def is_warned_bully(self, username: str) -> bool:
         query = f"""SELECT username FROM bullies
                     WHERE username = '{username}'
+                """
+        res = self.cur.execute(query)
+        return bool(res.fetchall())
+
+    def is_banned_bully(self, username: str) -> bool:
+        query = f"""SELECT username FROM bullies
+                    WHERE username = '{username}' AND banned = 1;
                 """
         res = self.cur.execute(query)
         return bool(res.fetchall())

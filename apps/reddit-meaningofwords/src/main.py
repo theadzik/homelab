@@ -50,11 +50,16 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
     bot_commenter = BotCommenter()
     logger.debug(f"Found a comment: {comment.permalink}")
 
+    if database_client.is_banned_bully(comment.author):
+        logger.info(f"Skipping comment from banned user {comment.author}")
+        continue
+
     # Check replies to my comments
     if bot_commenter.is_my_comment_chain(comment=comment, direct=True):
         if bot_commenter.is_bad_bot_comment(comment=comment):
             logger.warning(f"Blocking user {comment.author}")
             reddit.redditor(comment.author).block()
+            database_client.save_bully(username=comment.author, banned=True)
             continue
 
         bullying_score = bullying_analyzer.get_bullying_prediction(text=comment.body)
@@ -77,6 +82,7 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
             else:
                 logger.warning(f"Second warning. Blocking bully {comment.author}")
                 reddit.redditor(comment.author).block()
+                database_client.save_bully(username=comment.author, banned=True)
             continue
         else:
             logger.info("No bullying :)")
