@@ -254,8 +254,10 @@
       "Często występuje wraz ze słowem 'nie' lub samodzielnie jako wykrzyknienie.",
       "Partykuła 'bynajmniej' znaczeniowo najbliższa jest połączeniu 'wcale nie'",
       "i w żadnym wypadku nie powinna być używana w znaczeniu 'przynajmniej', 'chociaż' czy 'w każdym razie'.",
+      "Przykłady prawidłowego użycia: Bynajmniej nie jestem zainteresowana tym tematem. Nie jest to bynajmniej dla mnie trudne.",
       "'Przynajmniej' to partykuła wyznaczająca minimalny, możliwy do zaakceptowania przez mówiącego zakres czegoś,",
-      "lub komunikująca, że ilość lub miara czegoś jest nie mniejsza od wymienionej i że może być większa."
+      "lub komunikująca, że ilość lub miara czegoś jest nie mniejsza od wymienionej i że może być większa.",
+      "Przykłady prawidłowego użycia: Przynajmniej ona mnie rozumie. Zjedz przynajmniej dwa jabłka."
     ],
     "search_rule": "\\bbynajmniej\\b",
     "sources": [
