@@ -21,7 +21,8 @@ cur.execute(
 cur.execute(
     """CREATE TABLE IF NOT EXISTS bullies(
                                             id integer PRIMARY KEY,
-                                            username text UNIQUE
+                                            username text UNIQUE,
+                                            banned integer
                                           );"""
 )
 
