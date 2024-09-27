@@ -24,7 +24,7 @@ class BullyingClient:
         logger.debug(f"Data object:\n{data}")
         response = requests.post(url=url, json=data, headers={"Content-Type": "application/json"})
         sentiment_score = response.json()
-        logger.info(f"Predicted sentiment: {sentiment_score}")
+        logger.debug(f"Predicted sentiment: {sentiment_score}")
         return sentiment_score
 
 

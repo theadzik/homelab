@@ -179,6 +179,18 @@
       "https://fil.ug.edu.pl/strona/15155/wiem_nie_powinno_mowic_najbardziej_optymalny_mozna_jednak_uzyc_konstrukcji_mniej_optymalny"
     ]
   },
+  "po prostu": {
+    "explanations": [
+      "'Po prostu' jest wyrażeniem przyimkowym.",
+      "Konstrukcje przyimków z rzeczownikami, przysłówkami, liczebnikami i zaimkami zapisywane są zawsze rozłącznie.",
+      "Aby nie mieć wątpliwości, warto przywołać sobie podobne przykłady: 'po cichu', 'po polsku', 'po ciemku'."
+    ],
+    "search_rule": "\\bpoprostu\\b",
+    "sources": [
+      "https://sjp.pwn.pl/sjp/po-prostu;2505032.html",
+      "https://sjp.pwn.pl/slowniki/po%20prostu.html"
+    ]
+  },
   "pojedynczy": {
     "explanations": [
       "Wszystkie odmiany słowa 'pojedynczy' piszemy tylko i wyłącznie przez 'n', nigdy przez 'ń'.",
@@ -236,6 +248,23 @@
       "https://poradnia-jezykowa.uni.lodz.pl/faq/przekonywujacy-czy-przekonywajacy/"
     ]
   },
+  "przynajniej/bynajmniej": {
+    "explanations": [
+      "Słowo 'bynajmniej' jest partykułą, za pomocą której wyrażamy silne przeczenie.",
+      "Często występuje wraz ze słowem 'nie' lub samodzielnie jako wykrzyknienie.",
+      "Partykuła 'bynajmniej' znaczeniowo najbliższa jest połączeniu 'wcale nie'",
+      "i w żadnym wypadku nie powinna być używana w znaczeniu 'przynajmniej', 'chociaż' czy 'w każdym razie'.",
+      "'Przynajmniej' to partykuła wyznaczająca minimalny, możliwy do zaakceptowania przez mówiącego zakres czegoś,",
+      "lub komunikująca, że ilość lub miara czegoś jest nie mniejsza od wymienionej i że może być większa."
+    ],
+    "search_rule": "\\bbynajmniej\\b",
+    "sources": [
+      "https://sjp.pwn.pl/slowniki/bynajmniej.html",
+      "https://sjp.pwn.pl/poradnia/haslo/bynajmniej-przynajmniej;7222.html",
+      "https://poradnia-jezykowa.uni.lodz.pl/faq/bynajmniej/",
+      "https://sjp.pwn.pl/sjp/przynajmniej;2512323.html"
+    ]
+  },
   "rządzić": {
     "explanations": [
       "'Rządzić' to sprawować rządy, stać na czele, posiadać władzę, mieć wpływy.",
@@ -284,6 +313,19 @@
     "sources": [
       "https://sjp.pwn.pl/poradnia/haslo/Od-kiedy-szlem-zamiast-szedlem;19036.html",
       "https://poradnia-jezykowa.uni.lodz.pl/faq/poszlem/"
+    ]
+  },
+  "tudzież": {
+    "explanations": [
+      "'Tudzież' to spójnik używany do łączenia zdań lub innych wyrażeń, które odnoszą się do tych samych przedmiotów, osób lub faktów.",
+      "Oznacza to samo co 'i', 'oraz', 'też', 'także'. Przed spójnikami łącznymi nie stawiamy przecinka.",
+      "Błędem jest użycie słowa 'tudzież' w znaczeniu 'albo' bądź 'lub'.",
+      "Oczywistym błędem będzie każde stwierdzenie połączone przez 'tudzież', w którym mowa o dwóch wykluczających się opcjach."
+    ],
+    "search_rule": "\\btudzie(z\\b|ż\\B)",
+    "sources": [
+      "https://sjp.pwn.pl/ciekawostki/haslo/TUDZIEZ;5391597.html",
+      "https://poradnia-jezykowa.uni.lodz.pl/faq/przecinek-przed-spojnikiem-i/"
     ]
   },
   "w każdym razie": {

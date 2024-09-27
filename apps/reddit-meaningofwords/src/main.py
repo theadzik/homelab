@@ -79,8 +79,8 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
                 reddit.redditor(comment.author).block()
             continue
         else:
-            logger.warning("No bullying :)")
-            logger.warning(f"{comment.body}")
+            logger.info("No bullying :)")
+            logger.debug(f"{comment.body}")
             continue
 
     keyword_found, match = bot_commenter.find_keywords(body=comment.body)
