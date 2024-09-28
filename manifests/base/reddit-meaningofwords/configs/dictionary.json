@@ -190,7 +190,7 @@
       "lub potocznie: ciężko pracować, harować.",
       "Przykłady: Orzesz jak możesz, żeby zarobić na chleb. Orzesz pole przed sianiem."
     ],
-    "search_rule": "\\b((o ż|o(| )rz)e(ż|rz|sz)|oże(sz|rz))(\\b|\\B)",
+    "search_rule": "\\bo( |)(ż|rz)e(ż\\B|(s|r)z\\b)",
     "sources": [
       "https://sjp.pwn.pl/poradnia/haslo/Ozez-ty;137.html",
       "https://sjp.pwn.pl/poradnia/haslo/ozez;14357.html",
