@@ -16,6 +16,10 @@ spec:
               metadata:
                 labels:
                   ingress: "exposed"
+            ingressTemplate:
+              metadata:
+                annotations:
+                  nginx.ingress.kubernetes.io/whitelist-source-range: "0.0.0.0/0"
 
 ---
 
@@ -37,3 +41,7 @@ spec:
               metadata:
                 labels:
                   ingress: "exposed"
+            ingressTemplate:
+              metadata:
+                annotations:
+                  nginx.ingress.kubernetes.io/whitelist-source-range: "0.0.0.0/0"
