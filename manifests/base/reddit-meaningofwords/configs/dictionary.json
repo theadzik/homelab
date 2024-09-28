@@ -179,6 +179,24 @@
       "https://fil.ug.edu.pl/strona/15155/wiem_nie_powinno_mowic_najbardziej_optymalny_mozna_jednak_uzyc_konstrukcji_mniej_optymalny"
     ]
   },
+  "orzesz/ożeż": {
+    "explanations": [
+      "'Ożeż' składa się z wykrzyknienia 'o' oraz dwóch partykuł emfatycznych '-że' i '-ż'",
+      "(nadają one poprzedzającemu je wyrazowi emocjonalne zabarwienie).",
+      "Partykuły te zapisujemy łącznie z wykrzyknieniem 'o', tak samo jak z czasownikami",
+      "(np. chodźże, zróbże) i zaimkami pytajnymi (np. gdzież, kiedyż).",
+      "Przykłady: Ożeż ty, ale mnie zaskoczyłeś! Ożeż ty, tego się nie spodziewałam! Ożesz kurka, ale będzie smacznie!",
+      "'Orzesz' od 'orać' czyli odkładać skiby za pomocą pługa w celu przygotowania gleby pod zasiew;",
+      "lub potocznie: ciężko pracować, harować.",
+      "Przykłady: Orzesz jak możesz, żeby zarobić na chleb. Orzesz pole przed sianiem."
+    ],
+    "search_rule": "\\b((o ż|o(| )rz)e(ż|rz|sz)|oże(sz|rz))(\\b|\\B)",
+    "sources": [
+      "https://sjp.pwn.pl/poradnia/haslo/Ozez-ty;137.html",
+      "https://sjp.pwn.pl/poradnia/haslo/ozez;14357.html",
+      "https://sjp.pwn.pl/poradnia/haslo/Ozez-ty;9000.html"
+    ]
+  },
   "po prostu": {
     "explanations": [
       "'Po prostu' jest wyrażeniem przyimkowym.",
