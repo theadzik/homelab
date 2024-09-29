@@ -441,10 +441,9 @@
     "explanations": [
       "Poprawną formę stanowi wyłącznie zapis 'à propos'.",
       "W oryginalnej wersji z języka francuskiego występuje akcent, dlatego pierwszą literą jest 'à'.",
-      "Wszelkie inne warianty są absolutnie niepoprawne i nie wolno ich stosować.",
       "Wyrażenie 'à propos' jest galicyzmem, czyli zapożyczeniem z języka francuskiego.",
       "Zwrot 'à propos' nigdy nie uległ spolszczeniu.",
-      "W związku z tym musi być zapisywane wyłącznie w swojej oryginalnej formie.",
+      "Zapis 'apropo' lub 'a propo' odwołuje się do wymowy ('s' na końcu wyrazu jest nieme) i nie powinien być stosowany w formie zapisanej.",
       "W polszczyźnie obce znaki diakrytyczne są zasadniczo zachowywane w literach wersalikowych, czyli na początku zdania użyjemy pisowni 'À propos'."
     ],
     "search_rule": "\\ba(propo(|s)| propo)\\b",
