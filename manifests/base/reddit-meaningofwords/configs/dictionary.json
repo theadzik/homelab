@@ -259,7 +259,7 @@
       "Warto jednak pamiętać, że forma ta jest wg normy wzorcowej ciągle kwalifikowana jako niepoprawna,",
       "bowiem jest efektem nieuprawnionej kontaminacji fleksyjnej, tj. połączenia dwóch różnych schematów odmiany."
     ],
-    "search_rule": "\\bprzekonywuj[aą]cy\\b",
+    "search_rule": "\\bprzekonywuj",
     "sources": [
       "https://poradnia-jezykowa.uni.lodz.pl/faq/przekonywujacy-czy-przekonujacy/",
       "https://sjp.pwn.pl/poradnia/haslo/;10188",
