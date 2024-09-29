@@ -131,7 +131,7 @@
     "explanations": [
       "'Naprawdę' pisane łącznie to partykuła za pomocą której mówiący, chcąc przekonać kogoś o słuszności swojego zdania, potwierdza jego prawdziwość.",
       "Zapis 'na prawdę' zastosujemy wyłącznie w przypadkach, gdy mowa o rzeczowniku 'prawda' w bierniku liczby pojedynczej ('prawdę') zestawionym z przyimkiem 'na'.",
-      "Na przykład 'Słyszę od niej same kłamstwa, więc tym razem liczę na prawdę.'"
+      "Na przykład: Słyszę od niej same kłamstwa, więc tym razem liczę na prawdę."
     ],
     "search_rule": "\\bna prawd(e\\b|ę\\B)",
     "sources": [
@@ -150,6 +150,20 @@
     "sources": [
       "https://sjp.pwn.pl/slowniki/naprzeciwko.html",
       "https://sjp.pwn.pl/szukaj/naprzeciw.html"
+    ]
+  },
+  "nieprawda/nie prawda": {
+    "explanations": [
+      "Najczęściej będziemy mieli do czynienia z taką sytuacją, w której partykuła 'nie'",
+      "w połączeniu z rzeczownikiem 'prawda' będą zapisywane łącznie (nieprawda).",
+      "Zasada ogólna mówi bowiem o tym, że przeczenie 'nie' + rzeczownik zapisuje się razem.",
+      "Jeśli mamy do czynienia z sytuacją, gdy partykuła 'nie' wprowadza wyraźne przeciwstawienie,",
+      "z zaakcentowaniem wyrazu 'prawda', wówczas zapis będzie rozłączny (nie prawda),",
+      "Na przykład: To nie prawda, lecz kłamstwo. Widzimy, że jest to brednia, a nie prawda. Nie prawda, lecz mit."
+    ],
+    "search_rule": "\\bnie prawda\\b",
+    "sources": [
+      "https://sjp.pwn.pl/slowniki/nieprawda.html"
     ]
   },
   "notabene": {
@@ -395,7 +409,7 @@
       "rdzenne o nosowe (zapisywane jako 'ą', a wymawiane jako 'on'), które nie podlega wymianie.",
       "Oprócz reguły w zapamiętaniu poprawnej formy pomóc może jeszcze to, że w domu mamy przecież włączniki, a nie 'włanczniki'."
     ],
-    "search_rule": "\\b[a-ząćęłńóśźż]*w[lł]ancz[a-ząćęłńóśźż]*(\\b|\\B)",
+    "search_rule": "w[lł]ancz",
     "sources": [
       "https://sjp.pwn.pl/poradnia/haslo/wlanczac;6221.html",
       "https://poradnia-jezykowa.uni.lodz.pl/faq/wlaczac/",
