@@ -5,6 +5,7 @@ metadata:
 data:
   REDDIT_CHECKER_PROMPT_PATH: /reddit/prompt-checker.txt
   REDDIT_BULLY_PROMPT_PATH: /reddit/prompt-bully.txt
+  REDDIT_BAD_BOT_PROMPT_PATH: /reddit/prompt-bad-bot.txt
   DATABASE_PATH: /database/database.db
   REDDIT_SIGNATURE_PATH: /reddit/signature.md
   REDDIT_DICTIONARY_PATH: /reddit/dictionary.json

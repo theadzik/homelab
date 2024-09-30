@@ -119,7 +119,14 @@ class BotCommenter:
         return False
 
     def is_bad_bot_comment(self, comment: praw.models.Comment) -> bool:
-        if "nie obchodzi mnie poprawna polszczyzna" in comment.body.lower():
+        bad_bot_strings = ["bad bot", "badbot", "zły bot", "zly bot"]
+        if any(bad_bot_variant in comment.body.lower() for bad_bot_variant in bad_bot_strings):
             logger.warning(f"Bad bot detected: {self.REDDIT_BASE_URL + comment.permalink}")
+            return True
+        return False
+
+    def is_asking_for_block(self, comment: praw.models.Comment) -> bool:
+        if "nie obchodzi mnie poprawna polszczyzna" in comment.body.lower():
+            logger.warning(f"Asking for block: {self.REDDIT_BASE_URL + comment.permalink}")
             return True
         return False

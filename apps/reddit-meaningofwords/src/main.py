@@ -56,10 +56,17 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
 
     # Check replies to my comments
     if bot_commenter.is_my_comment_chain(comment=comment, direct=True):
-        if bot_commenter.is_bad_bot_comment(comment=comment):
+        if bot_commenter.is_asking_for_block(comment=comment):
             logger.warning(f"Blocking user {comment.author}")
             reddit.redditor(comment.author).block()
             database_client.save_bully(username=comment.author, banned=True)
+            continue
+
+        if bot_commenter.is_bad_bot_comment(comment=comment):
+            logger.warning("Bad bot detected :(")
+            openai_checker = OpenAIChecker()
+            content = openai_checker.get_bad_bot_response(comment.body)
+            reply_comment = comment.reply(content.response)
             continue
 
         bullying_score = bullying_analyzer.get_bullying_prediction(text=comment.body)
