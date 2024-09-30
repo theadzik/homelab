@@ -19,4 +19,5 @@ configMapGenerator:
       - configs/dictionary.json
       - configs/prompt-checker.txt
       - configs/prompt-bully.txt
+      - configs/prompt-bad-bot.txt
       - configs/signature.md
