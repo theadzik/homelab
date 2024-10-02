@@ -122,7 +122,7 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
             logger.info("Phrase used incorrectly. Replying!")
             sources = bot_commenter.parse_reddit_sources(keyword_found)
             response = bot_commenter.parse_reddit_explanation(content, sources)
-            _ = bot_commenter.reply_with_retry(comment=comment, reply=content.response)
+            _ = bot_commenter.reply_with_retry(comment=comment, reply=response)
             database_client.increment_word_use(word=keyword_found, usage="incorrect_usage")
         else:
             logger.warning("Phrase used correctly. Skipping.")
