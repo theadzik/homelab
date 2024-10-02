@@ -2,6 +2,7 @@ import json
 import logging
 import os
 import re
+import time
 
 import nltk
 import praw
@@ -130,3 +131,15 @@ class BotCommenter:
             logger.warning(f"Asking for block: {self.REDDIT_BASE_URL + comment.permalink}")
             return True
         return False
+
+    def reply_with_retry(self, comment: praw.models.Comment, reply: str, max_retry: int = 3) -> praw.models.Comment:
+        retry_delay = 1
+        for retry in range(max_retry):
+            try:
+                return comment.reply(reply)
+            except praw.exceptions.RedditAPIException as e:
+                logger.error(f"Exception when replying to: {self.REDDIT_BASE_URL + comment.permalink}")
+                logger.error(e)
+                comment.refresh()
+                time.sleep(retry_delay)
+                retry_delay *= 2

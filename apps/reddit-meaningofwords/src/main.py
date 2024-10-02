@@ -66,7 +66,7 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
             logger.warning("Bad bot detected :(")
             openai_checker = OpenAIChecker()
             content = openai_checker.get_bad_bot_response(comment.body)
-            reply_comment = comment.reply(content.response)
+            _ = bot_commenter.reply_with_retry(comment=comment, reply=content.response)
             continue
 
         bullying_score = bullying_analyzer.get_bullying_prediction(text=comment.body)
@@ -81,7 +81,7 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
                 if content.is_bullying:
                     logger.warning("First warning")
                     database_client.save_bully(comment.author)
-                    reply_comment = comment.reply(content.response)
+                    _ = bot_commenter.reply_with_retry(comment=comment, reply=content.response)
                 else:
                     logger.warning("It wasn't bullying :D")
                     logger.warning(content)
@@ -122,8 +122,7 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
             logger.info("Phrase used incorrectly. Replying!")
             sources = bot_commenter.parse_reddit_sources(keyword_found)
             response = bot_commenter.parse_reddit_explanation(content, sources)
-            reply_comment = comment.reply(response)
-            logger.debug(bot_commenter.REDDIT_BASE_URL + reply_comment.permalink)
+            _ = bot_commenter.reply_with_retry(comment=comment, reply=content.response)
             database_client.increment_word_use(word=keyword_found, usage="incorrect_usage")
         else:
             logger.warning("Phrase used correctly. Skipping.")
