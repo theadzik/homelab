@@ -99,7 +99,7 @@
       "Natomiast 'co dzień' należy do wyrażeń zaimkowych również pisanych rozłącznie. Zatem każdy element tej frazy musi zostać zapisany oddzielnie.",
       "Błędne 'nacodzień' lub 'na codzień' wynika najpewniej z analogii do 'codziennie', jednak rozkład części mowy wskazuje, że są to trzy osobne wyrazy."
     ],
-    "search_rule": "\\bna( |)codzie(n\\b|ń\\B)",
+    "search_rule": "\\bna( |)codzie(n|ń)\\b",
     "sources": [
       "https://sjp.pwn.pl/so/na-co-dzien;4468236.html"
     ]
@@ -133,7 +133,7 @@
       "Zapis 'na prawdę' zastosujemy wyłącznie w przypadkach, gdy mowa o rzeczowniku 'prawda' w bierniku liczby pojedynczej ('prawdę') zestawionym z przyimkiem 'na'.",
       "Na przykład: Słyszę od niej same kłamstwa, więc tym razem liczę na prawdę."
     ],
-    "search_rule": "\\bna prawd(e\\b|ę\\B)",
+    "search_rule": "\\bna prawd(e|ę)\\b",
     "sources": [
       "https://sjp.pwn.pl/ciekawostki/haslo/NAPRAWDE;5391567.html",
       "https://poradnia-jezykowa.uni.lodz.pl/faq/pisownia-naprawde-i-na-pewno/"
@@ -187,7 +187,7 @@
       "'bardziej optymalny', 'najbardziej optymalny', 'optymalniejszy' czy 'najoptymalniejszy'.",
       "Jak coś jest 'optymalne', to jest 'optymalne' – i koniec."
     ],
-    "search_rule": "\\b(naj|)(optymalniej|(bardz|mn)iej optymaln)[a-ząćęłńóśźż]*(\\b|\\B)",
+    "search_rule": "\\b(naj|)(optymalniej|(bardz|mn)iej optymaln)",
     "sources": [
       "https://sjp.pwn.pl/poradnia/haslo/optymalny;1854.html",
       "https://fil.ug.edu.pl/strona/15155/wiem_nie_powinno_mowic_najbardziej_optymalny_mozna_jednak_uzyc_konstrukcji_mniej_optymalny"
@@ -204,7 +204,7 @@
       "lub potocznie: ciężko pracować, harować.",
       "Przykłady: Orzesz jak możesz, żeby zarobić na chleb. Orzesz pole przed sianiem."
     ],
-    "search_rule": "\\bo( |)(ż|rz)e(ż\\B|(s|r)z\\b)",
+    "search_rule": "\\bo( |)(ż|rz)e(ż|(s|r)z)\\b",
     "sources": [
       "https://sjp.pwn.pl/poradnia/haslo/Ozez-ty;137.html",
       "https://sjp.pwn.pl/poradnia/haslo/ozez;14357.html",
@@ -359,7 +359,7 @@
       "Błędem jest użycie słowa 'tudzież' w znaczeniu 'albo' bądź 'lub'.",
       "Oczywistym błędem będzie każde stwierdzenie połączone przez 'tudzież', w którym mowa o dwóch wykluczających się opcjach."
     ],
-    "search_rule": "\\btudzie(z\\b|ż\\B)",
+    "search_rule": "\\btudzie(z|ż)\\b",
     "sources": [
       "https://sjp.pwn.pl/ciekawostki/haslo/TUDZIEZ;5391597.html",
       "https://poradnia-jezykowa.uni.lodz.pl/faq/przecinek-przed-spojnikiem-i/"
@@ -396,7 +396,7 @@
       "W wielu przypadkach 'wziąść' tworzone jest przez podobieństwo do innych czasowników zakończonych na '-ść', takich jak: 'pójść' czy 'usiąść'.",
       "Aby ułatwić zapamiętanie tej formy, polecam skojarzenie z czasownikiem 'brać': 'wziąć', a nie 'wziąść', bo nie można czegoś 'braść'."
     ],
-    "search_rule": "\\bwzi[aą][sśzź](c\\b|ć\\B)",
+    "search_rule": "\\bwzi[aą][sśzź](c|ć)\\b",
     "sources": [
       "https://sjp.pwn.pl/poradnia/haslo/dlaczego-nie-wziasc;11924.html",
       "https://poradnia-jezykowa.uni.lodz.pl/warto-wiedziec/klopotliwe-wyrazy/"
@@ -422,7 +422,7 @@
   "z powrotem": {
     "explanations": [
       "Niezależnie od kontekstu jedyną poprawną postacią zapisu tego wyrażenia przyimkowego jest 'z powrotem'.",
-      "Pomyłka może wynikać z faktu, że dawne 'ztąd', 'ztamtąd' zaczęliśmy pisać 'stąd', 'stamtąd', ale nadal piszemy 'z powrotem'."
+      "Pomyłka może wynikać z faktu, że dawne 'z tąd', 'z tamtąd' zaczęliśmy pisać 'stąd', 'stamtąd', ale nadal piszemy 'z powrotem'."
     ],
     "search_rule": "\\b[sz]powrotem\\b",
     "sources": [
@@ -432,12 +432,14 @@
   },
   "złodziei": {
     "explanations": [
-      "Prawidłowa pisownia tego rzeczownika to 'złodziei'.",
-      "Błędny zapis wynika z analogii do reguły ortograficznej mówiącej, że po samogłoskach pisane jest 'j', oraz wymowy, gdzie 'j' jest wyraźnie słyszane ze względu na uproszczenia w artykulacji."
+      "Prawidłowa pisownia tego rzeczownika to 'złodziei' lub rzadziej 'złodziejów'.",
+      "Podobnie jak odmiany 'pokoi' i 'pokojów' są prawidłowe, ale nigdy 'pokoji'.",
+      "Błędny zapis 'złodzieji' wynika z analogii do reguły ortograficznej mówiącej, że po samogłoskach pisane jest 'j', oraz wymowy, gdzie 'j' jest wyraźnie słyszane ze względu na uproszczenia w artykulacji."
     ],
     "search_rule": "\\bz[lł]odzieji\\b",
     "sources": [
-      "https://sjp.pwn.pl/poradnia/haslo/Zlodziei;22156.html"
+      "https://sjp.pwn.pl/poradnia/haslo/Zlodziei;22156.html",
+      "https://sjp.pwn.pl/szukaj/z%C5%82odziej.html"
     ]
   },
   "à propos": {
