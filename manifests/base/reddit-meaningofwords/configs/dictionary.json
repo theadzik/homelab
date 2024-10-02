@@ -257,12 +257,15 @@
   },
   "poza tym": {
     "explanations": [
-      "Wyrażenie przyimkowe 'poza tym' zawsze zapisujemy, rozdzielając przyimek 'poza' od zaimka wskazującego 'tym'.",
-      "Niedopuszczalna jest zarówno pisownia rozdzielna przybierająca formę: 'po za tym', jak również pisownia łączna: 'pozatym' (wzorująca się zapisie wyrazu 'ponadto')."
+      "Wyrażenie przyimkowe 'poza tym' zawsze zapisujemy jako dwa wyrazy, rozdzielając przyimek 'poza' od zaimka wskazującego 'tym'.",
+      "Niedopuszczalna jest zarówno pisownia rozdzielna przybierająca formę: 'po za tym', jak również pisownia łączna: 'pozatym' (wzorująca się zapisie wyrazu 'ponadto').",
+      "Przyimek 'poza' piszemy analogicznie do rzeczownika 'poza' (ciała) czyli łącznie.",
+      "Piszemy go też rozdzielnie od zaimka 'tym' tak jak np. 'poza domem'."
     ],
     "search_rule": "\\b(po za tym|pozatym)\\b",
     "sources": [
       "https://sjp.pwn.pl/poradnia/haslo/poza-tym;12865.html",
+      "https://sjp.pwn.pl/sjp/poza-tym;2507133.html",
       "https://poradnia-jezykowa.uni.lodz.pl/faq/nowe-pytanie-od-uzytkownika-piotr-baleja-balej1010gmail-com/"
     ]
   },
@@ -282,13 +285,13 @@
   },
   "przynajmniej/bynajmniej": {
     "explanations": [
-      "Słowo 'bynajmniej' jest partykułą, za pomocą której wyrażamy silne przeczenie.",
-      "Często występuje wraz ze słowem 'nie' lub samodzielnie jako wykrzyknienie.",
+      "Słowo 'bynajmniej' jest partykułą, za pomocą której wyrażamy przeczenie.",
+      "Często występuje wraz ze słowem 'nie' lub samodzielnie jako wykrzyknienie (Bynajmniej!).",
       "Partykuła 'bynajmniej' znaczeniowo najbliższa jest połączeniu 'wcale nie'",
       "i w żadnym wypadku nie powinna być używana w znaczeniu 'przynajmniej', 'chociaż' czy 'w każdym razie'.",
       "Przykłady prawidłowego użycia: Bynajmniej nie jestem zainteresowana tym tematem. Nie jest to bynajmniej dla mnie trudne.",
-      "'Przynajmniej' to partykuła wyznaczająca minimalny, możliwy do zaakceptowania przez mówiącego zakres czegoś,",
-      "lub komunikująca, że ilość lub miara czegoś jest nie mniejsza od wymienionej i że może być większa.",
+      "'Przynajmniej' to partykuła wyznaczająca minimalny zakres czegoś,",
+      "lub komunikująca, że ilość lub miara czegoś jest nie mniejsza od wymienionej.",
       "Przykłady prawidłowego użycia: Przynajmniej ona mnie rozumie. Zjedz przynajmniej dwa jabłka."
     ],
     "search_rule": "\\bbynajmniej\\b",
