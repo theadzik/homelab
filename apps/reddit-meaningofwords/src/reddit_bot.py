@@ -86,7 +86,7 @@ class BotCommenter:
 
         message = (
             f"{self.signature}"
-            f"\n* Użyta forma: **{content.used_word}**"
+            f"\n* Użyta forma: {content.used_word}"
             f"\n* Poprawna forma: **{content.correct_word}**"
             f"\n* Wyjaśnienie: {explanation}"
             f"\n* Źródła: {sources}"
