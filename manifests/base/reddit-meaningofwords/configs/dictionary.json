@@ -35,7 +35,9 @@
     "sources": [
       "https://sjp.pwn.pl/poradnia/haslo/dlatego-bo;8646.html",
       "https://sjp.pwn.pl/poradnia/haslo/dlatego-ze;15602.html",
-      "https://sjp.pwn.pl/poradnia/haslo/dlatego-ze;381.html"
+      "https://sjp.pwn.pl/poradnia/haslo/dlatego-ze;381.html",
+      "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/DLATEGO_ZE___",
+      "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/dlatego-ze-czy-dlatego-ze-,c,"
     ]
   },
   "dopóki": {
@@ -97,22 +99,26 @@
       "Zapis rozłączny 'na co dzień' określa zasada konwencjonalna, co oznacza, że jest oparta na arbitralnych ustaleniach.",
       "'na' jest przyimkiem, który bardzo często wchodzi w skład wyrażeń przyimkowych, jakie zawsze zapisujemy rozłącznie.",
       "Natomiast 'co dzień' należy do wyrażeń zaimkowych również pisanych rozłącznie. Zatem każdy element tej frazy musi zostać zapisany oddzielnie.",
-      "Błędne 'nacodzień' lub 'na codzień' wynika najpewniej z analogii do 'codziennie', jednak rozkład części mowy wskazuje, że są to trzy osobne wyrazy."
+      "Błędne 'nacodzień' lub 'na codzień' wynika najpewniej z analogii do słowa 'codziennie', które powstało od wyrażenia przyimkowego 'co dzień'.",
+      "'Co dzień' zapisujemy tak samo jak podobne połączenia: 'co chwila', 'co godzina', 'co sobota', 'co miesiąc', 'co rok'."
     ],
     "search_rule": "\\bna( |)codzie(n|ń)\\b",
     "sources": [
-      "https://sjp.pwn.pl/so/na-co-dzien;4468236.html"
+      "https://sjp.pwn.pl/so/na-co-dzien;4468236.html",
+      "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/co-dzien-na-co-dzien-i-codziennie,cltt,c"
     ]
   },
   "na pewno": {
     "explanations": [
       "Wyrażenie 'na pewno' wywodzi się od prasłowiańskiej formy przymiotnika rodzaju nijakiego 'pewno'.",
-      "Zarówno w przypadku tego sformułowania, jak i podobnych: na lewo, na prawo, na okrągło, na nowo, obowiązuje pisownia rozdzielna."
+      "Zarówno w przypadku tego sformułowania, jak i podobnych: na lewo, na prawo, na okrągło, na nowo, obowiązuje pisownia rozdzielna.",
+      "Można skojarzyć sobie synonimy 'z pewnością' i 'na pewno', oba są pisane rozdzielnie."
     ],
     "search_rule": "\\bnapewno\\b",
     "sources": [
       "https://poradnia-jezykowa.uni.lodz.pl/faq/pisownia-naprawde-i-na-pewno/",
-      "https://sjp.pwn.pl/poradnia/haslo/na-pewno;9268.html"
+      "https://sjp.pwn.pl/poradnia/haslo/na-pewno;9268.html",
+      "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/na-pewno,cltt,n"
     ]
   },
   "na razie": {
@@ -136,7 +142,8 @@
     "search_rule": "\\bna prawd(e|ę)\\b",
     "sources": [
       "https://sjp.pwn.pl/ciekawostki/haslo/NAPRAWDE;5391567.html",
-      "https://poradnia-jezykowa.uni.lodz.pl/faq/pisownia-naprawde-i-na-pewno/"
+      "https://poradnia-jezykowa.uni.lodz.pl/faq/pisownia-naprawde-i-na-pewno/",
+      "https://nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/naprawde,cltt,N"
     ]
   },
   "naprzeciw/naprzeciwko": {
@@ -149,7 +156,8 @@
     "search_rule": "\\bna przeciw(ko|)\\b",
     "sources": [
       "https://sjp.pwn.pl/slowniki/naprzeciwko.html",
-      "https://sjp.pwn.pl/szukaj/naprzeciw.html"
+      "https://sjp.pwn.pl/szukaj/naprzeciw.html",
+      "https://nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/naprzeciw,c,"
     ]
   },
   "nieprawda/nie prawda": {
@@ -190,7 +198,8 @@
     "search_rule": "\\b(naj|)(optymalniej|(bardz|mn)iej optymaln)",
     "sources": [
       "https://sjp.pwn.pl/poradnia/haslo/optymalny;1854.html",
-      "https://fil.ug.edu.pl/strona/15155/wiem_nie_powinno_mowic_najbardziej_optymalny_mozna_jednak_uzyc_konstrukcji_mniej_optymalny"
+      "https://fil.ug.edu.pl/strona/15155/wiem_nie_powinno_mowic_najbardziej_optymalny_mozna_jednak_uzyc_konstrukcji_mniej_optymalny",
+      "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/optymalny,cltt,o"
     ]
   },
   "orzesz/ożeż": {
@@ -208,7 +217,8 @@
     "sources": [
       "https://sjp.pwn.pl/poradnia/haslo/Ozez-ty;137.html",
       "https://sjp.pwn.pl/poradnia/haslo/ozez;14357.html",
-      "https://sjp.pwn.pl/poradnia/haslo/Ozez-ty;9000.html"
+      "https://sjp.pwn.pl/poradnia/haslo/Ozez-ty;9000.html",
+      "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/ozez-ty-,c,"
     ]
   },
   "po prostu": {
@@ -220,7 +230,8 @@
     "search_rule": "\\bpoprostu\\b",
     "sources": [
       "https://sjp.pwn.pl/sjp/po-prostu;2505032.html",
-      "https://sjp.pwn.pl/slowniki/po%20prostu.html"
+      "https://sjp.pwn.pl/slowniki/po%20prostu.html",
+      "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/po-prostu,c,"
     ]
   },
   "pojedynczy": {
@@ -234,7 +245,8 @@
     "search_rule": "\\b(nie|)pojedyń",
     "sources": [
       "https://sjp.pwn.pl/so/pojedynczy;4490043.html",
-      "http://pwsz.chelm.pl/poradnia_jezykowa/index_2.php?id_k=1&id_p=76"
+      "http://pwsz.chelm.pl/poradnia_jezykowa/index_2.php?id_k=1&id_p=76",
+      "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/pojedynczy,c,"
     ]
   },
   "ponadto/ponad to": {
@@ -280,7 +292,8 @@
     "sources": [
       "https://poradnia-jezykowa.uni.lodz.pl/faq/przekonywujacy-czy-przekonujacy/",
       "https://sjp.pwn.pl/poradnia/haslo/;10188",
-      "https://poradnia-jezykowa.uni.lodz.pl/faq/przekonywujacy-czy-przekonywajacy/"
+      "https://poradnia-jezykowa.uni.lodz.pl/faq/przekonywujacy-czy-przekonywajacy/",
+      "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/przekonujacy-albo-przekonywajacy,c,"
     ]
   },
   "przynajmniej/bynajmniej": {
@@ -299,7 +312,8 @@
       "https://sjp.pwn.pl/slowniki/bynajmniej.html",
       "https://sjp.pwn.pl/poradnia/haslo/bynajmniej-przynajmniej;7222.html",
       "https://poradnia-jezykowa.uni.lodz.pl/faq/bynajmniej/",
-      "https://sjp.pwn.pl/sjp/przynajmniej;2512323.html"
+      "https://sjp.pwn.pl/sjp/przynajmniej;2512323.html",
+      "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/bynajmniej-,c,"
     ]
   },
   "rządzić/żądza": {
@@ -324,7 +338,9 @@
     "search_rule": "\\bz( |)p(rzed|od)\\b",
     "sources": [
       "https://sjp.pwn.pl/sjp/sprzed;2523478.html",
-      "https://sjp.pwn.pl/poradnia/haslo/z-pod-i-spod;395.html"
+      "https://sjp.pwn.pl/poradnia/haslo/z-pod-i-spod;395.html",
+      "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/spod-i-sprzed,cltt,",
+      "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/spod-i-znad-sprzed-i-zza,cltt,s"
     ]
   },
   "sweter": {
@@ -349,7 +365,8 @@
     "search_rule": "\\b(do|na(|d)|o(b|d)|po(|d)|prz(e|y)|roz|u|w(|y|ze)|z(|a|e)){0,1}sz[lł]em\\b",
     "sources": [
       "https://sjp.pwn.pl/poradnia/haslo/Od-kiedy-szlem-zamiast-szedlem;19036.html",
-      "https://poradnia-jezykowa.uni.lodz.pl/faq/poszlem/"
+      "https://poradnia-jezykowa.uni.lodz.pl/faq/poszlem/",
+      "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/dlaczego-szedlem-a-nie-szlem-,c,"
     ]
   },
   "tudzież": {
@@ -362,7 +379,8 @@
     "search_rule": "\\btudzie(z|ż)\\b",
     "sources": [
       "https://sjp.pwn.pl/ciekawostki/haslo/TUDZIEZ;5391597.html",
-      "https://poradnia-jezykowa.uni.lodz.pl/faq/przecinek-przed-spojnikiem-i/"
+      "https://poradnia-jezykowa.uni.lodz.pl/faq/przecinek-przed-spojnikiem-i/",
+      "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/tudziez,c,"
     ]
   },
   "w każdym razie": {
@@ -376,7 +394,8 @@
     "search_rule": "\\bw ka[zż]dym b[aą]d[zź] razie\\b",
     "sources": [
       "https://sjp.pwn.pl/poradnia/haslo/w-kazdym-badz-razie;624.html",
-      "https://poradnia-jezykowa.uni.lodz.pl/faq/w-kazdym-razie-lub-badz-co-badz-a-nie-w-kazdym-badz-razie/"
+      "https://poradnia-jezykowa.uni.lodz.pl/faq/w-kazdym-razie-lub-badz-co-badz-a-nie-w-kazdym-badz-razie/",
+      "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/w-kazdym-razie-albo-badz-co-badz,c,"
     ]
   },
   "w ogóle": {
@@ -399,7 +418,8 @@
     "search_rule": "\\bwzi[aą][sśzź](c|ć)\\b",
     "sources": [
       "https://sjp.pwn.pl/poradnia/haslo/dlaczego-nie-wziasc;11924.html",
-      "https://poradnia-jezykowa.uni.lodz.pl/warto-wiedziec/klopotliwe-wyrazy/"
+      "https://poradnia-jezykowa.uni.lodz.pl/warto-wiedziec/klopotliwe-wyrazy/",
+      "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/dlaczego-wziac-a-nie-wziasc-,c,"
     ]
   },
   "włączać": {
