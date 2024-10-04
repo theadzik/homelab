@@ -137,7 +137,7 @@
     "explanations": [
       "'Naprawdę' pisane łącznie to partykuła za pomocą której mówiący, chcąc przekonać kogoś o słuszności swojego zdania, potwierdza jego prawdziwość.",
       "Zapis 'na prawdę' zastosujemy wyłącznie w przypadkach, gdy mowa o rzeczowniku 'prawda' w bierniku liczby pojedynczej ('prawdę') zestawionym z przyimkiem 'na'.",
-      "Na przykład: Słyszę od niej same kłamstwa, więc tym razem liczę na prawdę."
+      "Przykład użycia w zdaniu: Słyszę od niej same kłamstwa, więc tym razem liczę na prawdę."
     ],
     "search_rule": "\\bna prawd(e|ę)\\b",
     "sources": [
@@ -167,7 +167,7 @@
       "Zasada ogólna mówi bowiem o tym, że przeczenie 'nie' + rzeczownik zapisuje się razem.",
       "Jeśli mamy do czynienia z sytuacją, gdy partykuła 'nie' wprowadza wyraźne przeciwstawienie,",
       "z zaakcentowaniem wyrazu 'prawda', wówczas zapis będzie rozłączny (nie prawda),",
-      "Na przykład: To nie prawda, lecz kłamstwo. Widzimy, że jest to brednia, a nie prawda. Nie prawda, lecz mit."
+      "Przykład użycia w zdaniu: To nie prawda, lecz kłamstwo. Widzimy, że jest to brednia, a nie prawda. Nie prawda, lecz mit."
     ],
     "search_rule": "\\bnie prawda\\b",
     "sources": [
@@ -225,7 +225,7 @@
     "explanations": [
       "'Po prostu' jest wyrażeniem przyimkowym.",
       "Konstrukcje przyimków z rzeczownikami, przysłówkami, liczebnikami i zaimkami zapisywane są zawsze rozłącznie.",
-      "Aby nie mieć wątpliwości, warto przywołać sobie podobne przykłady: 'po cichu', 'po polsku', 'po ciemku'."
+      "Dla łatwiejszego zapamiętania można przywołać sobie podobne przykłady: 'po cichu', 'po polsku', 'po ciemku'."
     ],
     "search_rule": "\\bpoprostu\\b",
     "sources": [
@@ -255,11 +255,11 @@
       "'ponadto' to partykuła nawiązująca do poprzedniego kontekstu i wprowadzająca nową informację na omawiany już temat.",
       "Jego synonimami są m.in. 'poza tym' i 'prócz tego'.",
       "Nie należy jednak sugerować się rozdzielną pisownią przytoczonych wyrazów pokrewnych – w tym przypadku 'ponadto' zapisuje się łacznie.",
-      "Na przykład: W naszej księgarni znajdziecie wiele bestsellerów i klasykę literatury, a ponadto nowości wydawnicze.",
+      "Przykład użycia w zdaniu: W naszej księgarni znajdziecie wiele bestsellerów i klasykę literatury, a ponadto nowości wydawnicze.",
       "Trzeba jednak pamiętać, że poprawny jest też zapis 'ponad to'.",
       "W tym przypadku to wyrażenie przyimkowe składające się z przyimka 'ponad' oraz zaimka 'to'.",
       "W tej sytuacji zaimek 'to' zastępuje rzeczownik (czyli ponad coś).",
-      "Na przykład: Nie musisz robić więcej ponad to, co ci zlecono."
+      "Przykład użycia w zdaniu: Nie musisz robić więcej ponad to, co ci zlecono."
     ],
     "search_rule": "\\bpo( |)nad to\\b",
     "sources": [
@@ -329,18 +329,19 @@
       "https://sjp.pwn.pl/slowniki/%C5%BC%C4%85dza"
     ]
   },
-  "spod/sprzed": {
+  "spod/sprzed/spoza/spomiędzy": {
     "explanations": [
-      "Przyimek 'spod' i przyimek 'sprzed' zawsze piszemy łącznie i przez 's-'.",
-      "Nie ma takiego kontekstu, w których mogło by zostać uznane za poprawne napisanie 'z pod' lub 'z przed'.",
-      "Od 1936 roku, czyli od czasu reformy ortografii, przyimki 'spod' i 'sprzed' są zrostami i należy je zapisywać łącznie."
+      "Od roku 1936, czyli wielkiej reformy ortografii, jedynymi poprawnymi formami są 'spod', 'sprzed', 'spoza' i 'spomiędzy' (dawniej  z pod, z przed, z poza, z pomiędzy).",
+      "Zmiana ta wynikała głównie z przyczyn ekonomicznych, gdzie z dwóch słów powstał jeden wyraz oraz z potrzeby dopasowania się języka pisanego do języka mówionego.",
+      "Głoska dźwięczna 'z' poprzez bezdźwięczne 'p' uległa ubezdźwięcznieniu na 's', w wyniku czego pisownia 'dopasowała się do wymowy'."
     ],
-    "search_rule": "\\bz( |)p(rzed|od)\\b",
+    "search_rule": "\\bz( |)p(rzed|od|oza|omi(ę|e)dzy)\\b",
     "sources": [
       "https://sjp.pwn.pl/sjp/sprzed;2523478.html",
       "https://sjp.pwn.pl/poradnia/haslo/z-pod-i-spod;395.html",
-      "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/spod-i-sprzed,cltt,",
-      "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/spod-i-znad-sprzed-i-zza,cltt,s"
+      "https://nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/spod-i-sprzed,cltt,",
+      "https://nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/spod-i-znad-sprzed-i-zza,cltt,s",
+      "https://nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/pomiedzy-i-spomiedzy"
     ]
   },
   "sweter": {

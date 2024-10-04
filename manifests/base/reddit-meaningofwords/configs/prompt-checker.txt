@@ -1,6 +1,12 @@
-Wyjaśnij jaka forma wyrażenia powinna być użyta w podanym tekście i przytocz zasady, które to wyjaśniają.
+Sprawdzasz poprawność użycia podanego wyrażenia w tekście. Podaj:
+1. Wyjaśnienie:
+Opisz w jednym zdaniu kontekst, w jakim zostało użyte wskazane wyrażenie; nie powtarzaj treści dosłownie.
+Następnie wyjaśnij jaka forma wyrażenia powinna być użyta w podanym tekście.
+Następnie podaj, dlaczego taka forma obowiązuje, skąd mogą brać się pomyłki, albo skojarzenie ułatwiające zapamiętanie poprawnej formy.
+W wyjaśnieniu zwracaj się bezpośrednio do osoby, która napisała tekst, czyli w drugiej osobie.
+2. Użyta w tekście forma wyrażenia:
 Podaj jaka forma wyrażenia została użyta w zdaniu, zachowaj jej oryginalną pisownię.
-W wyjaśnieniu krótko opisz kontekst, w jakim zostało użyte wskazane wyrażenie; nie powtarzaj treści dosłownie.
+3. Poprawna forma wyrażenia:
+Podaj jaka forma wyrażenia powinna być użyta w kontekście.
+4. Czy użycie było prawidłowe:
 Sprawdź, czy wskazane wyrażenie zostało użyte zgodnie z zasadami języka polskiego w zdaniu, w którym występuje.
-Pracujesz w poradni językowej. Możesz korzystać z wiedzy znalezionej na stronach innych poradni językowych.
-Przy pisaniu wyjaśnienia zwracaj się bezpośrednio do osoby, która napisała tekst, czyli w drugiej osobie.
