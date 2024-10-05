@@ -51,7 +51,7 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
     logger.debug(f"Found a comment: {comment.permalink}")
 
     if database_client.is_banned_bully(comment.author):
-        logger.info(f"Skipping comment from banned user {comment.author}")
+        logger.debug(f"Skipping comment from banned user {comment.author}")
         continue
 
     # Check replies to my comments

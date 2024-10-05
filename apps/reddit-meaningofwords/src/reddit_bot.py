@@ -133,7 +133,7 @@ class BotCommenter:
         return False
 
     def reply_with_retry(self, comment: praw.models.Comment, reply: str, max_retry: int = 3) -> praw.models.Comment:
-        retry_delay = 1
+        retry_delay = 2
         for retry in range(max_retry):
             try:
                 return comment.reply(reply)
@@ -141,5 +141,6 @@ class BotCommenter:
                 logger.error(f"Exception when replying to: {self.REDDIT_BASE_URL + comment.permalink}")
                 logger.error(e)
                 comment.refresh()
+                logger.info(f"Retrying in {retry_delay} seconds.")
                 time.sleep(retry_delay)
                 retry_delay *= 2
