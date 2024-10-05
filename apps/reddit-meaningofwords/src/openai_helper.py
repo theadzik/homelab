@@ -30,15 +30,15 @@ class BadBotResponse(BaseModel):
 class OpenAIChecker:
     def __init__(self):
         with open(os.getenv("REDDIT_CHECKER_PROMPT_PATH"), mode="r", encoding="utf-8") as file:
-            self.checker_prompt = file.read()
+            self.checker_prompt = file.read().strip()
             logger.debug(f"Loaded checker prompt:\n{self.checker_prompt}")
 
         with open(os.getenv("REDDIT_BULLY_PROMPT_PATH"), mode="r", encoding="utf-8") as file:
-            self.bully_prompt = file.read()
+            self.bully_prompt = file.read().strip()
             logger.debug(f"Loaded bully prompt:\n{self.bully_prompt}")
 
         with open(os.getenv("REDDIT_BAD_BOT_PROMPT_PATH"), mode="r", encoding="utf-8") as file:
-            self.bad_bot_prompt = file.read()
+            self.bad_bot_prompt = file.read().strip()
             logger.debug(f"Loaded bad bot prompt:\n{self.bad_bot_prompt}")
 
         self.presence_penalty = float(os.getenv("OPEN_AI_PRESENCE_PENALTY", 0))
