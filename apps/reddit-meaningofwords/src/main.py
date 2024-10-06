@@ -1,9 +1,8 @@
-import logging
 import os
-import sys
 
 import praw
 from bullying import BullyingClient
+from custom_logger import get_logger
 from database import DatabaseClientSingleton
 from dotenv import load_dotenv
 from graceful_shutdown import GracefulKiller
@@ -15,13 +14,7 @@ load_dotenv()
 USER_AGENT = f"linux:{os.environ['REDDIT_USERNAME']}:{os.environ['APP_VERSION']} (by u/MalinowyChlopak)"
 SUBREDDITS = os.getenv("REDDIT_SUBREDDITS", "polska")
 
-logging.basicConfig(
-    encoding='utf-8',
-    level=os.getenv("LOG_LEVEL", logging.INFO),
-    stream=sys.stdout
-)
-
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 reddit = praw.Reddit(
     client_id=os.environ["REDDIT_CLIENT_ID"],

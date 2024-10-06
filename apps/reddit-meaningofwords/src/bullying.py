@@ -1,11 +1,11 @@
-import logging
 import os
 
 import requests
+from custom_logger import get_logger
 from dotenv import load_dotenv
 from pydantic import BaseModel
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class Item(BaseModel):

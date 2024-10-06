@@ -1,14 +1,14 @@
-import logging
 import os
 
 import openai
+from custom_logger import get_logger
 from dotenv import load_dotenv
 from pydantic import BaseModel
 
 load_dotenv()
 
 client = openai.OpenAI()
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class WordCheckerResponse(BaseModel):

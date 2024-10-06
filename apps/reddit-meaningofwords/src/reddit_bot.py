@@ -1,15 +1,15 @@
 import json
-import logging
 import os
 import re
 import time
 
 import nltk
 import praw
+from custom_logger import get_logger
 from database import DatabaseClientSingleton
 from openai_helper import WordCheckerResponse
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class BotCommenter:

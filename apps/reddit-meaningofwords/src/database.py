@@ -1,9 +1,10 @@
-import logging
 import os
 import sqlite3
 from typing import Literal
 
-logger = logging.getLogger(__name__)
+from custom_logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class Singleton(type):
