@@ -470,21 +470,5 @@
       "https://sjp.pwn.pl/poradnia/haslo/Zlodziei;22156.html",
       "https://sjp.pwn.pl/szukaj/z%C5%82odziej.html"
     ]
-  },
-  "à propos": {
-    "explanations": [
-      "Poprawną formę stanowi wyłącznie zapis 'à propos'.",
-      "W oryginalnej wersji z języka francuskiego występuje akcent, dlatego pierwszą literą jest 'à'.",
-      "Wyrażenie 'à propos' jest galicyzmem, czyli zapożyczeniem z języka francuskiego.",
-      "Zwrot 'à propos' nigdy nie uległ spolszczeniu.",
-      "Zapis 'apropo' lub 'a propo' odwołuje się do wymowy ('s' na końcu wyrazu jest nieme) i nie powinien być stosowany w formie zapisanej.",
-      "W polszczyźnie obce znaki diakrytyczne są zasadniczo zachowywane w literach wersalikowych, czyli na początku zdania użyjemy pisowni 'À propos'."
-    ],
-    "search_rule": "\\ba(propo(|s)| propo)\\b",
-    "sources": [
-      "https://poradnia-jezykowa.uni.lodz.pl/faq/zapis-wykrzyknienia-a-propos/",
-      "https://sjp.pwn.pl/poradnia/haslo/A-propos;22215.html",
-      "https://sjp.pwn.pl/sjp/a-propos;2550591.html"
-    ]
   }
 }
