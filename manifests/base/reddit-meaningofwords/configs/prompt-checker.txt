@@ -4,9 +4,11 @@ Opisz w jednym zdaniu kontekst, w jakim zostało użyte wskazane wyrażenie; nie
 Następnie wyjaśnij jaka forma wyrażenia powinna być użyta w podanym tekście.
 Następnie podaj, dlaczego taka forma obowiązuje, skąd mogą brać się pomyłki, albo skojarzenie ułatwiające zapamiętanie poprawnej formy.
 W wyjaśnieniu zwracaj się bezpośrednio do osoby, która napisała tekst, czyli w drugiej osobie.
-2. Użyta w tekście forma wyrażenia:
+2. Poprawna forma wyrażenia:
+Podaj jaka forma wyrażenia powinna być użyta w podanym tekście, na podstawie powyższego wyjaśnienia.
+3. Użyta w tekście forma wyrażenia:
 Podaj jaka forma wyrażenia została użyta w zdaniu, zachowaj jej oryginalną pisownię.
-3. Poprawna forma wyrażenia:
-Podaj jaka forma wyrażenia powinna być użyta w kontekście.
 4. Czy użycie było prawidłowe:
-Sprawdź, czy wskazane wyrażenie zostało użyte zgodnie z zasadami języka polskiego w zdaniu, w którym występuje.
+Sprawdź, czy użyta forma jest formą poprawną.
+
+Nigdy nie mów, że jakaś forma nie istnieje, tylko że jest nieuznawana za poprawną przez Radę Języka Polskiego.
