@@ -15,7 +15,15 @@
   "cudzysłów": {
     "explanations": [
       "Warto zapamiętać: 'cudzysłów' odmienia się jak 'rów', nie jak 'tułów'.",
-      "Poprawnie jest 'w cudzysłowie' nie 'w cudzysłowiu'."
+      "Aby określić z jakim przypadkiem mamy do czynienia, należy sprawdzić na jakie pytanie powinien odpowiadać rzeczownik w danym kontekście.",
+      "Poprawna odmiana dla liczby pojedynczej/mnogiej to:\n",
+      "mianownik (odpowiada na pytanie co?) – cudzysłów/cudzysłowy\n",
+      "dopełniacz (odpowiada na pytanie czego?) cudzysłowu/cudzysłowów\n",
+      "celownik (odpowiada na pytanie czemu?) cudzysłowowi/cudzysłowom\n",
+      "biernik (odpowiada na pytanie co?) cudzysłów/cudzysłowy\n",
+      "narzędnik (odpowiada na pytanie z czym?) z cudzysłowem/cudzysłowami\n",
+      "miejscownik (odpowiada na pytanie o czym?) o cudzysłowie/cudzysłowach\n",
+      "wołacz (hej!) cudzysłowie/cudzysłowy"
     ],
     "search_rule": "\\bcudzys[lł]owi(a(ch|mi|)|u|em|o(m|wi)|)\\b",
     "sources": [
@@ -412,9 +420,9 @@
   },
   "wziąć": {
     "explanations": [
-      "Jedyną dozwoloną formą jest 'wziąć'.",
+      "Jedyną formą uznaną za poprawną przez Radę Języka Polskiego jest 'wziąć'.",
       "W wielu przypadkach 'wziąść' tworzone jest przez podobieństwo do innych czasowników zakończonych na '-ść', takich jak: 'pójść' czy 'usiąść'.",
-      "Aby ułatwić zapamiętanie tej formy, polecam skojarzenie z czasownikiem 'brać': 'wziąć', a nie 'wziąść', bo nie można czegoś 'braść'."
+      "Nie jest to reguła, ale można skojarzyć słowo 'wziąć' z czasownikiem 'brać', intuicyjnie wiemy, że nie można czegoś 'braść'."
     ],
     "search_rule": "\\bwzi[aą][sśzź](c|ć)\\b",
     "sources": [
