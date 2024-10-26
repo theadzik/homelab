@@ -58,22 +58,6 @@
       "https://sjp.pwn.pl/slowniki/dop%C3%B3ki.html"
     ]
   },
-  "dzień dzisiejszy": {
-    "explanations": [
-      "Przysłówki 'dzisiaj' i 'dziś' są wyrazami o znaczeniu neutralnym, są zatem poprawne w każdym tekście,",
-      "natomiast połączenie 'w dniu dzisiejszym' jest nacechowane oficjalnością i pojawić się może jedynie",
-      "w tekstach oficjalnych, urzędowych.",
-      "Wyrażenia  'dzień dzisiejszy', w 'dniu dzisiejszym' cechuje nadmiarowość znaczeniowa",
-      "(wyraz 'dzień' powtarza treść przymiotnika 'dzisiejszy') i można je w związku z tym uznać za pleonazmy."
-    ],
-    "search_rule": "\\bd(niu|zie[nń]) (dzisie|jutrze|wczora)jszy(|m)\\b",
-    "sources": [
-      "https://fil.ug.edu.pl/strona/15142/wyrazenia_dzien_dzisiejszy_dzien_wczorajszy_dzien_jutrzejszy_poprawne",
-      "http://www.poradniajezykowa.ujd.edu.pl/en/node/105",
-      "https://poradnia-jezykowa.uni.lodz.pl/faq/na-dzien-dzisiejszy/",
-      "https://sjp.pwn.pl/poradnia/haslo/po-dzis-dzien-a-w-dniu-dzisiejszym;22368.html"
-    ]
-  },
   "in vitro": {
     "explanations": [
       "'In vitro' wywodzi się z języka łacińskiego, gdzie dosłownie tłumaczone jest jako 'w szkle'.",
