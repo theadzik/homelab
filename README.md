@@ -26,14 +26,14 @@ I modified code of those roles to fit my needs.
 
 Containerized applications:
 
-* `vaultwarden` - Backup and restore scripts made for vaultwarden,
-  running as initContainer and CronJob
-* `cv` - My resume built with Jekyll
-* `wedding-website` - A site I made for my wedding
-* `dns` - Dynamic DNS updater working with `no-ip`
+* `cv` - My resume built with Ruby and Jekyll
+* `dns` - Dynamic DNS client working with `no-ip`
 * `reddit-meaningofwords` - A useful (or annoying, depends on your views)
   bot that fixes most common language mistakes on reddit.com/r/Polska.
   It uses `openai` api to recognize context, fix mistakes and generate explanation.
+* `bullying-detector` - helper for the Reddit bot to filter bullying responses
+* `vaultwarden` - Backup and restore scripts made for vaultwarden,
+  running as initContainer and CronJob
 
 ## `/manifests`
 
