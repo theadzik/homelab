@@ -56,10 +56,14 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
             continue
 
         if bot_commenter.is_bad_bot_comment(comment=comment):
+            if database_client.is_ghost(comment.author):
+                logger.info(f"{comment.author} is a ghost. Skipping.")
+                continue
             logger.warning("Bad bot detected :(")
             openai_checker = OpenAIChecker()
             content = openai_checker.get_bad_bot_response(comment.body)
             _ = bot_commenter.reply_with_retry(comment=comment, reply=content.response)
+            database_client.save_ghost(comment.author, "Bad bot comment")
             continue
 
         bullying_score = bullying_analyzer.get_bullying_prediction(text=comment.body)

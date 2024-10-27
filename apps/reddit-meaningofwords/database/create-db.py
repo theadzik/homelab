@@ -26,6 +26,14 @@ cur.execute(
                                           );"""
 )
 
+cur.execute(
+    """CREATE TABLE IF NOT EXISTS ghosts(
+                                            id integer PRIMARY KEY,
+                                            username text UNIQUE,
+                                            reason text
+                                          );"""
+)
+
 with open(os.environ["REDDIT_DICTIONARY_PATH"], mode="r", encoding="utf-8", ) as dictionary:
     words_to_check = json.load(dictionary)
 

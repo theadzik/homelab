@@ -16,7 +16,7 @@ class Singleton(type):
         return cls._instances[cls]
 
 
-class DatabaseClient():
+class DatabaseClient:
     def __init__(self):
         self.con = sqlite3.connect(database=os.environ["DATABASE_PATH"], timeout=10)
         self.cur = self.con.cursor()
@@ -52,6 +52,19 @@ class DatabaseClient():
     def is_banned_bully(self, username: str) -> bool:
         query = f"""SELECT username FROM bullies
                     WHERE username = '{username}' AND banned = 1;
+                """
+        res = self.cur.execute(query)
+        return bool(res.fetchall())
+
+    def save_ghost(self, username: str, reason: str) -> None:
+        query = f"""INSERT INTO ghosts VALUES
+            (null, '{username}', '{reason}')"""
+        self.cur.execute(query)
+        self.con.commit()
+
+    def is_ghost(self, username: str) -> bool:
+        query = f"""SELECT username FROM ghosts
+                    WHERE username = '{username}'
                 """
         res = self.cur.execute(query)
         return bool(res.fetchall())
