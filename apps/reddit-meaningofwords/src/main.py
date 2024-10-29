@@ -49,6 +49,7 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
 
     # Check replies to my comments
     if bot_commenter.is_my_comment_chain(comment=comment, direct=True):
+        logger.info(bot_commenter.REDDIT_BASE_URL + comment.permalink)
         if bot_commenter.is_asking_for_block(comment=comment):
             logger.warning(f"Blocking user {comment.author}")
             reddit.redditor(comment.author).block()
