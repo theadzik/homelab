@@ -332,8 +332,13 @@
   },
   "szedłem": {
     "explanations": [
-      "Formy 'szedłem', 'poszedłem', 'doszedłem' są zgodne z systemem gramatycznym polszczyzny, a formy 'szłem', 'poszłem', 'doszłem' są niepoprawne.",
-      "Skoro mówimy: 'on szedł', na nie: on 'szł', to poprawnie mówimy i piszemy również: 'ja szedłem'."
+      "Formy 'szedłem', 'poszedłem', 'doszedłem' są uznawane za poprawne, ale formy 'szłem', 'poszłem', 'doszłem' są uznawana za błędne.",
+      "Błędne męskie formy 1 i 2 osoby liczby pojedynczej czasu przeszłego od czasownika iść powstają przez analogię do form żeńskich i form liczby mnogiej (*szłem: szłam, *szłeś: szłaś, *poszłem: poszłam itd.).",
+      "Nie poddają się jej formy 3 osoby, np.: 'szedł', 'poszedł', 'wszedł'), ze względu na konieczność zachowania 'e' w wymowie.",
+      "Do postaci 'szedł' itp. nawiązuje bezpośrednio 1 i 2 osoba: 'szedł-em', 'szedł-eś' itp.)",
+      "Tzw. ruchome 'e' w 'szedł-' pochodzi z rozwoju jeru przedniego, który w innych formach fleksyjnych zniknął bez śladu,",
+      "co doprowadziło do powstania kłopotliwej grupy spółgłosek '*szdł-', a w dalszej kolejności do jej uproszczenia: *szdła → szła.",
+      "Historycznie rzecz biorąc, warunki do powstania analogii [szłem–szłam] istnieją od wielu wieków, a regóły języka polskiego nie zabraniają takiej konstrukcji."
     ],
     "search_rule": "\\b(do|na(|d)|o(b|d)|po(|d)|prz(e|y)|roz|u|w(|y|ze)|z(|a|e)){0,1}sz[lł]em\\b",
     "sources": [
