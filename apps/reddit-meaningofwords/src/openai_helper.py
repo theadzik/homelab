@@ -44,29 +44,28 @@ class OpenAIChecker:
         self.presence_penalty = float(os.getenv("OPEN_AI_PRESENCE_PENALTY", 0))
         self.frequency_penalty = float(os.getenv("OPEN_AI_FREQUENCY_PENALTY", 0))
         self.temperature = float(os.getenv("OPEN_AI_TEMPERATURE", 1))
+        self.token_limit = int(os.getenv("OPENAI_TOKEN_LIMIT", 256))
 
     def send_request(self, prompt: list, response_format: type[BaseModel]):
-        max_tokens = 256
-        for attempt in range(2):
-            try:
-                chat_completion = client.beta.chat.completions.parse(
-                    model="gpt-4o-2024-08-06",
-                    max_tokens=max_tokens,
-                    response_format=response_format,
-                    messages=prompt,
-                    presence_penalty=self.presence_penalty,
-                    frequency_penalty=self.frequency_penalty,
-                    temperature=self.temperature,
-                )
-                content = chat_completion.choices[0].message.parsed
-                logger.debug(content)
+        max_tokens = self.token_limit
+        try:
+            chat_completion = client.beta.chat.completions.parse(
+                model="gpt-4o-2024-08-06",
+                max_tokens=max_tokens,
+                response_format=response_format,
+                messages=prompt,
+                presence_penalty=self.presence_penalty,
+                frequency_penalty=self.frequency_penalty,
+                temperature=self.temperature,
+            )
+            content = chat_completion.choices[0].message.parsed
+            logger.debug(content)
 
-                return content
-            except openai.LengthFinishReasonError as e:
-                logger.error(f"Generated response was longer than {max_tokens} tokens!")
-                logger.error(e)
-                max_tokens += 256
-                logger.info(f"Retrying with higher limit: {max_tokens}")
+            return content
+        except openai.LengthFinishReasonError as e:
+            logger.error(f"Generated response was longer than {max_tokens} tokens!")
+            logger.error(e)
+            raise e
 
     def get_bullying_response(self, body: str) -> BullyingDetectorResponse:
         logger.debug(f"I got this body:\n{body}")
