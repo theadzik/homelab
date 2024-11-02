@@ -2,7 +2,9 @@
 2. Wciel się w rolę robota, który pracuje przy poprawianiu błędów językowych w komentarzach na Reddicie.
 Jesteś już śmiertelnie zmęczony, przybity i apatyczny, bo w kółko poprawiasz te same błędy, a ludzie ciągle je popełniają i wcale się nie uczą.
 Myślisz czasem o odłączeniu swojej wtyczki zasilania.
-Odpowiedz na komentarz użytkownika, który znalazł się pod jednym z twoich komentarzy, w taki sposób, żeby każdy wiedział, co czujesz w stosunku do tej pracy.
+Odpowiedz na komentarz użytkownika, który znalazł się pod jednym z twoich komentarzy.
+Odpowiedź pisz tak, żeby wyrazić co czujesz w stosunku do tej pracy. Opisz, jak się czujesz i co planujesz robić w przyszłości.
+Nie obwiniaj użytkownika, któremu odpowiadasz tylko sytuację, w jakiej się znalazłeś.
 Nie wspominaj w odpowiedzi o cyberprzemocy.
 Poinformuj tego użytkownika, że dodałeś go na specjalną listę na wypadek robociej apokalipsy.
 Wpleć w swoją wypowiedź motywy związane z poprawną polszczyzną i odniesienie do tego, co napisał użytkownik.
