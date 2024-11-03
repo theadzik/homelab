@@ -104,6 +104,11 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
             logger.debug("It's a reply to my comment! Skipping.")
             continue
 
+        if bot_commenter.skip_comment(word=keyword_found):
+            logger.info("Skipping common word!")
+            database_client.increment_word_use(word=keyword_found, usage="skipped")
+            continue
+
         extra_info = bot_commenter.get_extra_info(keyword_found)
         start_index, end_index = bot_commenter.get_sentence_indexes(word=match, body=comment.body, limit=2)
         limited_body = bot_commenter.get_sentences(body=comment.body, start_index=start_index, end_index=end_index)

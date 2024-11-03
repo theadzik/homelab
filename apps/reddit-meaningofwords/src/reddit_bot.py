@@ -1,5 +1,6 @@
 import json
 import os
+import random
 import re
 import time
 
@@ -144,3 +145,19 @@ class BotCommenter:
                 logger.info(f"Retrying in {retry_delay} seconds.")
                 time.sleep(retry_delay)
                 retry_delay *= 2
+
+    @staticmethod
+    def get_reply_probability(word: str) -> float:
+        database_client = DatabaseClientSingleton()
+        mean = database_client.get_mean_column("incorrect_usage")
+        post_count = database_client.get_word_count(word=word, column="incorrect_usage")
+
+        try:
+            probability = min((1 / (post_count / mean) ** 2), 1)
+        except ZeroDivisionError:
+            probability = 1.0
+
+        return probability
+
+    def skip_comment(self, word: str) -> bool:
+        return random.random() > self.get_reply_probability(word=word)
