@@ -21,6 +21,14 @@ class DatabaseClient:
         self.con = sqlite3.connect(database=os.environ["DATABASE_PATH"], timeout=10)
         self.cur = self.con.cursor()
 
+    def get_mean_column(
+            self,
+            column: Literal["incorrect_usage", "correct_usage", "incorrect_usage_skipped"]
+    ) -> float:
+        query = f"SELECT avg('{column}') FROM words;"
+        res = self.cur.execute(query)
+        return float(res.fetchone())
+
     def get_sorted_words(self, descending: bool = False) -> list:
         query = """SELECT word, incorrect_usage, correct_usage FROM words
                 ORDER BY incorrect_usage"""
@@ -31,7 +39,11 @@ class DatabaseClient:
         logger.debug(f"Ordered words: {words_with_usage}")
         return [row[0] for row in words_with_usage]
 
-    def increment_word_use(self, word: str, usage: Literal["incorrect_usage", "correct_usage"]):
+    def increment_word_use(
+            self,
+            word: str,
+            usage: Literal["incorrect_usage", "correct_usage", "incorrect_usage_skipped"]
+    ):
         query = f"UPDATE words SET {usage} = {usage} + 1 WHERE word = '{word}';"
         self.cur.execute(query)
         self.con.commit()
