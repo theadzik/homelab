@@ -105,7 +105,7 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
             continue
 
         if bot_commenter.skip_comment(word=keyword_found):
-            logger.info("Skipping common word!")
+            logger.info(f"Skipping common word: {keyword_found}!")
             database_client.increment_word_use(word=keyword_found, usage="skipped")
             continue
 
@@ -122,12 +122,12 @@ for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
         content = openai_checker.get_explanation(body=limited_body, word=keyword_found, extra_info=extra_info)
 
         if not content.is_correct:
-            logger.info("Phrase used incorrectly. Replying!")
+            logger.info(f"{content.used_word} used incorrectly. Replying!")
             sources = bot_commenter.parse_reddit_sources(keyword_found)
             response = bot_commenter.parse_reddit_explanation(content, sources)
             _ = bot_commenter.reply_with_retry(comment=comment, reply=response)
             database_client.increment_word_use(word=keyword_found, usage="incorrect_usage")
         else:
-            logger.warning("Phrase used correctly. Skipping.")
+            logger.warning(f"{content.used_word} used correctly. Skipping.")
             logger.warning(content)
             database_client.increment_word_use(word=keyword_found, usage="correct_usage")

@@ -157,11 +157,11 @@ class BotCommenter:
         except ZeroDivisionError:
             probability = 1.0
 
-        logger.debug(f"Calculated probability: {probability}")
+        logger.debug(f"Calculated probability for {word}: {probability}")
         return probability
 
     def skip_comment(self, word: str) -> bool:
         random_number = random.random()
         probability = self.get_reply_probability(word=word)
-        logger.info(f"Random draw: {random_number:.4f}/{probability:.4f}")
+        logger.info(f"Random draw for {word}: {random_number:.4f}/{probability:.4f}")
         return random_number > probability
