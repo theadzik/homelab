@@ -15,7 +15,7 @@ cur.execute(
                                         word text UNIQUE,
                                         incorrect_usage integer,
                                         correct_usage integer,
-                                        incorrect_usage_skipped integer
+                                        skipped integer
                                         ); """
 )
 
