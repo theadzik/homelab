@@ -4,6 +4,8 @@ metadata:
   name: static-cv
   annotations:
     cert-manager.io/cluster-issuer: "lets-encrypt-prod"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      more_set_headers "Cache-Control: public, max-age=86400";
 spec:
   ingressClassName: nginx
   tls:
