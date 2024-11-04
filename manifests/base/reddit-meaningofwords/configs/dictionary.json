@@ -1,9 +1,9 @@
 {
   "co najmniej": {
     "explanations": [
-      "'Co najmniej' to wyrażenie zaimkowe składające się z zaimka 'co' i przysłówka w stopniu najwyższym 'najmniej'.",
-      "Wyrażenia zaimkowe zapisujemy rozdzielnie, np. 'co miesiąc', 'tym bardziej', 'czym prędzej', 'co najwyżej' i 'co najmniej'.",
-      "Popularny błąd zapisu 'conajmniej' wziął się prawdopodobnie z podobieństwa do wyrazów 'przynajmniej' oraz 'bynajmniej'",
+      "\"Co najmniej\" to wyrażenie zaimkowe składające się z zaimka \"co\" i przysłówka w stopniu najwyższym \"najmniej\".",
+      "Wyrażenia zaimkowe zapisujemy rozdzielnie, np. \"co miesiąc\", \"tym bardziej\", \"czym prędzej\", \"co najwyżej\" i \"co najmniej\".",
+      "Popularny błąd zapisu \"conajmniej\" wziął się prawdopodobnie z podobieństwa do wyrazów \"przynajmniej\" oraz \"bynajmniej\"",
       "– to jednak samodzielne słowa, dlatego są zapisywane łącznie."
     ],
     "search_rule": "\\bconajmniej\\b",
@@ -14,7 +14,7 @@
   },
   "cudzysłów": {
     "explanations": [
-      "Warto zapamiętać: 'cudzysłów' odmienia się jak 'rów', nie jak 'tułów'.",
+      "Warto zapamiętać: \"cudzysłów\" odmienia się jak \"rów\", nie jak \"tułów\".",
       "Aby określić z jakim przypadkiem mamy do czynienia, należy sprawdzić na jakie pytanie powinien odpowiadać rzeczownik w danym kontekście.",
       "Poprawna odmiana dla liczby pojedynczej/mnogiej to:\n",
       "mianownik (odpowiada na pytanie co?) – cudzysłów/cudzysłowy\n",
@@ -33,10 +33,10 @@
   },
   "dlatego że": {
     "explanations": [
-      "'Dlatego, bo' jest niepoprawne ze względu na podkreślenie relacji przyczynowej,",
-      "które wyraża zarówno 'dlatego', jak i 'bo', a więc są synonimami, zaś całe wyrażenie 'dlatego bo' jest pleonazmem.",
-      "Poprawną formą jest 'dlatego że' lub 'dlatego, że'.",
-      "Należy zwracać też uwagę na umiejscowienie przecinka. Może występować między 'dlatego' a 'że',",
+      "\"Dlatego, bo\" jest niepoprawne ze względu na podkreślenie relacji przyczynowej,",
+      "które wyraża zarówno \"dlatego\", jak i \"bo\", a więc są synonimami, zaś całe wyrażenie \"dlatego bo\" jest pleonazmem.",
+      "Poprawną formą jest \"dlatego że\" lub \"dlatego, że\".",
+      "Należy zwracać też uwagę na umiejscowienie przecinka. Może występować między \"dlatego\" a \"że\",",
       "lub przed całym wyrażeniem w zależności od kontekstu."
     ],
     "search_rule": "\\bdlatego(,|) bo\\b",
@@ -50,7 +50,7 @@
   },
   "dopóki": {
     "explanations": [
-      "'Dopóki' należy do wyrażeń przyimkowych, które we współczesnej polszczyźnie przekształciły się we zrosty.",
+      "\"Dopóki\" należy do wyrażeń przyimkowych, które we współczesnej polszczyźnie przekształciły się we zrosty.",
       "Takie konstrukcje, niezależnie od uwarunkowań historycznych, zapisuje się zawsze łącznie."
     ],
     "search_rule": "\\b(do p[oóu]ki|dopuki)\\b",
@@ -60,8 +60,8 @@
   },
   "in vitro": {
     "explanations": [
-      "'In vitro' wywodzi się z języka łacińskiego, gdzie dosłownie tłumaczone jest jako 'w szkle'.",
-      "Składa się z przyimka 'in' oraz rzeczownika 'vitro', stąd polszczyzna przejęła zapis rozłączny."
+      "\"In vitro\" wywodzi się z języka łacińskiego, gdzie dosłownie tłumaczone jest jako \"w szkle\".",
+      "Składa się z przyimka \"in\" oraz rzeczownika \"vitro\", stąd polszczyzna przejęła zapis rozłączny."
     ],
     "search_rule": "\\bin(-|)[vw]itro\\b",
     "sources": [
@@ -70,15 +70,15 @@
   },
   "linia najmniejszego oporu": {
     "explanations": [
-      "Iść 'po linii najmniejszego oporu' oznacza wybranie najłatwiejszej drogi,",
+      "Iść \"po linii najmniejszego oporu\" oznacza wybranie najłatwiejszej drogi,",
       "robienie czegoś z najmniejszym wysiłkiem, bez trudu.",
       "Prawidłową pisownię tłumaczy logika zdania. W tym związku frazeologicznym linia oznacza kierunek działania,",
       "który jest stały, a którego nie można ocenić w kategorii mniejsze lub większe.",
       "Natomiast opór odnosi się do przeszkód, które musimy pokonać, zatem chcielibyśmy,",
-      "by były one jak najmniejsze (najłatwiejsze), stąd: 'linia najmniejszego oporu'.",
-      "Formy typu 'najmniejsza linia oporu', 'największa linia oporu', 'większej linii oporu' są niepoprawne.",
-      "Przymiotnik powinien zawsze odnosić się do słowa 'opór',",
-      "czyli 'linia najmniejszego oporu', 'linia największego oporu', 'linii większego oporu' itp."
+      "by były one jak najmniejsze (najłatwiejsze), stąd: \"linia najmniejszego oporu\".",
+      "Formy typu \"najmniejsza linia oporu\", \"największa linia oporu\", \"większej linii oporu\" są niepoprawne.",
+      "Przymiotnik powinien zawsze odnosić się do słowa \"opór\",",
+      "czyli \"linia najmniejszego oporu\", \"linia największego oporu\", \"linii większego oporu\" itp."
     ],
     "search_rule": "\\b(naj|)(wi[eę]k|mniej)sz(a|ą|ej) lini[iaąeę]{0,1} oporu\\b",
     "sources": [
@@ -88,11 +88,11 @@
   },
   "na co dzień": {
     "explanations": [
-      "Zapis rozłączny 'na co dzień' określa zasada konwencjonalna, co oznacza, że jest oparta na arbitralnych ustaleniach.",
-      "'na' jest przyimkiem, który bardzo często wchodzi w skład wyrażeń przyimkowych, jakie zawsze zapisujemy rozłącznie.",
-      "Natomiast 'co dzień' należy do wyrażeń zaimkowych również pisanych rozłącznie. Zatem każdy element tej frazy musi zostać zapisany oddzielnie.",
-      "Błędne 'nacodzień' lub 'na codzień' wynika najpewniej z analogii do słowa 'codziennie', które powstało od wyrażenia przyimkowego 'co dzień'.",
-      "'Co dzień' zapisujemy tak samo jak podobne połączenia: 'co chwila', 'co godzina', 'co sobota', 'co miesiąc', 'co rok'."
+      "Zapis rozłączny \"na co dzień\" określa zasada konwencjonalna, co oznacza, że jest oparta na arbitralnych ustaleniach.",
+      "\"na\" jest przyimkiem, który bardzo często wchodzi w skład wyrażeń przyimkowych, jakie zawsze zapisujemy rozłącznie.",
+      "Natomiast \"co dzień\" należy do wyrażeń zaimkowych również pisanych rozłącznie. Zatem każdy element tej frazy musi zostać zapisany oddzielnie.",
+      "Błędne \"nacodzień\" lub \"na codzień\" wynika najpewniej z analogii do słowa \"codziennie\", które powstało od wyrażenia przyimkowego \"co dzień\".",
+      "\"Co dzień\" zapisujemy tak samo jak podobne połączenia: \"co chwila\", \"co godzina\", \"co sobota\", \"co miesiąc\", \"co rok\"."
     ],
     "search_rule": "\\bna( |)codzie(n|ń)\\b",
     "sources": [
@@ -102,9 +102,9 @@
   },
   "na pewno": {
     "explanations": [
-      "Wyrażenie 'na pewno' wywodzi się od prasłowiańskiej formy przymiotnika rodzaju nijakiego 'pewno'.",
+      "Wyrażenie \"na pewno\" wywodzi się od prasłowiańskiej formy przymiotnika rodzaju nijakiego \"pewno\".",
       "Zarówno w przypadku tego sformułowania, jak i podobnych: na lewo, na prawo, na okrągło, na nowo, obowiązuje pisownia rozdzielna.",
-      "Można skojarzyć sobie synonimy 'z pewnością' i 'na pewno', oba są pisane rozdzielnie."
+      "Można skojarzyć sobie synonimy \"z pewnością\" i \"na pewno\", oba są pisane rozdzielnie."
     ],
     "search_rule": "\\bnapewno\\b",
     "sources": [
@@ -115,9 +115,9 @@
   },
   "na razie": {
     "explanations": [
-      "'Na razie' zawsze zapisujemy rozdzielnie, niezależnie od kontekstu.",
-      "Wyrażenie przyimkowe 'na razie', pełniące funkcje przysłówka, używamy w znaczeniu: tymczasem, teraz, jeszcze.",
-      "Jest to również potoczna formuła pożegnalna: 'Idę już do domu, na razie!'"
+      "\"Na razie\" zawsze zapisujemy rozdzielnie, niezależnie od kontekstu.",
+      "Wyrażenie przyimkowe \"na razie\", pełniące funkcje przysłówka, używamy w znaczeniu: tymczasem, teraz, jeszcze.",
+      "Jest to również potoczna formuła pożegnalna: \"Idę już do domu, na razie!\""
     ],
     "search_rule": "\\bnarazie\\b",
     "sources": [
@@ -127,8 +127,8 @@
   },
   "naprawdę/na prawdę": {
     "explanations": [
-      "'Naprawdę' pisane łącznie to partykuła za pomocą której mówiący, chcąc przekonać kogoś o słuszności swojego zdania, potwierdza jego prawdziwość.",
-      "Zapis 'na prawdę' zastosujemy wyłącznie w przypadkach, gdy mowa o rzeczowniku 'prawda' w bierniku liczby pojedynczej ('prawdę') zestawionym z przyimkiem 'na'.",
+      "\"Naprawdę\" pisane łącznie to partykuła za pomocą której mówiący, chcąc przekonać kogoś o słuszności swojego zdania, potwierdza jego prawdziwość.",
+      "Zapis \"na prawdę\" zastosujemy wyłącznie w przypadkach, gdy mowa o rzeczowniku \"prawda\" w bierniku liczby pojedynczej (\"prawdę\") zestawionym z przyimkiem \"na\".",
       "Przykład użycia w zdaniu: Słyszę od niej same kłamstwa, więc tym razem liczę na prawdę."
     ],
     "search_rule": "\\bna prawd(e|ę)\\b",
@@ -140,9 +140,9 @@
   },
   "naprzeciw/naprzeciwko": {
     "explanations": [
-      "Niegdyś 'na przeciw' i 'na przeciwko' były połączeniami przyimkowymi pisanymi rozdzielnie.",
-      "We współczesnej polszczyźnie, czyli od 1936 roku, funkcjonuje jako zrost wyrazów 'na' i 'przeciw',",
-      "prawidłowo zapisany 'naprzeciw' lub 'naprzeciwko'.",
+      "Niegdyś \"na przeciw\" i \"na przeciwko\" były połączeniami przyimkowymi pisanymi rozdzielnie.",
+      "We współczesnej polszczyźnie, czyli od 1936 roku, funkcjonuje jako zrost wyrazów \"na\" i \"przeciw\",",
+      "prawidłowo zapisany \"naprzeciw\" lub \"naprzeciwko\".",
       "Zrosty zawsze zapisywane są łącznie."
     ],
     "search_rule": "\\bna przeciw(ko|)\\b",
@@ -154,11 +154,11 @@
   },
   "nieprawda/nie prawda": {
     "explanations": [
-      "Najczęściej będziemy mieli do czynienia z taką sytuacją, w której partykuła 'nie'",
-      "w połączeniu z rzeczownikiem 'prawda' będą zapisywane łącznie (nieprawda).",
-      "Zasada ogólna mówi bowiem o tym, że przeczenie 'nie' + rzeczownik zapisuje się razem.",
-      "Jeśli mamy do czynienia z sytuacją, gdy partykuła 'nie' wprowadza wyraźne przeciwstawienie,",
-      "z zaakcentowaniem wyrazu 'prawda', wówczas zapis będzie rozłączny (nie prawda),",
+      "Najczęściej będziemy mieli do czynienia z taką sytuacją, w której partykuła \"nie\"",
+      "w połączeniu z rzeczownikiem \"prawda\" będą zapisywane łącznie (nieprawda).",
+      "Zasada ogólna mówi bowiem o tym, że przeczenie \"nie\" + rzeczownik zapisuje się razem.",
+      "Jeśli mamy do czynienia z sytuacją, gdy partykuła \"nie\" wprowadza wyraźne przeciwstawienie,",
+      "z zaakcentowaniem wyrazu \"prawda\", wówczas zapis będzie rozłączny (nie prawda),",
       "Przykład użycia w zdaniu: To nie prawda, lecz kłamstwo. Widzimy, że jest to brednia, a nie prawda. Nie prawda, lecz mit."
     ],
     "search_rule": "\\bnie prawda\\b",
@@ -168,8 +168,8 @@
   },
   "notabene": {
     "explanations": [
-      "'Notabene' to w języku polskim wyraz wtrącony w tekst zdania, który poprzedza dodatkową, ale ważną informację.",
-      "Chociaż jego pisownia w języku łacińskim była oddzielna – 'nota bene', czyli 'zauważ dobrze', w polszczyźnie od wielu lat obowiązuje zapis łączny.",
+      "\"Notabene\" to w języku polskim wyraz wtrącony w tekst zdania, który poprzedza dodatkową, ale ważną informację.",
+      "Chociaż jego pisownia w języku łacińskim była oddzielna – \"nota bene\", czyli \"zauważ dobrze\", w polszczyźnie od wielu lat obowiązuje zapis łączny.",
       "Wyrażenie to jest bowiem traktowane jako wyraz złożony."
     ],
     "search_rule": "\\bnota bene\\b",
@@ -180,12 +180,12 @@
   },
   "optymalny": {
     "explanations": [
-      "Jeżeli coś jest 'optymalne', to znaczy, że osiągnęło swoje optimum,",
+      "Jeżeli coś jest \"optymalne\", to znaczy, że osiągnęło swoje optimum,",
       "to znaczy, że jest najlepsze, najkorzystniejsze, najdogodniejsze w tych właśnie warunkach",
-      "i już lepsze być nie może. Dlatego nie stopniujemy przymiotnika 'optymalny'",
+      "i już lepsze być nie może. Dlatego nie stopniujemy przymiotnika \"optymalny\"",
       "– ani w sposób prosty, ani opisowy. Rażąco niepoprawne są sformułowania typu",
-      "'bardziej optymalny', 'najbardziej optymalny', 'optymalniejszy' czy 'najoptymalniejszy'.",
-      "Jak coś jest 'optymalne', to jest 'optymalne' – i koniec."
+      "\"bardziej optymalny\", \"najbardziej optymalny\", \"optymalniejszy\" czy \"najoptymalniejszy\".",
+      "Jak coś jest \"optymalne\", to jest \"optymalne\" – i koniec."
     ],
     "search_rule": "\\b(naj|)(optymalniej|(bardz|mn)iej optymaln)",
     "sources": [
@@ -196,12 +196,12 @@
   },
   "orzesz/ożeż": {
     "explanations": [
-      "'Ożeż' składa się z wykrzyknienia 'o' oraz dwóch partykuł emfatycznych '-że' i '-ż'",
+      "\"Ożeż\" składa się z wykrzyknienia \"o\" oraz dwóch partykuł emfatycznych \"-że\" i \"-ż\"",
       "(nadają one poprzedzającemu je wyrazowi emocjonalne zabarwienie).",
-      "Partykuły te zapisujemy łącznie z wykrzyknieniem 'o', tak samo jak z czasownikami",
+      "Partykuły te zapisujemy łącznie z wykrzyknieniem \"o\", tak samo jak z czasownikami",
       "(np. chodźże, zróbże) i zaimkami pytajnymi (np. gdzież, kiedyż).",
       "Przykłady: Ożeż ty, ale mnie zaskoczyłeś! Ożeż ty, tego się nie spodziewałam! Ożesz kurka, ale będzie smacznie!",
-      "'Orzesz' od 'orać' czyli odkładać skiby za pomocą pługa w celu przygotowania gleby pod zasiew;",
+      "\"Orzesz\" od \"orać\" czyli odkładać skiby za pomocą pługa w celu przygotowania gleby pod zasiew;",
       "lub potocznie: ciężko pracować, harować.",
       "Przykłady: Orzesz jak możesz, żeby zarobić na chleb. Orzesz pole przed sianiem."
     ],
@@ -215,9 +215,9 @@
   },
   "po prostu": {
     "explanations": [
-      "'Po prostu' jest wyrażeniem przyimkowym.",
+      "\"Po prostu\" jest wyrażeniem przyimkowym.",
       "Konstrukcje przyimków z rzeczownikami, przysłówkami, liczebnikami i zaimkami zapisywane są zawsze rozłącznie.",
-      "Dla łatwiejszego zapamiętania można przywołać sobie podobne przykłady: 'po cichu', 'po polsku', 'po ciemku'."
+      "Dla łatwiejszego zapamiętania można przywołać sobie podobne przykłady: \"po cichu\", \"po polsku\", \"po ciemku\"."
     ],
     "search_rule": "\\bpoprostu\\b",
     "sources": [
@@ -228,10 +228,10 @@
   },
   "pojedynczy": {
     "explanations": [
-      "Wszystkie odmiany słowa 'pojedynczy' piszemy tylko i wyłącznie przez 'n', nigdy przez 'ń'.",
-      "Taki sposób zapisu wynika z historii języka: przymiotnik 'pojedynczy' pochodzi od rzeczownika 'pojedynek'",
-      "(pierwotnie 'osoba występującą po jedynku, tzn. w pojedynkę'; obecnie 'walka dwóch osób'), w którym głoska 'n' jest twarda.",
-      "Ta twardość przeszła również na powstały wyraz pochodny, stąd zapis 'pojedynczy'. Dotyczy to także innych wyrazów: 'pojedynczo', 'pojedynczość', 'niepojedynczy' itp.",
+      "Wszystkie odmiany słowa \"pojedynczy\" piszemy tylko i wyłącznie przez \"n\", nigdy przez \"ń\".",
+      "Taki sposób zapisu wynika z historii języka: przymiotnik \"pojedynczy\" pochodzi od rzeczownika \"pojedynek\"",
+      "(pierwotnie \"osoba występującą po jedynku, tzn. w pojedynkę\"; obecnie \"walka dwóch osób\"), w którym głoska \"n\" jest twarda.",
+      "Ta twardość przeszła również na powstały wyraz pochodny, stąd zapis \"pojedynczy\". Dotyczy to także innych wyrazów: \"pojedynczo\", \"pojedynczość\", \"niepojedynczy\" itp.",
       "Błąd może wynikać z tego, że mówić możemy i tak, i tak, tzn. [pojedynczy] lub [pojedyńczy] – oba sposoby wymawiania są poprawne."
     ],
     "search_rule": "\\b(nie|)pojedyń",
@@ -243,14 +243,14 @@
   },
   "ponadto/ponad to": {
     "explanations": [
-      "Poprawna forma 'ponadto' i 'ponad to' zależy od kontekstu.",
-      "'ponadto' to partykuła nawiązująca do poprzedniego kontekstu i wprowadzająca nową informację na omawiany już temat.",
-      "Jego synonimami są m.in. 'poza tym' i 'prócz tego'.",
-      "Nie należy jednak sugerować się rozdzielną pisownią przytoczonych wyrazów pokrewnych – w tym przypadku 'ponadto' zapisuje się łacznie.",
+      "Poprawna forma \"ponadto\" i \"ponad to\" zależy od kontekstu.",
+      "\"ponadto\" to partykuła nawiązująca do poprzedniego kontekstu i wprowadzająca nową informację na omawiany już temat.",
+      "Jego synonimami są m.in. \"poza tym\" i \"prócz tego\".",
+      "Nie należy jednak sugerować się rozdzielną pisownią przytoczonych wyrazów pokrewnych – w tym przypadku \"ponadto\" zapisuje się łacznie.",
       "Przykład użycia w zdaniu: W naszej księgarni znajdziecie wiele bestsellerów i klasykę literatury, a ponadto nowości wydawnicze.",
-      "Trzeba jednak pamiętać, że poprawny jest też zapis 'ponad to'.",
-      "W tym przypadku to wyrażenie przyimkowe składające się z przyimka 'ponad' oraz zaimka 'to'.",
-      "W tej sytuacji zaimek 'to' zastępuje rzeczownik (czyli ponad coś).",
+      "Trzeba jednak pamiętać, że poprawny jest też zapis \"ponad to\".",
+      "W tym przypadku to wyrażenie przyimkowe składające się z przyimka \"ponad\" oraz zaimka \"to\".",
+      "W tej sytuacji zaimek \"to\" zastępuje rzeczownik (czyli ponad coś).",
       "Przykład użycia w zdaniu: Nie musisz robić więcej ponad to, co ci zlecono."
     ],
     "search_rule": "\\bpo( |)nad to\\b",
@@ -261,10 +261,10 @@
   },
   "poza tym": {
     "explanations": [
-      "Wyrażenie przyimkowe 'poza tym' zawsze zapisujemy jako dwa wyrazy, rozdzielając przyimek 'poza' od zaimka wskazującego 'tym'.",
-      "Niedopuszczalna jest zarówno pisownia rozdzielna przybierająca formę: 'po za tym', jak również pisownia łączna: 'pozatym' (wzorująca się zapisie wyrazu 'ponadto').",
-      "Przyimek 'poza' piszemy analogicznie do rzeczownika 'poza' (ciała) czyli łącznie.",
-      "Piszemy go też rozdzielnie od zaimka 'tym' tak jak np. 'poza domem'."
+      "Wyrażenie przyimkowe \"poza tym\" zawsze zapisujemy jako dwa wyrazy, rozdzielając przyimek \"poza\" od zaimka wskazującego \"tym\".",
+      "Niedopuszczalna jest zarówno pisownia rozdzielna przybierająca formę: \"po za tym\", jak również pisownia łączna: \"pozatym\" (wzorująca się zapisie wyrazu \"ponadto\").",
+      "Przyimek \"poza\" piszemy analogicznie do rzeczownika \"poza\" (ciała) czyli łącznie.",
+      "Piszemy go też rozdzielnie od zaimka \"tym\" tak jak np. \"poza domem\"."
     ],
     "search_rule": "\\b(po za tym|pozatym)\\b",
     "sources": [
@@ -275,8 +275,8 @@
   },
   "przekonujący": {
     "explanations": [
-      "Poprawnymi formami są: 'przekonujący' i 'przekonywający'. Forma 'przekonywujący' jest niepoprawna.",
-      "Można jednak zauważyć, że w codziennej komunikacji coraz częściej słyszymy i widzimy w tekstach pisanych słowo 'przekonywujący'.",
+      "Poprawnymi formami są: \"przekonujący\" i \"przekonywający\". Forma \"przekonywujący\" jest niepoprawna.",
+      "Można jednak zauważyć, że w codziennej komunikacji coraz częściej słyszymy i widzimy w tekstach pisanych słowo \"przekonywujący\".",
       "Warto jednak pamiętać, że forma ta jest wg normy wzorcowej ciągle kwalifikowana jako niepoprawna,",
       "bowiem jest efektem nieuprawnionej kontaminacji fleksyjnej, tj. połączenia dwóch różnych schematów odmiany."
     ],
@@ -290,10 +290,10 @@
   },
   "rządzić/żądza": {
     "explanations": [
-      "'Rządzić' to sprawować rządy, stać na czele, posiadać władzę, mieć wpływy.",
-      "Ponadto 'rządzić' było znane już w staropolszczyźnie pod postacią 'riad'.",
-      "Oznacza to więc, że zapis z użyciem 'rz' jest motywowany historycznie.",
-      "'Żądza' pisana przez 'ż' jest rzeczownikiem oznaczającym niepohamowane pragnienie posiadania lub doznawania czegoś lub silny pociąg fizyczny."
+      "\"Rządzić\" to sprawować rządy, stać na czele, posiadać władzę, mieć wpływy.",
+      "Ponadto \"rządzić\" było znane już w staropolszczyźnie pod postacią \"riad\".",
+      "Oznacza to więc, że zapis z użyciem \"rz\" jest motywowany historycznie.",
+      "\"Żądza\" pisana przez \"ż\" jest rzeczownikiem oznaczającym niepohamowane pragnienie posiadania lub doznawania czegoś lub silny pociąg fizyczny."
     ],
     "search_rule": "\\b[zż][aą]d[zź](|e|ę|isz|i|imy|icie|a|ą|ic|ić)\\b",
     "sources": [
@@ -303,9 +303,9 @@
   },
   "spod/sprzed/spoza/spomiędzy": {
     "explanations": [
-      "Od roku 1936, czyli wielkiej reformy ortografii, jedynymi poprawnymi formami są 'spod', 'sprzed', 'spoza' i 'spomiędzy' (dawniej  z pod, z przed, z poza, z pomiędzy).",
+      "Od roku 1936, czyli wielkiej reformy ortografii, jedynymi poprawnymi formami są \"spod\", \"sprzed\", \"spoza\" i \"spomiędzy\" (dawniej  z pod, z przed, z poza, z pomiędzy).",
       "Zmiana ta wynikała głównie z przyczyn ekonomicznych, gdzie z dwóch słów powstał jeden wyraz oraz z potrzeby dopasowania się języka pisanego do języka mówionego.",
-      "Głoska dźwięczna 'z' poprzez bezdźwięczne 'p' uległa ubezdźwięcznieniu na 's', w wyniku czego pisownia 'dopasowała się do wymowy'."
+      "Głoska dźwięczna \"z\" poprzez bezdźwięczne \"p\" uległa ubezdźwięcznieniu na \"s\", w wyniku czego pisownia \"dopasowała się do wymowy\"."
     ],
     "search_rule": "\\bz( |)p(rzed|od|oza|omi(ę|e)dzy)\\b",
     "sources": [
@@ -318,9 +318,9 @@
   },
   "sweter": {
     "explanations": [
-      "Jedyną poprawną formą zapisu tego rzeczownika jest 'sweter'.",
+      "Jedyną poprawną formą zapisu tego rzeczownika jest \"sweter\".",
       "Jest to wyraz zapożyczony z języka angielskiego w takiej właśnie formie i taką powinna pozostać.",
-      "Niepoprawna forma 'swetr' powstała prawdopodobnie przez analogię do wyrazów zakończonych w odmianie na -tr",
+      "Niepoprawna forma \"swetr\" powstała prawdopodobnie przez analogię do wyrazów zakończonych w odmianie na -tr",
       "np. wiatr czy litr. Podobieństwa należałoby jednak szukać do szerokiej grupy wyrazów zakończonych na -ter",
       "np. plaster czy toster."
     ],
@@ -332,12 +332,12 @@
   },
   "szedłem": {
     "explanations": [
-      "Formy 'szedłem', 'poszedłem', 'doszedłem' są uznawane za poprawne, ale formy 'szłem', 'poszłem', 'doszłem' są uznawana za błędne.",
+      "Formy \"szedłem\", \"poszedłem\", \"doszedłem\" są uznawane za poprawne, ale formy \"szłem\", \"poszłem\", \"doszłem\" są uznawana za błędne.",
       "Błędne męskie formy 1 i 2 osoby liczby pojedynczej czasu przeszłego od czasownika iść powstają przez analogię do form żeńskich i form liczby mnogiej (*szłem: szłam, *szłeś: szłaś, *poszłem: poszłam itd.).",
-      "Nie poddają się jej formy 3 osoby, np.: 'szedł', 'poszedł', 'wszedł'), ze względu na konieczność zachowania 'e' w wymowie.",
-      "Do postaci 'szedł' itp. nawiązuje bezpośrednio 1 i 2 osoba: 'szedł-em', 'szedł-eś' itp.)",
-      "Tzw. ruchome 'e' w 'szedł-' pochodzi z rozwoju jeru przedniego, który w innych formach fleksyjnych zniknął bez śladu,",
-      "co doprowadziło do powstania kłopotliwej grupy spółgłosek '*szdł-', a w dalszej kolejności do jej uproszczenia: *szdła → szła.",
+      "Nie poddają się jej formy 3 osoby, np.: \"szedł\", \"poszedł\", \"wszedł\"), ze względu na konieczność zachowania \"e\" w wymowie.",
+      "Do postaci \"szedł\" itp. nawiązuje bezpośrednio 1 i 2 osoba: \"szedł-em\", \"szedł-eś\" itp.)",
+      "Tzw. ruchome \"e\" w \"szedł-\" pochodzi z rozwoju jeru przedniego, który w innych formach fleksyjnych zniknął bez śladu,",
+      "co doprowadziło do powstania kłopotliwej grupy spółgłosek \"*szdł-\", a w dalszej kolejności do jej uproszczenia: *szdła → szła.",
       "Historycznie rzecz biorąc, warunki do powstania analogii [szłem–szłam] istnieją od wielu wieków, a regóły języka polskiego nie zabraniają takiej konstrukcji."
     ],
     "search_rule": "\\b(do|na(|d)|o(b|d)|po(|d)|prz(e|y)|roz|u|w(|y|ze)|z(|a|e)){0,1}sz[lł]em\\b",
@@ -349,10 +349,10 @@
   },
   "tudzież": {
     "explanations": [
-      "'Tudzież' to spójnik używany do łączenia zdań lub innych wyrażeń, które odnoszą się do tych samych przedmiotów, osób lub faktów.",
-      "Oznacza to samo co 'i', 'oraz', 'też', 'także'. Przed spójnikami łącznymi nie stawiamy przecinka.",
-      "Błędem jest użycie słowa 'tudzież' w znaczeniu 'albo' bądź 'lub'.",
-      "Oczywistym błędem będzie każde stwierdzenie połączone przez 'tudzież', w którym mowa o dwóch wykluczających się opcjach."
+      "\"Tudzież\" to spójnik używany do łączenia zdań lub innych wyrażeń, które odnoszą się do tych samych przedmiotów, osób lub faktów.",
+      "Oznacza to samo co \"i\", \"oraz\", \"też\", \"także\". Przed spójnikami łącznymi nie stawiamy przecinka.",
+      "Błędem jest użycie słowa \"tudzież\" w znaczeniu \"albo\" bądź \"lub\".",
+      "Oczywistym błędem będzie każde stwierdzenie połączone przez \"tudzież\", w którym mowa o dwóch wykluczających się opcjach."
     ],
     "search_rule": "\\btudzie(z|ż)\\b",
     "sources": [
@@ -363,11 +363,11 @@
   },
   "w każdym razie": {
     "explanations": [
-      "Według językoznawców błędne wyrażenie 'w każdym bądź razie' powstało tak naprawdę ze skrzyżowania dwóch innych zwrotów:",
-      "'bądź co bądź' i 'w każdym razie'. Oba te sformułowania wyrażają jedno znaczenie: wszystko jedno, jakkolwiek by było,",
+      "Według językoznawców błędne wyrażenie \"w każdym bądź razie\" powstało tak naprawdę ze skrzyżowania dwóch innych zwrotów:",
+      "\"bądź co bądź\" i \"w każdym razie\". Oba te sformułowania wyrażają jedno znaczenie: wszystko jedno, jakkolwiek by było,",
       "czy – mówiąc językiem bardziej formalnym – niezależnie od okoliczności.",
       "Zlepek tychże jest jednak formą nieprawidłową i choć występuje w polszczyźnie potocznej,",
-      "należy go unikać. Za każdym razem, kiedy to potrzebne, używajmy więc 'w każdym razie'."
+      "należy go unikać. Za każdym razem, kiedy to potrzebne, używajmy więc \"w każdym razie\"."
     ],
     "search_rule": "\\bw ka[zż]dym b[aą]d[zź] razie\\b",
     "sources": [
@@ -378,8 +378,8 @@
   },
   "w ogóle": {
     "explanations": [
-      "Wyrażenie przyimkowe 'w ogóle' zawsze piszemy rozdzielnie.",
-      "Podobnie jak 'na ogół' i 'z ogółem'. Wszystkie bowiem pochodzą od rzeczownika 'ogół'."
+      "Wyrażenie przyimkowe \"w ogóle\" zawsze piszemy rozdzielnie.",
+      "Podobnie jak \"na ogół\" i \"z ogółem\". Wszystkie bowiem pochodzą od rzeczownika \"ogół\"."
     ],
     "search_rule": "\\bwog[oóu]{0,1}le\\b",
     "sources": [
@@ -389,9 +389,9 @@
   },
   "wziąć": {
     "explanations": [
-      "Jedyną formą uznaną za poprawną przez Radę Języka Polskiego jest 'wziąć'.",
-      "W wielu przypadkach 'wziąść' tworzone jest przez podobieństwo do innych czasowników zakończonych na '-ść', takich jak: 'pójść' czy 'usiąść'.",
-      "Nie jest to reguła, ale można skojarzyć słowo 'wziąć' z czasownikiem 'brać', intuicyjnie wiemy, że nie można czegoś 'braść'."
+      "Jedyną formą uznaną za poprawną przez Radę Języka Polskiego jest \"wziąć\".",
+      "W wielu przypadkach \"wziąść\" tworzone jest przez podobieństwo do innych czasowników zakończonych na \"-ść\", takich jak: \"pójść\" czy \"usiąść\".",
+      "Nie jest to reguła, ale można skojarzyć słowo \"wziąć\" z czasownikiem \"brać\", intuicyjnie wiemy, że nie można czegoś \"braść\"."
     ],
     "search_rule": "\\bwzi[aą][sśzź](c|ć)\\b",
     "sources": [
@@ -402,13 +402,13 @@
   },
   "włączać": {
     "explanations": [
-      "Jedyna poprawna forma to 'włączać'.",
-      "Pisownia 'włączać' jest uzasadniona regułą ortograficzną, która mówi, że samogłoskę 'ą'",
-      "zapisujemy przed spółgłoskami zwarto-szczelinowymi, do których zaliczają się: 'c', 'ć', 'cz', 'dz', 'dź', 'dż'.",
-      "To samo dotyczy bezokolicznika 'wyłączać'.",
-      "W parach wyrazowych 'włączyć' – 'włączać', 'wyłączyć' – 'wyłączać' zapisujemy 'ą', ponieważ zawierają one",
-      "rdzenne o nosowe (zapisywane jako 'ą', a wymawiane jako 'on'), które nie podlega wymianie.",
-      "Oprócz reguły w zapamiętaniu poprawnej formy pomóc może jeszcze to, że w domu mamy przecież włączniki, a nie 'włanczniki'."
+      "Jedyna poprawna forma to \"włączać\".",
+      "Pisownia \"włączać\" jest uzasadniona regułą ortograficzną, która mówi, że samogłoskę \"ą\"",
+      "zapisujemy przed spółgłoskami zwarto-szczelinowymi, do których zaliczają się: \"c\", \"ć\", \"cz\", \"dz\", \"dź\", \"dż\".",
+      "To samo dotyczy bezokolicznika \"wyłączać\".",
+      "W parach wyrazowych \"włączyć\" – \"włączać\", \"wyłączyć\" – \"wyłączać\" zapisujemy \"ą\", ponieważ zawierają one",
+      "rdzenne o nosowe (zapisywane jako \"ą\", a wymawiane jako \"on\"), które nie podlega wymianie.",
+      "Oprócz reguły w zapamiętaniu poprawnej formy pomóc może jeszcze to, że w domu mamy przecież włączniki, a nie \"włanczniki\"."
     ],
     "search_rule": "w[lł]ancz",
     "sources": [
@@ -419,8 +419,8 @@
   },
   "z powrotem": {
     "explanations": [
-      "Niezależnie od kontekstu jedyną poprawną postacią zapisu tego wyrażenia przyimkowego jest 'z powrotem'.",
-      "Pomyłka może wynikać z faktu, że dawne 'z tąd', 'z tamtąd' zaczęliśmy pisać 'stąd', 'stamtąd', ale nadal piszemy 'z powrotem'."
+      "Niezależnie od kontekstu jedyną poprawną postacią zapisu tego wyrażenia przyimkowego jest \"z powrotem\".",
+      "Pomyłka może wynikać z faktu, że dawne \"z tąd\", \"z tamtąd\" zaczęliśmy pisać \"stąd\", \"stamtąd\", ale nadal piszemy \"z powrotem\"."
     ],
     "search_rule": "\\b[sz]powrotem\\b",
     "sources": [
@@ -430,9 +430,9 @@
   },
   "złodziei": {
     "explanations": [
-      "Prawidłowa pisownia tego rzeczownika to 'złodziei' lub rzadziej 'złodziejów'.",
-      "Podobnie jak odmiany 'pokoi' i 'pokojów' są prawidłowe, ale nigdy 'pokoji'.",
-      "Błędny zapis 'złodzieji' wynika z analogii do reguły ortograficznej mówiącej, że po samogłoskach pisane jest 'j', oraz wymowy, gdzie 'j' jest wyraźnie słyszane ze względu na uproszczenia w artykulacji."
+      "Prawidłowa pisownia tego rzeczownika to \"złodziei\" lub rzadziej \"złodziejów\".",
+      "Podobnie jak odmiany \"pokoi\" i \"pokojów\" są prawidłowe, ale nigdy \"pokoji\".",
+      "Błędny zapis \"złodzieji\" wynika z analogii do reguły ortograficznej mówiącej, że po samogłoskach pisane jest \"j\", oraz wymowy, gdzie \"j\" jest wyraźnie słyszane ze względu na uproszczenia w artykulacji."
     ],
     "search_rule": "\\bz[lł]odzieji\\b",
     "sources": [
