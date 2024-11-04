@@ -1,5 +1,5 @@
 FROM ruby:3.3-bookworm AS builder
-
+ARG JEKYLL_ENV=production
 RUN gem install jekyll bundler
 
 COPY Gemfile Gemfile.lock /app/
