@@ -20,7 +20,7 @@ linkedin_username: adam-zmuda
 
 # About Section
 # about_title: About Me (Use this to override about section title)
-about_profile_image: assets/photo.jpg
+about_profile_image: assets/photo.webp
 about_content: |
   As a Senior DevOps Engineer specializing in **Kubernetes** and **Azure Cloud**,
   I offer a wealth of experience in designing and implementing secure, cost-effective cloud solutions.
