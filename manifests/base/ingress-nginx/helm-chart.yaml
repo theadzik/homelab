@@ -11,10 +11,12 @@ spec:
   valuesContent: |-
     controller:
       config:
-        allow-snippet-annotations: true
-        enable-brotli: true
-        brotli-level: 7
-        brotli-types: application/xml+rss application/atom+xml application/javascript application/x-javascript application/json application/rss+xml application/vnd.ms-fontobject application/x-font-ttf application/x-web-app-manifest+json application/xhtml+xml application/xml font/opentype image/svg+xml image/x-icon text/css text/plain text/html text/x-component
+        allow-snippet-annotations: "true"
+        enable-brotli: "true"
+        brotli-level: "7"
+        brotli-types: "*"
+        gzip-types: "*"
+        use-gzip: "true"
       enableAnnotationValidations: true
       podLabels:
         type: ingress
