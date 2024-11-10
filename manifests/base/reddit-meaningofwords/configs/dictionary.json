@@ -1,4 +1,17 @@
 {
+  "akwen": {
+    "explanations": [
+      "Kiedy mówimy o akwenach, przymiotnik wodny jest już zbędny, bo \"akwen\" oznacza określony fragment powierzchni wodnej (w odniesieniu do powierzchni lądowej mówimy z kolei teren).",
+      "\"Akwen\" to hybryda łacińskiego słowa \"aqua\" (woda) i polskiego słowa \"teren\"",
+      "Sformułowanie \nakwen wodny\n jest rodzajem błędu, który nazywamy pleonazmem (z gr. pleonasmos – nadmiar),",
+      "czyli takie wyrażenie, w którym jedna część zawiera te same treści, które występują w drugiej części "
+    ],
+    "search_rule": "\\bakwen[a-zó]* wodn[a-z]*\\b",
+    "sources": [
+      "https://sjp.pwn.pl/sjp/akwen;2439388.html",
+      "http://www.poradnia-jezykowa.uz.zgora.pl/wordpress/?p=313"
+    ]
+  },
   "co najmniej": {
     "explanations": [
       "\"Co najmniej\" to wyrażenie zaimkowe składające się z zaimka \"co\" i przysłówka w stopniu najwyższym \"najmniej\".",
