@@ -6,16 +6,19 @@
 version: 2
 updates:
   - package-ecosystem: "bundler"
+    target-branch: "dependabot/ruby"
     directories:
       - "/"
     schedule:
       interval: "weekly"
   - package-ecosystem: "pip"
+    target-branch: "dependabot/python"
     directories:
       - "/"
     schedule:
       interval: "weekly"
   - package-ecosystem: "docker"
+    target-branch: "dependabot/docker"
     directories:
       - "/"
     schedule:
