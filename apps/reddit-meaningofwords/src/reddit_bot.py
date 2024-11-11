@@ -153,7 +153,7 @@ class BotCommenter:
         post_count = database_client.get_word_count(word=word, column="incorrect_usage")
 
         try:
-            probability = min((1 / (post_count / mean) ** 2), 1)
+            probability = min((1 / (post_count / mean)), 1)
         except ZeroDivisionError:
             probability = 1.0
 
