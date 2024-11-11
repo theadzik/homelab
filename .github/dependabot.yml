@@ -7,7 +7,7 @@ version: 2
 updates:
   - package-ecosystem: "bundler"
     directories:
-      - "/apps"
+      - "/apps/**"
     schedule:
       interval: "weekly"
     groups:
@@ -16,7 +16,7 @@ updates:
           - "*"
   - package-ecosystem: "pip"
     directories:
-      - "/apps"
+      - "/apps/**"
     schedule:
       interval: "weekly"
     groups:
@@ -25,7 +25,7 @@ updates:
           - "*"
   - package-ecosystem: "docker"
     directories:
-      - "/apps"
+      - "/apps/**"
     schedule:
       interval: "weekly"
     groups:
