@@ -71,7 +71,7 @@ spec:
     spec:
       containers:
         - name: model
-          image: theadzik/bullying-detector:2024.11.1
+          image: theadzik/bullying-detector:2024.11.3
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
