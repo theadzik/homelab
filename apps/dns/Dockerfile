@@ -7,7 +7,7 @@ RUN addgroup --gid 20001 --system nonroot && \
     pip install --upgrade pip
 
 COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY --chown=nonroot:nonroot src src
 
