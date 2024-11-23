@@ -19,8 +19,9 @@ jobs:
         id: vars
         run: |
           if [ ${event} == "schedule" ]; then
-            echo "docker_tag=$(echo $(git tag -n0 "dnsupdater-*" | tail -n 1) | cut -d'-' -f2)" >> $GITHUB_OUTPUT
-            echo "git_tag=$(echo $(git tag -n0 "dnsupdater-*" | tail -n 1))" >> $GITHUB_OUTPUT
+            full_tag=$(git tag -n0 "dnsupdater-*" | tail -n 1)
+            echo "docker_tag=$(echo $full_tag | cut -d'-' -f2)" >> $GITHUB_OUTPUT
+            echo "git_tag=$full_tag" >> $GITHUB_OUTPUT
           else
             echo "docker_tag=$(echo ${GITHUB_REF} | cut -d'-' -f2)" >> $GITHUB_OUTPUT
           fi

@@ -11,14 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        if: ${{ github.event_name != 'schedule' }}
+        if: ${{ github.event_name == 'schedule' }}
         with:
           fetch-depth: 0
           fetch-tags: true
       - name: Get image tag
         id: vars
         run: |
-          if [ ${event} != "schedule" ]; then
+          if [ ${event} == "schedule" ]; then
             full_tag=$(git tag -n0 "vw-backup-*" | tail -n 1)
             echo "docker_tag=$(echo $full_tag | cut -d'-' -f3)" >> $GITHUB_OUTPUT
             echo "git_tag=$full_tag" >> $GITHUB_OUTPUT
@@ -29,7 +29,7 @@ jobs:
           event: ${{ github.event_name }}
       - uses: actions/checkout@v4
         name: Checkout latest tag
-        if: ${{ github.event_name != 'schedule' }}
+        if: ${{ github.event_name == 'schedule' }}
         with:
           ref: ${{steps.vars.outputs.git_tag }}
       - name: Set up Docker Buildx
