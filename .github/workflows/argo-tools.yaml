@@ -1,0 +1,48 @@
+name: argo-tools-build
+on:
+  push:
+    tags:
+      - "argo-tools-*"
+  schedule:
+    - cron: "12 10 * * 6"
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        if: ${{ github.event_name == 'schedule' }}
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Get image tag
+        id: vars
+        run: |
+          if [ ${event} == "schedule" ]; then
+            full_tag=$(git tag -n0 "argo-tools-*" | tail -n 1)
+            echo "docker_tag=$(echo $full_tag | cut -d'-' -f3)" >> $GITHUB_OUTPUT
+            echo "git_tag=$full_tag" >> $GITHUB_OUTPUT
+          else
+            echo "docker_tag=$(echo ${GITHUB_REF} | cut -d'-' -f3)" >> $GITHUB_OUTPUT
+          fi
+        env:
+          event: ${{ github.event_name }}
+      - uses: actions/checkout@v4
+        name: Checkout latest tag
+        if: ${{ github.event_name == 'schedule' }}
+        with:
+          ref: ${{steps.vars.outputs.git_tag }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          platforms: "linux/amd64,linux/arm64"
+          context: "{{defaultContext}}:apps/argo-tools"
+          push: true
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/argo-tools:${{steps.vars.outputs.docker_tag }},${{ vars.DOCKERHUB_USERNAME }}/argo-tools:latest
