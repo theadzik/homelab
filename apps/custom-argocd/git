@@ -1,0 +1,6 @@
+#!/bin/sh
+$(dirname $0)/git.bin "$@"
+ec=$?
+[ "$1" = fetch ] || exit $ec
+git-crypt unlock "$KEY_PATH" 2>/dev/null
+exit $ec

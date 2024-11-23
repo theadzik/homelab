@@ -38,4 +38,3 @@ repos:
     rev: v0.13.0
     hooks:
       - id: markdownlint
-        exclude: ^apps/wedding-website/
