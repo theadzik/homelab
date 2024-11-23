@@ -8,27 +8,39 @@
     name: python3-virtualenv
     state: present
   become: true
-- name: Install kubernetes python package
+- name: Install kubernetes python package.
   ansible.builtin.pip:
     name: kubernetes
     virtualenv: "{{ venv_path }}"
 - name: Download ArgoCD manifest to the cluster.
   ansible.builtin.get_url:
-    url: "{{ manifest_source }}"
-    dest: "{{ manifest_dest }}"
+    url: "{{ install_manifest_source }}"
+    dest: "{{ install_manifest_dest }}"
     mode: '0664'
-- name: Create argocd namespace
+- name: Create argocd namespace.
   kubernetes.core.k8s:
-    name: "{{ namespace }}"
+    name: "{{ argocd_namespace }}"
     api_version: v1
     kind: Namespace
     state: present
   vars:
     ansible_python_interpreter: "{{ venv_path }}/bin/python"
-- name: Bootstrap ArgoCD
+- name: Install ArgoCD.
   kubernetes.core.k8s:
-    namespace: "{{ namespace }}"
+    namespace: "{{ argocd_namespace }}"
     state: present
-    src: "{{ manifest_dest }}"
+    src: "{{ install_manifest_dest }}"
+  vars:
+    ansible_python_interpreter: "{{ venv_path }}/bin/python"
+- name: Copy ArgoCD config.
+  ansible.builtin.copy:
+    src: ./files/argocd-bootstrap.yaml
+    dest: "{{ boostrap_manifest_dest }}"
+    mode: "0644"
+- name: Bootstrap ArgoCD.
+  kubernetes.core.k8s:
+    namespace: "{{ argocd_namespace }}"
+    state: present
+    src: "{{ boostrap_manifest_dest }}"
   vars:
     ansible_python_interpreter: "{{ venv_path }}/bin/python"

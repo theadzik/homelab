@@ -1,5 +1,6 @@
 ---
 venv_path: /tmp/.venv-k8s
-manifest_source: https://raw.githubusercontent.com/argoproj/argo-cd/refs/heads/master/manifests/install.yaml
-manifest_dest: /tmp/argocd.yaml
-namespace: argocd
+install_manifest_source: https://raw.githubusercontent.com/argoproj/argo-cd/refs/heads/master/manifests/install.yaml
+install_manifest_dest: /tmp/argocd.yaml
+argocd_namespace: argocd
+boostrap_manifest_dest: /tmp/argocd-bootstrap.yaml

@@ -3,8 +3,10 @@ kind: Application
 metadata:
   name: argocd-config
 spec:
-  project: argocd
+  project: default
   source:
     path: manifests/argocd
     repoURL: 'https://github.com/theadzik/homelab'
     targetRevision: argocd-bootstrap # HEAD
+  destination:
+    server: https://kubernetes.default.svc
