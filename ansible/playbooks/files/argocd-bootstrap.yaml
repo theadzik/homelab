@@ -10,3 +10,6 @@ spec:
     targetRevision: argocd-bootstrap # HEAD
   destination:
     server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
