@@ -18,8 +18,8 @@ jobs:
       - name: Get image tag
         id: vars
         run: |
-          if [ ${event} != "schedule" ]; then
-            full_tag=$(echo $(git tag -n0 "vw-backup-*" | tail -n 1)
+          if [ ${event} == "schedule" ]; then
+            full_tag=$(git tag -n0 "vw-backup-*" | tail -n 1)
             echo "docker_tag=$(echo $full_tag | cut -d'-' -f3)" >> $GITHUB_OUTPUT
             echo "git_tag=$full_tag" >> $GITHUB_OUTPUT
           else
