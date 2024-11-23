@@ -23736,6 +23736,8 @@ spec:
             secretKeyRef:
               key: auth
               name: argocd-redis
+        - name: GITCRYPT_KEY_PATH
+          value: "/git-crypt/git-crypt-key"
         - name: ARGOCD_RECONCILIATION_TIMEOUT
           valueFrom:
             configMapKeyRef:
@@ -23964,6 +23966,8 @@ spec:
           seccompProfile:
             type: RuntimeDefault
         volumeMounts:
+        - mountPath: /git-crypt
+          name: git-crypt
         - mountPath: /app/config/ssh
           name: ssh-known-hosts
         - mountPath: /app/config/tls
@@ -24004,6 +24008,9 @@ spec:
         kubernetes.io/os: linux
       serviceAccountName: argocd-repo-server
       volumes:
+      - name: git-crypt
+        persistentVolumeClaim:
+          claimName: argocd
       - configMap:
           name: argocd-ssh-known-hosts-cm
         name: ssh-known-hosts
@@ -24076,8 +24083,6 @@ spec:
             secretKeyRef:
               key: auth
               name: argocd-redis
-        - name: GITCRYPT_KEY_PATH
-          value: "/git-crypt/git-crypt-key"
         - name: ARGOCD_SERVER_INSECURE
           valueFrom:
             configMapKeyRef:
@@ -24362,9 +24367,6 @@ spec:
           initialDelaySeconds: 3
           periodSeconds: 30
         securityContext:
-          runAsUser: 999
-          runAsGroup: 999
-          fsGroup: 999
           allowPrivilegeEscalation: false
           capabilities:
             drop:
@@ -24386,17 +24388,12 @@ spec:
           name: plugins-home
         - mountPath: /tmp
           name: tmp
-        - mountPath: /git-crypt
-          name: git-crypt
         - mountPath: /home/argocd/params
           name: argocd-cmd-params-cm
       nodeSelector:
         kubernetes.io/os: linux
       serviceAccountName: argocd-server
       volumes:
-      - name: git-crypt
-        persistentVolumeClaim:
-          claimName: argocd
       - emptyDir: {}
         name: plugins-home
       - emptyDir: {}

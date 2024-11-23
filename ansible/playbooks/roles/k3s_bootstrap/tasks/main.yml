@@ -16,9 +16,11 @@
   ansible.builtin.copy:
     src: "{{ git_crypt_source }}"
     dest: "{{ git_crypt_dest }}"
+    owner: 999
+    group: 999
     mode: "0440"
   become: true
-- name: Copy ArgoCD config.
+- name: Copy ArgoCD install manifest.
   ansible.builtin.copy:
     src: "{{ install_manifest_source }}"
     dest: "{{ install_manifest_dest }}"
