@@ -1,0 +1,10 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-config
+spec:
+  project: argocd
+  source:
+    path: manifests/argocd
+    repoURL: 'https://github.com/theadzik/homelab'
+    targetRevision: argocd-bootstrap # HEAD
