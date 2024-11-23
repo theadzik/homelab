@@ -3,16 +3,34 @@ on:
   push:
     tags:
       - "vw-backup-*"
-#  schedule:
-#    - cron: "0 10 * * 6"
+  schedule:
+    - cron: "37 10 * * 6"
   workflow_dispatch:
 jobs:
   backup-build:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+        if: ${{ github.event_name != 'push' }}
+        with:
+          fetch-depth: 0
+          fetch-tags: true
       - name: Get image tag
         id: vars
-        run: echo "docker_tag=$(echo ${GITHUB_REF} | cut -d'-' -f3)" >> $GITHUB_OUTPUT
+        run: |
+          if [ ${event} != "push" ]; then
+            echo "docker_tag=$(echo $(git tag -n0 "vw-backup-*" | tail -n 1) | cut -d'-' -f3)" >> $GITHUB_OUTPUT
+            echo "git_tag=$(echo $(git tag -n0 "vw-backup-*" | tail -n 1))" >> $GITHUB_OUTPUT
+          else
+            echo "docker_tag=$(echo ${GITHUB_REF} | cut -d'-' -f3)" >> $GITHUB_OUTPUT
+          fi
+        env:
+          event: ${{ github.event_name }}
+      - uses: actions/checkout@v4
+        name: Checkout latest tag
+        if: ${{ github.event_name != 'push' }}
+        with:
+          ref: ${{steps.vars.outputs.git_tag }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Login to Docker Hub
