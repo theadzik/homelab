@@ -3,16 +3,35 @@ on:
   push:
     tags:
       - "vw-restore-*"
-#  schedule:
-#    - cron: "0 10 * * 6"
+  schedule:
+    - cron: "22 12 * * 6"
   workflow_dispatch:
 jobs:
   restore-build:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+        if: ${{ github.event_name == 'schedule' }}
+        with:
+          fetch-depth: 0
+          fetch-tags: true
       - name: Get image tag
         id: vars
-        run: echo "docker_tag=$(echo ${GITHUB_REF} | cut -d'-' -f3)" >> $GITHUB_OUTPUT
+        run: |
+          if [ ${event} == "schedule" ]; then
+            full_tag=$(git tag -n0 "vw-restore-*" | tail -n 1)
+            echo "docker_tag=$(echo $full_tag | cut -d'-' -f3)" >> $GITHUB_OUTPUT
+            echo "git_tag=$full_tag" >> $GITHUB_OUTPUT
+          else
+            echo "docker_tag=$(echo ${GITHUB_REF} | cut -d'-' -f3)" >> $GITHUB_OUTPUT
+          fi
+        env:
+          event: ${{ github.event_name }}
+      - uses: actions/checkout@v4
+        name: Checkout latest tag
+        if: ${{ github.event_name == 'schedule' }}
+        with:
+          ref: ${{steps.vars.outputs.git_tag }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Login to Docker Hub
@@ -20,7 +39,7 @@ jobs:
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Restore - Build and push
+      - name: Build and push
         uses: docker/build-push-action@v6
         with:
           platforms: "linux/amd64,linux/arm64"
