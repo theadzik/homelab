@@ -1,0 +1,34 @@
+---
+- name: Ensure pip3 is present.
+  ansible.builtin.apt:
+    name: python3-pip
+    state: present
+- name: Ensure virtualenv is present.
+  ansible.builtin.apt:
+    name: python3-virtualenv
+    state: present
+  become: true
+- name: Install kubernetes python package
+  ansible.builtin.pip:
+    name: kubernetes
+    virtualenv: "{{ venv_path }}"
+- name: Download ArgoCD manifest to the cluster.
+  ansible.builtin.get_url:
+    url: "{{ manifest_source }}"
+    dest: "{{ manifest_dest }}"
+    mode: '0664'
+- name: Create argocd namespace
+  kubernetes.core.k8s:
+    name: "{{ namespace }}"
+    api_version: v1
+    kind: Namespace
+    state: present
+  vars:
+    ansible_python_interpreter: "{{ venv_path }}/bin/python"
+- name: Bootstrap ArgoCD
+  kubernetes.core.k8s:
+    namespace: "{{ namespace }}"
+    state: present
+    src: "{{ manifest_dest }}"
+  vars:
+    ansible_python_interpreter: "{{ venv_path }}/bin/python"

@@ -57,3 +57,8 @@
   become: true
   roles:
     - role: k3s_agent
+
+- name: Bootstrap ArgoCD
+  hosts: server[0]
+  roles:
+    - role: k3s_bootstrap
