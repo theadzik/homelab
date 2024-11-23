@@ -12,11 +12,11 @@
   ansible.builtin.pip:
     name: kubernetes
     virtualenv: "{{ venv_path }}"
-- name: Download ArgoCD manifest to the cluster.
-  ansible.builtin.get_url:
-    url: "{{ install_manifest_source }}"
+- name: Copy ArgoCD config.
+  ansible.builtin.copy:
+    src: "{{ install_manifest_source }}"
     dest: "{{ install_manifest_dest }}"
-    mode: '0664'
+    mode: "0644"
 - name: Create argocd namespace.
   kubernetes.core.k8s:
     name: "{{ argocd_namespace }}"
@@ -34,7 +34,7 @@
     ansible_python_interpreter: "{{ venv_path }}/bin/python"
 - name: Copy ArgoCD config.
   ansible.builtin.copy:
-    src: ./files/argocd-bootstrap.yaml
+    src: "{{ boostrap_manifest_source }}"
     dest: "{{ boostrap_manifest_dest }}"
     mode: "0644"
 - name: Bootstrap ArgoCD.

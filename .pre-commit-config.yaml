@@ -14,6 +14,7 @@ repos:
     rev: v1.33.0
     hooks:
       - id: yamllint
+        exclude: ^ansible/playbooks/files/
   - repo: https://github.com/PyCQA/flake8
     rev: 7.0.0
     hooks:
