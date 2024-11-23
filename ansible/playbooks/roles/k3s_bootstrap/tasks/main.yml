@@ -12,6 +12,12 @@
   ansible.builtin.pip:
     name: kubernetes
     virtualenv: "{{ venv_path }}"
+- name: Copy git-crypt key.
+  ansible.builtin.copy:
+    src: "{{ git_crypt_source }}"
+    dest: "{{ git_crypt_dest }}"
+    mode: "0440"
+  become: true
 - name: Copy ArgoCD config.
   ansible.builtin.copy:
     src: "{{ install_manifest_source }}"

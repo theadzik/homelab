@@ -8,6 +8,3 @@ local_data_directories:
   - name: vaultwarden/backup
     uid: 10001
     gid: 20001
-  - name: argocd
-    uid: 10006
-    gid: 20006

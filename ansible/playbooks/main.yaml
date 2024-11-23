@@ -25,6 +25,9 @@
           - name: reddit-bot
             uid: 10005
             gid: 20005
+          - name: argocd
+            uid: 999
+            gid: 999
 
   pre_tasks:
     - name: Load variable files.
@@ -62,3 +65,6 @@
   hosts: server[0]
   roles:
     - role: k3s_bootstrap
+      vars:
+        git_crypt_source: "../../../git-crypt-key"
+        git_crypt_dest: "/mnt/kubernetes-disks/argocd/"
