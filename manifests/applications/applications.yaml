@@ -10,7 +10,7 @@ metadata:
 spec:
   project: default
   source:
-    path: manifests/argocd
+    path: manifests/base/argocd
     repoURL: 'https://github.com/theadzik/homelab'
     targetRevision: argocd-bootstrap # HEAD
   destination:
