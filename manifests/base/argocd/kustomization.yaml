@@ -4,3 +4,4 @@ namespace: argocd
 resources:
   - configmap-secret.yaml
   - ingress.yaml
+  - nwp.yaml
