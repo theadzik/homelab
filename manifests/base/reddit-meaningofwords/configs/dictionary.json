@@ -400,6 +400,22 @@
       "https://sjp.pwn.pl/ciekawostki/haslo/W-OGOLE;5391602.html"
     ]
   },
+  "wczoraj/dzisiaj/jutro": {
+    "explanations": [
+      "Przysłówki \"dzisiaj\", \"dziś\", \"jutro\" i \"wczoraj\" są wyrazami o znaczeniu neutralnym i są poprawne w każdym tekście,",
+      "natomiast połączenia \"w dniu dzisiejszym\", \"w dniu wczorajszym\" czy \"dzień jutrzejszy\" są nacechowane oficjalnością i pojawić się mogą jedynie",
+      "w tekstach oficjalnych, urzędowych.",
+      "Wyrażenia  \"dzień dzisiejszy\", \"w dniu wczorajszym\" cechuje nadmiarowość znaczeniowa",
+      "(wyraz \"dzień\" powtarza treść przymiotnika \"dzisiejszy\", \"wczorajszy\", \"jutrzejszy\") i można je uznać za pleonazmy."
+    ],
+    "search_rule": "\\bd(niu|zie[nń]) (dzisie|jutrze|wczora)jszy(|m)\\b",
+    "sources": [
+      "https://fil.ug.edu.pl/strona/15142/wyrazenia_dzien_dzisiejszy_dzien_wczorajszy_dzien_jutrzejszy_poprawne",
+      "http://www.poradniajezykowa.ujd.edu.pl/en/node/105",
+      "https://poradnia-jezykowa.uni.lodz.pl/faq/na-dzien-dzisiejszy/",
+      "https://sjp.pwn.pl/poradnia/haslo/po-dzis-dzien-a-w-dniu-dzisiejszym;22368.html"
+    ]
+  },
   "wziąć": {
     "explanations": [
       "Jedyną formą uznaną za poprawną przez Radę Języka Polskiego jest \"wziąć\".",
