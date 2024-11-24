@@ -106,11 +106,19 @@
           changed_when:
             - csa_result.rc == 0
 
-        - name: Setup kubeconfig {{ cluster_name }} context on control node
+        - name: Rename context to {{ cluster_name }} on localhost
           ansible.builtin.replace:
             path: "{{ kubeconfig }}.temp"
             regexp: 'name: default'
             replace: 'name: {{ cluster_name }}'
+          delegate_to: 127.0.0.1
+          become: false
+
+        - name: Rename current-context to {{ cluster_name }} on localhost
+          ansible.builtin.replace:
+            path: "{{ kubeconfig }}.temp"
+            regexp: 'current-context: default'
+            replace: 'current-context: {{ cluster_name }}'
           delegate_to: 127.0.0.1
           become: false
 
