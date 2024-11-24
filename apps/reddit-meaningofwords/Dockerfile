@@ -1,7 +1,5 @@
 FROM python:3.13-alpine
 
-RUN apk upgrade --no-cache
-
 RUN addgroup --gid 20005 --system nonroot && \
     adduser --uid 10005 --system --ingroup nonroot --disabled-password --gecos "" nonroot && \
     pip install --upgrade pip
