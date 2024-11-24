@@ -3,5 +3,11 @@ kind: Kustomization
 namespace: argocd
 resources:
   - argocd.yaml
-  - ingress-nginx.yaml
   - cert-manager.yaml
+  - dns-updater.yaml
+  - ingress-nginx.yaml
+  - pihole.yaml
+  - reddit-meaningofwords.yaml
+  - static-cv.yaml
+  - storage.yaml
+  - vaultwarden.yaml
