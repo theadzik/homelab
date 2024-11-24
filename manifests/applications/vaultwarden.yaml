@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: vaultvarden
+  name: vaultwarden
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    path: manifests/base/vaultvarden
+    path: manifests/base/vaultwarden
     repoURL: 'https://github.com/theadzik/homelab'
     targetRevision: migrate-everything-to-argo
   destination:
