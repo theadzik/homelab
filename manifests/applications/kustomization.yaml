@@ -1,4 +1,13 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: argocd
 resources:
-  - applications.yaml
+  - argocd.yaml
+  - cert-manager.yaml
+  - dns-updater.yaml
+  - ingress-nginx.yaml
+  - pihole.yaml
+  - reddit-meaningofwords.yaml
+  - static-cv.yaml
+  - storage.yaml
+  - vaultwarden.yaml

@@ -8,6 +8,12 @@
     name: python3-virtualenv
     state: present
   become: true
+- name: Make sure destination dir exists.
+  ansible.builtin.file:
+    path: "{{ argo_files_base }}"
+    state: directory
+    mode: "0777"
+  become: true
 - name: Install kubernetes python package.
   ansible.builtin.pip:
     name: kubernetes
@@ -25,6 +31,7 @@
     src: "{{ install_manifest_source }}"
     dest: "{{ install_manifest_dest }}"
     mode: "0644"
+  register: argocd_install_manifest
 - name: Create argocd namespace.
   kubernetes.core.k8s:
     name: "{{ argocd_namespace }}"
@@ -40,6 +47,7 @@
     src: "{{ install_manifest_dest }}"
   vars:
     ansible_python_interpreter: "{{ venv_path }}/bin/python"
+  when: argocd_install_manifest is changed
 - name: Copy ArgoCD config.
   ansible.builtin.copy:
     src: "{{ boostrap_manifest_source }}"

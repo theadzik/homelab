@@ -1,16 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd-config
+  name: storage
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
-  annotations:
-    argocd.argoproj.io/sync-wave: "-2"
 spec:
   project: default
   source:
-    path: manifests/base/argocd
+    path: manifests/base/storage
     repoURL: 'https://github.com/theadzik/homelab'
     targetRevision: HEAD
   destination:
