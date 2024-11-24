@@ -16,7 +16,7 @@ spec:
           installCRDs: true
     - path: manifests/base/cert-manager
       repoURL: 'https://github.com/theadzik/homelab'
-      targetRevision: migrate-everything-to-argo
+      targetRevision: HEAD
   destination:
     server: "https://kubernetes.default.svc"
     namespace: cert-manager

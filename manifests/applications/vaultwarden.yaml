@@ -10,7 +10,7 @@ spec:
   source:
     path: manifests/base/vaultwarden
     repoURL: 'https://github.com/theadzik/homelab'
-    targetRevision: migrate-everything-to-argo
+    targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:
