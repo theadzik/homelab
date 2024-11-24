@@ -15,6 +15,8 @@ A full automation for provisioning k3s cluster.
   [sshaudit.com](https://www.sshaudit.com/hardening_guides.html#debian_12) guide.
 * [local_storage](ansible/playbooks/roles/local_storage) - Creates directories
   for persistent local volumes used later by kubernetes.
+* [k3s_bootstrap](ansible/playbooks/roles/k3s_bootstrap) - Installs ArgoCD and
+  bootstraps it to this repository.
 
 ### Roles copied from other repositories
 
@@ -37,6 +39,7 @@ Containerized applications:
 
 ## `/manifests`
 
-Kubernetes manifests deploying all resources.
-`dev` overlay is used mostly for vagrant vms, while `prod` runs
-on raspberry.
+* `/applications` - contains ArgoCD applications deploying all other manifests
+* `/base` - contains kustomizations to deploy all applications
+* `/overlay` - so far it is unused, but left as the reference for future changes
+  needed to deploy to dev cluster
