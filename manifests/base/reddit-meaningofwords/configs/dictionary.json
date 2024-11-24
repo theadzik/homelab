@@ -85,6 +85,18 @@
       "https://sjp.pwn.pl/slowniki/dop%C3%B3ki.html"
     ]
   },
+  "fakt": {
+    "explanations": [
+      "\"Fakt\" to coś, co zaszło lub zachodzi w rzeczywistości. \"Autentyczny\" oznacza zgodny z rzeczywistością.",
+      "\"Fakt autentyczny\" jest więc typowym przykładem pleonazmu.",
+      "Ilekroć chcemy mówić o faktach autentycznych, zastanówmy się, czy nie chodzi nam po prostu o autentyczne zdarzenia.",
+      "Zdarzenia bowiem – w przeciwieństwie do faktów – mogą być autentyczne albo nie."
+    ],
+    "search_rule": "\\bfak(t(|y|u|o(m|wi)|ów|em|a(mi|ch))|cie) autentyczn(e(mu|go|)|y(m(i|)|ch|))\\b",
+    "sources": [
+      "https://sjp.pwn.pl/poradnia/haslo/fakt-autentyczny;214.html"
+    ]
+  },
   "in vitro": {
     "explanations": [
       "\"In vitro\" wywodzi się z języka łacińskiego, gdzie dosłownie tłumaczone jest jako \"w szkle\".",
