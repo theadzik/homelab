@@ -6,7 +6,8 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "-60"
+    argocd-image-updater.argoproj.io/image-list: reddit=theadzik/meaningofwords:latest
+    argocd-image-updater.argoproj.io/reddit.update-strategy: digest
 spec:
   project: default
   source:
