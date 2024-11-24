@@ -9,7 +9,7 @@ spec:
   source:
     path: manifests/applications
     repoURL: 'https://github.com/theadzik/homelab'
-    targetRevision: argocd-bootstrap # HEAD
+    targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:
