@@ -5,6 +5,9 @@ metadata:
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: dnsupdater=theadzik/dnsupdater:latest
+    argocd-image-updater.argoproj.io/dnsupdater.update-strategy: digest
 spec:
   project: default
   source:

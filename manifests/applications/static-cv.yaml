@@ -5,6 +5,9 @@ metadata:
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: resume=theadzik/static-cv:latest
+    argocd-image-updater.argoproj.io/resume.update-strategy: digest
 spec:
   project: default
   source:

@@ -5,3 +5,4 @@ resources:
   - configmap-secret.yaml
   - configmap.yaml
   - ingress.yaml
+  - image-updater.yaml
