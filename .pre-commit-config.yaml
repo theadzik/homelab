@@ -14,6 +14,7 @@ repos:
     rev: v1.33.0
     hooks:
       - id: yamllint
+        exclude: ^ansible/playbooks/files/argocd-install.yaml
   - repo: https://github.com/PyCQA/flake8
     rev: 7.0.0
     hooks:
@@ -38,4 +39,3 @@ repos:
     rev: v0.13.0
     hooks:
       - id: markdownlint
-        exclude: ^apps/wedding-website/

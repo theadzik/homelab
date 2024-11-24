@@ -1,0 +1,7 @@
+---
+venv_path: /tmp/.venv-k8s
+install_manifest_source: ./files/argocd-install.yaml
+install_manifest_dest: /tmp/argocd-install.yaml
+argocd_namespace: argocd
+boostrap_manifest_source: ./files/argocd-bootstrap.yaml
+boostrap_manifest_dest: /tmp/argocd-bootstrap.yaml
