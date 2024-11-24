@@ -20,3 +20,6 @@ spec:
   destination:
     server: "https://kubernetes.default.svc"
     namespace: cert-manager
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
