@@ -25,6 +25,20 @@
       "https://sjp.pwn.pl/ciekawostki/haslo/CO-NAJMNIEJ;5391527.html"
     ]
   },
+  "cofać się": {
+    "explanations": [
+      "\"Cofać do tyłu\" to pleonazm. \"Cofać\" oznacza zrobienie kroku w tył, a więc ma identyczne znaczenie co \"do tyłu\".",
+      "Ponadto w ujęciu logicznym nie można cofnąć się ani do przodu, ani w bok. Oba wyrazy są samodzielne znaczeniowo, dlatego nie należy ich łączyć.",
+      "Prawidłowo możemy powiedzieć po prostu \"cofać się\"."
+    ],
+    "search_rule": "\\bcof[a-ząćęłśż]+ si(ę|e) (do ty(ł|l)u|w ty(l|ł))\\b",
+    "sources": [
+      "https://sjp.pwn.pl/slowniki/pleonazm",
+      "https://sjp.pwn.pl/poradnia/haslo/jeszcze-o-pleonazmach;13540.html",
+      "https://sjp.pwn.pl/poradnia/haslo/Osobiscie-tam-nie-bylem;16277.html",
+      "https://sjp.pwn.pl/poradnia/haslo/utrzymac-cos-bez-zmian;22437.html"
+    ]
+  },
   "cudzysłów": {
     "explanations": [
       "Warto zapamiętać: \"cudzysłów\" odmienia się jak \"rów\", nie jak \"tułów\".",
