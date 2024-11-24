@@ -26,6 +26,13 @@ patches:
         name: vaultwarden
         annotations:
           cert-manager.io/cluster-issuer: "lets-encrypt-staging"
+  - patch: |-
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: argocd-server-ingress
+        annotations:
+          cert-manager.io/cluster-issuer: "lets-encrypt-staging"
 
   - patch: |-
       apiVersion: apps/v1
