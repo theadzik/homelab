@@ -31,7 +31,7 @@
       "Ponadto w ujęciu logicznym nie można cofnąć się ani do przodu, ani w bok. Oba wyrazy są samodzielne znaczeniowo, dlatego nie należy ich łączyć.",
       "Prawidłowo możemy powiedzieć po prostu \"cofać się\"."
     ],
-    "search_rule": "\\bcof[a-ząćęłśż]+ si(ę|e) (do ty(ł|l)u|w ty(l|ł))\\b",
+    "search_rule": "\\bcof[a-ząćęłśż]+ si[eę] (do ty[lł]u|w ty[lł])\\b",
     "sources": [
       "https://sjp.pwn.pl/slowniki/pleonazm",
       "https://sjp.pwn.pl/poradnia/haslo/jeszcze-o-pleonazmach;13540.html",
@@ -133,7 +133,7 @@
       "Błędne \"nacodzień\" lub \"na codzień\" wynika najpewniej z analogii do słowa \"codziennie\", które powstało od wyrażenia przyimkowego \"co dzień\".",
       "\"Co dzień\" zapisujemy tak samo jak podobne połączenia: \"co chwila\", \"co godzina\", \"co sobota\", \"co miesiąc\", \"co rok\"."
     ],
-    "search_rule": "\\bna( |)codzie(n|ń)\\b",
+    "search_rule": "\\bna( |)codzie[nń]\\b",
     "sources": [
       "https://sjp.pwn.pl/so/na-co-dzien;4468236.html",
       "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/co-dzien-na-co-dzien-i-codziennie,cltt,c"
@@ -175,7 +175,7 @@
       "Prawidłowym będzie więc użycie \"na tapetę\" w innym niż wyżej wymienionym kontekscie,",
       "na przykład: \"patrzyłem na tapetę\" lub \"chlapać na tapetę\"."
     ],
-    "search_rule": "\bna tapet(e|ę)\b",
+    "search_rule": "\bna tapet[eę]\b",
     "sources": [
       "https://sjp.pwn.pl/poradnia/haslo/na-tapet-czy-na-tapete;15076.html",
       "https://wsjp.pl/haslo/podglad/105674/ktos-bierze-na-tapet-kogoscos",
@@ -189,7 +189,7 @@
       "Zapis \"na prawdę\" zastosujemy wyłącznie w przypadkach, gdy mowa o rzeczowniku \"prawda\" w bierniku liczby pojedynczej (\"prawdę\") zestawionym z przyimkiem \"na\".",
       "Przykład użycia w zdaniu: Słyszę od niej same kłamstwa, więc tym razem liczę na prawdę."
     ],
-    "search_rule": "\\bna prawd(e|ę)\\b",
+    "search_rule": "\\bna prawd[eę]\\b",
     "sources": [
       "https://sjp.pwn.pl/ciekawostki/haslo/NAPRAWDE;5391567.html",
       "https://poradnia-jezykowa.uni.lodz.pl/faq/pisownia-naprawde-i-na-pewno/",
@@ -365,7 +365,7 @@
       "Zmiana ta wynikała głównie z przyczyn ekonomicznych, gdzie z dwóch słów powstał jeden wyraz oraz z potrzeby dopasowania się języka pisanego do języka mówionego.",
       "Głoska dźwięczna \"z\" poprzez bezdźwięczne \"p\" uległa ubezdźwięcznieniu na \"s\", w wyniku czego pisownia \"dopasowała się do wymowy\"."
     ],
-    "search_rule": "\\bz( |)p(rzed|od|oza|omi(ę|e)dzy)\\b",
+    "search_rule": "\\bz( |)p(rzed|od|oza|omi[ęe]dzy)\\b",
     "sources": [
       "https://sjp.pwn.pl/sjp/sprzed;2523478.html",
       "https://sjp.pwn.pl/poradnia/haslo/z-pod-i-spod;395.html",
@@ -409,10 +409,10 @@
     "explanations": [
       "\"Tudzież\" to spójnik używany do łączenia zdań lub innych wyrażeń, które odnoszą się do tych samych przedmiotów, osób lub faktów.",
       "Oznacza to samo co \"i\", \"oraz\", \"też\", \"także\". Przed spójnikami łącznymi nie stawiamy przecinka.",
-      "Błędem jest użycie słowa \"tudzież\" w znaczeniu \"albo\" bądź \"lub\".",
-      "Oczywistym błędem będzie każde stwierdzenie połączone przez \"tudzież\", w którym mowa o dwóch wykluczających się opcjach."
+      "Oczywistym błędem będzie każde stwierdzenie połączone przez \"tudzież\", w którym mowa o dwóch wykluczających się opcjach.",
+      "Na przykład \"Farba koloru czerwonego tudzież zielonego\", gdzie \"tudzież\" zostało pomyłkowo użyte zamiast bardziej pasujących słów \"lub\", \"albo\"."
     ],
-    "search_rule": "\\btudzie(z|ż)\\b",
+    "search_rule": "\\btudzie[zż]\\b",
     "sources": [
       "https://sjp.pwn.pl/ciekawostki/haslo/TUDZIEZ;5391597.html",
       "https://poradnia-jezykowa.uni.lodz.pl/faq/przecinek-przed-spojnikiem-i/",
@@ -467,7 +467,7 @@
       "W wielu przypadkach \"wziąść\" tworzone jest przez podobieństwo do innych czasowników zakończonych na \"-ść\", takich jak: \"pójść\" czy \"usiąść\".",
       "Nie jest to reguła, ale można skojarzyć słowo \"wziąć\" z czasownikiem \"brać\", intuicyjnie wiemy, że nie można czegoś \"braść\"."
     ],
-    "search_rule": "\\bwzi[aą][sśzź](c|ć)\\b",
+    "search_rule": "\\bwzi[aą][sśzź][cć]\\b",
     "sources": [
       "https://sjp.pwn.pl/poradnia/haslo/dlaczego-nie-wziasc;11924.html",
       "https://poradnia-jezykowa.uni.lodz.pl/warto-wiedziec/klopotliwe-wyrazy/",
