@@ -164,6 +164,25 @@
       "https://sjp.pwn.pl/poradnia/haslo/b-Na-razie-b;15447.html"
     ]
   },
+  "na tapet/na tapetę": {
+    "explanations": [
+      "\"Brać coś na tapet\" to znaczy zająć się czymś, uczynić coś tematem, ośrodkiem zainteresowania.",
+      "Słowo \"tapet\" oznacza pokryty zielonym suknem stół, przy którym toczą się jakieś obrady.",
+      "Bardziej znany jest zwrot \"być (znaleźć się) na tapecie\", w którym rzeczownik został mylnie zinterpretowany tak, jakby pochodził od słowa \"tapeta\".",
+      "W rezultacie można usłyszeć, że \"ktoś wziął coś na tapetę\", że \"jakiś temat wraca na tapetę\" itp.",
+      "W wyniku tej pomyłki, logiczny i dobrze umotywowany zwrot stał się strukturalnie nieprzejrzysty, a przy dosłownej interpretacji absurdalny.",
+      "\"Tapeta\" to wzorzysty papier lub tworzywo sztuczne, którymi wykleja się ściany mieszkań.",
+      "Prawidłowym będzie więc użycie \"na tapetę\" w innym niż wyżej wymienionym kontekscie,",
+      "na przykład: \"patrzyłem na tapetę\" lub \"chlapać na tapetę\"."
+    ],
+    "search_rule": "\bna tapet(e|ę)\b",
+    "sources": [
+      "https://sjp.pwn.pl/poradnia/haslo/na-tapet-czy-na-tapete;15076.html",
+      "https://wsjp.pl/haslo/podglad/105674/ktos-bierze-na-tapet-kogoscos",
+      "https://nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/byc-na-tapecie",
+      "https://sjp.pwn.pl/slowniki/tapet.html"
+    ]
+  },
   "naprawdę/na prawdę": {
     "explanations": [
       "\"Naprawdę\" pisane łącznie to partykuła za pomocą której mówiący, chcąc przekonać kogoś o słuszności swojego zdania, potwierdza jego prawdziwość.",
