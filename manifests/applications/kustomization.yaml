@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - argocd.yaml
   - ingress-nginx.yaml
+  - cert-manager.yaml
