@@ -4,7 +4,6 @@ resources:
   - storage
   - dns-updater
   - pihole
-  - ingress-nginx
   - cert-manager
   - vaultwarden
   - static-cv

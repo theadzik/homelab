@@ -4,6 +4,8 @@ metadata:
   name: argocd-bootstrap
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "-100" # Always run first
 spec:
   project: default
   source:
