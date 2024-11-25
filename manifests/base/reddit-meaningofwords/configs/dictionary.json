@@ -78,11 +78,17 @@
   "dopóki": {
     "explanations": [
       "\"Dopóki\" należy do wyrażeń przyimkowych, które we współczesnej polszczyźnie przekształciły się we zrosty.",
-      "Takie konstrukcje, niezależnie od uwarunkowań historycznych, zapisuje się zawsze łącznie."
+      "Zrosty to wyrazy złożone, które powstały z połączenia tematów słowotwórczych bez żadnych elementów łączących, bez formantu.",
+      "Zrosty posiadają tylko jeden akcent główny.",
+      "Innymi przykładami zrostów są \"widzimisię\", \"północ\" i \"wniebowzięty\".",
+      "Spójnik \"póki\", to również zrost, powstały od dawnego wyrażenia przyimkowego: \"po ky\", czyli \"po które\",",
+      "będącego skróceniem jeszcze dawniejszego wyrażenia \"po ky czasy\" czyli \"po które czasy, dokąd\".",
+      "Z tego wynika pisowania \"dopóki\" przez \"o kreskowane\" czyli \"ó\"."
     ],
     "search_rule": "\\b(do p[oóu]ki|dopuki)\\b",
     "sources": [
-      "https://sjp.pwn.pl/slowniki/dop%C3%B3ki.html"
+      "https://sjp.pwn.pl/slowniki/dop%C3%B3ki.html",
+      "https://nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/poki-461474864"
     ]
   },
   "fakt": {
