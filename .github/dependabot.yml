@@ -17,7 +17,6 @@ updates:
   - package-ecosystem: "pip"
     directories:
       - "/apps/bullying-detector"
-      - "/apps/dns"
       - "/apps/reddit-meaningofwords"
     schedule:
       interval: "weekly"
@@ -29,7 +28,6 @@ updates:
     directories:
       - "/apps/bullying-detector"
       - "/apps/cv"
-      - "/apps/dns"
       - "/apps/reddit-meaningofwords"
       - "/apps/vaultwarden/backup/"
       - "/apps/vaultwarden/restore/"

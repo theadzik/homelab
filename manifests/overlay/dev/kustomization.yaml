@@ -33,17 +33,3 @@ patches:
         name: argocd-server-ingress
         annotations:
           cert-manager.io/cluster-issuer: "lets-encrypt-staging"
-
-  - patch: |-
-      apiVersion: apps/v1
-      kind: Deployment
-      metadata:
-        name: dns-updater
-      spec:
-        template:
-          spec:
-            containers:
-              - name: updater
-                env:
-                  - name: CHECK_ONLY_MODE
-                    value: "True"
