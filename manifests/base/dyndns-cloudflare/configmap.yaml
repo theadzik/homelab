@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: dyndns-cloudlare-config
 data:
-  LOG_LEVEL: DEBUG
+  LOG_LEVEL: INFO

@@ -454,8 +454,9 @@
   "wczoraj/dzisiaj/jutro": {
     "explanations": [
       "Przysłówki \"dzisiaj\", \"dziś\", \"jutro\" i \"wczoraj\" są wyrazami o znaczeniu neutralnym i są poprawne w każdym tekście,",
-      "natomiast połączenia \"w dniu dzisiejszym\", \"w dniu wczorajszym\" czy \"dzień jutrzejszy\" są nacechowane oficjalnością i pojawić się mogą jedynie",
-      "w tekstach oficjalnych, urzędowych.",
+      "natomiast połączenia \"w dniu dzisiejszym\", \"w dniu wczorajszym\" czy \"dzień jutrzejszy\" są nacechowane oficjalnością",
+      "i pojawić się mogą jedynie w tekstach oficjalnych i urzędowych.",
+      "Komentarze na Reddicie nie są tekstami urzędowymi ani oficjalnymi.",
       "Wyrażenia  \"dzień dzisiejszy\", \"w dniu wczorajszym\" cechuje nadmiarowość znaczeniowa",
       "(wyraz \"dzień\" powtarza treść przymiotnika \"dzisiejszy\", \"wczorajszy\", \"jutrzejszy\") i można je uznać za pleonazmy."
     ],
