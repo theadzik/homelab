@@ -1,0 +1,31 @@
+name: cloudflare-ip-updater
+on:
+  schedule:
+    - cron: "30 0 * * *"
+  workflow_dispatch:
+jobs:
+  restore-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check IP and Push changes
+        env:
+          COMMIT_MESSAGE: Updating Cloudflare IP list in ingress-nginx config
+          COMMIT_AUTHOR: GitHub Actions CI
+          COMMIT_EMAIL: adzik007@gmail.com
+        run: |
+          git config --global user.name "${{ env.COMMIT_AUTHOR }}"
+          git config --global user.email "${{ env.COMMIT_EMAIL }}"
+
+          manifest_path="manifests/applications/ingress-nginx.yaml"
+
+          ips=$(curl -s https://www.cloudflare.com/ips-v4/ | sed 's/\//\\\//g'| tr '\n' ',')
+          sed -i -e "s/whitelist-source-range: .* # Auto-generated list/whitelist-source-range: \"192.168.0.0\/16,10.0.0.0\/8,$ips\" # Auto-generated list/g" $manifest_path
+          if git status -s "$manifest_path"; then
+            git add $manifest_path && git commit -m "${{ env.COMMIT_MESSAGE }}"
+            git fetch origin
+            git rebase --strategy-option=theirs origin/main
+            git push
+          else
+            echo "No changes"
+          fi
