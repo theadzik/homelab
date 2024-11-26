@@ -12,6 +12,8 @@ spec:
       backoffLimit: 0
       template:
         spec:
+          imagePullSecrets:
+            - name: dockerhub-image-pull-secret
           containers:
             - name: backup
               image: theadzik/vw-backup:latest

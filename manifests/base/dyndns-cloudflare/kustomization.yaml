@@ -6,3 +6,4 @@ resources:
   - secret.yaml
   - deployment.yaml
   - configmap.yaml
+  - ../image-pull-secret

@@ -16,6 +16,8 @@ spec:
         app: vaultwarden
         ingress: exposed
     spec:
+      imagePullSecrets:
+        - name: dockerhub-image-pull-secret
       initContainers:
         - name: restore
           image: theadzik/vw-restore:latest

@@ -9,6 +9,7 @@ resources:
   - deployment.yaml
   - nwp.yaml
   - service.yaml
+  - ../image-pull-secret
 
 # Pod automatically loads new files, no need to restart it by adding hash to the name
 generatorOptions:

@@ -8,3 +8,4 @@ resources:
   - ingress.yaml
   - nwp.yaml
   - pihole.yaml
+  - ../image-pull-secret

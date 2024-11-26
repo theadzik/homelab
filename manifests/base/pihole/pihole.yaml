@@ -14,6 +14,8 @@ spec:
       labels:
         app: pihole
     spec:
+      imagePullSecrets:
+        - name: dockerhub-image-pull-secret
       containers:
         - name: pihole
           image: pihole/pihole:latest
