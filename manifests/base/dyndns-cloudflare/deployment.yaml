@@ -21,6 +21,8 @@ spec:
           envFrom:
             - secretRef:
                 name: dyndns-cloudflare-secret
+            - configMapRef:
+                name: dyndns-cloudlare-config
           volumeMounts:
             - mountPath: /history
               name: history
