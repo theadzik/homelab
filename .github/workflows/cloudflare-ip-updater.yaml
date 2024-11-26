@@ -8,11 +8,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.WORKFLOW_GIT_ACCESS_TOKEN }}
       - name: Check IP and Push changes
         env:
           COMMIT_MESSAGE: Updating Cloudflare IP list in ingress-nginx config
-          COMMIT_AUTHOR: GitHub Actions CI
-          COMMIT_EMAIL: adzik007@gmail.com
+          COMMIT_AUTHOR: "github-actions[bot]"
+          COMMIT_EMAIL: "41898282+github-actions[bot]@users.noreply.github.com"
         run: |
           git config --global user.name "${{ env.COMMIT_AUTHOR }}"
           git config --global user.email "${{ env.COMMIT_EMAIL }}"
