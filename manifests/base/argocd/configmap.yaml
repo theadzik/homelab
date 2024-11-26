@@ -11,19 +11,3 @@ data:
   policy.default: role:readonly
   scopes: '[cognito:groups, email]'
   policy.matchMode: 'glob'
-
----
-
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: argocd-image-updater-config
-data:
-  registries.conf: |
-    registries:
-    - name: Docker Hub
-      prefix: docker.io
-      api_url: https://registry-1.docker.io
-      credentials: pullsecret:argocd/dockerhub-image-pull-secret
-      limit: 10
-      default: true
