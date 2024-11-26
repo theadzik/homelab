@@ -29,7 +29,6 @@ I modified code of those roles to fit my needs.
 Containerized applications:
 
 * `cv` - My resume built with Ruby and Jekyll
-* `dns` - Dynamic DNS client working with `no-ip`
 * `reddit-meaningofwords` - A useful (or annoying, depends on your views)
   bot that fixes most common language mistakes on reddit.com/r/Polska.
   It uses `openai` api to recognize context, fix mistakes and generate explanation.
