@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dyndns-cloudflare
+  labels:
+    app: dyndns-cloudflare
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dyndns-cloudflare
+  template:
+    metadata:
+      labels:
+        app: dyndns-cloudflare
+    spec:
+      containers:
+        - name: updater
+          image: theadzik/dyndns-cloudflare:latest
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: dyndns-cloudflare-secret
+          volumeMounts:
+            - mountPath: /history
+              name: history
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+      securityContext:
+        runAsUser: 10002
+        runAsGroup: 20002
+      volumes:
+        - name: history
+          emptyDir: {}

@@ -4,6 +4,7 @@ namespace: argocd
 resources:
   - argocd.yaml
   - cert-manager.yaml
+  - dyndns-cloudflare.yaml
   - ingress-nginx.yaml
   - pihole.yaml
   - reddit-meaningofwords.yaml
