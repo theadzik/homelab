@@ -4,22 +4,16 @@ metadata:
   name: lets-encrypt-staging
 spec:
   acme:
-    email: adzik007@gmail.com
+    email: adam@zmuda.pro
     server: https://acme-staging-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       name: lets-encrypt-key-staging
     solvers:
-      - http01:
-          ingress:
-            class: nginx
-            podTemplate:
-              metadata:
-                labels:
-                  ingress: "exposed"
-            ingressTemplate:
-              metadata:
-                annotations:
-                  nginx.ingress.kubernetes.io/whitelist-source-range: "0.0.0.0/0"
+      - dns01:
+          cloudflare:
+            apiTokenSecretRef:
+              name: cloudflare-api-token-secret
+              key: api-token
 
 ---
 
@@ -29,19 +23,13 @@ metadata:
   name: lets-encrypt-prod
 spec:
   acme:
-    email: adzik007@gmail.com
+    email: adam@zmuda.pro
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       name: lets-encrypt-key-prod
     solvers:
-      - http01:
-          ingress:
-            class: nginx
-            podTemplate:
-              metadata:
-                labels:
-                  ingress: "exposed"
-            ingressTemplate:
-              metadata:
-                annotations:
-                  nginx.ingress.kubernetes.io/whitelist-source-range: "0.0.0.0/0"
+      - dns01:
+          cloudflare:
+            apiTokenSecretRef:
+              name: cloudflare-api-token-secret
+              key: api-token
