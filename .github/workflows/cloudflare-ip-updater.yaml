@@ -23,11 +23,11 @@ jobs:
 
           ips=$(curl -s https://www.cloudflare.com/ips-v4/ | sed 's/\//\\\//g'| tr '\n' ',')
           sed -i -e "s/whitelist-source-range: .* # Auto-generated list/whitelist-source-range: \"192.168.0.0\/16,10.0.0.0\/8,$ips\" # Auto-generated list/g" $manifest_path
-          if git status -s "$manifest_path"; then
+          if git diff --exit-code --quiet "$manifest_path"; then
+            echo "No changes"
+          else
             git add $manifest_path && git commit -m "${{ env.COMMIT_MESSAGE }}"
             git fetch origin
             git rebase --strategy-option=theirs origin/main
             git push
-          else
-            echo "No changes"
           fi
