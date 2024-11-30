@@ -3,3 +3,4 @@ openai==1.55.3
 praw==7.8.1
 pydantic==2.10.2
 python-dotenv==1.0.1
+httpx==0.27.2
