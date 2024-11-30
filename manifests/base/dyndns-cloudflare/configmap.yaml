@@ -4,3 +4,4 @@ metadata:
   name: dyndns-cloudlare-config
 data:
   LOG_LEVEL: INFO
+  NOTIFICATION_ON_SUCCESS: "True"
