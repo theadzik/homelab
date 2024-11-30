@@ -98,7 +98,7 @@ data:
       prefix: docker.io
       api_url: https://registry-1.docker.io
       credentials: pullsecret:argocd/dockerhub-image-pull-secret
-      limit: 1
+      limit: 10
       default: true
 ---
 apiVersion: v1
@@ -140,7 +140,7 @@ spec:
       - args:
         - run
         - --interval
-        - 1h
+        - 10m
         env:
         - name: APPLICATIONS_API
           valueFrom:
