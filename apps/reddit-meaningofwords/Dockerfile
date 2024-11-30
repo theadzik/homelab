@@ -6,7 +6,7 @@ RUN addgroup --gid 20005 --system nonroot && \
 
 COPY --chown=nonroot:nonroot src src
 
-WORKDIR src
+WORKDIR /src
 COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
