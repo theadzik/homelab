@@ -62,9 +62,9 @@
     "explanations": [
       "\"Dlatego, bo\" jest niepoprawne ze względu na podkreślenie relacji przyczynowej,",
       "które wyraża zarówno \"dlatego\", jak i \"bo\", a więc są synonimami, zaś całe wyrażenie \"dlatego bo\" jest pleonazmem.",
-      "Poprawną formą jest \"dlatego że\" lub \"dlatego, że\".",
-      "Należy zwracać też uwagę na umiejscowienie przecinka. Może występować między \"dlatego\" a \"że\",",
-      "lub przed całym wyrażeniem w zależności od kontekstu."
+      "Poprawną formą jest samo \"bo\" lub \"dlatego, że\".",
+      "Gdy używamy \"dlatego, że\" należy zwracać uwagę na umiejscowienie przecinka. Może występować między \"dlatego\" a \"że\",",
+      "lub przed całym wyrażeniem w zależności od akcentu zdania."
     ],
     "search_rule": "\\bdlatego(,|) bo\\b",
     "sources": [
