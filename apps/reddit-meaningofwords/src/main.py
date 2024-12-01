@@ -1,12 +1,13 @@
 import os
+import time
 
 import praw
 from bullying import BullyingClient
 from custom_logger import get_logger
 from database import DatabaseClientSingleton
 from dotenv import load_dotenv
-from graceful_shutdown import GracefulKiller
 from openai_helper import OpenAIChecker
+from prawcore import ServerError
 from reddit_bot import BotCommenter
 
 load_dotenv()
@@ -24,7 +25,6 @@ reddit = praw.Reddit(
     user_agent=USER_AGENT,
 )
 
-killer = GracefulKiller()
 bullying_analyzer = BullyingClient()
 database_client = DatabaseClientSingleton()
 
@@ -137,13 +137,12 @@ def handle_comment(comment: praw.models.Comment) -> None:
         handle_keyword(comment=comment, keyword_found=keyword_found, match=match)
 
 
-if __name__ == "__main__":
-    for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
-        # Terminating process after a new comment is received, but before anything is done with it.
-        # This is because during upgrades there should already be an instance running when we get SIGTERM.
-        # It's better to not post at all than to double post.
-        if killer.kill_now:
-            logger.info("Received kill signal. Shutting down.")
-            break
-
-        handle_comment(comment=comment)
+# Main loop
+while True:
+    try:
+        for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
+            handle_comment(comment=comment)
+    except ServerError as e:
+        logger.error(e)
+        logger.info("Waiting 60 seconds.")
+        time.sleep(60)
