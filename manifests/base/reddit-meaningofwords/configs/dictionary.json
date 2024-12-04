@@ -414,15 +414,17 @@
   "tudzież": {
     "explanations": [
       "\"Tudzież\" to spójnik używany do łączenia zdań lub innych wyrażeń, które odnoszą się do tych samych przedmiotów, osób lub faktów.",
-      "Oznacza to samo co \"i\", \"oraz\", \"też\", \"także\". Przed spójnikami łącznymi nie stawiamy przecinka.",
+      "\"Tudzież\" ma takie znaczenie jak \"oraz\", \"i\" i taką samą interpunkcję - nie stawiamy przed tym wyrazem przecinka.",
       "Oczywistym błędem będzie każde stwierdzenie połączone przez \"tudzież\", w którym mowa o dwóch wykluczających się opcjach.",
-      "Na przykład \"Farba koloru czerwonego tudzież zielonego\", gdzie \"tudzież\" zostało pomyłkowo użyte zamiast bardziej pasujących słów \"lub\", \"albo\"."
+      "Na przykład \"Farba koloru czerwonego, tudzież zielonego\", gdzie \"tudzież\" zostało pomyłkowo użyte zamiast bardziej pasujących słów \"lub\" lub \"albo\".",
+      "W powyższym przykładzie został też postawiony przecinek przed \"tudzież\" co również jest błędem.",
+      "Przykładem prawidłowego użycia może być zdanie \"Gościom na spotkanie wyszli wszyscy rajcowie miejscy tudzież pan wójt we własnej osobie.\""
     ],
     "search_rule": "\\btudzie[zż]\\b",
     "sources": [
-      "https://sjp.pwn.pl/ciekawostki/haslo/TUDZIEZ;5391597.html",
+      "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/tudziez",
       "https://poradnia-jezykowa.uni.lodz.pl/faq/przecinek-przed-spojnikiem-i/",
-      "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/tudziez,c,"
+      "https://sjp.pwn.pl/ciekawostki/haslo/TUDZIEZ;5391597.html"
     ]
   },
   "w każdym razie": {
