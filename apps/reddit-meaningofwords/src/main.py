@@ -16,6 +16,7 @@ USER_AGENT = f"linux:{os.environ['REDDIT_USERNAME']}:{os.environ['APP_VERSION']}
 SUBREDDITS = os.getenv("REDDIT_SUBREDDITS", "polska")
 
 logger = get_logger(__name__)
+liveness_probe = os.getenv("LIVENESS_FILE_PATH", "/tmp/liveness")
 
 reddit = praw.Reddit(
     client_id=os.environ["REDDIT_CLIENT_ID"],
@@ -141,6 +142,9 @@ def handle_comment(comment: praw.models.Comment) -> None:
 while True:
     try:
         for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
+            # Create a file for liveness probe
+            with open(liveness_probe, mode='a'):
+                pass
             handle_comment(comment=comment)
     except ServerError as e:
         logger.error(e)
