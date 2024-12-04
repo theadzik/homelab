@@ -37,6 +37,16 @@ spec:
           securityContext:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - "cat /tmp/liveness && rm /tmp/liveness"
+            initialDelaySeconds: 600
+            periodSeconds: 300
+            failureThreshold: 3
+            successThreshold: 1
       securityContext:
         runAsUser: 10005
         runAsGroup: 20005
