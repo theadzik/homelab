@@ -7,6 +7,7 @@ from custom_logger import get_logger
 from database import DatabaseClientSingleton
 from dotenv import load_dotenv
 from openai_helper import OpenAIChecker
+from prawcore import RequestException
 from prawcore import ServerError
 from reddit_bot import BotCommenter
 
@@ -146,7 +147,7 @@ while True:
             with open(liveness_probe, mode='a'):
                 pass
             handle_comment(comment=comment)
-    except ServerError as e:
+    except (ServerError, RequestException) as e:
         logger.error(e)
         logger.info("Waiting 60 seconds.")
         time.sleep(60)
