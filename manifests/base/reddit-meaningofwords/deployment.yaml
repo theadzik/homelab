@@ -91,11 +91,21 @@ spec:
             - configMapRef:
                 name: bullying-detector-config
           readinessProbe:
-            tcpSocket:
-              port: 8080
-            periodSeconds: 10
+            httpGet:
+              path: /health
+              port: http-port
+            periodSeconds: 30
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http-port
+            periodSeconds: 30
+            initialDelaySeconds: 20
+            failureThreshold: 2
+            successThreshold: 1
           ports:
             - containerPort: 8080
               protocol: "TCP"
+              name: http-port
           securityContext:
             allowPrivilegeEscalation: false
