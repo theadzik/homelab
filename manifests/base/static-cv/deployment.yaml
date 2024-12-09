@@ -19,7 +19,7 @@ spec:
       containers:
         - name: nginx
           image: theadzik/static-cv:latest
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
               protocol: "TCP"

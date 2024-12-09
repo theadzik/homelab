@@ -41,7 +41,7 @@ spec:
       containers:
         - name: vaultwarden
           image: vaultwarden/server:latest
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
               protocol: "TCP"

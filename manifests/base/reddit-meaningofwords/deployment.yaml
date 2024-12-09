@@ -19,7 +19,7 @@ spec:
       containers:
         - name: reddit-bot
           image: theadzik/meaningofwords:latest
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           envFrom:
             - secretRef:
                 name: reddit-meaningofwords-secret

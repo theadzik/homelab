@@ -19,7 +19,7 @@ spec:
       containers:
         - name: updater
           image: theadzik/dyndns-cloudflare:latest
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           envFrom:
             - secretRef:
                 name: dyndns-cloudflare-secret
