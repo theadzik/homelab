@@ -4,6 +4,7 @@ import sys
 from enum import Enum
 
 from fastapi import FastAPI
+from fastapi import status
 from pydantic import BaseModel
 from transformers import pipeline
 
@@ -32,11 +33,21 @@ app = FastAPI()
 
 @app.post("/")
 def detect_bullying(body: Item):
-    body_dict = body.dict()
+    body_dict = body.model_dump()
     prediction = nlp(body_dict["text"])[0]
     prediction["label"] = Bullying[prediction["label"]].value
     logger.debug(f"Received body: {body_dict['text']}\nPrediction: {prediction}")
     return prediction
+
+
+@app.get("/health", status_code=status.HTTP_200_OK)
+def health():
+    prediction = nlp("Jestem zdrowy!")[0]
+    prediction["label"] = Bullying[prediction["label"]].value
+    return {
+        "healthy": True,
+        "prediction": prediction
+    }
 
 
 if __name__ == "__main__":
