@@ -85,7 +85,7 @@ spec:
         - name: dockerhub-image-pull-secret
       containers:
         - name: model
-          image: theadzik/bullying-detector:2024.11.3
+          image: theadzik/bullying-detector:latest
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
