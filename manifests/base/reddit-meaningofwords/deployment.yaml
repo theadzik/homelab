@@ -45,7 +45,7 @@ spec:
                 - "cat /tmp/liveness && rm /tmp/liveness"
             initialDelaySeconds: 600
             periodSeconds: 300
-            failureThreshold: 3
+            failureThreshold: 6
             successThreshold: 1
       securityContext:
         runAsUser: 10005
