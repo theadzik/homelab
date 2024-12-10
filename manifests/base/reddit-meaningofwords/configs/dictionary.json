@@ -503,7 +503,9 @@
   "z powrotem": {
     "explanations": [
       "Niezależnie od kontekstu jedyną poprawną postacią zapisu tego wyrażenia przyimkowego jest \"z powrotem\".",
-      "Pomyłka może wynikać z faktu, że dawne \"z tąd\", \"z tamtąd\" zaczęliśmy pisać \"stąd\", \"stamtąd\", ale nadal piszemy \"z powrotem\"."
+      "Pomyłka może wynikać z faktu, że od roku 1936, czyli wielkiej reformy ortografii,",
+      "niektóre wyrażenia dawniej pisane przez \"z \" ",
+      "zaczęliśmy pisać przez \"s-\", np. \"stąd\", \"spomiędzy\", \"spod\", ale nadal piszemy \"z powrotem\"."
     ],
     "search_rule": "\\b[sz]powrotem\\b",
     "sources": [
