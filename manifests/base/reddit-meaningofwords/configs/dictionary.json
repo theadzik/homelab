@@ -380,6 +380,18 @@
       "https://nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/pomiedzy-i-spomiedzy"
     ]
   },
+  "stąd": {
+    "explanations": [
+      "Od roku 1936, czyli wielkiej reformy ortografii, jedynyą poprawną formą jest \"stąd\", dawniej zapisywane jako \"ztąd\"",
+      "Zmiana ta wynikała z potrzeby dopasowania się języka pisanego do języka mówionego.",
+      "Głoska dźwięczna \"z\" uległa ubezdźwięcznieniu na \"s\" w sądziedztwie \"t\"."
+    ],
+    "search_rule": "\\bz( |)t[aą]d\\b",
+    "sources": [
+      "https://sjp.pwn.pl/sjp/stad;2524056.html",
+      "https://nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/zewszad-czyli-stad-i-zowad,cltt,z"
+    ]
+  },
   "sweter": {
     "explanations": [
       "Jedyną poprawną formą zapisu tego rzeczownika jest \"sweter\".",
