@@ -13,9 +13,9 @@ logger = get_logger(__name__)
 
 class WordCheckerResponse(BaseModel):
     explanation: str
-    is_correct: bool
-    used_word: str
     correct_word: str
+    used_word: str
+    is_correct: bool
 
 
 class BullyingDetectorResponse(BaseModel):
