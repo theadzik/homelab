@@ -7,7 +7,8 @@ metadata:
     app.kubernetes.io/part-of: argocd
 data:
   policy.csv: |
+    p, role:authenticated, *, *, *, deny
     g, zmuda-pro:argocd-admins, role:admin
-  policy.default: role:readonly
+  policy.default: role:authenticated
   scopes: '[groups, email]'
   policy.matchMode: 'glob'
