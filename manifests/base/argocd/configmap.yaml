@@ -9,5 +9,5 @@ data:
   policy.csv: |
     g, zmuda-pro:argocd-admins, role:admin
   policy.default: role:readonly
-  scopes: '[cognito:groups, email]'
+  scopes: '[groups, email]'
   policy.matchMode: 'glob'
