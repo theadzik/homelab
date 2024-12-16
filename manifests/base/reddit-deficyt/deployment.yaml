@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reddit-deficyt
+  labels:
+    app: reddit-deficyt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reddit-deficyt
+  template:
+    metadata:
+      labels:
+        app: reddit-deficyt
+    spec:
+      imagePullSecrets:
+        - name: dockerhub-image-pull-secret
+      containers:
+        - name: reddit-bot
+          image: theadzik/deficytbot:latest
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - secretRef:
+                name: reddit-deficyt-secret
+          volumeMounts:
+            - mountPath: /tmp
+              name: temp
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - "cat /tmp/liveness && rm /tmp/liveness"
+            initialDelaySeconds: 600
+            periodSeconds: 300
+            failureThreshold: 6
+            successThreshold: 1
+      securityContext:
+        runAsUser: 10007
+        runAsGroup: 20007
+        fsGroup: 20007
+      volumes:
+        - name: temp
+          emptyDir: {}
