@@ -426,10 +426,9 @@
   "tudzież": {
     "explanations": [
       "\"Tudzież\" to spójnik używany do łączenia zdań lub innych wyrażeń, które odnoszą się do tych samych przedmiotów, osób lub faktów.",
-      "\"Tudzież\" ma takie znaczenie jak \"oraz\", \"i\" i taką samą interpunkcję - nie stawiamy przed tym wyrazem przecinka.",
-      "Oczywistym błędem będzie każde stwierdzenie połączone przez \"tudzież\", w którym mowa o dwóch wykluczających się opcjach.",
-      "Na przykład \"Farba koloru czerwonego, tudzież zielonego\", gdzie \"tudzież\" zostało pomyłkowo użyte zamiast bardziej pasujących słów \"lub\" lub \"albo\".",
-      "W powyższym przykładzie został też postawiony przecinek przed \"tudzież\" co również jest błędem.",
+      "\"Tudzież\" ma takie samo znaczenie jak \"oraz\" i taką samą interpunkcję, czyli nie stawiamy przed tym wyrazem przecinka",
+      "Błędem jest każde stwierdzenie połączone przez \"tudzież\", w którym mowa o alternatywach czyli dwóch wykluczających się opcjach.",
+      "Na przykład \"Farba koloru czerwonego, tudzież zielonego\", gdzie \"tudzież\" zostało pomyłkowo użyte zamiast bardziej pasujących słów \"lub\", \"albo\".",
       "Przykładem prawidłowego użycia może być zdanie \"Gościom na spotkanie wyszli wszyscy rajcowie miejscy tudzież pan wójt we własnej osobie.\""
     ],
     "search_rule": "\\btudzie[zż]\\b",
