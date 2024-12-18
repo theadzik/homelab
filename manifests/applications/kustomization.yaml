@@ -7,7 +7,6 @@ resources:
   - dyndns-cloudflare.yaml
   - ingress-nginx.yaml
   - pihole.yaml
-  - reddit-deficyt.yaml
   - reddit-meaningofwords.yaml
   - static-cv.yaml
   - storage.yaml
