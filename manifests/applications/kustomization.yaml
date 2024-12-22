@@ -10,4 +10,5 @@ resources:
   - reddit-meaningofwords.yaml
   - static-cv.yaml
   - storage.yaml
+  - trivy-operator.yaml
   - vaultwarden.yaml
