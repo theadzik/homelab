@@ -1,5 +1,5 @@
 fastapi[standard]==0.115.6
 torch==2.5.1
-transformers==4.46.3
+transformers==4.47.0
 --index-url https://download.pytorch.org/whl/cpu
 --extra-index-url https://pypi.org/simple
