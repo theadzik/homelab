@@ -1,0 +1,43 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: trivy-operator
+  annotations:
+    argocd.argoproj.io/sync-wave: "10" # Install after all apps
+spec:
+  project: default
+  source:
+    chart: trivy-operator
+    repoURL: https://aquasecurity.github.io/helm-charts/
+    targetRevision: 0.25.0
+    helm:
+      releaseName: trivy-operator
+      valuesObject:
+        operator:
+          scanJobTimeout: 60m
+          vulnerabilityScannerEnabled: true
+          configAuditScannerEnabled: false
+          rbacAssessmentScannerEnabled: false
+          infraAssessmentScannerEnabled: false
+          exposedSecretScannerEnabled: false
+        trivy:
+          resources:
+            requests:
+              cpu: 100m
+              memory: 4Gi
+              ephemeralStorage: "2Gi"
+            limits:
+              cpu: 1
+              memory: 4Gi
+              ephemeralStorage: "2Gi"
+          server:
+            resources: null
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: trivy-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
