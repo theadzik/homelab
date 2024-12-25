@@ -6,6 +6,7 @@ resources:
   - cert-manager.yaml
   - dyndns-cloudflare.yaml
   - ingress-nginx.yaml
+  - kube-prometheus-stack.yaml
   - pihole.yaml
   - reddit-meaningofwords.yaml
   - static-cv.yaml
