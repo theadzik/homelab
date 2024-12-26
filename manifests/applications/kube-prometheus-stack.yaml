@@ -17,6 +17,24 @@ spec:
         releaseName: monitoring
         valuesObject:
           grafana:
+            dashboardProviders:
+              dashboardproviders.yaml:
+                apiVersion: 1
+                providers:
+                  - name: 'default'
+                    orgId: 1
+                    folder: ''
+                    type: file
+                    disableDeletion: false
+                    editable: true
+                    options:
+                      path: /var/lib/grafana/dashboards/default
+            dashboards:
+              default:
+                trivy-operator:
+                  gnetId: 17813
+                  revision: 2
+                  datasource: Prometheus
             grafana.ini:
               security:
                 disable_initial_admin_creation: true
