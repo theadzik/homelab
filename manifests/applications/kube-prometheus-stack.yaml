@@ -16,6 +16,11 @@ spec:
       helm:
         releaseName: monitoring
         valuesObject:
+          prometheus:
+            prometheusSpec:
+              serviceMonitorSelectorNilUsesHelmValues: true
+              serviceMonitorSelector: {}
+              serviceMonitorNamespaceSelector: {}
           grafana:
             dashboardProviders:
               dashboardproviders.yaml:
