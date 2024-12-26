@@ -12,6 +12,8 @@ spec:
     targetRevision: 67.5.0
     helm:
       releaseName: monitoring
+      valueFiles:
+        - kube-prometheus-stack-values-secret.yaml
       valuesObject:
         grafana:
           ingress:
