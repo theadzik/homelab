@@ -19,6 +19,7 @@ spec:
           - $values/manifests/values/kube-prometheus-stack-values-secret.yaml
         valuesObject:
           grafana:
+            assertNoLeakedSecrets: false # we are encrypting our secrets
             ingress:
               enabled: true
               annotations:
