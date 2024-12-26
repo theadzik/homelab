@@ -6,28 +6,31 @@ metadata:
     argocd.argoproj.io/sync-wave: "-1"
 spec:
   project: default
-  source:
-    chart: kube-prometheus-stack
-    repoURL: https://prometheus-community.github.io/helm-charts
-    targetRevision: 67.5.0
-    helm:
-      releaseName: monitoring
-      valueFiles:
-        - kube-prometheus-stack-values-secret.yaml
-      valuesObject:
-        grafana:
-          ingress:
-            enabled: true
-            annotations:
-              cert-manager.io/cluster-issuer: "lets-encrypt-prod"
-              nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.0.0/16,10.0.0.0/8
-            ingressClassName: nginx
-            hosts:
-              - grafana.zmuda.pro
-            tls:
-              - secretName: grafana-general-tls
-                hosts:
-                  - grafana.zmuda.pro
+  sources:
+    - repoURL: 'https://github.com/theadzik/homelab'
+      targetRevision: HEAD
+      ref: values
+    - repoURL: https://prometheus-community.github.io/helm-charts
+      chart: kube-prometheus-stack
+      targetRevision: 67.5.0
+      helm:
+        releaseName: monitoring
+        valueFiles:
+          - $values/manifests/values/kube-prometheus-stack-values-secret.yaml
+        valuesObject:
+          grafana:
+            ingress:
+              enabled: true
+              annotations:
+                cert-manager.io/cluster-issuer: "lets-encrypt-prod"
+                nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.0.0/16,10.0.0.0/8
+              ingressClassName: nginx
+              hosts:
+                - grafana.zmuda.pro
+              tls:
+                - secretName: grafana-general-tls
+                  hosts:
+                    - grafana.zmuda.pro
   destination:
     server: "https://kubernetes.default.svc"
     namespace: monitoring
