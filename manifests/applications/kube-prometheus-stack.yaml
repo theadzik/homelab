@@ -8,18 +8,42 @@ spec:
   project: default
   sources:
     - repoURL: 'https://github.com/theadzik/homelab'
+      path: manifests/base/kube-prometheus-stack
       targetRevision: HEAD
-      ref: values
     - repoURL: https://prometheus-community.github.io/helm-charts
       chart: kube-prometheus-stack
       targetRevision: 67.5.0
       helm:
         releaseName: monitoring
-        valueFiles:
-          - $values/manifests/values/kube-prometheus-stack-values-secret.yaml
         valuesObject:
           grafana:
-            assertNoLeakedSecrets: false # we are encrypting our secrets
+            grafana.ini:
+              security:
+                disable_initial_admin_creation: true
+              server:
+                domain: grafana.zmuda.pro
+                root_url: "https://%(domain)s/"
+              auth.basic:
+                enabled: false
+                disable_login_form: true
+              auth.github:
+                enabled: true
+                allow_sign_up: true
+                scopes: user:email,read:org
+                auth_url: https://github.com/login/oauth/authorize
+                token_url: https://github.com/login/oauth/access_token
+                api_url: https://api.github.com/user
+                team_ids: "11819441"
+                allowed_organizations: "zmuda-pro"
+                client_id: "Ov23liXtOjYoqnMCxFa5"
+                client_secret: "$__file{/etc/secrets/grafana-secret/client_secret}"
+                role_attribute_path: contains(groups[*], '@zmuda-pro/admins') && 'GrafanaAdmin'
+            extraSecretMounts:
+              - name: grafana-secret
+                secretName: github-client-secret
+                defaultMode: 0440
+                mountPath: /etc/secrets/grafana-secret
+                readOnly: true
             ingress:
               enabled: true
               annotations:
