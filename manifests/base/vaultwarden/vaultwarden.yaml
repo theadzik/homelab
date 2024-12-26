@@ -38,6 +38,19 @@ spec:
           securityContext:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 10001
+            runAsGroup: 20001
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              memory: "32Mi"
+              cpu: "10m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
       containers:
         - name: vaultwarden
           image: vaultwarden/server:latest
@@ -47,6 +60,19 @@ spec:
               protocol: "TCP"
           securityContext:
             allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 10001
+            runAsGroup: 20001
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              memory: "32Mi"
+              cpu: "10m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
           env:
             - name: DOMAIN
               value: 'https://vault.zmuda.pro'
@@ -103,6 +129,8 @@ spec:
         runAsUser: 10001
         runAsGroup: 20001
         fsGroup: 20001
+        seccompProfile:
+          type: RuntimeDefault
       volumes:
         - name: data
           persistentVolumeClaim:
