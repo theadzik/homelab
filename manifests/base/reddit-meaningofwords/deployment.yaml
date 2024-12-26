@@ -37,6 +37,14 @@ spec:
           securityContext:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
+            runAsUser: 10005
+            runAsGroup: 20005
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
           livenessProbe:
             exec:
               command:
@@ -47,6 +55,13 @@ spec:
             periodSeconds: 300
             failureThreshold: 6
             successThreshold: 1
+          resources:
+            requests:
+              memory: "32Mi"
+              cpu: "10m"
+            limits:
+              memory: "128Mi"
+              cpu: "200m"
       securityContext:
         runAsUser: 10005
         runAsGroup: 20005
@@ -109,3 +124,19 @@ spec:
               name: http-port
           securityContext:
             allowPrivilegeEscalation: false
+            runAsUser: 10009
+            runAsGroup: 20009
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              memory: "384Mi"
+              cpu: "10m"
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
