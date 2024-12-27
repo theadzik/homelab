@@ -115,7 +115,7 @@ spec:
               path: /health
               port: http-port
             periodSeconds: 30
-            initialDelaySeconds: 20
+            initialDelaySeconds: 60
             failureThreshold: 2
             successThreshold: 1
           ports:
@@ -137,6 +137,13 @@ spec:
             limits:
               memory: "512Mi"
               cpu: "1"
+          volumeMounts:
+            - mountPath: /.cache
+              name: cache
       securityContext:
         seccompProfile:
           type: RuntimeDefault
+        readOnlyRootFilesystem: true
+      volumes:
+        - name: cache
+          emptyDir: {}
