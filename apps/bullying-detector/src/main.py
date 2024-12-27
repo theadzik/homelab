@@ -32,7 +32,7 @@ app = FastAPI()
 
 
 @app.post("/")
-def detect_bullying(body: Item):
+async def detect_bullying(body: Item):
     body_dict = body.model_dump()
     prediction = nlp(body_dict["text"])[0]
     prediction["label"] = Bullying[prediction["label"]].value
@@ -41,7 +41,7 @@ def detect_bullying(body: Item):
 
 
 @app.get("/health", status_code=status.HTTP_200_OK)
-def health():
+async def health():
     prediction = nlp("Jestem zdrowy!")[0]
     prediction["label"] = Bullying[prediction["label"]].value
     return {
