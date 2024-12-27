@@ -123,6 +123,7 @@ spec:
               protocol: "TCP"
               name: http-port
           securityContext:
+            readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
             runAsUser: 10009
             runAsGroup: 20009
@@ -143,7 +144,6 @@ spec:
       securityContext:
         seccompProfile:
           type: RuntimeDefault
-        readOnlyRootFilesystem: true
       volumes:
         - name: cache
           emptyDir: {}
