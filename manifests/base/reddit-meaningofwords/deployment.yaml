@@ -115,8 +115,8 @@ spec:
               path: /health
               port: http-port
             periodSeconds: 30
-            initialDelaySeconds: 60
-            failureThreshold: 2
+            initialDelaySeconds: 180
+            failureThreshold: 3
             successThreshold: 1
           ports:
             - containerPort: 8080
@@ -135,8 +135,8 @@ spec:
               memory: "384Mi"
               cpu: "10m"
             limits:
-              memory: "512Mi"
-              cpu: "1"
+              memory: "768Mi"
+              cpu: "500m"
           volumeMounts:
             - mountPath: /.cache
               name: cache
