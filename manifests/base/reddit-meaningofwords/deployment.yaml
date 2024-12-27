@@ -133,11 +133,11 @@ spec:
                 - ALL
           resources:
             requests:
-              memory: "384Mi"
-              cpu: "50m"
-#            limits:
-#              memory: "768Mi"
-#              cpu: "500m"
+              memory: "512Mi"
+              cpu: "100m"
+            limits:
+              memory: "1Gi"
+              cpu: "1"
           volumeMounts:
             - mountPath: /.cache
               name: cache
