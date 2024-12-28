@@ -14,7 +14,7 @@ spec:
       chart: kube-prometheus-stack
       targetRevision: 67.5.0
       helm:
-        releaseName: monitoring
+        releaseName: kube-prometheus-stack
         valuesObject:
           prometheus:
             prometheusSpec:
