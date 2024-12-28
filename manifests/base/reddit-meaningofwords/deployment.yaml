@@ -107,16 +107,16 @@ spec:
                 name: bullying-detector-config
           readinessProbe:
             httpGet:
-              path: /health
+              path: /readyz
               port: http-port
             initialDelaySeconds: 60
             periodSeconds: 30
-            timeoutSeconds: 2
+            timeoutSeconds: 1
           livenessProbe:
             httpGet:
-              path: /health
+              path: /alivez
               port: http-port
-            periodSeconds: 30
+            periodSeconds: 120
             initialDelaySeconds: 120
             failureThreshold: 3
             successThreshold: 1

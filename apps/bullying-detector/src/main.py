@@ -40,12 +40,19 @@ async def detect_bullying(body: Item):
     return prediction
 
 
-@app.get("/health", status_code=status.HTTP_200_OK)
-async def health():
-    prediction = nlp("Jestem zdrowy!")[0]
+@app.get("/readyz", status_code=status.HTTP_200_OK)
+async def ready():
+    return {
+        "ready": True
+    }
+
+
+@app.get("/alivez", status_code=status.HTTP_200_OK)
+async def alive():
+    prediction = nlp("Jestem żywy!")[0]
     prediction["label"] = Bullying[prediction["label"]].value
     return {
-        "healthy": True,
+        "alive": True,
         "prediction": prediction
     }
 
