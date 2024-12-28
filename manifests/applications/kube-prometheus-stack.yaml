@@ -79,6 +79,11 @@ spec:
                 - secretName: grafana-general-tls
                   hosts:
                     - grafana.zmuda.pro
+          kubeEtcd:
+            enabled: false
+          defaultRules:
+            rules:
+              etcd: false
   destination:
     server: "https://kubernetes.default.svc"
     namespace: monitoring
