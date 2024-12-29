@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jellyfin
+  labels:
+    app: jellyfin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jellyfin
+  template:
+    metadata:
+      labels:
+        app: jellyfin
+    spec:
+      imagePullSecrets:
+        - name: dockerhub-image-pull-secret
+      containers:
+        - name: nginx
+          image: jellyfin/jellyfin:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8096
+              protocol: "TCP"
+              name: jellyfin
+            - containerPort: 80
+              protocol: "TCP"
+              name: http
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+            - mountPath: /cache
+              name: cache
+            - mountPath: /config
+              name: config
+          env:
+            - name: "JELLYFIN_PublishedServerUrl"
+              value: "https://jellyfin.zmuda.pro"
+      securityContext:
+        runAsUser: 10003
+        runAsGroup: 20003
+        fsGroup: 20003
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: cache
+          emptyDir: {}
+        - name: config
+          emptyDir: {}

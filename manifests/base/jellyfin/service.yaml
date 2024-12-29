@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: jellyfin
+  name: jellyfin-http
+spec:
+  ports:
+    - port: 8096
+      protocol: TCP
+      targetPort: 8096
+      name: jellyfin
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+      name: http
+  selector:
+    app: jellyfin
+  type: ClusterIP

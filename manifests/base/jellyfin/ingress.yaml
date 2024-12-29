@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jellyfin
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt-prod"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.0.0/16,10.0.0.0/8
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - jellyfin.zmuda.pro
+      secretName: jellyfin-tls
+  rules:
+    - host: jellyfin.zmuda.pro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: jellyfin-http
+                port:
+                  name: jellyfin
