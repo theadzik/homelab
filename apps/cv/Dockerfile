@@ -1,4 +1,4 @@
-FROM ruby:3.3-bookworm AS builder
+FROM ruby:3.4-bookworm AS builder
 ARG JEKYLL_ENV=production
 RUN gem install jekyll bundler
 
