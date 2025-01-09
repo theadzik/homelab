@@ -14,6 +14,8 @@ spec:
       labels:
         app: pihole
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: server-1
       imagePullSecrets:
         - name: dockerhub-image-pull-secret
       containers:
