@@ -33,7 +33,7 @@ spec:
             - mountPath: "/reddit"
               name: config-volume
             - mountPath: /database
-              name: bully-block
+              name: database
           securityContext:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
@@ -74,9 +74,9 @@ spec:
         - name: config-volume
           configMap:
             name: reddit-meaningofwords-files
-        - name: bully-block
+        - name: database
           persistentVolumeClaim:
-            claimName: bully-block
+            claimName: bot-database
 
 ---
 
