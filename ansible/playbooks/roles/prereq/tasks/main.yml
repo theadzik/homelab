@@ -1,4 +1,14 @@
 ---
+- name: Ensure wget is present.
+  ansible.builtin.apt:
+    name: wget
+    state: present
+
+- name: Ensure curl is present.
+  ansible.builtin.apt:
+    name: curl
+    state: present
+
 - name: Install Dependent Ubuntu Packages
   when: ansible_distribution in ['Ubuntu']
   ansible.builtin.apt:
