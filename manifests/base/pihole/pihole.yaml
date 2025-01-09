@@ -59,21 +59,11 @@ spec:
               name: pihole-main
             - mountPath: /etc/dnsmasq.d
               name: pihole-dnsmasqd
-            - mountPath: /temp/etc/pihole
-              name: pihole-main-temp
-            - mountPath: /temp/etc/dnsmasq.d
-              name: pihole-dnsmasqd-temp
       volumes:
         - name: pihole-main
           persistentVolumeClaim:
-            claimName: pihole-main
-        - name: pihole-dnsmasqd
-          persistentVolumeClaim:
-            claimName: pihole-dnsmasqd
-        - name: pihole-main-temp
-          persistentVolumeClaim:
             claimName: main-pvc
-        - name: pihole-dnsmasqd-temp
+        - name: pihole-dnsmasqd
           persistentVolumeClaim:
             claimName: dnsmasqd-pvc
 
