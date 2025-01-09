@@ -75,3 +75,31 @@ spec:
       storage: 128Mi
   storageClassName: "local-storage"
   volumeName: pihole-dnsmasqd
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: main-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 512Mi
+  storageClassName: longhorn
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dnsmasqd-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 128Mi
+  storageClassName: longhorn

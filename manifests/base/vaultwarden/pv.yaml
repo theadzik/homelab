@@ -18,7 +18,7 @@ metadata:
   name: vaultwarden-backup
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 128Mi
