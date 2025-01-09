@@ -1,56 +1,4 @@
 apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: vaultwarden-main
-  labels:
-    type: local
-spec:
-  storageClassName: local-storage
-  persistentVolumeReclaimPolicy: Retain
-  capacity:
-    storage: 128Mi
-  accessModes:
-    - ReadWriteMany
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - server-1
-  local:
-    path: "/mnt/kubernetes-disks/vaultwarden/main"
-
----
-
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: vaultwarden-backup
-  labels:
-    type: local
-spec:
-  storageClassName: local-storage
-  persistentVolumeReclaimPolicy: Retain
-  capacity:
-    storage: 128Mi
-  accessModes:
-    - ReadWriteOnce
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - server-1
-  local:
-    path: "/mnt/kubernetes-disks/vaultwarden/backup"
-
----
-
-apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: vaultwarden-main
@@ -60,8 +8,7 @@ spec:
   resources:
     requests:
       storage: 128Mi
-  storageClassName: "local-storage"
-  volumeName: vaultwarden-main
+  storageClassName: "longhorn"
 
 ---
 
@@ -75,5 +22,4 @@ spec:
   resources:
     requests:
       storage: 128Mi
-  storageClassName: "local-storage"
-  volumeName: vaultwarden-backup
+  storageClassName: "longhorn"
