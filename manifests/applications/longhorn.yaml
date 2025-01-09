@@ -18,6 +18,8 @@ spec:
       targetRevision: v1.7.2
       helm:
         valuesObject:
+          persistence:
+            reclaimPolicy: Retain
           ingress:
             enabled: true
             ingressClassName: nginx
