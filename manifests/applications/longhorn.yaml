@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: longhorn
+  annotations:
+    argocd.argoproj.io/sync-wave: "-10"
+spec:
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+  project: default
+  sources:
+    - chart: longhorn
+      repoURL: https://charts.longhorn.io/
+      targetRevision: v1.7.2
+      helm:
+        valuesObject:
+          ingress:
+            enabled: true
+            ingressClassName: nginx
+            host: longhorn.zmuda.pro
+            tls: true
+            secureBackends: false
+            tlsSecret: longhorn-tls
+            annotations:
+              cert-manager.io/cluster-issuer: "lets-encrypt-prod"
+              nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.0.0/16,10.0.0.0/8
+          preUpgradeChecker:
+            jobEnabled: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: longhorn-system

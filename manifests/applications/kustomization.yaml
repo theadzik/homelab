@@ -7,6 +7,7 @@ resources:
   - dyndns-cloudflare.yaml
   - ingress-nginx.yaml
   - kube-prometheus-stack.yaml
+  - longhorn.yaml
   - pihole.yaml
   - reddit-meaningofwords.yaml
   - static-cv.yaml

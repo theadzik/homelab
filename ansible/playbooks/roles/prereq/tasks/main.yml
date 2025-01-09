@@ -9,6 +9,16 @@
     name: curl
     state: present
 
+- name: Ensure open-iscsi is present. # Needed for longhorn https://longhorn.io/docs/1.7.2/deploy/install/#installing-open-iscsi
+  ansible.builtin.apt:
+    name: open-iscsi
+    state: present
+
+- name: Ensure nfs-common is present. # Needed for longhorn https://longhorn.io/docs/1.7.2/deploy/install/#installing-nfsv4-client
+  ansible.builtin.apt:
+    name: nfs-common
+    state: present
+
 - name: Install Dependent Ubuntu Packages
   when: ansible_distribution in ['Ubuntu']
   ansible.builtin.apt:
