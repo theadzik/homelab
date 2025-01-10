@@ -98,9 +98,9 @@ spec:
                   name: vw-config
                   key: PUSH_INSTALLATION_KEY
             - name: SMTP_HOST
-              value: mail.spacemail.com
+              value: smtp-relay.gmail.com
             - name: HELO_NAME
-              value: mail.spacemail.com
+              value: smtp-relay.gmail.com
             - name: SMTP_AUTH_MECHANISM
               value: Login
             - name: SMTP_SECURITY
