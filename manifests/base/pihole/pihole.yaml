@@ -25,9 +25,9 @@ spec:
           readinessProbe:
             exec:
               command: ['dig', '@127.0.0.1', 'cloudflare.com']
-            timeoutSeconds: 20
+            timeoutSeconds: 5
             initialDelaySeconds: 5
-            periodSeconds: 60
+            periodSeconds: 30
           livenessProbe:
             tcpSocket:
               port: 53
