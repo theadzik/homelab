@@ -57,17 +57,26 @@ spec:
             - name: PIHOLE_GID
               value: "20004"
           volumeMounts:
+            - mountPath: /etc/pihole/custom.list
+              name: a-records
+              subPath: custom.list
+              readOnly: true
+            - mountPath: /etc/dnsmasq.d/05-pihole-custom-cname.conf
+              name: cname-records
+              subPath: 05-pihole-custom-cname.conf
+              readOnly: true
             - mountPath: /etc/pihole
               name: pihole-main
-            - mountPath: /etc/dnsmasq.d
-              name: pihole-dnsmasqd
       volumes:
+        - name: a-records
+          configMap:
+            name: a-records
+        - name: cname-records
+          configMap:
+            name: cname-records
         - name: pihole-main
           persistentVolumeClaim:
             claimName: main-pvc
-        - name: pihole-dnsmasqd
-          persistentVolumeClaim:
-            claimName: dnsmasqd-pvc
 
 ---
 

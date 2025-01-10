@@ -9,17 +9,3 @@ spec:
     requests:
       storage: 256Mi
   storageClassName: longhorn
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: dnsmasqd-pvc
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 128Mi
-  storageClassName: longhorn
