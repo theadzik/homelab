@@ -7,4 +7,5 @@ resources:
   - service.yaml
   - ingress.yaml
   - nwp.yaml
+  - pvc.yaml
   - ../image-pull-secret

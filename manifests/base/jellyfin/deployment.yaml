@@ -14,6 +14,8 @@ spec:
       labels:
         app: jellyfin
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: server-2
       imagePullSecrets:
         - name: dockerhub-image-pull-secret
       containers:
@@ -29,7 +31,7 @@ spec:
               name: http
           securityContext:
             readOnlyRootFilesystem: true
-            allowPrivilegeEscalation: false
+            privileged: true
           volumeMounts:
             - mountPath: /tmp
               name: tmp
@@ -37,17 +39,41 @@ spec:
               name: cache
             - mountPath: /config
               name: config
+            - mountPath: /media
+              name: media
+            - mountPath: /data
+              name: data
+            - mountPath: /dev/dri
+              name: gpu
           env:
+            - name: "JELLYFIN_DATA_DIR"
+              value: "/data"
+            - name: "JELLYFIN_CONFIG_DIR"
+              value: "/config"
+            - name: "JELLYFIN_CACHE_DIR"
+              value: "/cache"
             - name: "JELLYFIN_PublishedServerUrl"
               value: "https://jellyfin.zmuda.pro"
+            - name: "HOSTNAME"
+              value: "jellyfin.zmuda.pro"
       securityContext:
         runAsUser: 10003
         runAsGroup: 20003
         fsGroup: 20003
       volumes:
+        - name: media
+          persistentVolumeClaim:
+            claimName: media-pvc
+        - name: data
+          persistentVolumeClaim:
+            claimName: data-pvc
+        - name: config
+          persistentVolumeClaim:
+            claimName: config-pvc
         - name: tmp
           emptyDir: {}
         - name: cache
           emptyDir: {}
-        - name: config
-          emptyDir: {}
+        - name: gpu
+          hostPath:
+            path: /dev/dri
