@@ -42,20 +42,13 @@ spec:
           env:
             - name: "TZ"
               values: "Europe/Warsaw"
-#            - name: "PUID"
-#              value: "1000"
-#            - name: "PGID"
-#              value: "1000"
       volumes:
         - name: media
-          emptyDir: {}
-#          persistentVolumeClaim:
-#            claimName: media-pvc
+          persistentVolumeClaim:
+            claimName: media-pvc
         - name: downloads
-          emptyDir: {}
-#          persistentVolumeClaim:
-#            claimName: downloads-deluge-pvc
+          persistentVolumeClaim:
+            claimName: downloads-deluge-pvc
         - name: config
-          emptyDir: {}
-#          persistentVolumeClaim:
-#            claimName: config-deluge-pvc
+          persistentVolumeClaim:
+            claimName: config-deluge-pvc

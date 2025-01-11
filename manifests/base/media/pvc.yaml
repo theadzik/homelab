@@ -63,7 +63,7 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 256Mi
+      storage: 512Mi
   storageClassName: longhorn
 
 ---
