@@ -16,10 +16,15 @@ spec:
       repoURL: https://intel.github.io/helm-charts/
       targetRevision: 0.31.1
       helm:
-        releaseName: device-plugin-operator
+        releaseName: operator
+    - chart: intel-device-plugins-gpu
+      repoURL: https://intel.github.io/helm-charts/
+      targetRevision: 0.31.1
+      helm:
+        releaseName: gpu
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: gpu-device-system
+    namespace: intel-system
   syncPolicy:
     automated:
       prune: true
