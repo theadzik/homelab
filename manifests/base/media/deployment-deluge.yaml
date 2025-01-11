@@ -42,21 +42,20 @@ spec:
           env:
             - name: "TZ"
               values: "Europe/Warsaw"
-            - name: "PUID"
-              value: "10003"
-            - name: "PGID"
-              value: "20003"
-      securityContext:
-        runAsUser: 10003
-        runAsGroup: 20003
-        fsGroup: 20003
+#            - name: "PUID"
+#              value: "1000"
+#            - name: "PGID"
+#              value: "1000"
       volumes:
         - name: media
-          persistentVolumeClaim:
-            claimName: media-pvc
+          emptyDir: {}
+#          persistentVolumeClaim:
+#            claimName: media-pvc
         - name: downloads
-          persistentVolumeClaim:
-            claimName: downloads-deluge-pvc
+          emptyDir: {}
+#          persistentVolumeClaim:
+#            claimName: downloads-deluge-pvc
         - name: config
-          persistentVolumeClaim:
-            claimName: config-deluge-pvc
+          emptyDir: {}
+#          persistentVolumeClaim:
+#            claimName: config-deluge-pvc
