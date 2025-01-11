@@ -34,7 +34,6 @@ spec:
               cpu: 100m
               memory: 1Gi
           securityContext:
-            readOnlyRootFilesystem: true
             privileged: true
           volumeMounts:
             - mountPath: /tmp
@@ -60,10 +59,6 @@ spec:
               value: "https://jellyfin.zmuda.pro"
             - name: "HOSTNAME"
               value: "jellyfin.zmuda.pro"
-      securityContext:
-        runAsUser: 10003
-        runAsGroup: 20003
-        fsGroup: 20003
       volumes:
         - name: media
           persistentVolumeClaim:
