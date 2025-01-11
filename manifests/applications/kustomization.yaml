@@ -6,6 +6,7 @@ resources:
   - cert-manager.yaml
   - dyndns-cloudflare.yaml
   - ingress-nginx.yaml
+  - intel-device-plugin.yaml
   - kube-prometheus-stack.yaml
   - longhorn.yaml
   - media.yaml
