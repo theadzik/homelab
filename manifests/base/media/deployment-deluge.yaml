@@ -42,6 +42,14 @@ spec:
           env:
             - name: "TZ"
               values: "Europe/Warsaw"
+            - name: "PUID"
+              value: "10003"
+            - name: "PGID"
+              value: "20003"
+      securityContext:
+        runAsUser: 10003
+        runAsGroup: 20003
+        fsGroup: 20003
       volumes:
         - name: media
           persistentVolumeClaim:
