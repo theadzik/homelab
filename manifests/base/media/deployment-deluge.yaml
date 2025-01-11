@@ -32,9 +32,6 @@ spec:
             requests:
               cpu: 100m
               memory: 1Gi
-          securityContext:
-            readOnlyRootFilesystem: false
-            privileged: false
           volumeMounts:
             - mountPath: /config
               name: config
@@ -45,9 +42,6 @@ spec:
           env:
             - name: "TZ"
               values: "Europe/Warsaw"
-      securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
       volumes:
         - name: media
           persistentVolumeClaim:
