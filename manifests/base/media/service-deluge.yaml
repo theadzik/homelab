@@ -29,7 +29,7 @@ spec:
       targetPort: 6881
       name: inbound-tpc
     - port: 6881
-      protocol: udp
+      protocol: UDP
       targetPort: 6881
       name: inbound-udp
   selector:
