@@ -16,6 +16,22 @@ spec:
       helm:
         releaseName: kube-prometheus-stack
         valuesObject:
+          alertmanager:
+            alertmanagerSpec:
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 64Mi
+          nodeExporter:
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+          prometheusOperator:
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
           prometheus:
             prometheusSpec:
               serviceMonitorSelectorNilUsesHelmValues: false
