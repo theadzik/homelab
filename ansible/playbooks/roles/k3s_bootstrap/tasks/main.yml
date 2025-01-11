@@ -42,6 +42,7 @@
     ansible_python_interpreter: "{{ venv_path }}/bin/python"
 - name: Install ArgoCD.
   kubernetes.core.k8s:
+    apply: true
     namespace: "{{ argocd_namespace }}"
     state: present
     src: "{{ install_manifest_dest }}"
@@ -55,6 +56,7 @@
     mode: "0644"
 - name: Bootstrap ArgoCD.
   kubernetes.core.k8s:
+    apply: true
     namespace: "{{ argocd_namespace }}"
     state: present
     src: "{{ boostrap_manifest_dest }}"

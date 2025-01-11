@@ -9,9 +9,10 @@
     owner: root
     group: root
     mode: 0755
+  register: k8s_install_script
 
 - name: Download K3s binary
-  when: airgap_dir is undefined
+  when: airgap_dir is undefined and k8s_install_script is changed
   ansible.builtin.command:
     cmd: /usr/local/bin/k3s-install.sh
   environment:
