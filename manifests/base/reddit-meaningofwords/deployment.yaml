@@ -59,9 +59,6 @@ spec:
             requests:
               memory: "96Mi"
               cpu: "20m"
-            limits:
-              memory: "128Mi"
-              cpu: "200m"
       securityContext:
         runAsUser: 10005
         runAsGroup: 20005
@@ -138,9 +135,6 @@ spec:
             requests:
               memory: "768Mi"
               cpu: "20m"
-            limits:
-              memory: "1Gi"
-              cpu: "200m"
           volumeMounts:
             - mountPath: /.cache
               name: cache
