@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: media
+resources:
+  - deployment-deluge.yaml
+  - deployment-jellyfin.yaml
+  - ingress-deluge.yaml
+  - ingress-jellyfin.yaml
+  - namespace.yaml
+  - nwp.yaml
+  - pvc.yaml
+  - service-deluge.yaml
+  - service-jellyfin.yaml
+  - ../image-pull-secret

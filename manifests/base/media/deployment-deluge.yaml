@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deluge
+  labels:
+    app: deluge
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deluge
+  template:
+    metadata:
+      labels:
+        app: deluge
+    spec:
+      containers:
+        - name: deluge
+          image: lscr.io/linuxserver/deluge:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8112
+              protocol: "TCP"
+              name: web
+            - containerPort: 6881
+              protocol: "TCP"
+              name: inbound-tpc
+            - containerPort: 6881
+              protocol: "UDP"
+              name: inbound-udp
+          resources:
+            requests:
+              cpu: 100m
+              memory: 1Gi
+          securityContext:
+            readOnlyRootFilesystem: false
+            privileged: false
+          volumeMounts:
+            - mountPath: /config
+              name: config
+            - mountPath: /downloads
+              name: downloads
+            - mountPath: /media
+              name: media
+          env:
+            - name: "TZ"
+              values: "Europe/Warsaw"
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+      volumes:
+        - name: media
+          persistentVolumeClaim:
+            claimName: media-pvc
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: downloads-deluge-pvc
+        - name: config
+          persistentVolumeClaim:
+            claimName: config-deluge-pvc
