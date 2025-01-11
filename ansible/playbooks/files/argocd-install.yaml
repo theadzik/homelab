@@ -23352,6 +23352,10 @@ spec:
           name: webhook
         - containerPort: 8080
           name: metrics
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -23459,6 +23463,10 @@ spec:
         - containerPort: 5556
         - containerPort: 5557
         - containerPort: 5558
+        resources:
+          requests:
+            cpu: 10m
+            memory: 300Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -23577,6 +23585,10 @@ spec:
           tcpSocket:
             port: 9001
         name: argocd-notifications-controller
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -23662,6 +23674,10 @@ spec:
         name: redis
         ports:
         - containerPort: 6379
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -23950,6 +23966,10 @@ spec:
         ports:
         - containerPort: 8081
         - containerPort: 8084
+        resources:
+          requests:
+            cpu: 10m
+            memory: 200Mi
         readinessProbe:
           httpGet:
             path: /healthz
@@ -24366,6 +24386,10 @@ spec:
             port: 8080
           initialDelaySeconds: 3
           periodSeconds: 30
+        resources:
+          requests:
+            cpu: 10m
+            memory: 100Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -24688,6 +24712,10 @@ spec:
             port: 8082
           initialDelaySeconds: 5
           periodSeconds: 10
+        resources:
+          requests:
+            cpu: 300m
+            memory: 700Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
