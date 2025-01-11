@@ -14,6 +14,7 @@ spec:
       labels:
         app: dyndns-cloudflare
     spec:
+      priorityClassName: high-priority
       imagePullSecrets:
         - name: dockerhub-image-pull-secret
       containers:

@@ -16,6 +16,7 @@ spec:
         app: vaultwarden
         ingress: exposed
     spec:
+      priorityClassName: high-priority
       imagePullSecrets:
         - name: dockerhub-image-pull-secret
       initContainers:

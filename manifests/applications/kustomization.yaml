@@ -10,6 +10,7 @@ resources:
   - kube-prometheus-stack.yaml
   - longhorn.yaml
   - pihole.yaml
+  - priority-classes.yaml
   - reddit-meaningofwords.yaml
   - static-cv.yaml
   - storage.yaml

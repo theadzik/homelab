@@ -16,6 +16,7 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/hostname: server-1
+      priorityClassName: high-priority
       imagePullSecrets:
         - name: dockerhub-image-pull-secret
       containers:
