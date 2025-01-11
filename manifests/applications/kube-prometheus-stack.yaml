@@ -22,7 +22,12 @@ spec:
                 requests:
                   cpu: 10m
                   memory: 64Mi
-          nodeExporter:
+          kube-state-metrics:
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+          prometheus-node-exporter:
             resources:
               requests:
                 cpu: 10m
