@@ -38,6 +38,10 @@ spec:
                       requests:
                         storage: 24Gi
           grafana:
+            resources:
+              requests:
+                cpu: 10m
+                memory: 800Mi
             dashboardProviders:
               dashboardproviders.yaml:
                 apiVersion: 1
