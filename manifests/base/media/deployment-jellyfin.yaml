@@ -14,8 +14,6 @@ spec:
       labels:
         app: jellyfin
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: server-2
       imagePullSecrets:
         - name: dockerhub-image-pull-secret
       containers:
@@ -33,6 +31,9 @@ spec:
             requests:
               cpu: 100m
               memory: 1Gi
+              gpu.intel.com/i915: 1
+            limits:
+              gpu.intel.com/i915: 1
           securityContext:
             privileged: true
           volumeMounts:
@@ -46,8 +47,8 @@ spec:
               name: media
             - mountPath: /data
               name: data
-            - mountPath: /dev/dri
-              name: gpu
+#            - mountPath: /dev/dri
+#              name: gpu
           env:
             - name: "JELLYFIN_DATA_DIR"
               value: "/data"
@@ -73,6 +74,6 @@ spec:
           emptyDir: {}
         - name: cache
           emptyDir: {}
-        - name: gpu
-          hostPath:
-            path: /dev/dri
+#        - name: gpu
+#          hostPath:
+#            path: /dev/dri
