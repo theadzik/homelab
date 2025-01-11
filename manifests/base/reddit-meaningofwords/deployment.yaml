@@ -58,7 +58,7 @@ spec:
           resources:
             requests:
               memory: "96Mi"
-              cpu: "10m"
+              cpu: "20m"
             limits:
               memory: "128Mi"
               cpu: "200m"
@@ -136,11 +136,11 @@ spec:
                 - ALL
           resources:
             requests:
-              memory: "512Mi"
-              cpu: "100m"
+              memory: "768Mi"
+              cpu: "20m"
             limits:
               memory: "1Gi"
-              cpu: "1"
+              cpu: "200m"
           volumeMounts:
             - mountPath: /.cache
               name: cache
