@@ -46,11 +46,8 @@ spec:
                 - ALL
           resources:
             requests:
-              memory: "64Mi"
-              cpu: "10m"
-            limits:
               memory: "128Mi"
-              cpu: "500m"
+              cpu: "100m"
       containers:
         - name: vaultwarden
           image: vaultwarden/server:latest
@@ -68,11 +65,8 @@ spec:
                 - ALL
           resources:
             requests:
-              memory: "32Mi"
-              cpu: "10m"
-            limits:
               memory: "128Mi"
-              cpu: "500m"
+              cpu: "100m"
           env:
             - name: DOMAIN
               value: 'https://vault.zmuda.pro'
