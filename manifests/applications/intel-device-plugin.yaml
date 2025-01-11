@@ -12,7 +12,7 @@ spec:
       targetRevision: 0.17.0
       helm:
         releaseName: nfd
-    - chart: device-plugin-operator
+    - chart: intel-device-plugins-operator
       repoURL: https://intel.github.io/helm-charts/
       targetRevision: 0.31.1
       helm:
