@@ -29,6 +29,10 @@ spec:
           volumeMounts:
             - mountPath: /tmp
               name: tmp
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
       securityContext:
         runAsUser: 10003
         runAsGroup: 20003
