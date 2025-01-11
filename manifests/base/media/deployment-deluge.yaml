@@ -41,7 +41,7 @@ spec:
               name: media
           env:
             - name: "TZ"
-              values: "Europe/Warsaw"
+              value: "Europe/Warsaw"
       volumes:
         - name: media
           persistentVolumeClaim:
