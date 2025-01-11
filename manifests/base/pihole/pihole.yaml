@@ -33,6 +33,10 @@ spec:
               port: 53
             initialDelaySeconds: 10
             periodSeconds: 30
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
           ports:
             - containerPort: 53
               protocol: "TCP"
