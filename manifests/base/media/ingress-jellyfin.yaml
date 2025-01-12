@@ -5,7 +5,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: "lets-encrypt-prod"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.0.0/16,10.0.0.0/8
+    nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.0.0/16
 spec:
   ingressClassName: nginx
   tls:
