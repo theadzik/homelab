@@ -2,12 +2,13 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: pihole
 resources:
+  - deployment.yaml
+  - ingress.yaml
   - namespace.yaml
+  - nwp.yaml
   - pv.yaml
   - secret.yaml
-  - ingress.yaml
-  - nwp.yaml
-  - pihole.yaml
+  - services.yaml
   - ../image-pull-secret
 configMapGenerator:
   - name: a-records
