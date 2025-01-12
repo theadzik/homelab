@@ -46,9 +46,6 @@ spec:
               value: "1000"
             - name: "PGID"
               value: "1000"
-          securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
       volumes:
         - name: media
           persistentVolumeClaim:
