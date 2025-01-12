@@ -5,7 +5,7 @@ metadata:
   labels:
     app: pihole
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: pihole
@@ -14,8 +14,15 @@ spec:
       labels:
         app: pihole
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: server-1
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: pihole
+          matchLabelKeys:
+            - pod-template-hash
       priorityClassName: high-priority
       imagePullSecrets:
         - name: dockerhub-image-pull-secret
