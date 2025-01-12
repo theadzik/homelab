@@ -14,6 +14,16 @@ spec:
       releaseName: ingress-nginx
       valuesObject:
         controller:
+          replicaCount: 2
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchLabels:
+                  app: pihole
+              matchLabelKeys:
+                - pod-template-hash
           config:
             allow-snippet-annotations: "true"
             enable-brotli: "true"
