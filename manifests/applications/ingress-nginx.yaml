@@ -14,10 +14,6 @@ spec:
       releaseName: ingress-nginx
       valuesObject:
         controller:
-          metrics:
-            enabled: true
-            serviceMonitor:
-              enabled: true
           config:
             allow-snippet-annotations: "true"
             enable-brotli: "true"
