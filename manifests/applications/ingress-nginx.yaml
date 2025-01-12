@@ -24,6 +24,10 @@ spec:
                   app: pihole
               matchLabelKeys:
                 - pod-template-hash
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
           config:
             allow-snippet-annotations: "true"
             enable-brotli: "true"
