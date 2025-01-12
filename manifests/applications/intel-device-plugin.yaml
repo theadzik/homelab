@@ -24,6 +24,12 @@ spec:
         releaseName: gpu
         valuesObject:
           name: gpudeviceplugin-ds
+  ignoreDifferences:
+    - group: "*"
+      kind: GpuDevicePlugin
+      name: gpudeviceplugin-ds
+      jsonPointers:
+        - /spec/resourceManager
   destination:
     server: "https://kubernetes.default.svc"
     namespace: intel-system
@@ -32,4 +38,5 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
+      - RespectIgnoreDifferences=true
       - CreateNamespace=true
