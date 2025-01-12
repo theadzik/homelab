@@ -28,8 +28,14 @@ spec:
             annotations:
               cert-manager.io/cluster-issuer: "lets-encrypt-prod"
               nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.0.0/16,10.0.0.0/8
+              nginx.ingress.kubernetes.io/auth-type: basic
+              nginx.ingress.kubernetes.io/auth-secret: basic-auth
+              nginx.ingress.kubernetes.io/auth-realm: 'Authentication required'
           preUpgradeChecker:
             jobEnabled: false
+    - path: manifests/base/longhorn
+      repoURL: 'https://github.com/theadzik/homelab'
+      targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
     namespace: longhorn-system
