@@ -42,13 +42,20 @@ spec:
           env:
             - name: "TZ"
               value: "Europe/Warsaw"
+            - name: "PUID"
+              value: "1000"
+            - name: "PGID"
+              value: "1000"
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
       volumes:
         - name: media
           persistentVolumeClaim:
-            claimName: media-pvc
+            claimName: shared-media-pvc
         - name: downloads
           persistentVolumeClaim:
-            claimName: downloads-deluge-pvc
+            claimName: deluge-downloads-pvc
         - name: config
           persistentVolumeClaim:
-            claimName: config-deluge-pvc
+            claimName: deluge-config-pvc
