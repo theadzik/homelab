@@ -23,6 +23,7 @@ metadata:
     app: pihole
   name: pihole-dns
 spec:
+  externalTrafficPolicy: Local # Needed for pihole to get real client IPs
   ports:
     - port: 53
       protocol: UDP
