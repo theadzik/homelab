@@ -35,7 +35,12 @@ spec:
             limits:
               gpu.intel.com/i915: 1
           securityContext:
-            privileged: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            supplementalGroups:
+              - 102
+              - 44
+              - 106
           volumeMounts:
             - mountPath: /tmp
               name: tmp
@@ -47,8 +52,6 @@ spec:
               name: media
             - mountPath: /data
               name: data
-#            - mountPath: /dev/dri
-#              name: gpu
           env:
             - name: "JELLYFIN_DATA_DIR"
               value: "/data"
@@ -74,6 +77,3 @@ spec:
           emptyDir: {}
         - name: cache
           emptyDir: {}
-#        - name: gpu
-#          hostPath:
-#            path: /dev/dri
