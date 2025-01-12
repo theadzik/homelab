@@ -5,6 +5,8 @@ metadata:
   labels:
     app: jellyfin
 spec:
+  strategy:
+    type: Recreate # We only have 1 gpu enabled server
   replicas: 1
   selector:
     matchLabels:
@@ -14,8 +16,6 @@ spec:
       labels:
         app: jellyfin
     spec:
-      strategy:
-        type: Recreate # We only have 1 gpu enabled server
       imagePullSecrets:
         - name: dockerhub-image-pull-secret
       containers:
