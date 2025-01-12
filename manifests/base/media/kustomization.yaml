@@ -7,7 +7,7 @@ resources:
   - ingress-deluge.yaml
   - ingress-jellyfin.yaml
   - namespace.yaml
-  - nwp.yaml
+#  - nwp.yaml
   - pvc.yaml
   - service-deluge.yaml
   - service-jellyfin.yaml
