@@ -58,9 +58,6 @@ spec:
               value: "https://jellyfin.zmuda.pro"
             - name: "HOSTNAME"
               value: "jellyfin.zmuda.pro"
-          securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
       volumes:
         - name: media
           persistentVolumeClaim:
