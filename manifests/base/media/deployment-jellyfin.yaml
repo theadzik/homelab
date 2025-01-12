@@ -14,8 +14,17 @@ spec:
       labels:
         app: jellyfin
     spec:
+      strategy:
+        type: Recreate # We only have 1 gpu enabled server
       imagePullSecrets:
         - name: dockerhub-image-pull-secret
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        supplementalGroups:
+          - 102
+          - 44
+          - 106
       containers:
         - name: jellyfin
           image: jellyfin/jellyfin:latest
@@ -34,13 +43,6 @@ spec:
               gpu.intel.com/i915: 1
             limits:
               gpu.intel.com/i915: 1
-          securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
-            supplementalGroups:
-              - 102
-              - 44
-              - 106
           volumeMounts:
             - mountPath: /tmp
               name: tmp
