@@ -17,13 +17,13 @@ spec:
       targetRevision: 0.31.1
       helm:
         releaseName: operator
-    - chart: intel-device-plugins-gpu
-      repoURL: https://intel.github.io/helm-charts/
-      targetRevision: 0.31.1
-      helm:
-        releaseName: gpu
-        valuesObject:
-          name: gpudeviceplugin-ds
+#    - chart: intel-device-plugins-gpu
+#      repoURL: https://intel.github.io/helm-charts/
+#      targetRevision: 0.31.1
+#      helm:
+#        releaseName: gpu
+#        valuesObject:
+#          name: gpudeviceplugin-ds
   destination:
     server: "https://kubernetes.default.svc"
     namespace: intel-system
