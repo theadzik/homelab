@@ -14,3 +14,9 @@
   become: true
   roles:
     - role: k3s_upgrade
+
+- name: Update kernel and install gpu drivers
+  hosts: gpu
+  become: true
+  roles:
+    - role: gpu_drivers
