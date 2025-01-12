@@ -10,6 +10,8 @@ spec:
     - from:
         - ipBlock:
             cidr: 192.168.0.0/16
+        - ipBlock:
+            cidr: 10.0.0.0/8
       ports:
         - port: 53
           protocol: UDP
