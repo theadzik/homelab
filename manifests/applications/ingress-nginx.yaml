@@ -15,17 +15,18 @@ spec:
       valuesObject:
         controller:
           replicaCount: 2
-          topologySpreadConstraints:
-            - maxSkew: 1
-              topologyKey: kubernetes.io/hostname
-              whenUnsatisfiable: DoNotSchedule
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/component: controller
-                  app.kubernetes.io/instance: ingress-nginx
-                  app.kubernetes.io/name: ingress-nginx
-              matchLabelKeys:
-                - pod-template-hash
+          # We port-forward all internet traffic to serve-1.
+          # If we run on server-2 and traffic comes through server-1 we lose the original IP because
+          # https://github.com/k3s-io/klipper-lb/issues/31
+          affinity:
+            nodeAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+                - weight: 100
+                  preference:
+                    matchExpressions:
+                      - key: kubernetes.io/hostname
+                        operator: In
+                        values: ["server-1"]
           resources:
             requests:
               cpu: 100m
