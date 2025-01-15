@@ -1,0 +1,23 @@
+apiVersion: builtin
+kind: LabelTransformer
+metadata:
+  name: pihole-labels
+labels:
+  app.kubernetes.io/name: pihole
+  app.kubernetes.io/instance: pihole
+fieldSpecs:
+  - kind: Service
+    path: spec/selector
+    create: true
+  - kind: PodDisruptionBudget
+    path: spec/selector/matchLabels
+    create: true
+  - kind: Deployment
+    path: spec/selector/matchLabels
+    create: true
+  - kind: Deployment
+    path: spec/template/metadata/labels
+    create: true
+  - kind: Deployment
+    path: spec/template/spec/topologySpreadConstraints/labelSelector/matchLabels
+    create: true
