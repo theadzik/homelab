@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  APPLICATIONS_PATH: "manifests/applications/"
+  APPLICATIONS_PATH: "${{ github.workspace }}/manifests/applications/"
   SYNC_FILE_NAME: "sync-waves.md"
 
 jobs:
@@ -44,6 +44,6 @@ jobs:
           else
             git add $manifest_path && git commit -m "${{ env.COMMIT_MESSAGE }}"
             git fetch origin
-            git rebase --strategy-option=theirs origin/main
+            git rebase --strategy-option=theirs "origin/${GITHUB_REF_NAME}"
             git push
           fi
