@@ -1,0 +1,44 @@
+name: update-sync-waves-inventory
+on:
+  push:
+    paths:
+      - 'manifests/applications'
+  workflow_dispatch:
+
+env:
+  APPLICATIONS_PATH: "manifests/applications/"
+  SYNC_FILE_NAME: "sync-waves.md"
+jobs:
+  git-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.WORKFLOW_GIT_ACCESS_TOKEN }}
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+      - name: Run Updater
+        run: |
+          python3 .github/scripts/sync-waves-inventory.py
+
+      - name: Commit and push changes
+        env:
+          COMMIT_MESSAGE: Updating ArgoCD sync waves inventory
+          COMMIT_AUTHOR: "github-actions[bot]"
+          COMMIT_EMAIL: "41898282+github-actions[bot]@users.noreply.github.com"
+        run: |
+          git config --global user.name "${{ env.COMMIT_AUTHOR }}"
+          git config --global user.email "${{ env.COMMIT_EMAIL }}"
+
+          manifest_path="$APPLICATIONS_PATH$SYNC_FILE_NAME"
+
+          if git diff --exit-code --quiet "$manifest_path"; then
+            echo "No changes"
+          else
+            git add $manifest_path && git commit -m "${{ env.COMMIT_MESSAGE }}"
+            git fetch origin
+            git rebase --strategy-option=theirs origin/main
+            git push
+          fi
