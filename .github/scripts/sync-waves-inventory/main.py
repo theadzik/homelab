@@ -7,7 +7,6 @@ APPLICATION_FILE_EXTENSION = "*.yaml"
 KUSTOMIZATION_FILE_NAME = "kustomization.yaml"
 
 search_path = os.getenv("APPLICATIONS_PATH", "../../../manifests/applications/")
-print(search_path)
 output_file_name = os.getenv("SYNC_FILE_NAME", "sync-waves.md")
 
 # Get priorities
@@ -17,9 +16,7 @@ with open(search_path+KUSTOMIZATION_FILE_NAME) as file:
     kustomization = yaml.load(file, Loader=yaml.FullLoader)
 
 for filename in kustomization["resources"]:
-    print(filename)
     application_name = filename.split(".")[0]
-    print(search_path+filename)
     application_file = open(search_path+filename, "r")
     sync_priority = 0
     for line in application_file:
