@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
   pull_request:
     paths:
-      - "apps/cv"
+      - "apps/cv/**"
 jobs:
   cv-build:
     runs-on: ubuntu-latest
