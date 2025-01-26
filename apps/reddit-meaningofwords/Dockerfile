@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 USER nonroot:nonroot
 
-ARG APP_VERSION
+ARG APP_VERSION="alpha"
 ENV APP_VERSION=$APP_VERSION
 
 ENTRYPOINT ["python", "main.py"]

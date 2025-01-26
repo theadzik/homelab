@@ -18,10 +18,18 @@ jobs:
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push
+      - name: Build
+        if: github.event_name == 'pull_request'
         uses: docker/build-push-action@v6
         with:
           platforms: "linux/amd64,linux/arm64"
           context: "{{defaultContext}}:apps/custom-argocd"
-          push: ${{ github.event_name != 'pull_request' }}
+          push: false
+      - name: Build and push
+        if: github.event_name != 'pull_request'
+        uses: docker/build-push-action@v6
+        with:
+          platforms: "linux/amd64,linux/arm64"
+          context: "{{defaultContext}}:apps/custom-argocd"
+          push: true
           tags: ${{ vars.DOCKERHUB_USERNAME }}/custom-argocd:latest

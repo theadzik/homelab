@@ -19,14 +19,13 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
       - name: Get image tag
+        if: github.event_name != 'pull_request'
         id: vars
         run: |
           if [ ${event} == "schedule" ]; then
             full_tag=$(git tag -n0 "bullying-detector-*" | tail -n 1)
             echo "docker_tag=$(echo $full_tag | cut -d'-' -f3)" >> $GITHUB_OUTPUT
             echo "git_tag=$full_tag" >> $GITHUB_OUTPUT
-          elif [ ${event} == "pull_request" ]; then
-            echo "docker_tag=test" >> $GITHUB_OUTPUT
           else
             echo "docker_tag=$(echo ${GITHUB_REF} | cut -d'-' -f3)" >> $GITHUB_OUTPUT
           fi
@@ -45,10 +44,18 @@ jobs:
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push
+      - name: Build
+        if: github.event_name == 'pull_request'
         uses: docker/build-push-action@v6
         with:
           platforms: "linux/amd64,linux/arm64"
           context: "{{defaultContext}}:apps/bullying-detector"
-          push: ${{ github.event_name != 'pull_request' }}
+          push: false
+      - name: Build and push
+        if: github.event_name != 'pull_request'
+        uses: docker/build-push-action@v6
+        with:
+          platforms: "linux/amd64,linux/arm64"
+          context: "{{defaultContext}}:apps/bullying-detector"
+          push: true
           tags: ${{ vars.DOCKERHUB_USERNAME }}/bullying-detector:${{steps.vars.outputs.docker_tag }},${{ vars.DOCKERHUB_USERNAME }}/bullying-detector:latest
