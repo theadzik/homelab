@@ -26,7 +26,7 @@ jobs:
             echo "docker_tag=$(echo $full_tag | cut -d'-' -f2)" >> $GITHUB_OUTPUT
             echo "git_tag=$full_tag" >> $GITHUB_OUTPUT
           elif [ ${event} == "pull_request" ]; then
-            echo "git_tag=test" >> $GITHUB_OUTPUT
+            echo "docker_tag=test" >> $GITHUB_OUTPUT
           else
             echo "docker_tag=$(echo ${GITHUB_REF} | cut -d'-' -f2)" >> $GITHUB_OUTPUT
           fi
