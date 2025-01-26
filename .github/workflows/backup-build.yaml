@@ -25,6 +25,8 @@ jobs:
             full_tag=$(git tag -n0 "vw-backup-*" | tail -n 1)
             echo "docker_tag=$(echo $full_tag | cut -d'-' -f3)" >> $GITHUB_OUTPUT
             echo "git_tag=$full_tag" >> $GITHUB_OUTPUT
+          elif [ ${event} == "pull_request" ]; then
+            echo "git_tag=test" >> $GITHUB_OUTPUT
           else
             echo "docker_tag=$(echo ${GITHUB_REF} | cut -d'-' -f3)" >> $GITHUB_OUTPUT
           fi
