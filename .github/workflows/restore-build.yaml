@@ -7,6 +7,8 @@ on:
     - cron: "22 12 * * 6"
   workflow_dispatch:
   pull_request:
+    paths:
+      - "apps/vaultwarden/restore"
 jobs:
   restore-build:
     runs-on: ubuntu-latest

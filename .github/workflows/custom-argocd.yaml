@@ -4,6 +4,8 @@ on:
     - cron: "12 10 * * 6"
   workflow_dispatch:
   pull_request:
+    paths:
+      - "apps/custom-argocd"
 jobs:
   build:
     runs-on: ubuntu-latest
