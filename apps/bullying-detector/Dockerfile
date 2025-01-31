@@ -9,4 +9,6 @@ COPY src/main.py main.py
 
 USER 10005
 
+
+RUN python -c "from fastapi import FastAPI;from fastapi import status;from pydantic import BaseModel;from transformers import pipeline"
 ENTRYPOINT ["fastapi", "run", "main.py", "--port", "8080"]
