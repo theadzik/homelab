@@ -93,6 +93,8 @@ spec:
       labels:
         app: bullying-detector
     spec:
+      nodeSelector:
+        kubernetes.io/arch: amd64 # Some reason it doesn't start on arm64
       imagePullSecrets:
         - name: dockerhub-image-pull-secret
       containers:
