@@ -20,8 +20,8 @@ spec:
           image: pihole/pihole:latest
           imagePullPolicy: IfNotPresent
           readinessProbe:
-            exec:
-              command: ['dig', '@127.0.0.1', 'cloudflare.com']
+            tcpSocket:
+              port: 53
             timeoutSeconds: 1
             initialDelaySeconds: 5
             periodSeconds: 30
