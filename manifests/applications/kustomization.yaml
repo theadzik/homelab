@@ -4,6 +4,7 @@ namespace: argocd
 resources:
   - argocd.yaml
   - cert-manager.yaml
+  - crowdsec.yaml
   - dyndns-cloudflare.yaml
   - ingress-nginx.yaml
   - intel-device-plugin.yaml

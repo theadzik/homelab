@@ -1,0 +1,28 @@
+kind: Application
+metadata:
+  name: crowdsec
+  annotations:
+    argocd.argoproj.io/sync-wave: "-15"
+spec:
+  project: default
+  sources:
+    - chart: crowdsec/crowdsec
+      repoURL: https://crowdsecurity.github.io/helm-charts
+      targetRevision: 0.17.1
+      helm:
+        releaseName: crowdsec
+        valueFiles:
+          - $crowdsec/manifests/base/crowdsec/values.yaml
+    - path: manifests/base/crowdsec
+      repoURL: 'https://github.com/theadzik/homelab'
+      targetRevision: HEAD
+      ref: crowdsec
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: crowdsec
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
