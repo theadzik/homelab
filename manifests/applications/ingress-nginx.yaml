@@ -6,44 +6,19 @@ metadata:
     argocd.argoproj.io/sync-wave: "-10"
 spec:
   project: default
-  source:
-    chart: ingress-nginx
-    repoURL: https://kubernetes.github.io/ingress-nginx
-    targetRevision: 4.11.3
-    helm:
-      releaseName: ingress-nginx
-      valuesObject:
-        controller:
-          replicaCount: 2
-          # We port-forward all internet traffic to serve-1.
-          # If we run on server-2 and traffic comes through server-1 we lose the original IP because
-          # https://github.com/k3s-io/klipper-lb/issues/31
-          affinity:
-            nodeAffinity:
-              preferredDuringSchedulingIgnoredDuringExecution:
-                - weight: 100
-                  preference:
-                    matchExpressions:
-                      - key: kubernetes.io/hostname
-                        operator: In
-                        values: ["server-1"]
-          resources:
-            requests:
-              cpu: 100m
-              memory: 128Mi
-          config:
-            allow-snippet-annotations: "true"
-            enable-brotli: "true"
-            brotli-level: "7"
-            brotli-types: "*"
-            gzip-types: "*"
-            use-gzip: "true"
-            whitelist-source-range: "192.168.0.0/16,10.0.0.0/8,173.245.48.0/20,103.21.244.0/22,103.22.200.0/22,103.31.4.0/22,141.101.64.0/18,108.162.192.0/18,190.93.240.0/20,188.114.96.0/20,197.234.240.0/22,198.41.128.0/17,162.158.0.0/15,104.16.0.0/13,104.24.0.0/14,172.64.0.0/13,131.0.72.0/22" # Auto-generated list
-          enableAnnotationValidations: true
-          podLabels:
-            type: ingress
-          service:
-            externalTrafficPolicy: Local
+  sources:
+    - chart: ingress-nginx
+      repoURL: https://kubernetes.github.io/ingress-nginx
+      targetRevision: 4.11.3
+      helm:
+        releaseName: ingress-nginx
+        valueFiles:
+          - $ingress-nginx/manifests/base/ingress-nginx/values.yaml
+          - $ingress-nginx/manifests/base/ingress-nginx/crowdsec-values.yaml
+    - path: manifests/base/ingress-nginx
+      repoURL: 'https://github.com/theadzik/homelab'
+      targetRevision: HEAD
+      ref: ingress-nginx
   destination:
     server: "https://kubernetes.default.svc"
     namespace: ingress-nginx

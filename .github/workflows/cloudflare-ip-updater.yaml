@@ -19,7 +19,7 @@ jobs:
           git config --global user.name "${{ env.COMMIT_AUTHOR }}"
           git config --global user.email "${{ env.COMMIT_EMAIL }}"
 
-          manifest_path="manifests/applications/ingress-nginx.yaml"
+          manifest_path="manifests/base/ingress-nginx/values.yaml"
 
           ips=$(curl -s https://www.cloudflare.com/ips-v4/ | sed 's/\//\\\//g'| tr '\n' ',')
           sed -i -e "s/whitelist-source-range: .* # Auto-generated list/whitelist-source-range: \"192.168.0.0\/16,10.0.0.0\/8,$ips\" # Auto-generated list/g" $manifest_path
