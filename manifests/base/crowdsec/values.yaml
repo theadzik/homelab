@@ -8,11 +8,11 @@ agent:
     - name: COLLECTIONS
       value: "crowdsecurity/nginx"
 lapi:
-  persistentVolume:
-    config:
-      enabled: false
-    data:
-      enabled: false
+#  persistentVolume:
+#    config:
+#      enabled: false
+#    data:
+#      enabled: false
   env:
     - name: ENROLL_INSTANCE_NAME
       value: 'home-prod'
