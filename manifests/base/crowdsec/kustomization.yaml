@@ -4,4 +4,4 @@ generatorOptions:
   disableNameSuffixHash: true
 resources:
   - enroll-key-secret.yaml
-  - nginx-apikey-seret.yaml
+  - nginx-apikey-secret.yaml

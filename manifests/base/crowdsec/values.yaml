@@ -11,6 +11,8 @@ lapi:
   persistentVolume:
     config:
       enabled: false
+    data:
+      enabled: false
   env:
     - name: ENROLL_INSTANCE_NAME
       value: 'my-k8s-cluster'
