@@ -15,9 +15,9 @@ lapi:
       enabled: false
   env:
     - name: ENROLL_INSTANCE_NAME
-      value: 'my-k8s-cluster'
+      value: 'home-prod'
     - name: ENROLL_TAGS
-      value: 'k8s linux test'
+      value: 'k8s linux'
   envFrom:
     - secretRef:
         name: nginx-apikey
