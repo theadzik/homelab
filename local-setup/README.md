@@ -17,6 +17,8 @@
     * Startup -> Default Profile -> "Ubuntu-24.04"
     * Profiles -> Ubuntu-24.04 -> Appearance -> Font Face -> "Cascadia Code PL"
 
+1. Edit json and add `"suppressApplicationTitle": false` to New profile config.
+
 ## Ubuntu
 
 1. Create user `adzik`, password in vaultwarden.
@@ -24,7 +26,12 @@
    * Add the output to [GitHub](https://github.com/settings/ssh/new)
 1. `git clone git@github.com:theadzik/homelab.git`
 1. `bash local-setup/1-bootstrap-ansible.sh`
+1. Restart shell.
 1. `ansible-playbook playbooks/local-setup.yaml --ask-become-pass`
 1. Download git-crypt key and put it in `~/git`
+1. `git-crypt unlock ../git-crypt-key`
 1. Add new ssh keys to servers.
-1. Run ansible pipeline from `homelab`
+   * Get master key from vaultwarden.
+   * `ssh-copy-id -i ~/.ssh/id_ed25519 -o 'IdentityFile id_ed25519' -f adzik@server-1.internal`
+   * Delete master key.
+1. `ansible-playbook playbooks/servers-setup.yaml` (Only needed to get .kube/config file)
