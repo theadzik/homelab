@@ -2,13 +2,15 @@
   hosts: k3s_cluster
   become: true
   vars_files:
-    - vars/servers-secrets.yaml
+    - vars/common.yaml
 
   roles:
     - prereq
     - raspberrypi
     - fail2ban
     - ssh_hardening
+    - role: oh-my-zsh
+      become: false
     - role: local_storage
       vars:
         local_data_directories:
@@ -25,6 +27,8 @@
 - name: Setup K3S server.
   hosts: server
   become: true
+  vars_files:
+    - vars/servers-secrets.yaml
   roles:
     - role: k3s_server
       vars:
@@ -33,6 +37,8 @@
 - name: Setup K3S agent
   hosts: agent
   become: true
+  vars_files:
+    - vars/servers-secrets.yaml
   roles:
     - role: k3s_agent
 

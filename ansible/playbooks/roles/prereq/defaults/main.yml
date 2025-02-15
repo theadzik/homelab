@@ -1,6 +1,6 @@
 ---
 api_port: 6443
-packages:
+prereq_packages:
   - wget
   - curl
   - vim

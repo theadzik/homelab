@@ -1,3 +1,4 @@
-packages:
+zsh_packages:
+  - git
   - zsh
   - fzf

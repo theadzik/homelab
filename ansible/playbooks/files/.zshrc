@@ -18,7 +18,10 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 export ZSH_HIGHLIGHT_MAXLENGTH=119
+export DISABLE_AUTO_TITLE="true"
+
 export PATH="$HOME/.local/bin:$PATH"
+export KUBECONFIG="$HOME/.kube/config"
 
 export DEFAULT_USER=adzik
 prompt_context() {

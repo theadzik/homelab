@@ -1,4 +1,3 @@
-username: adzik
 common_packages:
   - wget
   - build-essential

@@ -18,7 +18,6 @@ all:
       # Required Vars
       vars:
         ansible_port: 22
-        ansible_user: adzik
         kubeconfig: ~/.kube/config
         k3s_version: v1.32.1+k3s1
         api_endpoint: "{{ hostvars[groups['server'][0]]['ansible_host'] | default(groups['server'][0]) }}"
@@ -31,3 +30,5 @@ all:
         intel:
           hosts:
             192.168.0.3:
+  vars:
+    ansible_user: adzik
