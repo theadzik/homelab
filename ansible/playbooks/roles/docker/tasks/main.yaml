@@ -54,6 +54,20 @@
     append: true
   become: true
 
+- name: Ensure containerd image store is enabled.
+  ansible.builtin.copy:
+    src: "./files/docker-daemon.json"
+    dest: "/etc/docker/daemon.json"
+  register: daemon
+  become: true
+
+- name: Restart Docker services.
+  when: daemon.changed
+  ansible.builtin.systemd:
+    name: docker
+    state: restarted
+  become: true
+
 - name: Ensure Docker services are running.
   ansible.builtin.systemd:
     name: "{{ item }}"
