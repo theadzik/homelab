@@ -19,7 +19,7 @@ source $ZSH/oh-my-zsh.sh
 
 export ZSH_HIGHLIGHT_MAXLENGTH=119
 export DISABLE_AUTO_TITLE="true"
-echo -en "\e]2;$(whoami)@$(hostname)\a"
+precmd() { eval "echo -ne '\e]2;${USER}@${HOST}\a'" }
 
 export PATH="$HOME/.local/bin:$PATH"
 export KUBECONFIG="$HOME/.kube/config"
