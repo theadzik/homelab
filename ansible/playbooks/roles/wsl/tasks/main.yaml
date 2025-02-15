@@ -26,7 +26,7 @@
       dest: "{{ resolv_conf_path }}"
       owner: root
       group: root
-      mode: "0644"
+      attributes: "+i"
 
   - name: Add passwordless sudo permissions.
     ansible.builtin.template:
