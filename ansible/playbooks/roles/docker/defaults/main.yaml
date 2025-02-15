@@ -8,5 +8,6 @@ docker_package:
   - curl
   - gnupg
   - software-properties-common
+  - qemu-user-static
 
 distribution: "{{ ansible_distribution | lower }}"

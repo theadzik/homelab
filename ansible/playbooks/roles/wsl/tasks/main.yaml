@@ -27,7 +27,7 @@
       owner: root
       group: root
       mode: "0644"
-      attributes: "i"
+      attributes: "+ie"
       force: true
     become: true
 
