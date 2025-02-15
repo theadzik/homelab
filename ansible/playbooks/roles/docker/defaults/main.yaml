@@ -11,3 +11,5 @@ docker_package:
   - qemu-user-static
 
 distribution: "{{ ansible_distribution | lower }}"
+qemu_service_name: qemu-startup
+qemu_service_path: /usr/local/sbin
