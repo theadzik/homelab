@@ -1,0 +1,65 @@
+- name: Ensure a package is present.
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ docker_package }}"
+  become: true
+
+- name: Ensure directory for Docker's GPG key is present.
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+
+- name: Ensure Docker's official GPG key is added.
+  ansible.builtin.apt_key:
+    url: https://download.docker.com/linux/{{ distribution }}/gpg
+    keyring: /etc/apt/keyrings/docker.gpg
+    state: present
+  become: true
+
+- name: Ensure Docker repository is added to apt.
+  ansible.builtin.apt_repository:
+    repo: >-
+      deb [arch={{ arch_mapping[ansible_architecture] | default(ansible_architecture) }}
+      signed-by=/etc/apt/keyrings/docker.gpg]
+      https://download.docker.com/linux/{{ distribution }} {{ ansible_lsb.codename }} stable
+    filename: docker
+    state: present
+  become: true
+
+- name: Ensure Docker packages are installed.
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  loop:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+    - docker-buildx-plugin
+    - docker-compose-plugin
+  become: true
+
+- name: Ensure Docker group.
+  ansible.builtin.group:
+    name: docker
+    state: present
+  become: true
+
+- name: Ensure user in Docker group.
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: true
+  become: true
+
+- name: Ensure Docker services are running.
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+  loop:
+    - docker
+    - containerd
+  become: true

@@ -4,5 +4,5 @@ downloads_dir: /home/{{ ansible_user }}/.downloads
 git_dir: /home/{{ ansible_user }}/git
 repositories:
   - homelab
-  - wsl-config
   - notepad
+  - dyndns-cloudflare

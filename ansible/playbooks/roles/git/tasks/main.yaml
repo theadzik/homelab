@@ -4,7 +4,7 @@
     state: directory
     mode: '0755'
 
-- name: Clone my repository {{ item }}.
+- name: Clone my repositories.
   ansible.builtin.git:
     repo: "git@github.com:theadzik/{{ item }}.git"
     dest: "{{ git_dir }}/{{ item }}"

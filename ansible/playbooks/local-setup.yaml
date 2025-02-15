@@ -21,3 +21,4 @@
     - role: k8s-tools
     - role: oh-my-zsh
     - role: git
+    - role: docker
