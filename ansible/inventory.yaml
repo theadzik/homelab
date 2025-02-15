@@ -1,26 +1,33 @@
 ---
-k3s_cluster:
+all:
   children:
-    server:
+    ungrouped:
       hosts:
-        192.168.0.2:
-    agent:
-      hosts:
-        192.168.0.3:
+        localhost:
+          ansible_connection: local
 
-  # Required Vars
-  vars:
-    ansible_port: 22
-    ansible_user: adzik
-    kubeconfig: ~/.kube/config
-    k3s_version: v1.32.1+k3s1
-    api_endpoint: "{{ hostvars[groups['server'][0]]['ansible_host'] | default(groups['server'][0]) }}"
-    extra_server_args: ""
-    extra_agent_args: ""
-    ansible_private_key_file: ~/.ssh/id_ed25519
+    k3s_cluster:
+      children:
+        server:
+          hosts:
+            192.168.0.2:
+        agent:
+          hosts:
+            192.168.0.3:
 
-gpu:
-  children:
-    intel:
-      hosts:
-        192.168.0.3:
+      # Required Vars
+      vars:
+        ansible_port: 22
+        ansible_user: adzik
+        kubeconfig: ~/.kube/config
+        k3s_version: v1.32.1+k3s1
+        api_endpoint: "{{ hostvars[groups['server'][0]]['ansible_host'] | default(groups['server'][0]) }}"
+        extra_server_args: ""
+        extra_agent_args: ""
+        ansible_private_key_file: ~/.ssh/id_ed25519
+
+    gpu:
+      children:
+        intel:
+          hosts:
+            192.168.0.3:

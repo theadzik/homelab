@@ -1,0 +1,47 @@
+---
+- name: Ensure a package is present.
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages }}"
+  become: true
+
+- name: Fetch ohmyzsh install script.
+  ansible.builtin.uri:
+    url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+    return_content: yes
+  register: ohmyzsh_installer
+
+- name: Run ohmyzsh install script.
+  ansible.builtin.shell:
+    cmd: sh -s --
+    stdin: "{{ ohmyzsh_installer.content }}"
+    creates: "/home/{{ username }}/.oh-my-zsh"
+
+- name: Clone zsh-syntax-highlighting.
+  ansible.builtin.git:
+    repo: "https://github.com/zsh-users/zsh-syntax-highlighting.git"
+    dest: /home/{{ username }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+
+- name: Clone zsh-autosuggestions.
+  ansible.builtin.git:
+    repo: "https://github.com/zsh-users/zsh-autosuggestions"
+    dest: /home/{{ username }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+
+- name: Clone zsh-kubectl-prompt.
+  ansible.builtin.git:
+    repo: "https://github.com/superbrothers/zsh-kubectl-prompt.git"
+    dest: /home/{{ username }}/.oh-my-zsh/custom/plugins/zsh-kubectl-prompt
+
+- name: Copy .zshrc.
+  ansible.builtin.copy:
+    src: "./files/.zshrc"
+    dest: "/home/{{ username }}/.zshrc"
+
+- name: Change default shell for {{ username }}.
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/passwd
+    regexp: '({{ username }}:x:1000:1000:,,,:/home/{{ username }}:/bin/)(bash)'
+    line: \g<1>zsh
+    backrefs: yes

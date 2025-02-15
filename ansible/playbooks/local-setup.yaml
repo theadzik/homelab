@@ -1,0 +1,23 @@
+- name: Configure local.
+  hosts: localhost
+  vars_files:
+    - vars/local-common.yaml
+
+  pre_tasks:
+    - name: Upgrade system with apt.
+      become: true
+      ansible.builtin.apt:
+        upgrade: true
+        cache_valid_time: 3600
+    - name: Ensure packages are present.
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ common_packages }}"
+      become: true
+
+  roles:
+    - role: wsl
+    - role: k8s-tools
+    - role: oh-my-zsh
+    - role: git

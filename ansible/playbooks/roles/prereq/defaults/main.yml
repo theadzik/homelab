@@ -1,2 +1,8 @@
 ---
 api_port: 6443
+packages:
+  - wget
+  - curl
+  - vim
+  - open-iscsi # Needed for longhorn https://longhorn.io/docs/1.7.2/deploy/install/#installing-open-iscsi
+  - nfs-common # Needed for longhorn https://longhorn.io/docs/1.7.2/deploy/install/#installing-nfsv4-client

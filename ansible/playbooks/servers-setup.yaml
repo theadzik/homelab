@@ -18,8 +18,8 @@
     - name: Load variable files.
       include_vars: "{{ item }}"
       with_items:
-        - "vars/common.yaml"
-        - "vars/secrets.yaml"
+        - "vars/servers-common.yaml"
+        - "vars/servers-secrets.yaml"
 
     - name: Upgrade system with apt.
       ansible.builtin.apt:
