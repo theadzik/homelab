@@ -5,3 +5,13 @@ api_port: 6443
 kubeconfig: ~/.kube/config.new
 user_kubectl: true
 cluster_name: home-dev
+server_config_yaml: |
+  disable:
+    - traefik
+  kube-controller-manager-arg:
+    - "bind-address=0.0.0.0"
+  kube-proxy-arg:
+    - "metrics-bind-address=0.0.0.0"
+  kube-scheduler-arg:
+    - "bind-address=0.0.0.0"
+  etcd-expose-metrics: true

@@ -1,6 +1,8 @@
 - name: Configure all nodes.
   hosts: k3s_cluster
   become: true
+  vars_files:
+    - vars/servers-secrets.yaml
 
   roles:
     - prereq
@@ -15,22 +17,10 @@
             gid: 999
 
   pre_tasks:
-    - name: Load variable files.
-      include_vars: "{{ item }}"
-      with_items:
-        - "vars/servers-common.yaml"
-        - "vars/servers-secrets.yaml"
-
     - name: Upgrade system with apt.
       ansible.builtin.apt:
         upgrade: true
         cache_valid_time: 3600
-
-    - name: Ensure ansible-downloads directory exists.
-      ansible.builtin.file:
-        path: "{{ ansible_downloads_tmp_dir }}"
-        mode: 664
-        state: directory
 
 - name: Setup K3S server.
   hosts: server
