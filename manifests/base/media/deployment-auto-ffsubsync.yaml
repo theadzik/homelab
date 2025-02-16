@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auto-ffsubsync
+  labels:
+    app: auto-ffsubsync
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auto-ffsubsync
+  template:
+    metadata:
+      labels:
+        app: auto-ffsubsync
+    spec:
+      imagePullSecrets:
+        - name: dockerhub-image-pull-secret
+      containers:
+        - name: auto-ffsubsync
+          image: theadzik/auto-ffsubsync:latest
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          volumeMounts:
+            - mountPath: /media
+              name: media
+          env:
+            - name: "MEDIA_ROOT"
+              value: "/media"
+      volumes:
+        - name: media
+          persistentVolumeClaim:
+            claimName: shared-media-pvc
