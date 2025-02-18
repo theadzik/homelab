@@ -52,6 +52,8 @@ spec:
           env:
             - name: TZ
               value: 'Europe/Warsaw'
+            - name: DNSMASQ_LISTENING
+              value: "all"
             - name: FTLCONF_LOCAL_IPV4
               value: '192.168.1.22'
             - name: FTLCONF_dns_upstreams
