@@ -154,7 +154,16 @@ content:
     content:
       - layout: left
         title: The Linux Foundation
-        link: https://www.credly.com/badges/804a86d3-1122-40e6-a62e-d8c26c9632bd
+        link: https://www.credly.com/badges/91381d01-15e6-4c3b-89f4-8473ecf082f4/public_url
+        link_text: Certified Kubernetes Security Specialist
+        description: |
+          CKS: Certified Kubernetes Security Specialist
+
+          Issued February 2025 - Expires February 2027
+
+      - layout: left
+        title: The Linux Foundation
+        link: https://www.credly.com/badges/804a86d3-1122-40e6-a62e-d8c26c9632bd/public_url
         link_text: Certified Kubernetes Administrator
         description: |
           CKA: Certified Kubernetes Administrator
