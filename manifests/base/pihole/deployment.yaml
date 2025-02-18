@@ -52,7 +52,7 @@ spec:
           env:
             - name: TZ
               value: 'Europe/Warsaw'
-            - name: DNSMASQ_LISTENING
+            - name: FTLCONF_dns_listeningMode
               value: "all"
             - name: FTLCONF_LOCAL_IPV4
               value: '192.168.1.22'
@@ -88,5 +88,4 @@ spec:
           configMap:
             name: cname-records
         - name: pihole-main
-          persistentVolumeClaim:
-            claimName: main-pvc
+          emptyDir: {}
