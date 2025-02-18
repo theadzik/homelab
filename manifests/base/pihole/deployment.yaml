@@ -54,13 +54,11 @@ spec:
               value: 'Europe/Warsaw'
             - name: FTLCONF_LOCAL_IPV4
               value: '192.168.1.22'
-            - name: PIHOLE_DNS_
+            - name: FTLCONF_dns_upstreams
               value: '1.1.1.1;8.8.8.8'
-            - name: VIRTUAL_HOST
-              value: 'pihole.zmuda.pro'
-            - name: WEBTHEME
+            - name: FTLCONF_webserver_interface_theme
               value: 'default-dark'
-            - name: WEBPASSWORD
+            - name: FTLCONF_webserver_api_password
               valueFrom:
                 secretKeyRef:
                   name: web-password
