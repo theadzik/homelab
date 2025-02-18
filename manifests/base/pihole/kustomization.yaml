@@ -9,7 +9,6 @@ resources:
   - namespace.yaml
   - nwp.yaml
   - pdb.yaml
-  - pv.yaml
   - secret.yaml
   - services.yaml
   - ../image-pull-secret
