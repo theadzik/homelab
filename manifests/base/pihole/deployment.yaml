@@ -54,12 +54,14 @@ spec:
               value: 'Europe/Warsaw'
             - name: FTLCONF_dns_listeningMode
               value: "all"
-            - name: FTLCONF_LOCAL_IPV4
-              value: '192.168.1.22'
+            - name: FTLCONF_dns_cnameRecords
+              value: "pihole.zmuda.pro,server-1.internal;argocd.zmuda.pro,server-1.internal;grafana.zmuda.pro,server-1.internal;longhorn.zmuda.pro,server-1.internal;jellyfin.zmuda.pro,server-2.internal;deluge.zmuda.pro,server-2.internal"
+            - name: FTLCONF_dns_hosts
+              value: "192.168.0.2 server-1.internal;192.168.0.3 server-2.internal"
             - name: FTLCONF_dns_upstreams
-              value: '1.1.1.1;8.8.8.8'
+              value: "1.1.1.1;8.8.8.8"
             - name: FTLCONF_webserver_interface_theme
-              value: 'default-dark'
+              value: "default-darker"
             - name: FTLCONF_webserver_api_password
               valueFrom:
                 secretKeyRef:
@@ -70,14 +72,6 @@ spec:
             - name: PIHOLE_GID
               value: "20004"
           volumeMounts:
-            - mountPath: /etc/pihole/custom.list
-              name: a-records
-              subPath: custom.list
-              readOnly: true
-            - mountPath: /etc/dnsmasq.d/05-pihole-custom-cname.conf
-              name: cname-records
-              subPath: 05-pihole-custom-cname.conf
-              readOnly: true
             - mountPath: /etc/pihole
               name: pihole-main
       volumes:
