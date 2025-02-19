@@ -5,7 +5,6 @@ resources:
   - argocd.yaml
   - cert-manager.yaml
   - cloudflared.yaml
-  - dyndns-cloudflare.yaml
   - ingress-nginx.yaml
   - intel-device-plugin.yaml
 #  - kube-prometheus-stack.yaml

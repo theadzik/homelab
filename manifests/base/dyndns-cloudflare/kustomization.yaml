@@ -1,9 +1,0 @@
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-namespace: dyndns-cloudflare
-resources:
-  - namespace.yaml
-  - secret.yaml
-  - deployment.yaml
-  - configmap.yaml
-  - ../image-pull-secret
