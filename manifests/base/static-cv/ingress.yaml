@@ -12,9 +12,12 @@ spec:
     - hosts:
         - zmuda.pro
       secretName: static-cv-tls
+    - hosts:
+        - test.zmuda.pro
+      secretName: static-cv-test-tls
   rules:
     - host: zmuda.pro
-      http:
+      http: &host
         paths:
           - path: /
             pathType: Prefix
@@ -23,3 +26,5 @@ spec:
                 name: static-cv-http
                 port:
                   number: 8080
+    - host: test.zmuda.pro
+      http: *host
