@@ -14,7 +14,7 @@ spec:
         releaseName: ingress-nginx
         valueFiles:
           - $ingress-nginx/manifests/base/ingress-nginx/values.yaml
-          - $ingress-nginx/manifests/base/ingress-nginx/crowdsec-values.yaml
+#          - $ingress-nginx/manifests/base/ingress-nginx/crowdsec-values.yaml
     - path: manifests/base/ingress-nginx
       repoURL: 'https://github.com/theadzik/homelab'
       targetRevision: HEAD
