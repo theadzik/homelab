@@ -1,0 +1,20 @@
+apiVersion: builtin
+kind: LabelTransformer
+metadata:
+  name: cloudflared-labels
+labels:
+  app.kubernetes.io/name: cloudflared
+  app.kubernetes.io/instance: cloudflared
+fieldSpecs:
+  - kind: PodDisruptionBudget
+    path: spec/selector/matchLabels
+    create: true
+  - kind: Deployment
+    path: spec/selector/matchLabels
+    create: true
+  - kind: Deployment
+    path: spec/template/metadata/labels
+    create: true
+  - kind: Deployment
+    path: spec/template/spec/topologySpreadConstraints/labelSelector/matchLabels
+    create: true

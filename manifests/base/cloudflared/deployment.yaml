@@ -14,6 +14,13 @@ spec:
       labels:
         app: cloudflared
     spec:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          matchLabelKeys:
+            - pod-template-hash
+      priorityClassName: high-priority
       containers:
         - name: cloudflared
           image: cloudflare/cloudflared:latest
@@ -29,3 +36,18 @@ spec:
                 secretKeyRef:
                   name: cloudflared-token
                   key: TOKEN
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/cloudflared/config
+            readOnly: true
+      volumes:
+        - name: config-volume
+          configMap:
+            name: cloudflared-config
+            items:
+              - key: config.yaml
+                path: config.yaml

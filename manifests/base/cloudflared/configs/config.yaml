@@ -1,0 +1,10 @@
+tunnel: home-prod-k3s
+no-autoupdate: true
+ingress:
+  - hostname: zmuda.pro
+    originServerName: zmuda.pro
+    service: https://ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
+  - hostname: vault.zmuda.pro
+    originServerName: vault.zmuda.pro
+    service: https://ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
+  - service: http_status:404
