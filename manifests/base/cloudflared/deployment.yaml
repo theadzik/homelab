@@ -44,6 +44,17 @@ spec:
           - name: config-volume
             mountPath: /etc/cloudflared/config
             readOnly: true
+#          readinessProbe:
+#            httpGet:
+#              path: /ready
+#              port: http-port
+#            initialDelaySeconds: 60
+#            periodSeconds: 30
+#            timeoutSeconds: 1
+          ports:
+            - containerPort: 2000
+              protocol: "TCP"
+              name: http-port
       volumes:
         - name: config-volume
           configMap:
