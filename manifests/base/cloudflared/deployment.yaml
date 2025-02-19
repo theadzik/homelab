@@ -26,6 +26,8 @@ spec:
           image: cloudflare/cloudflared:latest
           args:
             - "tunnel"
+            - "--config"
+            - "/etc/cloudflared/config/config.yaml"
             - "--no-autoupdate"
             - "run"
             - "--token"
@@ -42,7 +44,7 @@ spec:
               memory: 32Mi
           volumeMounts:
           - name: config-volume
-            mountPath: /etc/cloudflared/config
+            mountPath: "/etc/cloudflared/config"
             readOnly: true
 #          readinessProbe:
 #            httpGet:
