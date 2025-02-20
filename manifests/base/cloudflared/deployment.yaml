@@ -36,6 +36,7 @@ spec:
           volumeMounts:
           - name: config-volume
             mountPath: "/etc/cloudflared/config"
+            readOnly: true
           - name: credentials-volume
             mountPath: "/etc/cloudflared/credentials"
             readOnly: true

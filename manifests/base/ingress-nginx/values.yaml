@@ -26,5 +26,3 @@ controller:
   enableAnnotationValidations: true
   podLabels:
     type: ingress
-  service:
-    externalTrafficPolicy: Local
