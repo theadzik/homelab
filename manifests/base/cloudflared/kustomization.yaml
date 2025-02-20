@@ -6,7 +6,7 @@ transformers:
 resources:
   - namespace.yaml
   - deployment.yaml
-  - cloudflared-secret.yaml
+  - credentials-secret.yaml
   - pdb.yaml
 configMapGenerator:
   - name: cloudflared-config

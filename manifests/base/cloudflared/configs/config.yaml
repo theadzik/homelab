@@ -1,15 +1,4 @@
-tunnel: zmuda-pro-local-config
-# Serves the metrics server under /metrics and the readiness server under /ready
+tunnel: e48d5ef2-41f9-4ca5-a8bf-f60af8d77921
+credentials-file: /etc/cloudflared/credentials/e48d5ef2-41f9-4ca5-a8bf-f60af8d77921.json
 metrics: 0.0.0.0:2000
 no-autoupdate: true
-ingress:
-  - hostname: zmuda.pro
-    originServerName: zmuda.pro
-    service: https://ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
-  - hostname: vault.zmuda.pro
-    originServerName: vault.zmuda.pro
-    service: https://ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
-  - hostname: test.zmuda.pro
-    originServerName: test.zmuda.pro
-    service: https://ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
-  - service: http_status:404

@@ -28,16 +28,7 @@ spec:
             - "tunnel"
             - "--config"
             - "/etc/cloudflared/config/config.yaml"
-            - "--no-autoupdate"
             - "run"
-            - "--token"
-            - "$(TOKEN)"
-          env:
-            - name: TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: cloudflared-token
-                  key: TOKEN
           resources:
             requests:
               cpu: 10m
@@ -45,18 +36,20 @@ spec:
           volumeMounts:
           - name: config-volume
             mountPath: "/etc/cloudflared/config"
+          - name: credentials-volume
+            mountPath: "/etc/cloudflared/credentials"
             readOnly: true
-          readinessProbe:
+          livenessProbe:
             httpGet:
               path: /ready
-              port: http-port
+              port: metrics-port
+            failureThreshold: 1
             initialDelaySeconds: 10
-            periodSeconds: 30
-            timeoutSeconds: 1
+            periodSeconds: 10
           ports:
             - containerPort: 2000
               protocol: "TCP"
-              name: http-port
+              name: metrics-port
       volumes:
         - name: config-volume
           configMap:
@@ -64,3 +57,6 @@ spec:
             items:
               - key: config.yaml
                 path: config.yaml
+        - name: credentials-volume
+          secret:
+            secretName: tunnel-credentials
