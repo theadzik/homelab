@@ -101,3 +101,9 @@
     cmd: bash -s --
     stdin: "{{ helm_installer.content }}"
     creates: "/usr/local/bin/helm"
+
+- name: Ensure kubectx is present.
+  ansible.builtin.apt:
+    name: kubectx
+    state: present
+  become: true
