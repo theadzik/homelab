@@ -309,6 +309,10 @@ spec:
                             description: SkipCrds skips custom resource definition
                               installation step (Helm's --skip-crds)
                             type: boolean
+                          skipSchemaValidation:
+                            description: SkipSchemaValidation skips JSON schema validation
+                              (Helm's --skip-schema-validation)
+                            type: boolean
                           skipTests:
                             description: SkipTests skips test manifest installation
                               step (Helm's --skip-tests).
@@ -375,6 +379,11 @@ spec:
                           forceCommonLabels:
                             description: ForceCommonLabels specifies whether to force
                               applying common labels to resources for Kustomize apps
+                            type: boolean
+                          ignoreMissingComponents:
+                            description: IgnoreMissingComponents prevents kustomize
+                              from failing when components do not exist locally by
+                              not appending them to kustomization file
                             type: boolean
                           images:
                             description: Images is a list of Kustomize image override
@@ -683,6 +692,10 @@ spec:
                               description: SkipCrds skips custom resource definition
                                 installation step (Helm's --skip-crds)
                               type: boolean
+                            skipSchemaValidation:
+                              description: SkipSchemaValidation skips JSON schema
+                                validation (Helm's --skip-schema-validation)
+                              type: boolean
                             skipTests:
                               description: SkipTests skips test manifest installation
                                 step (Helm's --skip-tests).
@@ -751,6 +764,11 @@ spec:
                               description: ForceCommonLabels specifies whether to
                                 force applying common labels to resources for Kustomize
                                 apps
+                              type: boolean
+                            ignoreMissingComponents:
+                              description: IgnoreMissingComponents prevents kustomize
+                                from failing when components do not exist locally
+                                by not appending them to kustomization file
                               type: boolean
                             images:
                               description: Images is a list of Kustomize image override
@@ -1172,6 +1190,10 @@ spec:
                         description: SkipCrds skips custom resource definition installation
                           step (Helm's --skip-crds)
                         type: boolean
+                      skipSchemaValidation:
+                        description: SkipSchemaValidation skips JSON schema validation
+                          (Helm's --skip-schema-validation)
+                        type: boolean
                       skipTests:
                         description: SkipTests skips test manifest installation step
                           (Helm's --skip-tests).
@@ -1237,6 +1259,11 @@ spec:
                       forceCommonLabels:
                         description: ForceCommonLabels specifies whether to force
                           applying common labels to resources for Kustomize apps
+                        type: boolean
+                      ignoreMissingComponents:
+                        description: IgnoreMissingComponents prevents kustomize from
+                          failing when components do not exist locally by not appending
+                          them to kustomization file
                         type: boolean
                       images:
                         description: Images is a list of Kustomize image override
@@ -1392,6 +1419,64 @@ spec:
                 required:
                 - repoURL
                 type: object
+              sourceHydrator:
+                description: SourceHydrator provides a way to push hydrated manifests
+                  back to git before syncing them to the cluster.
+                properties:
+                  drySource:
+                    description: DrySource specifies where the dry "don't repeat yourself"
+                      manifest source lives.
+                    properties:
+                      path:
+                        description: Path is a directory path within the Git repository
+                          where the manifests are located
+                        type: string
+                      repoURL:
+                        description: RepoURL is the URL to the git repository that
+                          contains the application manifests
+                        type: string
+                      targetRevision:
+                        description: TargetRevision defines the revision of the source
+                          to hydrate
+                        type: string
+                    required:
+                    - path
+                    - repoURL
+                    - targetRevision
+                    type: object
+                  hydrateTo:
+                    description: |-
+                      HydrateTo specifies an optional "staging" location to push hydrated manifests to. An external system would then
+                      have to move manifests to the SyncSource, e.g. by pull request.
+                    properties:
+                      targetBranch:
+                        description: TargetBranch is the branch to which hydrated
+                          manifests should be committed
+                        type: string
+                    required:
+                    - targetBranch
+                    type: object
+                  syncSource:
+                    description: SyncSource specifies where to sync hydrated manifests
+                      from.
+                    properties:
+                      path:
+                        description: |-
+                          Path is a directory path within the git repository where hydrated manifests should be committed to and synced
+                          from. If hydrateTo is set, this is just the path from which hydrated manifests will be synced.
+                        type: string
+                      targetBranch:
+                        description: TargetBranch is the branch to which hydrated
+                          manifests should be committed
+                        type: string
+                    required:
+                    - path
+                    - targetBranch
+                    type: object
+                required:
+                - drySource
+                - syncSource
+                type: object
               sources:
                 description: Sources is a reference to the location of the application's
                   manifests or chart
@@ -1537,6 +1622,10 @@ spec:
                           description: SkipCrds skips custom resource definition installation
                             step (Helm's --skip-crds)
                           type: boolean
+                        skipSchemaValidation:
+                          description: SkipSchemaValidation skips JSON schema validation
+                            (Helm's --skip-schema-validation)
+                          type: boolean
                         skipTests:
                           description: SkipTests skips test manifest installation
                             step (Helm's --skip-tests).
@@ -1603,6 +1692,11 @@ spec:
                         forceCommonLabels:
                           description: ForceCommonLabels specifies whether to force
                             applying common labels to resources for Kustomize apps
+                          type: boolean
+                        ignoreMissingComponents:
+                          description: IgnoreMissingComponents prevents kustomize
+                            from failing when components do not exist locally by not
+                            appending them to kustomization file
                           type: boolean
                         images:
                           description: Images is a list of Kustomize image override
@@ -1870,6 +1964,11 @@ spec:
                 description: Health contains information about the application's current
                   health status
                 properties:
+                  lastTransitionTime:
+                    description: LastTransitionTime is the time the HealthStatus was
+                      set or updated
+                    format: date-time
+                    type: string
                   message:
                     description: Message is a human-readable informational message
                       describing the health status
@@ -2067,6 +2166,10 @@ spec:
                               description: SkipCrds skips custom resource definition
                                 installation step (Helm's --skip-crds)
                               type: boolean
+                            skipSchemaValidation:
+                              description: SkipSchemaValidation skips JSON schema
+                                validation (Helm's --skip-schema-validation)
+                              type: boolean
                             skipTests:
                               description: SkipTests skips test manifest installation
                                 step (Helm's --skip-tests).
@@ -2135,6 +2238,11 @@ spec:
                               description: ForceCommonLabels specifies whether to
                                 force applying common labels to resources for Kustomize
                                 apps
+                              type: boolean
+                            ignoreMissingComponents:
+                              description: IgnoreMissingComponents prevents kustomize
+                                from failing when components do not exist locally
+                                by not appending them to kustomization file
                               type: boolean
                             images:
                               description: Images is a list of Kustomize image override
@@ -2444,6 +2552,10 @@ spec:
                                 description: SkipCrds skips custom resource definition
                                   installation step (Helm's --skip-crds)
                                 type: boolean
+                              skipSchemaValidation:
+                                description: SkipSchemaValidation skips JSON schema
+                                  validation (Helm's --skip-schema-validation)
+                                type: boolean
                               skipTests:
                                 description: SkipTests skips test manifest installation
                                   step (Helm's --skip-tests).
@@ -2513,6 +2625,11 @@ spec:
                                 description: ForceCommonLabels specifies whether to
                                   force applying common labels to resources for Kustomize
                                   apps
+                                type: boolean
+                              ignoreMissingComponents:
+                                description: IgnoreMissingComponents prevents kustomize
+                                  from failing when components do not exist locally
+                                  by not appending them to kustomization file
                                 type: boolean
                               images:
                                 description: Images is a list of Kustomize image override
@@ -2971,6 +3088,10 @@ spec:
                                     description: SkipCrds skips custom resource definition
                                       installation step (Helm's --skip-crds)
                                     type: boolean
+                                  skipSchemaValidation:
+                                    description: SkipSchemaValidation skips JSON schema
+                                      validation (Helm's --skip-schema-validation)
+                                    type: boolean
                                   skipTests:
                                     description: SkipTests skips test manifest installation
                                       step (Helm's --skip-tests).
@@ -3041,6 +3162,12 @@ spec:
                                     description: ForceCommonLabels specifies whether
                                       to force applying common labels to resources
                                       for Kustomize apps
+                                    type: boolean
+                                  ignoreMissingComponents:
+                                    description: IgnoreMissingComponents prevents
+                                      kustomize from failing when components do not
+                                      exist locally by not appending them to kustomization
+                                      file
                                     type: boolean
                                   images:
                                     description: Images is a list of Kustomize image
@@ -3367,6 +3494,10 @@ spec:
                                       description: SkipCrds skips custom resource
                                         definition installation step (Helm's --skip-crds)
                                       type: boolean
+                                    skipSchemaValidation:
+                                      description: SkipSchemaValidation skips JSON
+                                        schema validation (Helm's --skip-schema-validation)
+                                      type: boolean
                                     skipTests:
                                       description: SkipTests skips test manifest installation
                                         step (Helm's --skip-tests).
@@ -3439,6 +3570,12 @@ spec:
                                       description: ForceCommonLabels specifies whether
                                         to force applying common labels to resources
                                         for Kustomize apps
+                                      type: boolean
+                                    ignoreMissingComponents:
+                                      description: IgnoreMissingComponents prevents
+                                        kustomize from failing when components do
+                                        not exist locally by not appending them to
+                                        kustomization file
                                       type: boolean
                                     images:
                                       description: Images is a list of Kustomize image
@@ -3880,6 +4017,10 @@ spec:
                                 description: SkipCrds skips custom resource definition
                                   installation step (Helm's --skip-crds)
                                 type: boolean
+                              skipSchemaValidation:
+                                description: SkipSchemaValidation skips JSON schema
+                                  validation (Helm's --skip-schema-validation)
+                                type: boolean
                               skipTests:
                                 description: SkipTests skips test manifest installation
                                   step (Helm's --skip-tests).
@@ -3949,6 +4090,11 @@ spec:
                                 description: ForceCommonLabels specifies whether to
                                   force applying common labels to resources for Kustomize
                                   apps
+                                type: boolean
+                              ignoreMissingComponents:
+                                description: IgnoreMissingComponents prevents kustomize
+                                  from failing when components do not exist locally
+                                  by not appending them to kustomization file
                                 type: boolean
                               images:
                                 description: Images is a list of Kustomize image override
@@ -4269,6 +4415,10 @@ spec:
                                   description: SkipCrds skips custom resource definition
                                     installation step (Helm's --skip-crds)
                                   type: boolean
+                                skipSchemaValidation:
+                                  description: SkipSchemaValidation skips JSON schema
+                                    validation (Helm's --skip-schema-validation)
+                                  type: boolean
                                 skipTests:
                                   description: SkipTests skips test manifest installation
                                     step (Helm's --skip-tests).
@@ -4339,6 +4489,11 @@ spec:
                                   description: ForceCommonLabels specifies whether
                                     to force applying common labels to resources for
                                     Kustomize apps
+                                  type: boolean
+                                ignoreMissingComponents:
+                                  description: IgnoreMissingComponents prevents kustomize
+                                    from failing when components do not exist locally
+                                    by not appending them to kustomization file
                                   type: boolean
                                 images:
                                   description: Images is a list of Kustomize image
@@ -4525,16 +4680,22 @@ spec:
                 description: Resources is a list of Kubernetes resources managed by
                   this application
                 items:
-                  description: |-
-                    ResourceStatus holds the current sync and health status of a resource
-                    TODO: describe members of this type
+                  description: ResourceStatus holds the current synchronization and
+                    health status of a Kubernetes resource.
                   properties:
                     group:
+                      description: Group represents the API group of the resource
+                        (e.g., "apps" for Deployments).
                       type: string
                     health:
-                      description: HealthStatus contains information about the currently
-                        observed health state of an application or resource
+                      description: Health indicates the health status of the resource
+                        (e.g., Healthy, Degraded, Progressing).
                       properties:
+                        lastTransitionTime:
+                          description: LastTransitionTime is the time the HealthStatus
+                            was set or updated
+                          format: date-time
+                          type: string
                         message:
                           description: Message is a human-readable informational message
                             describing the health status
@@ -4545,28 +4706,216 @@ spec:
                           type: string
                       type: object
                     hook:
+                      description: Hook is true if the resource is used as a lifecycle
+                        hook in an Argo CD application.
                       type: boolean
                     kind:
+                      description: Kind specifies the type of the resource (e.g.,
+                        "Deployment", "Service").
                       type: string
                     name:
+                      description: Name is the unique name of the resource within
+                        the namespace.
                       type: string
                     namespace:
+                      description: Namespace defines the Kubernetes namespace where
+                        the resource is located.
                       type: string
                     requiresDeletionConfirmation:
+                      description: RequiresDeletionConfirmation is true if the resource
+                        requires explicit user confirmation before deletion.
                       type: boolean
                     requiresPruning:
+                      description: RequiresPruning is true if the resource needs to
+                        be pruned (deleted) as part of synchronization.
                       type: boolean
                     status:
-                      description: SyncStatusCode is a type which represents possible
-                        comparison results
+                      description: Status represents the synchronization state of
+                        the resource (e.g., Synced, OutOfSync).
                       type: string
                     syncWave:
+                      description: |-
+                        SyncWave determines the order in which resources are applied during a sync operation.
+                        Lower values are applied first.
                       format: int64
                       type: integer
                     version:
+                      description: Version indicates the API version of the resource
+                        (e.g., "v1", "v1beta1").
                       type: string
                   type: object
                 type: array
+              sourceHydrator:
+                description: SourceHydrator stores information about the current state
+                  of source hydration
+                properties:
+                  currentOperation:
+                    description: CurrentOperation holds the status of the hydrate
+                      operation
+                    properties:
+                      drySHA:
+                        description: DrySHA holds the resolved revision (sha) of the
+                          dry source as of the most recent reconciliation
+                        type: string
+                      finishedAt:
+                        description: FinishedAt indicates when the hydrate operation
+                          finished
+                        format: date-time
+                        type: string
+                      hydratedSHA:
+                        description: HydratedSHA holds the resolved revision (sha)
+                          of the hydrated source as of the most recent reconciliation
+                        type: string
+                      message:
+                        description: Message contains a message describing the current
+                          status of the hydrate operation
+                        type: string
+                      phase:
+                        description: Phase indicates the status of the hydrate operation
+                        enum:
+                        - Hydrating
+                        - Failed
+                        - Hydrated
+                        type: string
+                      sourceHydrator:
+                        description: SourceHydrator holds the hydrator config used
+                          for the hydrate operation
+                        properties:
+                          drySource:
+                            description: DrySource specifies where the dry "don't
+                              repeat yourself" manifest source lives.
+                            properties:
+                              path:
+                                description: Path is a directory path within the Git
+                                  repository where the manifests are located
+                                type: string
+                              repoURL:
+                                description: RepoURL is the URL to the git repository
+                                  that contains the application manifests
+                                type: string
+                              targetRevision:
+                                description: TargetRevision defines the revision of
+                                  the source to hydrate
+                                type: string
+                            required:
+                            - path
+                            - repoURL
+                            - targetRevision
+                            type: object
+                          hydrateTo:
+                            description: |-
+                              HydrateTo specifies an optional "staging" location to push hydrated manifests to. An external system would then
+                              have to move manifests to the SyncSource, e.g. by pull request.
+                            properties:
+                              targetBranch:
+                                description: TargetBranch is the branch to which hydrated
+                                  manifests should be committed
+                                type: string
+                            required:
+                            - targetBranch
+                            type: object
+                          syncSource:
+                            description: SyncSource specifies where to sync hydrated
+                              manifests from.
+                            properties:
+                              path:
+                                description: |-
+                                  Path is a directory path within the git repository where hydrated manifests should be committed to and synced
+                                  from. If hydrateTo is set, this is just the path from which hydrated manifests will be synced.
+                                type: string
+                              targetBranch:
+                                description: TargetBranch is the branch to which hydrated
+                                  manifests should be committed
+                                type: string
+                            required:
+                            - path
+                            - targetBranch
+                            type: object
+                        required:
+                        - drySource
+                        - syncSource
+                        type: object
+                      startedAt:
+                        description: StartedAt indicates when the hydrate operation
+                          started
+                        format: date-time
+                        type: string
+                    required:
+                    - message
+                    - phase
+                    type: object
+                  lastSuccessfulOperation:
+                    description: LastSuccessfulOperation holds info about the most
+                      recent successful hydration
+                    properties:
+                      drySHA:
+                        description: DrySHA holds the resolved revision (sha) of the
+                          dry source as of the most recent reconciliation
+                        type: string
+                      hydratedSHA:
+                        description: HydratedSHA holds the resolved revision (sha)
+                          of the hydrated source as of the most recent reconciliation
+                        type: string
+                      sourceHydrator:
+                        description: SourceHydrator holds the hydrator config used
+                          for the hydrate operation
+                        properties:
+                          drySource:
+                            description: DrySource specifies where the dry "don't
+                              repeat yourself" manifest source lives.
+                            properties:
+                              path:
+                                description: Path is a directory path within the Git
+                                  repository where the manifests are located
+                                type: string
+                              repoURL:
+                                description: RepoURL is the URL to the git repository
+                                  that contains the application manifests
+                                type: string
+                              targetRevision:
+                                description: TargetRevision defines the revision of
+                                  the source to hydrate
+                                type: string
+                            required:
+                            - path
+                            - repoURL
+                            - targetRevision
+                            type: object
+                          hydrateTo:
+                            description: |-
+                              HydrateTo specifies an optional "staging" location to push hydrated manifests to. An external system would then
+                              have to move manifests to the SyncSource, e.g. by pull request.
+                            properties:
+                              targetBranch:
+                                description: TargetBranch is the branch to which hydrated
+                                  manifests should be committed
+                                type: string
+                            required:
+                            - targetBranch
+                            type: object
+                          syncSource:
+                            description: SyncSource specifies where to sync hydrated
+                              manifests from.
+                            properties:
+                              path:
+                                description: |-
+                                  Path is a directory path within the git repository where hydrated manifests should be committed to and synced
+                                  from. If hydrateTo is set, this is just the path from which hydrated manifests will be synced.
+                                type: string
+                              targetBranch:
+                                description: TargetBranch is the branch to which hydrated
+                                  manifests should be committed
+                                type: string
+                            required:
+                            - path
+                            - targetBranch
+                            type: object
+                        required:
+                        - drySource
+                        - syncSource
+                        type: object
+                    type: object
+                type: object
               sourceType:
                 description: SourceType specifies the type of this application
                 type: string
@@ -4804,6 +5153,10 @@ spec:
                                 description: SkipCrds skips custom resource definition
                                   installation step (Helm's --skip-crds)
                                 type: boolean
+                              skipSchemaValidation:
+                                description: SkipSchemaValidation skips JSON schema
+                                  validation (Helm's --skip-schema-validation)
+                                type: boolean
                               skipTests:
                                 description: SkipTests skips test manifest installation
                                   step (Helm's --skip-tests).
@@ -4873,6 +5226,11 @@ spec:
                                 description: ForceCommonLabels specifies whether to
                                   force applying common labels to resources for Kustomize
                                   apps
+                                type: boolean
+                              ignoreMissingComponents:
+                                description: IgnoreMissingComponents prevents kustomize
+                                  from failing when components do not exist locally
+                                  by not appending them to kustomization file
                                 type: boolean
                               images:
                                 description: Images is a list of Kustomize image override
@@ -5193,6 +5551,10 @@ spec:
                                   description: SkipCrds skips custom resource definition
                                     installation step (Helm's --skip-crds)
                                   type: boolean
+                                skipSchemaValidation:
+                                  description: SkipSchemaValidation skips JSON schema
+                                    validation (Helm's --skip-schema-validation)
+                                  type: boolean
                                 skipTests:
                                   description: SkipTests skips test manifest installation
                                     step (Helm's --skip-tests).
@@ -5263,6 +5625,11 @@ spec:
                                   description: ForceCommonLabels specifies whether
                                     to force applying common labels to resources for
                                     Kustomize apps
+                                  type: boolean
+                                ignoreMissingComponents:
+                                  description: IgnoreMissingComponents prevents kustomize
+                                    from failing when components do not exist locally
+                                    by not appending them to kustomization file
                                   type: boolean
                                 images:
                                   description: Images is a list of Kustomize image
@@ -5689,6 +6056,8 @@ spec:
                                           type: string
                                         skipCrds:
                                           type: boolean
+                                        skipSchemaValidation:
+                                          type: boolean
                                         skipTests:
                                           type: boolean
                                         valueFiles:
@@ -5726,6 +6095,8 @@ spec:
                                         forceCommonAnnotations:
                                           type: boolean
                                         forceCommonLabels:
+                                          type: boolean
+                                        ignoreMissingComponents:
                                           type: boolean
                                         images:
                                           items:
@@ -5836,6 +6207,42 @@ spec:
                                   required:
                                   - repoURL
                                   type: object
+                                sourceHydrator:
+                                  properties:
+                                    drySource:
+                                      properties:
+                                        path:
+                                          type: string
+                                        repoURL:
+                                          type: string
+                                        targetRevision:
+                                          type: string
+                                      required:
+                                      - path
+                                      - repoURL
+                                      - targetRevision
+                                      type: object
+                                    hydrateTo:
+                                      properties:
+                                        targetBranch:
+                                          type: string
+                                      required:
+                                      - targetBranch
+                                      type: object
+                                    syncSource:
+                                      properties:
+                                        path:
+                                          type: string
+                                        targetBranch:
+                                          type: string
+                                      required:
+                                      - path
+                                      - targetBranch
+                                      type: object
+                                  required:
+                                  - drySource
+                                  - syncSource
+                                  type: object
                                 sources:
                                   items:
                                     properties:
@@ -5923,6 +6330,8 @@ spec:
                                             type: string
                                           skipCrds:
                                             type: boolean
+                                          skipSchemaValidation:
+                                            type: boolean
                                           skipTests:
                                             type: boolean
                                           valueFiles:
@@ -5960,6 +6369,8 @@ spec:
                                           forceCommonAnnotations:
                                             type: boolean
                                           forceCommonLabels:
+                                            type: boolean
+                                          ignoreMissingComponents:
                                             type: boolean
                                           images:
                                             items:
@@ -6321,6 +6732,8 @@ spec:
                                           type: string
                                         skipCrds:
                                           type: boolean
+                                        skipSchemaValidation:
+                                          type: boolean
                                         skipTests:
                                           type: boolean
                                         valueFiles:
@@ -6358,6 +6771,8 @@ spec:
                                         forceCommonAnnotations:
                                           type: boolean
                                         forceCommonLabels:
+                                          type: boolean
+                                        ignoreMissingComponents:
                                           type: boolean
                                         images:
                                           items:
@@ -6468,6 +6883,42 @@ spec:
                                   required:
                                   - repoURL
                                   type: object
+                                sourceHydrator:
+                                  properties:
+                                    drySource:
+                                      properties:
+                                        path:
+                                          type: string
+                                        repoURL:
+                                          type: string
+                                        targetRevision:
+                                          type: string
+                                      required:
+                                      - path
+                                      - repoURL
+                                      - targetRevision
+                                      type: object
+                                    hydrateTo:
+                                      properties:
+                                        targetBranch:
+                                          type: string
+                                      required:
+                                      - targetBranch
+                                      type: object
+                                    syncSource:
+                                      properties:
+                                        path:
+                                          type: string
+                                        targetBranch:
+                                          type: string
+                                      required:
+                                      - path
+                                      - targetBranch
+                                      type: object
+                                  required:
+                                  - drySource
+                                  - syncSource
+                                  type: object
                                 sources:
                                   items:
                                     properties:
@@ -6555,6 +7006,8 @@ spec:
                                             type: string
                                           skipCrds:
                                             type: boolean
+                                          skipSchemaValidation:
+                                            type: boolean
                                           skipTests:
                                             type: boolean
                                           valueFiles:
@@ -6592,6 +7045,8 @@ spec:
                                           forceCommonAnnotations:
                                             type: boolean
                                           forceCommonLabels:
+                                            type: boolean
+                                          ignoreMissingComponents:
                                             type: boolean
                                           images:
                                             items:
@@ -6952,6 +7407,8 @@ spec:
                                           type: string
                                         skipCrds:
                                           type: boolean
+                                        skipSchemaValidation:
+                                          type: boolean
                                         skipTests:
                                           type: boolean
                                         valueFiles:
@@ -6989,6 +7446,8 @@ spec:
                                         forceCommonAnnotations:
                                           type: boolean
                                         forceCommonLabels:
+                                          type: boolean
+                                        ignoreMissingComponents:
                                           type: boolean
                                         images:
                                           items:
@@ -7099,6 +7558,42 @@ spec:
                                   required:
                                   - repoURL
                                   type: object
+                                sourceHydrator:
+                                  properties:
+                                    drySource:
+                                      properties:
+                                        path:
+                                          type: string
+                                        repoURL:
+                                          type: string
+                                        targetRevision:
+                                          type: string
+                                      required:
+                                      - path
+                                      - repoURL
+                                      - targetRevision
+                                      type: object
+                                    hydrateTo:
+                                      properties:
+                                        targetBranch:
+                                          type: string
+                                      required:
+                                      - targetBranch
+                                      type: object
+                                    syncSource:
+                                      properties:
+                                        path:
+                                          type: string
+                                        targetBranch:
+                                          type: string
+                                      required:
+                                      - path
+                                      - targetBranch
+                                      type: object
+                                  required:
+                                  - drySource
+                                  - syncSource
+                                  type: object
                                 sources:
                                   items:
                                     properties:
@@ -7186,6 +7681,8 @@ spec:
                                             type: string
                                           skipCrds:
                                             type: boolean
+                                          skipSchemaValidation:
+                                            type: boolean
                                           skipTests:
                                             type: boolean
                                           valueFiles:
@@ -7223,6 +7720,8 @@ spec:
                                           forceCommonAnnotations:
                                             type: boolean
                                           forceCommonLabels:
+                                            type: boolean
+                                          ignoreMissingComponents:
                                             type: boolean
                                           images:
                                             items:
@@ -7563,6 +8062,8 @@ spec:
                                           type: string
                                         skipCrds:
                                           type: boolean
+                                        skipSchemaValidation:
+                                          type: boolean
                                         skipTests:
                                           type: boolean
                                         valueFiles:
@@ -7600,6 +8101,8 @@ spec:
                                         forceCommonAnnotations:
                                           type: boolean
                                         forceCommonLabels:
+                                          type: boolean
+                                        ignoreMissingComponents:
                                           type: boolean
                                         images:
                                           items:
@@ -7710,6 +8213,42 @@ spec:
                                   required:
                                   - repoURL
                                   type: object
+                                sourceHydrator:
+                                  properties:
+                                    drySource:
+                                      properties:
+                                        path:
+                                          type: string
+                                        repoURL:
+                                          type: string
+                                        targetRevision:
+                                          type: string
+                                      required:
+                                      - path
+                                      - repoURL
+                                      - targetRevision
+                                      type: object
+                                    hydrateTo:
+                                      properties:
+                                        targetBranch:
+                                          type: string
+                                      required:
+                                      - targetBranch
+                                      type: object
+                                    syncSource:
+                                      properties:
+                                        path:
+                                          type: string
+                                        targetBranch:
+                                          type: string
+                                      required:
+                                      - path
+                                      - targetBranch
+                                      type: object
+                                  required:
+                                  - drySource
+                                  - syncSource
+                                  type: object
                                 sources:
                                   items:
                                     properties:
@@ -7797,6 +8336,8 @@ spec:
                                             type: string
                                           skipCrds:
                                             type: boolean
+                                          skipSchemaValidation:
+                                            type: boolean
                                           skipTests:
                                             type: boolean
                                           valueFiles:
@@ -7834,6 +8375,8 @@ spec:
                                           forceCommonAnnotations:
                                             type: boolean
                                           forceCommonLabels:
+                                            type: boolean
+                                          ignoreMissingComponents:
                                             type: boolean
                                           images:
                                             items:
@@ -8199,6 +8742,8 @@ spec:
                                                     type: string
                                                   skipCrds:
                                                     type: boolean
+                                                  skipSchemaValidation:
+                                                    type: boolean
                                                   skipTests:
                                                     type: boolean
                                                   valueFiles:
@@ -8236,6 +8781,8 @@ spec:
                                                   forceCommonAnnotations:
                                                     type: boolean
                                                   forceCommonLabels:
+                                                    type: boolean
+                                                  ignoreMissingComponents:
                                                     type: boolean
                                                   images:
                                                     items:
@@ -8346,6 +8893,42 @@ spec:
                                             required:
                                             - repoURL
                                             type: object
+                                          sourceHydrator:
+                                            properties:
+                                              drySource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  repoURL:
+                                                    type: string
+                                                  targetRevision:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - repoURL
+                                                - targetRevision
+                                                type: object
+                                              hydrateTo:
+                                                properties:
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - targetBranch
+                                                type: object
+                                              syncSource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - targetBranch
+                                                type: object
+                                            required:
+                                            - drySource
+                                            - syncSource
+                                            type: object
                                           sources:
                                             items:
                                               properties:
@@ -8433,6 +9016,8 @@ spec:
                                                       type: string
                                                     skipCrds:
                                                       type: boolean
+                                                    skipSchemaValidation:
+                                                      type: boolean
                                                     skipTests:
                                                       type: boolean
                                                     valueFiles:
@@ -8470,6 +9055,8 @@ spec:
                                                     forceCommonAnnotations:
                                                       type: boolean
                                                     forceCommonLabels:
+                                                      type: boolean
+                                                    ignoreMissingComponents:
                                                       type: boolean
                                                     images:
                                                       items:
@@ -8831,6 +9418,8 @@ spec:
                                                     type: string
                                                   skipCrds:
                                                     type: boolean
+                                                  skipSchemaValidation:
+                                                    type: boolean
                                                   skipTests:
                                                     type: boolean
                                                   valueFiles:
@@ -8868,6 +9457,8 @@ spec:
                                                   forceCommonAnnotations:
                                                     type: boolean
                                                   forceCommonLabels:
+                                                    type: boolean
+                                                  ignoreMissingComponents:
                                                     type: boolean
                                                   images:
                                                     items:
@@ -8978,6 +9569,42 @@ spec:
                                             required:
                                             - repoURL
                                             type: object
+                                          sourceHydrator:
+                                            properties:
+                                              drySource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  repoURL:
+                                                    type: string
+                                                  targetRevision:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - repoURL
+                                                - targetRevision
+                                                type: object
+                                              hydrateTo:
+                                                properties:
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - targetBranch
+                                                type: object
+                                              syncSource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - targetBranch
+                                                type: object
+                                            required:
+                                            - drySource
+                                            - syncSource
+                                            type: object
                                           sources:
                                             items:
                                               properties:
@@ -9065,6 +9692,8 @@ spec:
                                                       type: string
                                                     skipCrds:
                                                       type: boolean
+                                                    skipSchemaValidation:
+                                                      type: boolean
                                                     skipTests:
                                                       type: boolean
                                                     valueFiles:
@@ -9102,6 +9731,8 @@ spec:
                                                     forceCommonAnnotations:
                                                       type: boolean
                                                     forceCommonLabels:
+                                                      type: boolean
+                                                    ignoreMissingComponents:
                                                       type: boolean
                                                     images:
                                                       items:
@@ -9462,6 +10093,8 @@ spec:
                                                     type: string
                                                   skipCrds:
                                                     type: boolean
+                                                  skipSchemaValidation:
+                                                    type: boolean
                                                   skipTests:
                                                     type: boolean
                                                   valueFiles:
@@ -9499,6 +10132,8 @@ spec:
                                                   forceCommonAnnotations:
                                                     type: boolean
                                                   forceCommonLabels:
+                                                    type: boolean
+                                                  ignoreMissingComponents:
                                                     type: boolean
                                                   images:
                                                     items:
@@ -9609,6 +10244,42 @@ spec:
                                             required:
                                             - repoURL
                                             type: object
+                                          sourceHydrator:
+                                            properties:
+                                              drySource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  repoURL:
+                                                    type: string
+                                                  targetRevision:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - repoURL
+                                                - targetRevision
+                                                type: object
+                                              hydrateTo:
+                                                properties:
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - targetBranch
+                                                type: object
+                                              syncSource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - targetBranch
+                                                type: object
+                                            required:
+                                            - drySource
+                                            - syncSource
+                                            type: object
                                           sources:
                                             items:
                                               properties:
@@ -9696,6 +10367,8 @@ spec:
                                                       type: string
                                                     skipCrds:
                                                       type: boolean
+                                                    skipSchemaValidation:
+                                                      type: boolean
                                                     skipTests:
                                                       type: boolean
                                                     valueFiles:
@@ -9733,6 +10406,8 @@ spec:
                                                     forceCommonAnnotations:
                                                       type: boolean
                                                     forceCommonLabels:
+                                                      type: boolean
+                                                    ignoreMissingComponents:
                                                       type: boolean
                                                     images:
                                                       items:
@@ -10073,6 +10748,8 @@ spec:
                                                     type: string
                                                   skipCrds:
                                                     type: boolean
+                                                  skipSchemaValidation:
+                                                    type: boolean
                                                   skipTests:
                                                     type: boolean
                                                   valueFiles:
@@ -10110,6 +10787,8 @@ spec:
                                                   forceCommonAnnotations:
                                                     type: boolean
                                                   forceCommonLabels:
+                                                    type: boolean
+                                                  ignoreMissingComponents:
                                                     type: boolean
                                                   images:
                                                     items:
@@ -10220,6 +10899,42 @@ spec:
                                             required:
                                             - repoURL
                                             type: object
+                                          sourceHydrator:
+                                            properties:
+                                              drySource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  repoURL:
+                                                    type: string
+                                                  targetRevision:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - repoURL
+                                                - targetRevision
+                                                type: object
+                                              hydrateTo:
+                                                properties:
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - targetBranch
+                                                type: object
+                                              syncSource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - targetBranch
+                                                type: object
+                                            required:
+                                            - drySource
+                                            - syncSource
+                                            type: object
                                           sources:
                                             items:
                                               properties:
@@ -10307,6 +11022,8 @@ spec:
                                                       type: string
                                                     skipCrds:
                                                       type: boolean
+                                                    skipSchemaValidation:
+                                                      type: boolean
                                                     skipTests:
                                                       type: boolean
                                                     valueFiles:
@@ -10344,6 +11061,8 @@ spec:
                                                     forceCommonAnnotations:
                                                       type: boolean
                                                     forceCommonLabels:
+                                                      type: boolean
+                                                    ignoreMissingComponents:
                                                       type: boolean
                                                     images:
                                                       items:
@@ -10692,6 +11411,8 @@ spec:
                                                     type: string
                                                   skipCrds:
                                                     type: boolean
+                                                  skipSchemaValidation:
+                                                    type: boolean
                                                   skipTests:
                                                     type: boolean
                                                   valueFiles:
@@ -10729,6 +11450,8 @@ spec:
                                                   forceCommonAnnotations:
                                                     type: boolean
                                                   forceCommonLabels:
+                                                    type: boolean
+                                                  ignoreMissingComponents:
                                                     type: boolean
                                                   images:
                                                     items:
@@ -10839,6 +11562,42 @@ spec:
                                             required:
                                             - repoURL
                                             type: object
+                                          sourceHydrator:
+                                            properties:
+                                              drySource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  repoURL:
+                                                    type: string
+                                                  targetRevision:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - repoURL
+                                                - targetRevision
+                                                type: object
+                                              hydrateTo:
+                                                properties:
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - targetBranch
+                                                type: object
+                                              syncSource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - targetBranch
+                                                type: object
+                                            required:
+                                            - drySource
+                                            - syncSource
+                                            type: object
                                           sources:
                                             items:
                                               properties:
@@ -10926,6 +11685,8 @@ spec:
                                                       type: string
                                                     skipCrds:
                                                       type: boolean
+                                                    skipSchemaValidation:
+                                                      type: boolean
                                                     skipTests:
                                                       type: boolean
                                                     valueFiles:
@@ -10963,6 +11724,8 @@ spec:
                                                     forceCommonAnnotations:
                                                       type: boolean
                                                     forceCommonLabels:
+                                                      type: boolean
+                                                    ignoreMissingComponents:
                                                       type: boolean
                                                     images:
                                                       items:
@@ -11530,6 +12293,8 @@ spec:
                                                     type: string
                                                   skipCrds:
                                                     type: boolean
+                                                  skipSchemaValidation:
+                                                    type: boolean
                                                   skipTests:
                                                     type: boolean
                                                   valueFiles:
@@ -11567,6 +12332,8 @@ spec:
                                                   forceCommonAnnotations:
                                                     type: boolean
                                                   forceCommonLabels:
+                                                    type: boolean
+                                                  ignoreMissingComponents:
                                                     type: boolean
                                                   images:
                                                     items:
@@ -11677,6 +12444,42 @@ spec:
                                             required:
                                             - repoURL
                                             type: object
+                                          sourceHydrator:
+                                            properties:
+                                              drySource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  repoURL:
+                                                    type: string
+                                                  targetRevision:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - repoURL
+                                                - targetRevision
+                                                type: object
+                                              hydrateTo:
+                                                properties:
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - targetBranch
+                                                type: object
+                                              syncSource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - targetBranch
+                                                type: object
+                                            required:
+                                            - drySource
+                                            - syncSource
+                                            type: object
                                           sources:
                                             items:
                                               properties:
@@ -11764,6 +12567,8 @@ spec:
                                                       type: string
                                                     skipCrds:
                                                       type: boolean
+                                                    skipSchemaValidation:
+                                                      type: boolean
                                                     skipTests:
                                                       type: boolean
                                                     valueFiles:
@@ -11801,6 +12606,8 @@ spec:
                                                     forceCommonAnnotations:
                                                       type: boolean
                                                     forceCommonLabels:
+                                                      type: boolean
+                                                    ignoreMissingComponents:
                                                       type: boolean
                                                     images:
                                                       items:
@@ -12363,6 +13170,8 @@ spec:
                                                     type: string
                                                   skipCrds:
                                                     type: boolean
+                                                  skipSchemaValidation:
+                                                    type: boolean
                                                   skipTests:
                                                     type: boolean
                                                   valueFiles:
@@ -12400,6 +13209,8 @@ spec:
                                                   forceCommonAnnotations:
                                                     type: boolean
                                                   forceCommonLabels:
+                                                    type: boolean
+                                                  ignoreMissingComponents:
                                                     type: boolean
                                                   images:
                                                     items:
@@ -12510,6 +13321,42 @@ spec:
                                             required:
                                             - repoURL
                                             type: object
+                                          sourceHydrator:
+                                            properties:
+                                              drySource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  repoURL:
+                                                    type: string
+                                                  targetRevision:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - repoURL
+                                                - targetRevision
+                                                type: object
+                                              hydrateTo:
+                                                properties:
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - targetBranch
+                                                type: object
+                                              syncSource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - targetBranch
+                                                type: object
+                                            required:
+                                            - drySource
+                                            - syncSource
+                                            type: object
                                           sources:
                                             items:
                                               properties:
@@ -12597,6 +13444,8 @@ spec:
                                                       type: string
                                                     skipCrds:
                                                       type: boolean
+                                                    skipSchemaValidation:
+                                                      type: boolean
                                                     skipTests:
                                                       type: boolean
                                                     valueFiles:
@@ -12634,6 +13483,8 @@ spec:
                                                     forceCommonAnnotations:
                                                       type: boolean
                                                     forceCommonLabels:
+                                                      type: boolean
+                                                    ignoreMissingComponents:
                                                       type: boolean
                                                     images:
                                                       items:
@@ -12991,6 +13842,8 @@ spec:
                                           type: string
                                         skipCrds:
                                           type: boolean
+                                        skipSchemaValidation:
+                                          type: boolean
                                         skipTests:
                                           type: boolean
                                         valueFiles:
@@ -13028,6 +13881,8 @@ spec:
                                         forceCommonAnnotations:
                                           type: boolean
                                         forceCommonLabels:
+                                          type: boolean
+                                        ignoreMissingComponents:
                                           type: boolean
                                         images:
                                           items:
@@ -13138,6 +13993,42 @@ spec:
                                   required:
                                   - repoURL
                                   type: object
+                                sourceHydrator:
+                                  properties:
+                                    drySource:
+                                      properties:
+                                        path:
+                                          type: string
+                                        repoURL:
+                                          type: string
+                                        targetRevision:
+                                          type: string
+                                      required:
+                                      - path
+                                      - repoURL
+                                      - targetRevision
+                                      type: object
+                                    hydrateTo:
+                                      properties:
+                                        targetBranch:
+                                          type: string
+                                      required:
+                                      - targetBranch
+                                      type: object
+                                    syncSource:
+                                      properties:
+                                        path:
+                                          type: string
+                                        targetBranch:
+                                          type: string
+                                      required:
+                                      - path
+                                      - targetBranch
+                                      type: object
+                                  required:
+                                  - drySource
+                                  - syncSource
+                                  type: object
                                 sources:
                                   items:
                                     properties:
@@ -13225,6 +14116,8 @@ spec:
                                             type: string
                                           skipCrds:
                                             type: boolean
+                                          skipSchemaValidation:
+                                            type: boolean
                                           skipTests:
                                             type: boolean
                                           valueFiles:
@@ -13262,6 +14155,8 @@ spec:
                                           forceCommonAnnotations:
                                             type: boolean
                                           forceCommonLabels:
+                                            type: boolean
+                                          ignoreMissingComponents:
                                             type: boolean
                                           images:
                                             items:
@@ -13629,6 +14524,8 @@ spec:
                                                     type: string
                                                   skipCrds:
                                                     type: boolean
+                                                  skipSchemaValidation:
+                                                    type: boolean
                                                   skipTests:
                                                     type: boolean
                                                   valueFiles:
@@ -13666,6 +14563,8 @@ spec:
                                                   forceCommonAnnotations:
                                                     type: boolean
                                                   forceCommonLabels:
+                                                    type: boolean
+                                                  ignoreMissingComponents:
                                                     type: boolean
                                                   images:
                                                     items:
@@ -13776,6 +14675,42 @@ spec:
                                             required:
                                             - repoURL
                                             type: object
+                                          sourceHydrator:
+                                            properties:
+                                              drySource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  repoURL:
+                                                    type: string
+                                                  targetRevision:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - repoURL
+                                                - targetRevision
+                                                type: object
+                                              hydrateTo:
+                                                properties:
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - targetBranch
+                                                type: object
+                                              syncSource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - targetBranch
+                                                type: object
+                                            required:
+                                            - drySource
+                                            - syncSource
+                                            type: object
                                           sources:
                                             items:
                                               properties:
@@ -13863,6 +14798,8 @@ spec:
                                                       type: string
                                                     skipCrds:
                                                       type: boolean
+                                                    skipSchemaValidation:
+                                                      type: boolean
                                                     skipTests:
                                                       type: boolean
                                                     valueFiles:
@@ -13900,6 +14837,8 @@ spec:
                                                     forceCommonAnnotations:
                                                       type: boolean
                                                     forceCommonLabels:
+                                                      type: boolean
+                                                    ignoreMissingComponents:
                                                       type: boolean
                                                     images:
                                                       items:
@@ -14261,6 +15200,8 @@ spec:
                                                     type: string
                                                   skipCrds:
                                                     type: boolean
+                                                  skipSchemaValidation:
+                                                    type: boolean
                                                   skipTests:
                                                     type: boolean
                                                   valueFiles:
@@ -14298,6 +15239,8 @@ spec:
                                                   forceCommonAnnotations:
                                                     type: boolean
                                                   forceCommonLabels:
+                                                    type: boolean
+                                                  ignoreMissingComponents:
                                                     type: boolean
                                                   images:
                                                     items:
@@ -14408,6 +15351,42 @@ spec:
                                             required:
                                             - repoURL
                                             type: object
+                                          sourceHydrator:
+                                            properties:
+                                              drySource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  repoURL:
+                                                    type: string
+                                                  targetRevision:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - repoURL
+                                                - targetRevision
+                                                type: object
+                                              hydrateTo:
+                                                properties:
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - targetBranch
+                                                type: object
+                                              syncSource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - targetBranch
+                                                type: object
+                                            required:
+                                            - drySource
+                                            - syncSource
+                                            type: object
                                           sources:
                                             items:
                                               properties:
@@ -14495,6 +15474,8 @@ spec:
                                                       type: string
                                                     skipCrds:
                                                       type: boolean
+                                                    skipSchemaValidation:
+                                                      type: boolean
                                                     skipTests:
                                                       type: boolean
                                                     valueFiles:
@@ -14532,6 +15513,8 @@ spec:
                                                     forceCommonAnnotations:
                                                       type: boolean
                                                     forceCommonLabels:
+                                                      type: boolean
+                                                    ignoreMissingComponents:
                                                       type: boolean
                                                     images:
                                                       items:
@@ -14892,6 +15875,8 @@ spec:
                                                     type: string
                                                   skipCrds:
                                                     type: boolean
+                                                  skipSchemaValidation:
+                                                    type: boolean
                                                   skipTests:
                                                     type: boolean
                                                   valueFiles:
@@ -14929,6 +15914,8 @@ spec:
                                                   forceCommonAnnotations:
                                                     type: boolean
                                                   forceCommonLabels:
+                                                    type: boolean
+                                                  ignoreMissingComponents:
                                                     type: boolean
                                                   images:
                                                     items:
@@ -15039,6 +16026,42 @@ spec:
                                             required:
                                             - repoURL
                                             type: object
+                                          sourceHydrator:
+                                            properties:
+                                              drySource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  repoURL:
+                                                    type: string
+                                                  targetRevision:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - repoURL
+                                                - targetRevision
+                                                type: object
+                                              hydrateTo:
+                                                properties:
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - targetBranch
+                                                type: object
+                                              syncSource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - targetBranch
+                                                type: object
+                                            required:
+                                            - drySource
+                                            - syncSource
+                                            type: object
                                           sources:
                                             items:
                                               properties:
@@ -15126,6 +16149,8 @@ spec:
                                                       type: string
                                                     skipCrds:
                                                       type: boolean
+                                                    skipSchemaValidation:
+                                                      type: boolean
                                                     skipTests:
                                                       type: boolean
                                                     valueFiles:
@@ -15163,6 +16188,8 @@ spec:
                                                     forceCommonAnnotations:
                                                       type: boolean
                                                     forceCommonLabels:
+                                                      type: boolean
+                                                    ignoreMissingComponents:
                                                       type: boolean
                                                     images:
                                                       items:
@@ -15503,6 +16530,8 @@ spec:
                                                     type: string
                                                   skipCrds:
                                                     type: boolean
+                                                  skipSchemaValidation:
+                                                    type: boolean
                                                   skipTests:
                                                     type: boolean
                                                   valueFiles:
@@ -15540,6 +16569,8 @@ spec:
                                                   forceCommonAnnotations:
                                                     type: boolean
                                                   forceCommonLabels:
+                                                    type: boolean
+                                                  ignoreMissingComponents:
                                                     type: boolean
                                                   images:
                                                     items:
@@ -15650,6 +16681,42 @@ spec:
                                             required:
                                             - repoURL
                                             type: object
+                                          sourceHydrator:
+                                            properties:
+                                              drySource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  repoURL:
+                                                    type: string
+                                                  targetRevision:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - repoURL
+                                                - targetRevision
+                                                type: object
+                                              hydrateTo:
+                                                properties:
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - targetBranch
+                                                type: object
+                                              syncSource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - targetBranch
+                                                type: object
+                                            required:
+                                            - drySource
+                                            - syncSource
+                                            type: object
                                           sources:
                                             items:
                                               properties:
@@ -15737,6 +16804,8 @@ spec:
                                                       type: string
                                                     skipCrds:
                                                       type: boolean
+                                                    skipSchemaValidation:
+                                                      type: boolean
                                                     skipTests:
                                                       type: boolean
                                                     valueFiles:
@@ -15774,6 +16843,8 @@ spec:
                                                     forceCommonAnnotations:
                                                       type: boolean
                                                     forceCommonLabels:
+                                                      type: boolean
+                                                    ignoreMissingComponents:
                                                       type: boolean
                                                     images:
                                                       items:
@@ -16122,6 +17193,8 @@ spec:
                                                     type: string
                                                   skipCrds:
                                                     type: boolean
+                                                  skipSchemaValidation:
+                                                    type: boolean
                                                   skipTests:
                                                     type: boolean
                                                   valueFiles:
@@ -16159,6 +17232,8 @@ spec:
                                                   forceCommonAnnotations:
                                                     type: boolean
                                                   forceCommonLabels:
+                                                    type: boolean
+                                                  ignoreMissingComponents:
                                                     type: boolean
                                                   images:
                                                     items:
@@ -16269,6 +17344,42 @@ spec:
                                             required:
                                             - repoURL
                                             type: object
+                                          sourceHydrator:
+                                            properties:
+                                              drySource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  repoURL:
+                                                    type: string
+                                                  targetRevision:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - repoURL
+                                                - targetRevision
+                                                type: object
+                                              hydrateTo:
+                                                properties:
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - targetBranch
+                                                type: object
+                                              syncSource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - targetBranch
+                                                type: object
+                                            required:
+                                            - drySource
+                                            - syncSource
+                                            type: object
                                           sources:
                                             items:
                                               properties:
@@ -16356,6 +17467,8 @@ spec:
                                                       type: string
                                                     skipCrds:
                                                       type: boolean
+                                                    skipSchemaValidation:
+                                                      type: boolean
                                                     skipTests:
                                                       type: boolean
                                                     valueFiles:
@@ -16393,6 +17506,8 @@ spec:
                                                     forceCommonAnnotations:
                                                       type: boolean
                                                     forceCommonLabels:
+                                                      type: boolean
+                                                    ignoreMissingComponents:
                                                       type: boolean
                                                     images:
                                                       items:
@@ -16960,6 +18075,8 @@ spec:
                                                     type: string
                                                   skipCrds:
                                                     type: boolean
+                                                  skipSchemaValidation:
+                                                    type: boolean
                                                   skipTests:
                                                     type: boolean
                                                   valueFiles:
@@ -16997,6 +18114,8 @@ spec:
                                                   forceCommonAnnotations:
                                                     type: boolean
                                                   forceCommonLabels:
+                                                    type: boolean
+                                                  ignoreMissingComponents:
                                                     type: boolean
                                                   images:
                                                     items:
@@ -17107,6 +18226,42 @@ spec:
                                             required:
                                             - repoURL
                                             type: object
+                                          sourceHydrator:
+                                            properties:
+                                              drySource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  repoURL:
+                                                    type: string
+                                                  targetRevision:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - repoURL
+                                                - targetRevision
+                                                type: object
+                                              hydrateTo:
+                                                properties:
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - targetBranch
+                                                type: object
+                                              syncSource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - targetBranch
+                                                type: object
+                                            required:
+                                            - drySource
+                                            - syncSource
+                                            type: object
                                           sources:
                                             items:
                                               properties:
@@ -17194,6 +18349,8 @@ spec:
                                                       type: string
                                                     skipCrds:
                                                       type: boolean
+                                                    skipSchemaValidation:
+                                                      type: boolean
                                                     skipTests:
                                                       type: boolean
                                                     valueFiles:
@@ -17231,6 +18388,8 @@ spec:
                                                     forceCommonAnnotations:
                                                       type: boolean
                                                     forceCommonLabels:
+                                                      type: boolean
+                                                    ignoreMissingComponents:
                                                       type: boolean
                                                     images:
                                                       items:
@@ -17793,6 +18952,8 @@ spec:
                                                     type: string
                                                   skipCrds:
                                                     type: boolean
+                                                  skipSchemaValidation:
+                                                    type: boolean
                                                   skipTests:
                                                     type: boolean
                                                   valueFiles:
@@ -17830,6 +18991,8 @@ spec:
                                                   forceCommonAnnotations:
                                                     type: boolean
                                                   forceCommonLabels:
+                                                    type: boolean
+                                                  ignoreMissingComponents:
                                                     type: boolean
                                                   images:
                                                     items:
@@ -17940,6 +19103,42 @@ spec:
                                             required:
                                             - repoURL
                                             type: object
+                                          sourceHydrator:
+                                            properties:
+                                              drySource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  repoURL:
+                                                    type: string
+                                                  targetRevision:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - repoURL
+                                                - targetRevision
+                                                type: object
+                                              hydrateTo:
+                                                properties:
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - targetBranch
+                                                type: object
+                                              syncSource:
+                                                properties:
+                                                  path:
+                                                    type: string
+                                                  targetBranch:
+                                                    type: string
+                                                required:
+                                                - path
+                                                - targetBranch
+                                                type: object
+                                            required:
+                                            - drySource
+                                            - syncSource
+                                            type: object
                                           sources:
                                             items:
                                               properties:
@@ -18027,6 +19226,8 @@ spec:
                                                       type: string
                                                     skipCrds:
                                                       type: boolean
+                                                    skipSchemaValidation:
+                                                      type: boolean
                                                     skipTests:
                                                       type: boolean
                                                     valueFiles:
@@ -18064,6 +19265,8 @@ spec:
                                                     forceCommonAnnotations:
                                                       type: boolean
                                                     forceCommonLabels:
+                                                      type: boolean
+                                                    ignoreMissingComponents:
                                                       type: boolean
                                                     images:
                                                       items:
@@ -18425,6 +19628,8 @@ spec:
                                           type: string
                                         skipCrds:
                                           type: boolean
+                                        skipSchemaValidation:
+                                          type: boolean
                                         skipTests:
                                           type: boolean
                                         valueFiles:
@@ -18462,6 +19667,8 @@ spec:
                                         forceCommonAnnotations:
                                           type: boolean
                                         forceCommonLabels:
+                                          type: boolean
+                                        ignoreMissingComponents:
                                           type: boolean
                                         images:
                                           items:
@@ -18572,6 +19779,42 @@ spec:
                                   required:
                                   - repoURL
                                   type: object
+                                sourceHydrator:
+                                  properties:
+                                    drySource:
+                                      properties:
+                                        path:
+                                          type: string
+                                        repoURL:
+                                          type: string
+                                        targetRevision:
+                                          type: string
+                                      required:
+                                      - path
+                                      - repoURL
+                                      - targetRevision
+                                      type: object
+                                    hydrateTo:
+                                      properties:
+                                        targetBranch:
+                                          type: string
+                                      required:
+                                      - targetBranch
+                                      type: object
+                                    syncSource:
+                                      properties:
+                                        path:
+                                          type: string
+                                        targetBranch:
+                                          type: string
+                                      required:
+                                      - path
+                                      - targetBranch
+                                      type: object
+                                  required:
+                                  - drySource
+                                  - syncSource
+                                  type: object
                                 sources:
                                   items:
                                     properties:
@@ -18659,6 +19902,8 @@ spec:
                                             type: string
                                           skipCrds:
                                             type: boolean
+                                          skipSchemaValidation:
+                                            type: boolean
                                           skipTests:
                                             type: boolean
                                           valueFiles:
@@ -18696,6 +19941,8 @@ spec:
                                           forceCommonAnnotations:
                                             type: boolean
                                           forceCommonLabels:
+                                            type: boolean
+                                          ignoreMissingComponents:
                                             type: boolean
                                           images:
                                             items:
@@ -19043,6 +20290,8 @@ spec:
                                           type: string
                                         skipCrds:
                                           type: boolean
+                                        skipSchemaValidation:
+                                          type: boolean
                                         skipTests:
                                           type: boolean
                                         valueFiles:
@@ -19080,6 +20329,8 @@ spec:
                                         forceCommonAnnotations:
                                           type: boolean
                                         forceCommonLabels:
+                                          type: boolean
+                                        ignoreMissingComponents:
                                           type: boolean
                                         images:
                                           items:
@@ -19190,6 +20441,42 @@ spec:
                                   required:
                                   - repoURL
                                   type: object
+                                sourceHydrator:
+                                  properties:
+                                    drySource:
+                                      properties:
+                                        path:
+                                          type: string
+                                        repoURL:
+                                          type: string
+                                        targetRevision:
+                                          type: string
+                                      required:
+                                      - path
+                                      - repoURL
+                                      - targetRevision
+                                      type: object
+                                    hydrateTo:
+                                      properties:
+                                        targetBranch:
+                                          type: string
+                                      required:
+                                      - targetBranch
+                                      type: object
+                                    syncSource:
+                                      properties:
+                                        path:
+                                          type: string
+                                        targetBranch:
+                                          type: string
+                                      required:
+                                      - path
+                                      - targetBranch
+                                      type: object
+                                  required:
+                                  - drySource
+                                  - syncSource
+                                  type: object
                                 sources:
                                   items:
                                     properties:
@@ -19277,6 +20564,8 @@ spec:
                                             type: string
                                           skipCrds:
                                             type: boolean
+                                          skipSchemaValidation:
+                                            type: boolean
                                           skipTests:
                                             type: boolean
                                           valueFiles:
@@ -19314,6 +20603,8 @@ spec:
                                           forceCommonAnnotations:
                                             type: boolean
                                           forceCommonLabels:
+                                            type: boolean
+                                          ignoreMissingComponents:
                                             type: boolean
                                           images:
                                             items:
@@ -19881,6 +21172,8 @@ spec:
                                           type: string
                                         skipCrds:
                                           type: boolean
+                                        skipSchemaValidation:
+                                          type: boolean
                                         skipTests:
                                           type: boolean
                                         valueFiles:
@@ -19918,6 +21211,8 @@ spec:
                                         forceCommonAnnotations:
                                           type: boolean
                                         forceCommonLabels:
+                                          type: boolean
+                                        ignoreMissingComponents:
                                           type: boolean
                                         images:
                                           items:
@@ -20028,6 +21323,42 @@ spec:
                                   required:
                                   - repoURL
                                   type: object
+                                sourceHydrator:
+                                  properties:
+                                    drySource:
+                                      properties:
+                                        path:
+                                          type: string
+                                        repoURL:
+                                          type: string
+                                        targetRevision:
+                                          type: string
+                                      required:
+                                      - path
+                                      - repoURL
+                                      - targetRevision
+                                      type: object
+                                    hydrateTo:
+                                      properties:
+                                        targetBranch:
+                                          type: string
+                                      required:
+                                      - targetBranch
+                                      type: object
+                                    syncSource:
+                                      properties:
+                                        path:
+                                          type: string
+                                        targetBranch:
+                                          type: string
+                                      required:
+                                      - path
+                                      - targetBranch
+                                      type: object
+                                  required:
+                                  - drySource
+                                  - syncSource
+                                  type: object
                                 sources:
                                   items:
                                     properties:
@@ -20115,6 +21446,8 @@ spec:
                                             type: string
                                           skipCrds:
                                             type: boolean
+                                          skipSchemaValidation:
+                                            type: boolean
                                           skipTests:
                                             type: boolean
                                           valueFiles:
@@ -20152,6 +21485,8 @@ spec:
                                           forceCommonAnnotations:
                                             type: boolean
                                           forceCommonLabels:
+                                            type: boolean
+                                          ignoreMissingComponents:
                                             type: boolean
                                           images:
                                             items:
@@ -20714,6 +22049,8 @@ spec:
                                           type: string
                                         skipCrds:
                                           type: boolean
+                                        skipSchemaValidation:
+                                          type: boolean
                                         skipTests:
                                           type: boolean
                                         valueFiles:
@@ -20751,6 +22088,8 @@ spec:
                                         forceCommonAnnotations:
                                           type: boolean
                                         forceCommonLabels:
+                                          type: boolean
+                                        ignoreMissingComponents:
                                           type: boolean
                                         images:
                                           items:
@@ -20861,6 +22200,42 @@ spec:
                                   required:
                                   - repoURL
                                   type: object
+                                sourceHydrator:
+                                  properties:
+                                    drySource:
+                                      properties:
+                                        path:
+                                          type: string
+                                        repoURL:
+                                          type: string
+                                        targetRevision:
+                                          type: string
+                                      required:
+                                      - path
+                                      - repoURL
+                                      - targetRevision
+                                      type: object
+                                    hydrateTo:
+                                      properties:
+                                        targetBranch:
+                                          type: string
+                                      required:
+                                      - targetBranch
+                                      type: object
+                                    syncSource:
+                                      properties:
+                                        path:
+                                          type: string
+                                        targetBranch:
+                                          type: string
+                                      required:
+                                      - path
+                                      - targetBranch
+                                      type: object
+                                  required:
+                                  - drySource
+                                  - syncSource
+                                  type: object
                                 sources:
                                   items:
                                     properties:
@@ -20948,6 +22323,8 @@ spec:
                                             type: string
                                           skipCrds:
                                             type: boolean
+                                          skipSchemaValidation:
+                                            type: boolean
                                           skipTests:
                                             type: boolean
                                           valueFiles:
@@ -20985,6 +22362,8 @@ spec:
                                           forceCommonAnnotations:
                                             type: boolean
                                           forceCommonLabels:
+                                            type: boolean
+                                          ignoreMissingComponents:
                                             type: boolean
                                           images:
                                             items:
@@ -21417,6 +22796,8 @@ spec:
                                 type: string
                               skipCrds:
                                 type: boolean
+                              skipSchemaValidation:
+                                type: boolean
                               skipTests:
                                 type: boolean
                               valueFiles:
@@ -21454,6 +22835,8 @@ spec:
                               forceCommonAnnotations:
                                 type: boolean
                               forceCommonLabels:
+                                type: boolean
+                              ignoreMissingComponents:
                                 type: boolean
                               images:
                                 items:
@@ -21564,6 +22947,42 @@ spec:
                         required:
                         - repoURL
                         type: object
+                      sourceHydrator:
+                        properties:
+                          drySource:
+                            properties:
+                              path:
+                                type: string
+                              repoURL:
+                                type: string
+                              targetRevision:
+                                type: string
+                            required:
+                            - path
+                            - repoURL
+                            - targetRevision
+                            type: object
+                          hydrateTo:
+                            properties:
+                              targetBranch:
+                                type: string
+                            required:
+                            - targetBranch
+                            type: object
+                          syncSource:
+                            properties:
+                              path:
+                                type: string
+                              targetBranch:
+                                type: string
+                            required:
+                            - path
+                            - targetBranch
+                            type: object
+                        required:
+                        - drySource
+                        - syncSource
+                        type: object
                       sources:
                         items:
                           properties:
@@ -21651,6 +23070,8 @@ spec:
                                   type: string
                                 skipCrds:
                                   type: boolean
+                                skipSchemaValidation:
+                                  type: boolean
                                 skipTests:
                                   type: boolean
                                 valueFiles:
@@ -21688,6 +23109,8 @@ spec:
                                 forceCommonAnnotations:
                                   type: boolean
                                 forceCommonLabels:
+                                  type: boolean
+                                ignoreMissingComponents:
                                   type: boolean
                                 images:
                                   items:
@@ -21912,6 +23335,9 @@ spec:
                       type: string
                     health:
                       properties:
+                        lastTransitionTime:
+                          format: date-time
+                          type: string
                         message:
                           type: string
                         status:
@@ -22228,6 +23654,10 @@ spec:
                   description: SyncWindow contains the kind, time, duration and attributes
                     that are used to assign the syncWindows to apps
                   properties:
+                    andOperator:
+                      description: UseAndOperator use AND operator for matching applications,
+                        namespaces and clusters instead of the default OR operator
+                      type: boolean
                     applications:
                       description: Applications contains a list of applications that
                         the window will apply to
@@ -22390,6 +23820,7 @@ rules:
   - argoproj.io
   resources:
   - applications
+  - applicationsets
   - appprojects
   verbs:
   - create
@@ -22743,7 +24174,6 @@ rules:
   - delete
   - get
   - patch
-  - list
 - apiGroups:
   - ""
   resources:
@@ -23254,6 +24684,12 @@ spec:
               key: applicationsetcontroller.log.level
               name: argocd-cmd-params-cm
               optional: true
+        - name: ARGOCD_LOG_FORMAT_TIMESTAMP
+          valueFrom:
+            configMapKeyRef:
+              key: log.format.timestamp
+              name: argocd-cmd-params-cm
+              optional: true
         - name: ARGOCD_APPLICATIONSET_CONTROLLER_DRY_RUN
           valueFrom:
             configMapKeyRef:
@@ -23352,10 +24788,6 @@ spec:
           name: webhook
         - containerPort: 8080
           name: metrics
-        resources:
-          requests:
-            cpu: 10m
-            memory: 64Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -23450,6 +24882,12 @@ spec:
               key: dexserver.log.level
               name: argocd-cmd-params-cm
               optional: true
+        - name: ARGOCD_LOG_FORMAT_TIMESTAMP
+          valueFrom:
+            configMapKeyRef:
+              key: log.format.timestamp
+              name: argocd-cmd-params-cm
+              optional: true
         - name: ARGOCD_DEX_SERVER_DISABLE_TLS
           valueFrom:
             configMapKeyRef:
@@ -23463,10 +24901,6 @@ spec:
         - containerPort: 5556
         - containerPort: 5557
         - containerPort: 5558
-        resources:
-          requests:
-            cpu: 10m
-            memory: 300Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -23561,6 +24995,12 @@ spec:
               key: notificationscontroller.log.level
               name: argocd-cmd-params-cm
               optional: true
+        - name: ARGOCD_LOG_FORMAT_TIMESTAMP
+          valueFrom:
+            configMapKeyRef:
+              key: log.format.timestamp
+              name: argocd-cmd-params-cm
+              optional: true
         - name: ARGOCD_APPLICATION_NAMESPACES
           valueFrom:
             configMapKeyRef:
@@ -23585,10 +25025,6 @@ spec:
           tcpSocket:
             port: 9001
         name: argocd-notifications-controller
-        resources:
-          requests:
-            cpu: 10m
-            memory: 64Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -23674,10 +25110,6 @@ spec:
         name: redis
         ports:
         - containerPort: 6379
-        resources:
-          requests:
-            cpu: 10m
-            memory: 64Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -23772,6 +25204,12 @@ spec:
               key: reposerver.log.level
               name: argocd-cmd-params-cm
               optional: true
+        - name: ARGOCD_LOG_FORMAT_TIMESTAMP
+          valueFrom:
+            configMapKeyRef:
+              key: log.format.timestamp
+              name: argocd-cmd-params-cm
+              optional: true
         - name: ARGOCD_REPO_SERVER_PARALLELISM_LIMIT
           valueFrom:
             configMapKeyRef:
@@ -23860,6 +25298,12 @@ spec:
           valueFrom:
             configMapKeyRef:
               key: otlp.headers
+              name: argocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_REPO_SERVER_OTLP_ATTRS
+          valueFrom:
+            configMapKeyRef:
+              key: otlp.attrs
               name: argocd-cmd-params-cm
               optional: true
         - name: ARGOCD_REPO_SERVER_MAX_COMBINED_DIRECTORY_MANIFESTS_SIZE
@@ -23966,10 +25410,6 @@ spec:
         ports:
         - containerPort: 8081
         - containerPort: 8084
-        resources:
-          requests:
-            cpu: 10m
-            memory: 200Mi
         readinessProbe:
           httpGet:
             path: /healthz
@@ -24307,6 +25747,12 @@ spec:
               key: otlp.headers
               name: argocd-cmd-params-cm
               optional: true
+        - name: ARGOCD_SERVER_OTLP_ATTRS
+          valueFrom:
+            configMapKeyRef:
+              key: otlp.attrs
+              name: argocd-cmd-params-cm
+              optional: true
         - name: ARGOCD_APPLICATION_NAMESPACES
           valueFrom:
             configMapKeyRef:
@@ -24367,6 +25813,12 @@ spec:
               key: applicationsetcontroller.enable.scm.providers
               name: argocd-cmd-params-cm
               optional: true
+        - name: ARGOCD_HYDRATOR_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              key: hydrator.enabled
+              name: argocd-cmd-params-cm
+              optional: true
         image: theadzik/custom-argocd:latest
         imagePullPolicy: Always
         livenessProbe:
@@ -24386,10 +25838,6 @@ spec:
             port: 8080
           initialDelaySeconds: 3
           periodSeconds: 30
-        resources:
-          requests:
-            cpu: 10m
-            memory: 100Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -24561,6 +26009,12 @@ spec:
               key: controller.log.level
               name: argocd-cmd-params-cm
               optional: true
+        - name: ARGOCD_LOG_FORMAT_TIMESTAMP
+          valueFrom:
+            configMapKeyRef:
+              key: log.format.timestamp
+              name: argocd-cmd-params-cm
+              optional: true
         - name: ARGOCD_APPLICATION_CONTROLLER_METRICS_CACHE_EXPIRATION
           valueFrom:
             configMapKeyRef:
@@ -24589,6 +26043,12 @@ spec:
           valueFrom:
             configMapKeyRef:
               key: controller.self.heal.backoff.cap.seconds
+              name: argocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_SYNC_TIMEOUT
+          valueFrom:
+            configMapKeyRef:
+              key: controller.sync.timeout.seconds
               name: argocd-cmd-params-cm
               optional: true
         - name: ARGOCD_APPLICATION_CONTROLLER_REPO_SERVER_PLAINTEXT
@@ -24657,6 +26117,12 @@ spec:
               key: otlp.headers
               name: argocd-cmd-params-cm
               optional: true
+        - name: ARGOCD_APPLICATION_CONTROLLER_OTLP_ATTRS
+          valueFrom:
+            configMapKeyRef:
+              key: otlp.attrs
+              name: argocd-cmd-params-cm
+              optional: true
         - name: ARGOCD_APPLICATION_NAMESPACES
           valueFrom:
             configMapKeyRef:
@@ -24699,6 +26165,24 @@ spec:
               key: controller.ignore.normalizer.jq.timeout
               name: argocd-cmd-params-cm
               optional: true
+        - name: ARGOCD_HYDRATOR_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              key: hydrator.enabled
+              name: argocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_CLUSTER_CACHE_BATCH_EVENTS_PROCESSING
+          valueFrom:
+            configMapKeyRef:
+              key: controller.cluster.cache.batch.events.processing
+              name: argocd-cmd-params-cm
+              optional: true
+        - name: ARGOCD_CLUSTER_CACHE_EVENTS_PROCESSING_INTERVAL
+          valueFrom:
+            configMapKeyRef:
+              key: controller.cluster.cache.events.processing.interval
+              name: argocd-cmd-params-cm
+              optional: true
         - name: KUBECACHEDIR
           value: /tmp/kubecache
         image: theadzik/custom-argocd:latest
@@ -24712,10 +26196,6 @@ spec:
             port: 8082
           initialDelaySeconds: 5
           periodSeconds: 10
-        resources:
-          requests:
-            cpu: 300m
-            memory: 700Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
