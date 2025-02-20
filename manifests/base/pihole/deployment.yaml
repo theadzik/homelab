@@ -47,19 +47,10 @@ spec:
             capabilities:
               add:
                 - NET_ADMIN
+          envFrom:
+            - configMapRef:
+                name: pihole-config
           env:
-            - name: TZ
-              value: 'Europe/Warsaw'
-            - name: FTLCONF_dns_listeningMode
-              value: "all"
-            - name: FTLCONF_dns_cnameRecords
-              value: "pihole.zmuda.pro,server-1.internal;argocd.zmuda.pro,server-1.internal;grafana.zmuda.pro,server-1.internal;longhorn.zmuda.pro,server-1.internal;jellyfin.zmuda.pro,server-2.internal;deluge.zmuda.pro,server-2.internal"
-            - name: FTLCONF_dns_hosts
-              value: "192.168.0.2 server-1.internal;192.168.0.3 server-2.internal"
-            - name: FTLCONF_dns_upstreams
-              value: "1.1.1.1;8.8.8.8"
-            - name: FTLCONF_webserver_interface_theme
-              value: "default-darker"
             - name: FTLCONF_webserver_api_password
               valueFrom:
                 secretKeyRef:

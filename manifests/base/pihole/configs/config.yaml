@@ -1,0 +1,6 @@
+TZ=Europe/Warsaw
+FTLCONF_dns_listeningMode=all
+FTLCONF_dns_cnameRecords=pihole.zmuda.pro,ingress.internal;argocd.zmuda.pro,ingress.internal;grafana.zmuda.pro,ingress.internal;longhorn.zmuda.pro,ingress.internal;jellyfin.zmuda.pro,ingress.internal;deluge.zmuda.pro,ingress.internal
+FTLCONF_dns_hosts=192.168.0.2 server-1.internal;192.168.0.3 server-2.internal; 192.168.0.2 ingress.internal; 192.168.0.3 ingress.internal
+FTLCONF_dns_upstreams=1.1.1.1;8.8.8.8
+FTLCONF_webserver_interface_theme=default-darker

@@ -12,3 +12,7 @@ resources:
   - secret.yaml
   - services.yaml
   - ../image-pull-secret
+configMapGenerator:
+  - name: pihole-config
+    envs:
+      - configs/config.yaml
