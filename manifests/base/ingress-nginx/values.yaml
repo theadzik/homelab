@@ -1,17 +1,16 @@
 controller:
   replicaCount: 2
-  # We port-forward all internet traffic to server-1.
-  # If we run on server-2 and traffic comes through server-1 we lose the original IP because
-  # https://github.com/k3s-io/klipper-lb/issues/31
-  affinity:
-    nodeAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-        - weight: 100
-          preference:
-            matchExpressions:
-              - key: kubernetes.io/hostname
-                operator: In
-                values: ["server-1"]
+  topologySpreadConstraints:
+    - labelSelector:
+        matchLabels:
+          app.kubernetes.io/name: '{{ include "ingress-nginx.name" . }}'
+          app.kubernetes.io/instance: '{{ .Release.Name }}'
+          app.kubernetes.io/component: controller
+      matchLabelKeys:
+        - pod-template-hash
+      topologyKey: kubernetes.io/hostname
+      maxSkew: 1
+      whenUnsatisfiable: ScheduleAnyway
   resources:
     requests:
       cpu: 100m
