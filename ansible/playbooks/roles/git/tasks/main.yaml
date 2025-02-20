@@ -66,3 +66,33 @@
     dest: /usr/local/bin/sops
     mode: "755"
   become: true
+
+- name: Ensure directory for hashicorp's GPG key is present.
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+
+- name: Ensure Hashicorp's official GPG key is added.
+  ansible.builtin.apt_key:
+    url: https://apt.releases.hashicorp.com/gpg
+    keyring: /usr/share/keyrings/hashicorp-archive-keyring.gpg
+    state: present
+  become: true
+
+- name: Ensure Hashicorp repository is added to apt.
+  ansible.builtin.apt_repository:
+    repo: >-
+      deb [arch={{ arch_mapping[ansible_architecture] | default(ansible_architecture) }}
+      signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg]
+      https://apt.releases.hashicorp.com {{ ansible_lsb.codename }} main
+    filename: docker
+    state: present
+  become: true
+
+- name: Ensure Hashicorp Vault package is present.
+  ansible.builtin.apt:
+    name: vault
+    state: present
+    update_cache: true
+  become: true
