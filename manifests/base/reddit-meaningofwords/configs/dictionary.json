@@ -25,6 +25,21 @@
       "https://sjp.pwn.pl/ciekawostki/haslo/CO-NAJMNIEJ;5391527.html"
     ]
   },
+  "co nieco": {
+    "explanations": [
+      "Poprawną formą jest zapis \"co nieco\". Jest to wyrażenie używane przede wszystkim w mowie potocznej.",
+      "Oznacza trochę czegoś, niewielką ilość czegoś.",
+      "Co nieco to wyrażenie zaimkowe, to znaczy, że jest konstrukcją łączącą zaimek z inną częścią mowy",
+      "– w tym przypadku stanowi połączenie zaimka \"co\" z przysłówkiem \"nieco\".",
+      "W języku polskim obowiązuje reguła, w myśl której stosujemy zapis rozłączny dużej części wyrażeń zaimkowych.",
+      "Jednak są od tego wyjątki, od takich należą zrosty."
+    ],
+    "search_rule": "\\b(co nie co|conieco)\\b",
+    "sources": [
+      "https://sjp.pwn.pl/slowniki/nieco.html",
+      "https://sjp.pwn.pl/poradnia/haslo/male-Conieco;13189.html"
+    ]
+  },
   "co niemiara": {
     "explanations": [
       "\"Co niemiara\" to wyrażenie występujące w funkcji przysłówka,",
