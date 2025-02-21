@@ -48,3 +48,7 @@
     dest: /usr/bin/git-crypt
     mode: "755"
   become: true
+
+- name: Install pre-commit python package.
+  community.general.pipx:
+    name: pre-commit
