@@ -68,7 +68,7 @@
       "Ponadto w ujęciu logicznym nie można cofnąć się ani do przodu, ani w bok. Oba wyrazy są samodzielne znaczeniowo, dlatego nie należy ich łączyć.",
       "Prawidłowo możemy powiedzieć po prostu \"cofać się\"."
     ],
-    "search_rule": "\\bcof[a-ząćęłśż]+ si[eę] (do ty[lł]u|w ty[lł])\\b",
+    "search_rule": "cof[a-ząćęłśż]+ si[eę] (do ty[lł]u|w ty[lł])",
     "sources": [
       "https://sjp.pwn.pl/slowniki/pleonazm",
       "https://sjp.pwn.pl/poradnia/haslo/jeszcze-o-pleonazmach;13540.html",
@@ -89,7 +89,7 @@
       "miejscownik (odpowiada na pytanie o czym?) o cudzysłowie/cudzysłowach\n",
       "wołacz (hej!) cudzysłowie/cudzysłowy"
     ],
-    "search_rule": "\\bcudzys[lł]owi(a(ch|mi|)|u|em|o(m|wi)|)\\b",
+    "search_rule": "cudzys[lł]owi(a(ch|mi|)|u|em|o(m|wi)|)",
     "sources": [
       "https://sjp.pwn.pl/poradnia/haslo/w-cudzyslowie;4277.html",
       "https://sjp.pwn.pl/poradnia/haslo/cudzyslow;8265.html"
@@ -218,7 +218,7 @@
       "Prawidłowym będzie więc użycie \"na tapetę\" w innym niż wyżej wymienionym kontekscie,",
       "na przykład: \"patrzyłem na tapetę\" lub \"chlapać na tapetę\"."
     ],
-    "search_rule": "\bna tapet[eę]\b",
+    "search_rule": "\bna tapet[eę]",
     "sources": [
       "https://sjp.pwn.pl/poradnia/haslo/na-tapet-czy-na-tapete;15076.html",
       "https://wsjp.pl/haslo/podglad/105674/ktos-bierze-na-tapet-kogoscos",
