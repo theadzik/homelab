@@ -40,6 +40,7 @@ class DatabaseClient:
 
     def get_sorted_words(self, descending: bool = False) -> list:
         query = """SELECT word, incorrect_usage, correct_usage FROM words
+                WHERE enabled = 1
                 ORDER BY incorrect_usage"""
         if descending:
             query += " DESC"
