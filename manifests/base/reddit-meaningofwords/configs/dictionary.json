@@ -25,20 +25,6 @@
       "https://sjp.pwn.pl/ciekawostki/haslo/CO-NAJMNIEJ;5391527.html"
     ]
   },
-  "cofać się": {
-    "explanations": [
-      "\"Cofać do tyłu\" to pleonazm. \"Cofać\" oznacza zrobienie kroku w tył, a więc ma identyczne znaczenie co \"do tyłu\".",
-      "Ponadto w ujęciu logicznym nie można cofnąć się ani do przodu, ani w bok. Oba wyrazy są samodzielne znaczeniowo, dlatego nie należy ich łączyć.",
-      "Prawidłowo możemy powiedzieć po prostu \"cofać się\"."
-    ],
-    "search_rule": "\\bcof[a-ząćęłśż]+ si[eę] (do ty[lł]u|w ty[lł])\\b",
-    "sources": [
-      "https://sjp.pwn.pl/slowniki/pleonazm",
-      "https://sjp.pwn.pl/poradnia/haslo/jeszcze-o-pleonazmach;13540.html",
-      "https://sjp.pwn.pl/poradnia/haslo/Osobiscie-tam-nie-bylem;16277.html",
-      "https://sjp.pwn.pl/poradnia/haslo/utrzymac-cos-bez-zmian;22437.html"
-    ]
-  },
   "co niemiara": {
     "explanations": [
       "\"Co niemiara\" to wyrażenie występujące w funkcji przysłówka,",
@@ -59,6 +45,20 @@
     "sources": [
       "https://sjp.pwn.pl/slowniki/co%20niemiara.html",
       "https://nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/co-niemiara-,c"
+    ]
+  },
+  "cofać się": {
+    "explanations": [
+      "\"Cofać do tyłu\" to pleonazm. \"Cofać\" oznacza zrobienie kroku w tył, a więc ma identyczne znaczenie co \"do tyłu\".",
+      "Ponadto w ujęciu logicznym nie można cofnąć się ani do przodu, ani w bok. Oba wyrazy są samodzielne znaczeniowo, dlatego nie należy ich łączyć.",
+      "Prawidłowo możemy powiedzieć po prostu \"cofać się\"."
+    ],
+    "search_rule": "\\bcof[a-ząćęłśż]+ si[eę] (do ty[lł]u|w ty[lł])\\b",
+    "sources": [
+      "https://sjp.pwn.pl/slowniki/pleonazm",
+      "https://sjp.pwn.pl/poradnia/haslo/jeszcze-o-pleonazmach;13540.html",
+      "https://sjp.pwn.pl/poradnia/haslo/Osobiscie-tam-nie-bylem;16277.html",
+      "https://sjp.pwn.pl/poradnia/haslo/utrzymac-cos-bez-zmian;22437.html"
     ]
   },
   "cudzysłów": {
@@ -372,6 +372,18 @@
       "https://sjp.pwn.pl/poradnia/haslo/;10188",
       "https://poradnia-jezykowa.uni.lodz.pl/faq/przekonywujacy-czy-przekonywajacy/",
       "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/przekonujacy-albo-przekonywajacy,c,"
+    ]
+  },
+  "rzygać": {
+    "explanations": [
+      "Poprawny zapis tego słowa to \"rzygać\".",
+      "Słowo rzygać piszemy przez \"rz\" zawsze – bez względu na użycie i znaczenie tego słowa w kontekście całej wypowiedzi.",
+      "Nie ma tu żadnej reguły i ten wyraz wymaga po prostu zapamiętania.",
+      "To samo tyczy się wszystkich odmian tego słowa. Błędem jest pisanie np. \"pożygał\", \"zażygała\", \"obżygają\", itp."
+    ],
+    "search_rule": "żyga[^d]",
+    "sources": [
+      "https://sjp.pwn.pl/slowniki/rzyga%C4%87.html"
     ]
   },
   "rządzić/żądza": {
