@@ -39,6 +39,28 @@
       "https://sjp.pwn.pl/poradnia/haslo/utrzymac-cos-bez-zmian;22437.html"
     ]
   },
+  "co niemiara": {
+    "explanations": [
+      "\"Co niemiara\" to wyrażenie występujące w funkcji przysłówka,",
+      "informujące o bardzo wysokim stopniu nasilenia czynności lub zjawiska,",
+      "albo też w funkcji zaimka – wskazujące na to, że czegoś jest bardzo dużo.",
+      "Powiemy więc, że \"niesforne szczeniaki hałasowały co niemiara\" (jak? a więc przysłówek),",
+      "powiemy również, że \"po ich zabawie w kuchni pozostało nam co niemiara do sprzątania\"",
+      "(ile? czyli w tym wypadku zaimek nieokreślony).",
+      "Stosujemy pisownię rozdzielną, dwuwyrazową (a nie łączną) właśnie dlatego, że jest to wyrażenie,",
+      "a w tym wypadku – wyrażenie zaimkowe, złożone z zaimka \"co\" i rzeczownika \"niemiara\".",
+      "\"Niemiara\" to rzeczownik i dlatego właśnie piszemy \"niemiara\" łącznie, a nie rozdzielnie",
+      "(bo rzeczowniki piszemy łącznie z cząstką nie).",
+      "Współcześnie \"niemiara\" występuje wyłącznie w tym wyrażeniu.",
+      "Jako samodzielny wyraz rzeczownik ten był używany w XVI-XVIII wieku.",
+      "Oznaczał wówczas \"brak umiaru, zbytek, obżarstwo\", a także \"rozpusta\". "
+    ],
+    "search_rule": "\\b(co nie miara|coniemiara)\\b",
+    "sources": [
+      "https://sjp.pwn.pl/slowniki/co%20niemiara.html",
+      "https://nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/co-niemiara-,c"
+    ]
+  },
   "cudzysłów": {
     "explanations": [
       "Warto zapamiętać: \"cudzysłów\" odmienia się jak \"rów\", nie jak \"tułów\".",
