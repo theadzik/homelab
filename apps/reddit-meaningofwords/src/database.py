@@ -25,7 +25,7 @@ class DatabaseClient:
             self,
             column: Literal["incorrect_usage", "correct_usage", "skipped"]
     ) -> float:
-        query = f"SELECT avg({column}) FROM words;"
+        query = f"SELECT avg({column}) FROM words WHERE enabled = 1;"
         res = self.cur.execute(query)
         return float(res.fetchone()[0])
 
