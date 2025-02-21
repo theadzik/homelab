@@ -3,10 +3,9 @@ FROM python:3.13-alpine
 RUN apk add --no-cache sqlite
 
 RUN addgroup --gid 20005 --system nonroot && \
-    adduser --uid 10005 --system --ingroup nonroot --disabled-password --gecos "" nonroot && \
-    pip install --upgrade pip
+    adduser --uid 10005 --system --ingroup nonroot --disabled-password --gecos "" nonroot
 
-COPY --chown=nonroot:nonroot src src
+COPY --chown=nonroot:nonroot src /src
 
 WORKDIR /src
 COPY requirements.txt requirements.txt

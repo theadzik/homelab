@@ -15,7 +15,8 @@ cur.execute(
                                         word text UNIQUE,
                                         incorrect_usage integer,
                                         correct_usage integer,
-                                        skipped integer
+                                        skipped integer,
+                                        enabled integer
                                         ); """
 )
 
@@ -44,7 +45,7 @@ for word in words_to_check.keys():
 
     cur.execute(
         f"""INSERT OR IGNORE INTO words VALUES
-            (null, '{word}', 0, 0, 0);"""
+            (null, '{word}', 0, 0, 0, 1);"""
     )
 
     con.commit()
