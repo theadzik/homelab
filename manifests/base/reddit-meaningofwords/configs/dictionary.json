@@ -486,6 +486,19 @@
       "https://sjp.pwn.pl/doroszewski/tudziez;5509459.html"
     ]
   },
+  "tylny": {
+    "explanations": [
+      "W liczbie pojedyńczej poprawna postać to: \"tylny\" (a zatem też: \"tylna\", \"tylne\"),",
+      "niezależnie od tego, z jakimi wyrazami ją łączymy. \"Tylni\", \"tylnia\" oraz \"tylnie\" to formy błędne.",
+      "Błędna forma liczby pojedynczej \"tylni\" powstaje pod wpływem przeciwstawnego przymiotnika \"przedni\" o miękkim typie odmiany.",
+      "Forma \"tylni\" jest poprawna tylko w liczbie mnogiej rodzaju męskiego, np. \"tylni strzelcy\" (w samolocie wojskowym)."
+    ],
+    "search_rule": "\\btylni(ą|a|e|)\\b",
+    "sources": [
+      "https://sjp.pwn.pl/poradnia/haslo/;9687.html",
+      "https://sjp.pwn.pl/poradnia/haslo/Tylny;22019.html"
+    ]
+  },
   "w każdym razie": {
     "explanations": [
       "Według językoznawców błędne wyrażenie \"w każdym bądź razie\" powstało tak naprawdę ze skrzyżowania dwóch innych zwrotów:",
