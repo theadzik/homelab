@@ -2,7 +2,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v5.0.0
     hooks:
       - id: pretty-format-json
         args:
@@ -11,16 +11,16 @@ repos:
       - id: end-of-file-fixer
       - id: trailing-whitespace
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.33.0
+    rev: v1.35.1
     hooks:
       - id: yamllint
         exclude: "^(ansible/playbooks/files/argocd-install.yaml|manifests/base/argocd/image-updater.yaml)"
   - repo: https://github.com/PyCQA/flake8
-    rev: 7.0.0
+    rev: 7.1.2
     hooks:
       - id: flake8
   - repo: https://github.com/PyCQA/isort
-    rev: 5.13.2
+    rev: 6.0.0
     hooks:
       - id: isort
   - repo: https://github.com/pryorda/dockerfilelint-precommit-hooks
@@ -28,7 +28,7 @@ repos:
     hooks:
       - id: dockerfilelint
   - repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.5.4
+    rev: v1.5.5
     hooks:
       - id: remove-crlf
   - repo: https://github.com/syntaqx/git-hooks
@@ -36,6 +36,6 @@ repos:
     hooks:
       - id: shellcheck
   - repo: https://github.com/markdownlint/markdownlint
-    rev: v0.13.0
+    rev: v0.12.0
     hooks:
       - id: markdownlint

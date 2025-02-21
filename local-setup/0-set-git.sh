@@ -13,5 +13,6 @@ cat "$key_path.pub"
 git config --global user.name "$name"
 git config --global user.email "$email"
 git config --global core.editor "vim"
+git config --global --add --bool push.autoSetupRemote true
 
 mkdir "$HOME/git"

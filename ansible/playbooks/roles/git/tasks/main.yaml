@@ -52,3 +52,12 @@
 - name: Install pre-commit python package.
   community.general.pipx:
     name: pre-commit
+
+- name: Ensure pre-commit dependencies are present.
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - ruby-dev
+    - shellcheck
+  become: true

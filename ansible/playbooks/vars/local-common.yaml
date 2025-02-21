@@ -13,4 +13,3 @@ common_packages:
   - zsh
   - jq
   - bind9-dnsutils
-  - ruby-dev
