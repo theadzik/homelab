@@ -9,3 +9,18 @@ spec:
     requests:
       storage: 64Mi
   storageClassName: longhorn
+  volumeName: pvc-f875c1f3-7d23-4e84-9273-b460f8ff35ef
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: bullying-cache
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 256Mi
+  storageClassName: longhorn

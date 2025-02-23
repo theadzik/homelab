@@ -98,7 +98,7 @@ spec:
       containers:
         - name: model
           image: theadzik/bullying-detector:2025.01.3
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           envFrom:
             - configMapRef:
                 name: bullying-detector-config
@@ -143,4 +143,5 @@ spec:
           type: RuntimeDefault
       volumes:
         - name: cache
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: bullying-cache
