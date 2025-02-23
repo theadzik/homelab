@@ -6,7 +6,7 @@ resources:
   - pv.yaml
   - configmaps.yaml
   - secret.yaml
-  - deployment.yaml
+#  - deployment.yaml
   - nwp.yaml
   - service.yaml
   - ../image-pull-secret
