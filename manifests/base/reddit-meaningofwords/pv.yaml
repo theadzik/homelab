@@ -9,7 +9,6 @@ spec:
     requests:
       storage: 64Mi
   storageClassName: longhorn
-  volumeName: pvc-f875c1f3-7d23-4e84-9273-b460f8ff35ef
 
 ---
 
@@ -22,5 +21,5 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 256Mi
+      storage: 512Mi
   storageClassName: longhorn
