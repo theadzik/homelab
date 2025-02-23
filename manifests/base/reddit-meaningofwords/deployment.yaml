@@ -97,7 +97,7 @@ spec:
         - name: dockerhub-image-pull-secret
       containers:
         - name: model
-          image: theadzik/bullying-detector:2025.01.3
+          image: theadzik/bullying-detector:latest
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
@@ -123,7 +123,7 @@ spec:
               protocol: "TCP"
               name: http-port
           securityContext:
-            readOnlyRootFilesystem: true
+            readOnlyRootFilesystem: false # transformers throw circular import with RO FS
             allowPrivilegeEscalation: false
             runAsUser: 10009
             runAsGroup: 20009
