@@ -9,9 +9,7 @@ from pydantic import BaseModel
 from transformers import pipeline
 
 logging.basicConfig(
-    encoding='utf-8',
-    level=os.getenv("LOG_LEVEL", logging.INFO),
-    stream=sys.stdout
+    encoding="utf-8", level=os.getenv("LOG_LEVEL", logging.INFO), stream=sys.stdout
 )
 
 logger = logging.getLogger(__name__)
@@ -42,19 +40,14 @@ async def detect_bullying(body: Item):
 
 @app.get("/readyz", status_code=status.HTTP_200_OK)
 async def ready():
-    return {
-        "ready": True
-    }
+    return {"ready": True}
 
 
 @app.get("/alivez", status_code=status.HTTP_200_OK)
 async def alive():
     prediction = nlp("Jestem żywy!")[0]
     prediction["label"] = Bullying[prediction["label"]].value
-    return {
-        "alive": True,
-        "prediction": prediction
-    }
+    return {"alive": True, "prediction": prediction}
 
 
 if __name__ == "__main__":

@@ -34,7 +34,9 @@ logger.info(f"User-Agent: {USER_AGENT}")
 logger.info("Scanning comments.")
 
 
-def handle_keyword(comment: praw.models.Comment, keyword_found: str, match: str) -> None:
+def handle_keyword(
+    comment: praw.models.Comment, keyword_found: str, match: str
+) -> None:
     bot_commenter = BotCommenter()
     if comment.author.name == bot_commenter.bot_name:
         logger.debug("It's my own comment! Skipping.")
@@ -50,8 +52,12 @@ def handle_keyword(comment: praw.models.Comment, keyword_found: str, match: str)
         return
 
     extra_info = bot_commenter.get_extra_info(keyword_found)
-    start_index, end_index = bot_commenter.get_sentence_indexes(word=match, body=comment.body, limit=2)
-    limited_body = bot_commenter.get_sentences(body=comment.body, start_index=start_index, end_index=end_index)
+    start_index, end_index = bot_commenter.get_sentence_indexes(
+        word=match, body=comment.body, limit=2
+    )
+    limited_body = bot_commenter.get_sentences(
+        body=comment.body, start_index=start_index, end_index=end_index
+    )
 
     logger.debug(f"Limited comment body:\n{limited_body}")
     logger.info(bot_commenter.REDDIT_BASE_URL + comment.permalink)
@@ -59,7 +65,9 @@ def handle_keyword(comment: praw.models.Comment, keyword_found: str, match: str)
 
     # Initializing every time to update prompts without restarting.
     openai_checker = OpenAIChecker()
-    content = openai_checker.get_explanation(body=limited_body, word=keyword_found, extra_info=extra_info)
+    content = openai_checker.get_explanation(
+        body=limited_body, word=keyword_found, extra_info=extra_info
+    )
 
     if not content.is_correct:
         logger.info(f"{content.used_word} used incorrectly. Replying!")
@@ -105,7 +113,9 @@ def handle_direct_reply(comment: praw.models.Comment) -> None:
             if content.is_bullying:
                 logger.warning("First warning")
                 database_client.save_bully(comment.author)
-                _ = bot_commenter.reply_with_retry(comment=comment, reply=content.response)
+                _ = bot_commenter.reply_with_retry(
+                    comment=comment, reply=content.response
+                )
             else:
                 logger.warning("It wasn't bullying :D")
                 logger.warning(content)
@@ -144,7 +154,7 @@ while True:
     try:
         for comment in reddit.subreddit(SUBREDDITS).stream.comments(skip_existing=True):
             # Create a file for liveness probe
-            with open(liveness_probe, mode='a'):
+            with open(liveness_probe, mode="a"):
                 pass
             handle_comment(comment=comment)
     except (ServerError, RequestException) as e:

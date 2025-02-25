@@ -23,7 +23,9 @@ class BullyingClient:
         data = Item(text=text).model_dump()
         logger.debug(f"Data object:\n{data}")
         try:
-            response = requests.post(url=url, json=data, headers={"Content-Type": "application/json"})
+            response = requests.post(
+                url=url, json=data, headers={"Content-Type": "application/json"}
+            )
             classification = response.json()
             logger.debug(f"Classification: {classification}")
         except requests.exceptions.ConnectionError:

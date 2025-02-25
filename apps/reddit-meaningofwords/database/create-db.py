@@ -36,7 +36,11 @@ cur.execute(
                                           );"""
 )
 
-with open(os.environ["REDDIT_DICTIONARY_PATH"], mode="r", encoding="utf-8", ) as dictionary:
+with open(
+    os.environ["REDDIT_DICTIONARY_PATH"],
+    mode="r",
+    encoding="utf-8",
+) as dictionary:
     words_to_check = json.load(dictionary)
 
 i = 0

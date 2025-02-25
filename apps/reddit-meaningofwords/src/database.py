@@ -22,17 +22,14 @@ class DatabaseClient:
         self.cur = self.con.cursor()
 
     def get_mean_column(
-            self,
-            column: Literal["incorrect_usage", "correct_usage", "skipped"]
+        self, column: Literal["incorrect_usage", "correct_usage", "skipped"]
     ) -> float:
         query = f"SELECT avg({column}) FROM words WHERE enabled = 1;"
         res = self.cur.execute(query)
         return float(res.fetchone()[0])
 
     def get_word_count(
-            self,
-            word: str,
-            column: Literal["incorrect_usage", "correct_usage", "skipped"]
+        self, word: str, column: Literal["incorrect_usage", "correct_usage", "skipped"]
     ):
         query = f"SELECT {column} FROM words where word = '{word}';"
         res = self.cur.execute(query)
@@ -50,9 +47,7 @@ class DatabaseClient:
         return [row[0] for row in words_with_usage]
 
     def increment_word_use(
-            self,
-            word: str,
-            usage: Literal["incorrect_usage", "correct_usage", "skipped"]
+        self, word: str, usage: Literal["incorrect_usage", "correct_usage", "skipped"]
     ):
         query = f"UPDATE words SET {usage} = {usage} + 1 WHERE word = '{word}';"
         self.cur.execute(query)

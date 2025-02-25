@@ -173,3 +173,6 @@ vendor
 
 # vagrant
 .vagrant
+
+# ansible
+.ansible

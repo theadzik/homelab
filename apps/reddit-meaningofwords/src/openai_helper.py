@@ -29,15 +29,21 @@ class BadBotResponse(BaseModel):
 
 class OpenAIChecker:
     def __init__(self):
-        with open(os.getenv("REDDIT_CHECKER_PROMPT_PATH"), mode="r", encoding="utf-8") as file:
+        with open(
+            os.getenv("REDDIT_CHECKER_PROMPT_PATH"), mode="r", encoding="utf-8"
+        ) as file:
             self.checker_prompt = file.read().strip()
             logger.debug(f"Loaded checker prompt:\n{self.checker_prompt}")
 
-        with open(os.getenv("REDDIT_BULLY_PROMPT_PATH"), mode="r", encoding="utf-8") as file:
+        with open(
+            os.getenv("REDDIT_BULLY_PROMPT_PATH"), mode="r", encoding="utf-8"
+        ) as file:
             self.bully_prompt = file.read().strip()
             logger.debug(f"Loaded bully prompt:\n{self.bully_prompt}")
 
-        with open(os.getenv("REDDIT_BAD_BOT_PROMPT_PATH"), mode="r", encoding="utf-8") as file:
+        with open(
+            os.getenv("REDDIT_BAD_BOT_PROMPT_PATH"), mode="r", encoding="utf-8"
+        ) as file:
             self.bad_bot_prompt = file.read().strip()
             logger.debug(f"Loaded bad bot prompt:\n{self.bad_bot_prompt}")
 
@@ -72,28 +78,32 @@ class OpenAIChecker:
 
         prompt = [
             {"role": "system", "content": self.bully_prompt},
-            {"role": "user", "content": body}
+            {"role": "user", "content": body},
         ]
 
-        return self.send_request(prompt=prompt, response_format=BullyingDetectorResponse)
+        return self.send_request(
+            prompt=prompt, response_format=BullyingDetectorResponse
+        )
 
     def get_bad_bot_response(self, body: str) -> BadBotResponse:
         logger.debug(f"I got this body:\n{body}")
 
         prompt = [
             {"role": "system", "content": self.bad_bot_prompt},
-            {"role": "user", "content": body}
+            {"role": "user", "content": body},
         ]
 
         return self.send_request(prompt=prompt, response_format=BadBotResponse)
 
-    def get_explanation(self, word: str, body: str, extra_info: str = "") -> WordCheckerResponse:
+    def get_explanation(
+        self, word: str, body: str, extra_info: str = ""
+    ) -> WordCheckerResponse:
         logger.debug(f"I got this body:\n{body}")
         prompt = [
             {"role": "system", "content": self.checker_prompt},
             {"role": "system", "content": f"<zasady>{extra_info}</zasady>"},
             {"role": "system", "content": f"<wyrażenie>{word}</wyrażenie>"},
-            {"role": "user", "content": body}
+            {"role": "user", "content": body},
         ]
 
         return self.send_request(prompt=prompt, response_format=WordCheckerResponse)

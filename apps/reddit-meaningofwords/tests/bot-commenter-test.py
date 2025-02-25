@@ -50,8 +50,12 @@ class TestBotCommenter(unittest.TestCase):
         text2c = r" > Do pÓki, masz czas."
         text3 = "Usunięty komentarz brzmiał:\n\nLubię lody do póki są czekoladowe"
         text3c = "Usunięty komentarz brzmiał:\n\n>Lubię lody do póki są czekoladowe"
-        text4 = "Usunięty komentarz brzmiał:\n\ndo póki są czekoladowe, dopóty je lubię."
-        text4c = "Usunięty komentarz brzmiał:\n\n>do póki są czekoladowe, dopóty je lubię."
+        text4 = (
+            "Usunięty komentarz brzmiał:\n\ndo póki są czekoladowe, dopóty je lubię."
+        )
+        text4c = (
+            "Usunięty komentarz brzmiał:\n\n>do póki są czekoladowe, dopóty je lubię."
+        )
 
         keyword_found1, match1 = bot.find_keywords(text1)
         keyword_found1c, match1c = bot.find_keywords(text1c)
@@ -173,5 +177,5 @@ class TestBotCommenter(unittest.TestCase):
         self.assertEqual(match4, "")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

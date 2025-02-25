@@ -12,12 +12,12 @@ output_file_name = os.getenv("SYNC_FILE_NAME", "sync-waves.md")
 # Get priorities
 applications = {}
 
-with open(search_path+KUSTOMIZATION_FILE_NAME) as file:
+with open(search_path + KUSTOMIZATION_FILE_NAME) as file:
     kustomization = yaml.load(file, Loader=yaml.FullLoader)
 
 for filename in kustomization["resources"]:
     application_name = filename.split(".")[0]
-    application_file = open(search_path+filename, "r")
+    application_file = open(search_path + filename, "r")
     sync_priority = 0
     for line in application_file:
         if re.search("argocd.argoproj.io/sync-wave", line):
