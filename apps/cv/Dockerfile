@@ -1,14 +1,14 @@
-FROM ruby:3.3-bookworm AS builder
+FROM ruby:3.4-bookworm AS builder
 ARG JEKYLL_ENV=production
 RUN gem install jekyll bundler
 
 COPY Gemfile Gemfile.lock /app/
-WORKDIR app
+WORKDIR /app
 RUN bundle install
 
 COPY . /app/
 RUN bundle exec jekyll build
 
-FROM nginxinc/nginx-unprivileged:alpine-slim
+FROM nginxinc/nginx-unprivileged:1.27-alpine3.21-slim
 
 COPY --from=builder "/app/_site" /usr/share/nginx/html
