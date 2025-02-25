@@ -1,41 +1,41 @@
 ---
 - block:
-  - name: Copy wsl.conf.
-    ansible.builtin.copy:
-      src: "./files/wsl.conf"
-      dest: "/etc/wsl.conf"
-      owner: root
-      group: root
-      mode: "0644"
+    - name: Copy wsl.conf.
+      ansible.builtin.copy:
+        src: "./files/wsl.conf"
+        dest: "/etc/wsl.conf"
+        owner: root
+        group: root
+        mode: "0644"
 
-  - name: Check if resolv.conf is a link.
-    stat:
-      path: "{{ resolv_conf_path }}"
-      follow: false
-    register: link_stats
+    - name: Check if resolv.conf is a link.
+      stat:
+        path: "{{ resolv_conf_path }}"
+        follow: false
+      register: link_stats
 
-  - name: Remove resolv.conf link.
-    file:
-      path: "{{ resolv_conf_path }}"
-      state: absent
-    when: link_stats.stat.islnk | default(false)
+    - name: Remove resolv.conf link.
+      file:
+        path: "{{ resolv_conf_path }}"
+        state: absent
+      when: link_stats.stat.islnk | default(false)
 
-  - name: Copy resolv.conf.
-    ansible.builtin.copy:
-      src: "./files/resolv.conf"
-      dest: "{{ resolv_conf_path }}"
-      owner: root
-      group: root
-      mode: "0644"
-      attributes: "+ie"
-      force: true
-    become: true
+    - name: Copy resolv.conf.
+      ansible.builtin.copy:
+        src: "./files/resolv.conf"
+        dest: "{{ resolv_conf_path }}"
+        owner: root
+        group: root
+        mode: "0644"
+        attributes: "+ie"
+        force: true
+      become: true
 
-  - name: Add passwordless sudo permissions.
-    ansible.builtin.template:
-      src: "./files/sudoers.j2"
-      dest: "/etc/sudoers.d/{{ ansible_user }}"
-      owner: root
-      group: root
-      mode: "0440"
+    - name: Add passwordless sudo permissions.
+      ansible.builtin.template:
+        src: "./files/sudoers.j2"
+        dest: "/etc/sudoers.d/{{ ansible_user }}"
+        owner: root
+        group: root
+        mode: "0440"
   become: true
