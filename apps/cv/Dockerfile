@@ -9,6 +9,6 @@ RUN bundle install
 COPY . /app/
 RUN bundle exec jekyll build
 
-FROM nginxinc/nginx-unprivileged:alpine-slim
+FROM nginxinc/nginx-unprivileged:1.27-alpine3.21-slim
 
 COPY --from=builder "/app/_site" /usr/share/nginx/html
