@@ -36,7 +36,7 @@
   check_mode: false
   notify: Restart ssh
 
-- name: Remove small Diffie-Hellman moduli. # noqa no-changed-when
+- name: Remove small Diffie-Hellman moduli.  # noqa no-changed-when
   ansible.builtin.shell: >
     awk '$5 >= 3071' /etc/ssh/moduli > /etc/ssh/moduli.new ;
     [ -r /etc/ssh/moduli.new -a -s /etc/ssh/moduli.new ] &&

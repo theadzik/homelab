@@ -123,7 +123,7 @@ spec:
               protocol: "TCP"
               name: http-port
           securityContext:
-            readOnlyRootFilesystem: false # transformers throw circular import with RO FS
+            readOnlyRootFilesystem: false  # transformers throw circular import with RO FS
             allowPrivilegeEscalation: false
             runAsUser: 10009
             runAsGroup: 20009
