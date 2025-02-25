@@ -12,6 +12,6 @@ RUN apk add --no-cache --upgrade \
 RUN addgroup --gid $GROUP_ID --system vaultwarden && \
     adduser --uid $USER_ID --system --ingroup vaultwarden --disabled-password --gecos "" vaultwarden
 
-COPY --chown=vaultwarden:vaultwarden --chmod=774 backup.sh backup.sh
+COPY --chown=vaultwarden:vaultwarden --chmod=774 backup.sh /backup.sh
 USER $USER_ID:$GROUP_ID
 ENTRYPOINT ["/backup.sh"]

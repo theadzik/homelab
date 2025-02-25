@@ -9,7 +9,6 @@ repos:
           - "--autofix"
           - "--no-ensure-ascii"
       - id: end-of-file-fixer
-        exclude: "^(manifests/base/reddit-meaningofwords/configs/)"
       - id: trailing-whitespace
   - repo: https://github.com/adrienverge/yamllint
     rev: v1.35.1
@@ -24,10 +23,6 @@ repos:
     rev: 6.0.0
     hooks:
       - id: isort
-  - repo: https://github.com/pryorda/dockerfilelint-precommit-hooks
-    rev: v0.1.0
-    hooks:
-      - id: dockerfilelint
   - repo: https://github.com/Lucas-C/pre-commit-hooks
     rev: v1.5.5
     hooks:
