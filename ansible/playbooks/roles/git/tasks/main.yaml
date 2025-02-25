@@ -61,3 +61,21 @@
     - ruby-dev
     - shellcheck
   become: true
+
+- name: Check latest hadolint.
+  uri:
+    url: https://api.github.com/repos/hadolint/hadolint/releases/latest
+    return_content: true
+  register: hadolint_latest
+
+- name: Download hadolint.
+  loop: "{{ hadolint_latest.json.assets }}"
+  loop_control:
+    label: "{{ item.name }}"
+    break_when: "'Linux-x86_64' in item.name"
+  when: "'Linux-x86_64' in item.name"
+  ansible.builtin.get_url:
+    url: "{{ item.browser_download_url }}"
+    dest: /usr/bin/hadolint
+    mode: "755"
+  become: true
