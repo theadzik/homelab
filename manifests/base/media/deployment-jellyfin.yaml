@@ -6,7 +6,7 @@ metadata:
     app: jellyfin
 spec:
   strategy:
-    type: Recreate # We only have 1 gpu enabled server
+    type: Recreate  # We only have 1 gpu enabled server
   replicas: 1
   selector:
     matchLabels:

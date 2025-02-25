@@ -1,6 +1,6 @@
 FROM ruby:3.4-bookworm AS builder
 ARG JEKYLL_ENV=production
-RUN gem install jekyll bundler
+RUN gem install jekyll:4.4.1 bundler:2.6.5
 
 COPY Gemfile Gemfile.lock /app/
 WORKDIR /app

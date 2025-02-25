@@ -34,12 +34,12 @@ spec:
               cpu: 10m
               memory: 32Mi
           volumeMounts:
-          - name: config-volume
-            mountPath: "/etc/cloudflared/config"
-            readOnly: true
-          - name: credentials-volume
-            mountPath: "/etc/cloudflared/credentials"
-            readOnly: true
+            - name: config-volume
+              mountPath: "/etc/cloudflared/config"
+              readOnly: true
+            - name: credentials-volume
+              mountPath: "/etc/cloudflared/credentials"
+              readOnly: true
           livenessProbe:
             httpGet:
               path: /ready

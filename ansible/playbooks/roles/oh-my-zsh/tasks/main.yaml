@@ -9,7 +9,7 @@
 - name: Fetch ohmyzsh install script.
   ansible.builtin.uri:
     url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
-    return_content: yes
+    return_content: true
   register: ohmyzsh_installer
 
 - name: Run ohmyzsh install script.
@@ -44,4 +44,4 @@
     path: /etc/passwd
     regexp: '({{ ansible_user }}:x:1000:1000:,,,:/home/{{ ansible_user }}:/bin/)(bash)'
     line: \g<1>zsh
-    backrefs: yes
+    backrefs: true

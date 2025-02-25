@@ -1,3 +1,4 @@
+# hadolint ignore=DL3007
 FROM quay.io/argoproj/argocd:latest
 
 # Switch to root for the ability to perform install

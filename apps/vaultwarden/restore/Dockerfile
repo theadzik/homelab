@@ -11,6 +11,6 @@ RUN apk add --no-cache --upgrade \
 RUN addgroup --gid $GROUP_ID --system vaultwarden && \
     adduser --uid $USER_ID --system --ingroup vaultwarden --disabled-password --gecos "" vaultwarden
 
-COPY --chown=$USER_ID:$GROUP_ID --chmod=774 restore.sh restore.sh
+COPY --chown=$USER_ID:$GROUP_ID --chmod=774 restore.sh /restore.sh
 USER $USER_ID:$GROUP_ID
 ENTRYPOINT ["/restore.sh"]

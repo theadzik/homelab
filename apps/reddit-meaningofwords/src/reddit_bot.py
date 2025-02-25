@@ -16,7 +16,7 @@ logger = get_logger(__name__)
 class BotCommenter:
     def __init__(self):
         with open(os.environ["REDDIT_SIGNATURE_PATH"], mode="r", encoding="utf-8") as file:
-            self.signature = file.read()
+            self.signature = file.read().strip()
             logger.debug(f"Loaded signature:\n{self.signature}")
         with open(os.environ["REDDIT_DICTIONARY_PATH"], mode="r", encoding="utf-8") as file:
             self.words_to_check = json.load(file)

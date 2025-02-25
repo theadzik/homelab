@@ -42,6 +42,6 @@ inventory.write("## Sync Waves\n\n")
 for key in sorted(applications.keys()):
     inventory.write(f"* Priority: {key}\n")
     for entry in sorted(applications[key]):
-        inventory.write(f"    * {entry}\n")
+        inventory.write(f"   * {entry}\n")
 
 inventory.close()
