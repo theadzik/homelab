@@ -9,6 +9,7 @@ repos:
           - "--autofix"
           - "--no-ensure-ascii"
       - id: end-of-file-fixer
+        exclude: "^(manifests/base/reddit-meaningofwords/configs/)"
       - id: trailing-whitespace
   - repo: https://github.com/adrienverge/yamllint
     rev: v1.35.1
