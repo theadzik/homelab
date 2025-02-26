@@ -12,12 +12,12 @@ fieldSpecs:
   - kind: PodDisruptionBudget
     path: spec/selector/matchLabels
     create: true
-  - kind: Deployment
+  - kind: StatefulSet
     path: spec/selector/matchLabels
     create: true
-  - kind: Deployment
+  - kind: StatefulSet
     path: spec/template/metadata/labels
     create: true
-  - kind: Deployment
+  - kind: StatefulSet
     path: spec/template/spec/topologySpreadConstraints/labelSelector/matchLabels
     create: true
