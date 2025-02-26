@@ -1,8 +1,10 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: pihole
 spec:
+  selector:
+
   replicas: 2
   template:
     spec:
@@ -70,5 +72,12 @@ spec:
         - name: cname-records
           configMap:
             name: cname-records
-        - name: pihole-main
-          emptyDir: {}
+  volumeClaimTemplates:
+    - metadata:
+        name: pihole-main
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: "longhorn"
+        resources:
+          requests:
+            storage: 512Mi

@@ -4,13 +4,13 @@ namespace: pihole
 transformers:
   - transformer-labels.yaml
 resources:
-  - deployment.yaml
   - ingress.yaml
   - namespace.yaml
   - nwp.yaml
   - pdb.yaml
   - secret.yaml
   - services.yaml
+  - statefulset.yaml
   - ../image-pull-secret
 configMapGenerator:
   - name: pihole-config
