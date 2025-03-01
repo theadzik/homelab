@@ -8,11 +8,11 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - test.zmuda.pro
+        - zmuda.pro
       secretName: zmuda-pro-blog-test-tls
   rules:
-    - host: test.zmuda.pro
-      http: &host
+    - host: zmuda.pro
+      http:
         paths:
           - path: /
             pathType: Prefix
