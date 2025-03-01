@@ -13,6 +13,13 @@ agent:
     - name: COLLECTIONS
       value: "crowdsecurity/nginx"
 lapi:
+  resources:
+    limits:
+      memory: 500Mi
+      cpu: 500m
+    requests:
+      cpu: 100m
+      memory: 500Mi
   env:
     - name: ENROLL_INSTANCE_NAME
       value: 'home-prod'
