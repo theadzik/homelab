@@ -1,4 +1,9 @@
 container_runtime: containerd
+config:
+  config.yaml.local: |
+    api:
+      server:
+        use_forwarded_for_headers: true
 agent:
   acquisition:
     - namespace: ingress-nginx
@@ -8,11 +13,6 @@ agent:
     - name: COLLECTIONS
       value: "crowdsecurity/nginx"
 lapi:
-#  persistentVolume:
-#    config:
-#      enabled: false
-#    data:
-#      enabled: false
   env:
     - name: ENROLL_INSTANCE_NAME
       value: 'home-prod'
