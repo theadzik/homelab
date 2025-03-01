@@ -11,7 +11,7 @@ metadata:
 spec:
   project: default
   source:
-    path: manifests/base/blog
+    path: manifests/base/zmuda-pro-blog
     repoURL: 'https://github.com/theadzik/homelab'
     targetRevision: HEAD
   destination:

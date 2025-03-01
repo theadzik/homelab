@@ -215,16 +215,6 @@
         "is_secret": false
       }
     ],
-    "manifests/base/blog/ingress.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/blog/ingress.yaml",
-        "hashed_secret": "d0feda638d83f2fcff55683db4525d401c611b5a",
-        "is_verified": false,
-        "line_number": 12,
-        "is_secret": false
-      }
-    ],
     "manifests/base/cloudflared/deployment.yaml": [
       {
         "type": "Secret Keyword",
@@ -265,16 +255,6 @@
         "is_secret": false
       }
     ],
-    "manifests/base/static-cv/ingress.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/static-cv/ingress.yaml",
-        "hashed_secret": "f8b9c378ad75875b1d2bc32f44a3a8e3f2223dc6",
-        "is_verified": false,
-        "line_number": 12,
-        "is_secret": false
-      }
-    ],
     "manifests/base/vaultwarden/backup.yaml": [
       {
         "type": "Secret Keyword",
@@ -304,7 +284,17 @@
         "line_number": 135,
         "is_secret": false
       }
+    ],
+    "manifests/base/zmuda-pro-blog/ingress.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/base/zmuda-pro-blog/ingress.yaml",
+        "hashed_secret": "b0807dfa70e3df5d968a9fcee52a238ab3a5dcbd",
+        "is_verified": false,
+        "line_number": 12,
+        "is_secret": false
+      }
     ]
   },
-  "generated_at": "2025-03-01T14:49:32Z"
+  "generated_at": "2025-03-01T15:17:20Z"
 }

@@ -9,7 +9,7 @@ spec:
   tls:
     - hosts:
         - zmuda.pro
-      secretName: zmuda-pro-blog-test-tls
+      secretName: zmuda-pro-blog-tls
   rules:
     - host: zmuda.pro
       http:
