@@ -1,0 +1,310 @@
+{
+  "version": "1.5.0",
+  "plugins_used": [
+    {
+      "name": "ArtifactoryDetector"
+    },
+    {
+      "name": "AWSKeyDetector"
+    },
+    {
+      "name": "AzureStorageKeyDetector"
+    },
+    {
+      "name": "Base64HighEntropyString",
+      "limit": 4.5
+    },
+    {
+      "name": "BasicAuthDetector"
+    },
+    {
+      "name": "CloudantDetector"
+    },
+    {
+      "name": "DiscordBotTokenDetector"
+    },
+    {
+      "name": "GitHubTokenDetector"
+    },
+    {
+      "name": "GitLabTokenDetector"
+    },
+    {
+      "name": "HexHighEntropyString",
+      "limit": 3.0
+    },
+    {
+      "name": "IbmCloudIamDetector"
+    },
+    {
+      "name": "IbmCosHmacDetector"
+    },
+    {
+      "name": "IPPublicDetector"
+    },
+    {
+      "name": "JwtTokenDetector"
+    },
+    {
+      "name": "KeywordDetector",
+      "keyword_exclude": ""
+    },
+    {
+      "name": "MailchimpDetector"
+    },
+    {
+      "name": "NpmDetector"
+    },
+    {
+      "name": "OpenAIDetector"
+    },
+    {
+      "name": "PrivateKeyDetector"
+    },
+    {
+      "name": "PypiTokenDetector"
+    },
+    {
+      "name": "SendGridDetector"
+    },
+    {
+      "name": "SlackDetector"
+    },
+    {
+      "name": "SoftlayerDetector"
+    },
+    {
+      "name": "SquareOAuthDetector"
+    },
+    {
+      "name": "StripeDetector"
+    },
+    {
+      "name": "TelegramBotTokenDetector"
+    },
+    {
+      "name": "TwilioKeyDetector"
+    }
+  ],
+  "filters_used": [
+    {
+      "path": "detect_secrets.filters.allowlist.is_line_allowlisted"
+    },
+    {
+      "path": "detect_secrets.filters.common.is_baseline_file",
+      "filename": ".sec.baseline"
+    },
+    {
+      "path": "detect_secrets.filters.common.is_ignored_due_to_verification_policies",
+      "min_level": 2
+    },
+    {
+      "path": "detect_secrets.filters.heuristic.is_indirect_reference"
+    },
+    {
+      "path": "detect_secrets.filters.heuristic.is_likely_id_string"
+    },
+    {
+      "path": "detect_secrets.filters.heuristic.is_lock_file"
+    },
+    {
+      "path": "detect_secrets.filters.heuristic.is_not_alphanumeric_string"
+    },
+    {
+      "path": "detect_secrets.filters.heuristic.is_potential_uuid"
+    },
+    {
+      "path": "detect_secrets.filters.heuristic.is_prefixed_with_dollar_sign"
+    },
+    {
+      "path": "detect_secrets.filters.heuristic.is_sequential_string"
+    },
+    {
+      "path": "detect_secrets.filters.heuristic.is_swagger_file"
+    },
+    {
+      "path": "detect_secrets.filters.heuristic.is_templated_secret"
+    },
+    {
+      "path": "detect_secrets.filters.regex.should_exclude_file",
+      "pattern": [
+        ".*secret.*"
+      ]
+    }
+  ],
+  "results": {
+    "ansible/playbooks/files/argocd-install.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "ansible/playbooks/files/argocd-install.yaml",
+        "hashed_secret": "9fff20bb0cb0b87abf555d61d0223da615f8f88c",
+        "is_verified": false,
+        "line_number": 24840,
+        "is_secret": false
+      },
+      {
+        "type": "Secret Keyword",
+        "filename": "ansible/playbooks/files/argocd-install.yaml",
+        "hashed_secret": "49157360f694a2b0f7b054d1d5523f407e1c3ab9",
+        "is_verified": false,
+        "line_number": 24961,
+        "is_secret": false
+      }
+    ],
+    "manifests/applications/kube-prometheus-stack.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/applications/kube-prometheus-stack.yaml",
+        "hashed_secret": "04faa9447742187d9c28c09ae9c1050b26454cbe",
+        "is_verified": false,
+        "line_number": 111,
+        "is_secret": false
+      },
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/applications/kube-prometheus-stack.yaml",
+        "hashed_secret": "ac98dbe3cb4390b6aa655c674205fefe45deb8e6",
+        "is_verified": false,
+        "line_number": 124,
+        "is_secret": false
+      }
+    ],
+    "manifests/applications/longhorn.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/applications/longhorn.yaml",
+        "hashed_secret": "13204ee2a9a7552faf84cadc1df77855d8721c21",
+        "is_verified": false,
+        "line_number": 27,
+        "is_secret": false
+      },
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/applications/longhorn.yaml",
+        "hashed_secret": "123a5a750ed491c9b1c6d2aa9a851557c77c00cd",
+        "is_verified": false,
+        "line_number": 32,
+        "is_secret": false
+      }
+    ],
+    "manifests/base/argocd/image-updater.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/base/argocd/image-updater.yaml",
+        "hashed_secret": "3b10339de9724ce87c5bb01f693f8d6f11b4e9ac",
+        "is_verified": false,
+        "line_number": 100,
+        "is_secret": false
+      },
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/base/argocd/image-updater.yaml",
+        "hashed_secret": "cc05cdcb849e9ecb5b4dad1a9acc582c0cc91d53",
+        "is_verified": false,
+        "line_number": 288,
+        "is_secret": false
+      }
+    ],
+    "manifests/base/argocd/ingress.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/base/argocd/ingress.yaml",
+        "hashed_secret": "bfc1b86ce643b65bd540989213254b01fd6ad418",
+        "is_verified": false,
+        "line_number": 16,
+        "is_secret": false
+      }
+    ],
+    "manifests/base/blog/ingress.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/base/blog/ingress.yaml",
+        "hashed_secret": "d0feda638d83f2fcff55683db4525d401c611b5a",
+        "is_verified": false,
+        "line_number": 12,
+        "is_secret": false
+      }
+    ],
+    "manifests/base/cloudflared/deployment.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/base/cloudflared/deployment.yaml",
+        "hashed_secret": "f564423e09f67ad4329ed7f3edf239ba513e8be4",
+        "is_verified": false,
+        "line_number": 63,
+        "is_secret": false
+      }
+    ],
+    "manifests/base/media/ingress-deluge.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/base/media/ingress-deluge.yaml",
+        "hashed_secret": "e40ef122181501782589c4f1fb1bbf25cd9eb311",
+        "is_verified": false,
+        "line_number": 13,
+        "is_secret": false
+      }
+    ],
+    "manifests/base/media/ingress-jellyfin.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/base/media/ingress-jellyfin.yaml",
+        "hashed_secret": "0ca35c739501f5e6c0a84ee80f8fd626fe0b0321",
+        "is_verified": false,
+        "line_number": 14,
+        "is_secret": false
+      }
+    ],
+    "manifests/base/pihole/ingress.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/base/pihole/ingress.yaml",
+        "hashed_secret": "cec45245e661ad3db0f1b10d14b2de0744d95672",
+        "is_verified": false,
+        "line_number": 14,
+        "is_secret": false
+      }
+    ],
+    "manifests/base/static-cv/ingress.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/base/static-cv/ingress.yaml",
+        "hashed_secret": "f8b9c378ad75875b1d2bc32f44a3a8e3f2223dc6",
+        "is_verified": false,
+        "line_number": 12,
+        "is_secret": false
+      }
+    ],
+    "manifests/base/vaultwarden/backup.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/base/vaultwarden/backup.yaml",
+        "hashed_secret": "7218ca7db60e5be810c8e1c0ec8d5378ac2519e4",
+        "is_verified": false,
+        "line_number": 67,
+        "is_secret": false
+      }
+    ],
+    "manifests/base/vaultwarden/ingress.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/base/vaultwarden/ingress.yaml",
+        "hashed_secret": "e26ffc62e90a334f716003985b02a5f5851c1be5",
+        "is_verified": false,
+        "line_number": 12,
+        "is_secret": false
+      }
+    ],
+    "manifests/base/vaultwarden/vaultwarden.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/base/vaultwarden/vaultwarden.yaml",
+        "hashed_secret": "7218ca7db60e5be810c8e1c0ec8d5378ac2519e4",
+        "is_verified": false,
+        "line_number": 135,
+        "is_secret": false
+      }
+    ]
+  },
+  "generated_at": "2025-03-01T14:49:32Z"
+}

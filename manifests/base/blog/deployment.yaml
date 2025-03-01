@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zmuda-pro-blog
+  labels:
+    app: zmuda-pro-blog
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: zmuda-pro-blog
+  template:
+    metadata:
+      labels:
+        app: zmuda-pro-blog
+    spec:
+      priorityClassName: high-priority
+      imagePullSecrets:
+        - name: dockerhub-image-pull-secret
+      containers:
+        - name: nginx
+          image: theadzik/zmuda-pro-blog:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              protocol: "TCP"
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+      securityContext:
+        runAsUser: 10003
+        runAsGroup: 20003
+        fsGroup: 20003
+      volumes:
+        - name: tmp
+          emptyDir: {}

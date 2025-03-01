@@ -15,3 +15,4 @@ resources:
   - reddit-meaningofwords.yaml
   - static-cv.yaml
   - vaultwarden.yaml
+  - zmuda-pro-blog.yaml

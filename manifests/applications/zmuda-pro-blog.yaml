@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: zmuda-pro-blog
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: resume=theadzik/zmuda-pro-blog:latest
+    argocd-image-updater.argoproj.io/resume.update-strategy: digest
+spec:
+  project: default
+  source:
+    path: manifests/base/blog
+    repoURL: 'https://github.com/theadzik/homelab'
+    targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

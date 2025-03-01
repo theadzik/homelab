@@ -1,23 +1,23 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: static-cv
+  name: zmuda-pro-blog
   annotations:
     cert-manager.io/cluster-issuer: "lets-encrypt-prod"
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - zmuda.pro
-      secretName: static-cv-tls
+        - test.zmuda.pro
+      secretName: zmuda-pro-blog-test-tls
   rules:
-    - host: zmuda.pro
-      http:
+    - host: test.zmuda.pro
+      http: &host
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: static-cv-http
+                name: zmuda-pro-blog-http
                 port:
                   number: 8080
