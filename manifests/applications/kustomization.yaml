@@ -5,6 +5,7 @@ resources:
   - argocd.yaml
   - cert-manager.yaml
   - cloudflared.yaml
+  - crowdsec.yaml
   - ingress-nginx.yaml
   - intel-device-plugin.yaml
   - longhorn.yaml
