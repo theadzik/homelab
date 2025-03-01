@@ -3,7 +3,6 @@ ZSH_THEME="agnoster"
 
 zstyle ':omz:update' mode auto      # update automatically without asking
 
-ENABLE_CORRECTION="true"
 HIST_STAMPS="yyyy-mm-dd"
 
 plugins=(
