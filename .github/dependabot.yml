@@ -1,11 +1,5 @@
 version: 2
 updates:
-  - package-ecosystem: "bundler"
-    directories:
-      - "/apps/cv/"
-    schedule:
-      interval: "weekly"
-      day: "friday"
   - package-ecosystem: "pip"
     directories:
       - "/apps/bullying-detector"
@@ -16,10 +10,18 @@ updates:
   - package-ecosystem: "docker"
     directories:
       - "/apps/bullying-detector"
-      - "/apps/cv"
       - "/apps/reddit-meaningofwords"
       - "/apps/vaultwarden/backup/"
       - "/apps/vaultwarden/restore/"
     schedule:
       interval: "weekly"
       day: "friday"
+  - package-ecosystem: "github-actions"
+    directories:
+      - "/.github"
+    schedule:
+      interval: "weekly"
+    groups:
+      docker:
+        patterns:
+          - "*"
