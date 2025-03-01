@@ -17,8 +17,7 @@ controller:
       memory: 128Mi
   config:
     log-format-upstream: >-
-      $remote_addr [$http_cf_connecting_ip] -
-      $status "$http_referer" "$request"
+      [$remote_addr] $status "$http_referer" "$request"
       "$http_user_agent" $request_time
       [$proxy_upstream_name]
       $upstream_addr $upstream_response_time $upstream_status
