@@ -4,6 +4,18 @@ config:
     api:
       server:
         use_forwarded_for_headers: true
+        auto_registration:
+          enabled: true
+          token: "${REGISTRATION_TOKEN}"
+          allowed_ranges:
+            - "10.0.0.0/8"
+    db_config:
+      flush:
+        bouncers_autodelete:
+          api_key: "1d"
+        agents_autodelete:
+          login_password: "1d"
+
 agent:
   acquisition:
     - namespace: ingress-nginx
