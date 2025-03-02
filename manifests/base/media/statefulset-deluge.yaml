@@ -30,7 +30,7 @@ spec:
               name: inbound-udp
           resources:
             requests:
-              cpu: 500m
+              cpu: 250m
               memory: 1Gi
           volumeMounts:
             - mountPath: /config
