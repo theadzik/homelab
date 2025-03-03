@@ -42,3 +42,25 @@ lapi:
         name: nginx-apikey
     - secretRef:
         name: enroll-key
+appsec:
+  enabled: true
+  replicas: 1
+  strategy:
+    type: Recreate
+  resources:
+    limits:
+      memory: 250Mi
+      cpu: 500m
+    requests:
+      cpu: 100m
+      memory: 250Mi
+  acquisitions:
+    - source: appsec
+      listen_addr: "0.0.0.0:7422"
+      path: /
+      appsec_config: crowdsecurity/virtual-patching
+      labels:
+        type: appsec
+  env:
+    - name: COLLECTIONS
+      value: "crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules"
