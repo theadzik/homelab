@@ -211,3 +211,12 @@
         dest: "/var/lib/rancher/k3s/server/manifests"
         mode: 0600
       loop: "{{ extra_manifests }}"
+
+- name: Set kernel parameters
+  when: kubelet_conf is defined
+  ansible.posix.sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    state: present
+    sysctl_file: "{{ kubelet_conf_dest }}"
+  with_dict: "{{ kubelet_conf }}"

@@ -15,3 +15,4 @@ server_config_yaml: |
   kube-scheduler-arg:
     - "bind-address=0.0.0.0"
   etcd-expose-metrics: true
+  protect-kernel-defaults: true

@@ -30,6 +30,20 @@
     group: root
     mode: "u=rw,g=r,o=r"
 
+- name: Setup optional config file
+  when: agent_config_yaml is defined
+  block:
+    - name: Make config directory
+      ansible.builtin.file:
+        path: "/etc/rancher/k3s"
+        mode: 0755
+        state: directory
+    - name: Copy config values
+      ansible.builtin.copy:
+        content: "{{ agent_config_yaml }}"
+        dest: "/etc/rancher/k3s/config.yaml"
+        mode: 0644
+
 - name: Enable and check K3s service
   ansible.builtin.systemd:
     name: k3s-agent

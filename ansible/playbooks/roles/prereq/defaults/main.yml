@@ -6,3 +6,9 @@ prereq_packages:
   - vim
   - open-iscsi  # Needed for longhorn https://longhorn.io/docs/1.7.2/deploy/install/#installing-open-iscsi
   - nfs-common  # Needed for longhorn https://longhorn.io/docs/1.7.2/deploy/install/#installing-nfsv4-client
+kubelet_conf:
+  vm.panic_on_oom: 0
+  vm.overcommit_memory: 1
+  kernel.panic: 10
+  kernel.panic_on_oops: 1
+kubelet_conf_dest: "/etc/sysctl.d/90-kubelet.conf"
