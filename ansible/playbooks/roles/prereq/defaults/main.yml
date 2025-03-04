@@ -11,4 +11,6 @@ kubelet_conf:
   vm.overcommit_memory: 1
   kernel.panic: 10
   kernel.panic_on_oops: 1
+  fs.inotify.max_user_instances: 1024 # Jellyfin had problems to start when this was 128
+  fs.inotify.max_user_watches: 1048576
 kubelet_conf_dest: "/etc/sysctl.d/90-kubelet.conf"
