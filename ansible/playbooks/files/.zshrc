@@ -51,7 +51,9 @@ function k9s-update() {
   latest_version=$(curl -s "https://api.github.com/repos/derailed/k9s/releases/latest" | jq -r '.name')
   echo "Latest version: $latest_version"
 
-  if [[ local_version = latest_version ]]; then
+  if [[ $local_version = $latest_version ]]; then
+    echo "Already at newest version."
+  else
     echo "Downloading..."
     url=$(curl -s "https://api.github.com/repos/derailed/k9s/releases/latest" | jq -r '.assets[].browser_download_url' | grep -E "k9s_Linux_amd64.tar.gz$")
     curl -s -L $url > k9s.tgz
@@ -61,9 +63,7 @@ function k9s-update() {
     k9s_location=$(which k9s)
     sudo mv k9s $k9s_location
     new_version=$(k9s version -s | grep -oE "v[0-9]+\.[0-9]+\.[0-9]+")
-    echo "New local version: $new_version"
-  else
-    echo "Already at newest version."
+    echo "New local version: $new_version"    
   fi
 }
 
