@@ -12,5 +12,6 @@
 1. Add new ssh keys to servers.
     * Get master key from vaultwarden.
     * `ssh-copy-id -i ~/.ssh/id_ed25519 -o 'IdentityFile id_ed25519' -f adzik@server-1.internal`
+    * `ssh-copy-id -i ~/.ssh/id_ed25519 -o 'IdentityFile id_ed25519' -f adzik@server-2.internal`
     * Delete master key.
 1. `ansible-playbook playbooks/servers-setup.yaml` (To get .kube/config file)
