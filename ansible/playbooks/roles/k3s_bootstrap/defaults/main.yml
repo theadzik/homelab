@@ -1,8 +1,8 @@
 ---
 argo_files_base: /argocd
 venv_path: "{{ argo_files_base }}/.venv-k8s"
-install_manifest_source: ./files/argocd-install.yaml
+install_manifest_source: argocd-install.yaml
 install_manifest_dest: "{{ argo_files_base }}/argocd-install.yaml"
 argocd_namespace: argocd
-boostrap_manifest_source: ./files/argocd-bootstrap.yaml
+boostrap_manifest_source: argocd-bootstrap.yaml
 boostrap_manifest_dest: "{{ argo_files_base }}/argocd-bootstrap.yaml"

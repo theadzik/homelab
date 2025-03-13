@@ -6,7 +6,7 @@
 
 - name: Copy fail2ban config.
   ansible.builtin.copy:
-    src: ./files/fail2ban-jails.local
+    src: fail2ban-jails.local
     dest: /etc/fail2ban/jail.local
     owner: root
     group: root

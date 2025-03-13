@@ -14,7 +14,7 @@
 
     - name: Copy resolv.conf.
       ansible.builtin.copy:
-        src: "./files/resolv.conf"
+        src: "resolv.conf"
         dest: "{{ resolv_conf_path }}"
         owner: root
         group: root
@@ -23,7 +23,7 @@
 
     - name: Copy locale.conf.
       ansible.builtin.copy:
-        src: "./files/locale.conf"
+        src: "locale.conf"
         dest: "/etc/locale.conf"
         owner: root
         group: root
@@ -32,7 +32,7 @@
 
     - name: Add passwordless sudo permissions.
       ansible.builtin.template:
-        src: "./files/sudoers.j2"
+        src: "sudoers.j2"
         dest: "/etc/sudoers.d/{{ ansible_user }}"
         owner: root
         group: root

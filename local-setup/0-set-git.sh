@@ -8,7 +8,8 @@ name="Adam Żmuda"
 ssh-keygen -t ed25519 -C "$email" -N "" -f "$key_path"
 eval "$(ssh-agent -s)"
 ssh-add "$key_path"
-cat "$key_path.pub"
+
+sudo apt-get update && sudo apt-get install git -y
 
 git config --global user.name "$name"
 git config --global user.email "$email"
@@ -16,3 +17,7 @@ git config --global core.editor "vim"
 git config --global --add --bool push.autoSetupRemote true
 
 mkdir "$HOME/git"
+
+echo "======== PUBLIC KEY ========"
+cat "$key_path.pub"
+echo "======== PUBLIC KEY END ========"

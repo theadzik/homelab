@@ -56,7 +56,7 @@
 
 - name: Ensure containerd image store is enabled.
   ansible.builtin.copy:
-    src: "./files/docker-daemon.json"
+    src: "docker-daemon.json"
     dest: "/etc/docker/daemon.json"
   register: daemon
   become: true
@@ -80,14 +80,14 @@
 
 - name: Ensure qemu startup script
   ansible.builtin.copy:
-    src: "./files/{{ qemu_service_name }}.sh"
+    src: "{{ qemu_service_name }}.sh"
     dest: "{{ qemu_service_path }}/{{ qemu_service_name }}.sh"
     mode: "0744"
   become: true
 
 - name: Ensure qemu startup service
   ansible.builtin.template:
-    src: "./files/{{ qemu_service_name }}.service.j2"
+    src: "{{ qemu_service_name }}.service.j2"
     dest: "/lib/systemd/system/{{ qemu_service_name }}.service"
     mode: "0644"
     owner: root

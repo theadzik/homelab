@@ -1,13 +1,14 @@
 ---
-- name: Download PyCharm Community.
-  ansible.builtin.get_url:
+- name: Check newest PyCharm version.
+  ansible.builtin.uri:
     url: "https://download.jetbrains.com/product?code=PCA&latest&distribution=linux"
-    dest: /tmp
-  register: download
+    method: GET
+  register: version_raw
 
 - name: Get PyCharm Version.
   ansible.builtin.set_fact:
-    version: "{{ download.dest | regex_search('[0-9]+.[0-9]+.[0-9]+') }}"
+    version: "{{ version_raw.url | regex_search('[0-9]+.[0-9]+.[0-9]+') }}"
+    file_name: "{{ version_raw.url.split('/')[-1] }}"
 
 - name: Create pycharm versioned directory.
   ansible.builtin.file:
@@ -17,6 +18,12 @@
   register: pycharm_directory
 
 - block:
+    - name: Download PyCharm Community.
+      ansible.builtin.get_url:
+        url: "{{ version_raw.msg.location }}"
+        dest: "{{ downloads_dir }}/{{ file_name }}"
+      register: download
+
     - name: Extract PyCharm.
       ansible.builtin.unarchive:
         src: "{{ download.dest }}"

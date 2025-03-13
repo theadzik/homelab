@@ -35,7 +35,7 @@
 
 - name: Copy .zshrc.
   ansible.builtin.copy:
-    src: "./files/.zshrc"
+    src: ".zshrc"
     dest: "/home/{{ ansible_user }}/.zshrc"
 
 - name: Change default shell for {{ ansible_user }}.

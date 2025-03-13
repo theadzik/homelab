@@ -10,6 +10,6 @@ common_packages:
   - vim
   - curl
   - git
-  - zsh
   - jq
   - bind9-dnsutils
+downloads_dir: "/home/{{ ansible_user }}/.downloads"

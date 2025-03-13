@@ -15,7 +15,10 @@
         state: present
       loop: "{{ common_packages }}"
       become: true
-
+    - name: Ensure ansible download location.
+      ansible.builtin.file:
+        path: "{{ downloads_dir }}"
+        state: directory
   roles:
     - role: ubuntu
     - role: k8s-tools
