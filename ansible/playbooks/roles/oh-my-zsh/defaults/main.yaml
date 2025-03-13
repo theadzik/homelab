@@ -2,3 +2,4 @@ zsh_packages:
   - git
   - zsh
   - fzf
+  - fonts-powerline

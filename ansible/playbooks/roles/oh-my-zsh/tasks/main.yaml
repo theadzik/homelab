@@ -42,6 +42,6 @@
   become: true
   ansible.builtin.lineinfile:
     path: /etc/passwd
-    regexp: '({{ ansible_user }}:x:1000:1000:,,,:/home/{{ ansible_user }}:/bin/)(bash)'
+    regexp: '^({{ ansible_user }}.*bin/)(bash)'
     line: \g<1>zsh
     backrefs: true
