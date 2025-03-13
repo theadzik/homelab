@@ -3,6 +3,7 @@
 1. Create user `adzik`.
 1. Copy contents of `local-setup/0-set-git.sh` to a file and run it with `bash 0-set-git.sh`
     * Add the output to [GitHub](https://github.com/settings/ssh/new)
+      > Add as both, authentication and signing keys.
 1. `git clone git@github.com:theadzik/homelab.git`
 1. `bash local-setup/1-bootstrap-ansible.sh`
 1. Restart shell.
