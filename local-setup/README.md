@@ -1,12 +1,13 @@
 # Steps to bootstrap Ubuntu
 
-1. Create user `adzik`.
 1. Copy contents of `local-setup/0-set-git.sh` to a file and run it with `bash 0-set-git.sh`
     * Add the output to [GitHub](https://github.com/settings/ssh/new)
       > Add as both, authentication and signing keys.
 1. `git clone git@github.com:theadzik/homelab.git`
 1. `bash local-setup/1-bootstrap-ansible.sh`
 1. Restart shell.
+1. Set your username in `homelab/ansible/inventory.yaml`
+   as ansible_user variable.
 1. `ansible-playbook playbooks/local-setup.yaml --ask-become-pass`
 1. Download git-crypt key and put it in `~/git`
 1. `git-crypt unlock ../git-crypt-key`

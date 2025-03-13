@@ -1,4 +1,51 @@
 ---
+- name: Ensure libinput.conf is present.
+  ansible.builtin.copy:
+    src: "libinput.conf"
+    dest: "/etc/libinput.conf"
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+  register: libinput_conf
+
+- block:
+    - name: Ensure dependencies for libinput are present.
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - libinput-tools
+        - libinput-dev
+        - pkg-config
+        - libudev-dev
+        - meson
+        - ninja-build
+      become: true
+
+    - name: Clone libinput-config repo.
+      ansible.builtin.git:
+        repo: "https://gitlab.com/warningnonpotablewater/libinput-config.git"
+        dest: "{{ downloads_dir }}/libinput-config"
+
+    - name: Meson build libinput-config.
+      ansible.builtin.command: "meson build"
+      args:
+        chdir: "{{ downloads_dir }}/libinput-config"
+        creates: "{{ downloads_dir }}/libinput-config/build"
+
+    - name: Ninja libinput-config.
+      ansible.builtin.command: "ninja"
+      args:
+        chdir: "{{ downloads_dir }}/libinput-config/build"
+
+    - name: Ninja install libinput-config.
+      ansible.builtin.command: "ninja install"
+      args:
+        chdir: "{{ downloads_dir }}/libinput-config/build"
+      become: true
+  when: libinput_conf.changed
+
 - block:
     - name: Check if resolv.conf is a link.
       stat:
