@@ -1,13 +1,5 @@
 ---
 - block:
-    - name: Copy wsl.conf.
-      ansible.builtin.copy:
-        src: "wsl.conf"
-        dest: "/etc/wsl.conf"
-        owner: root
-        group: root
-        mode: "0644"
-
     - name: Check if resolv.conf is a link.
       stat:
         path: "{{ resolv_conf_path }}"
@@ -27,8 +19,15 @@
         owner: root
         group: root
         mode: "0644"
-        attributes: "+ie"
-        force: true
+      become: true
+
+    - name: Copy locale.conf.
+      ansible.builtin.copy:
+        src: "locale.conf"
+        dest: "/etc/locale.conf"
+        owner: root
+        group: root
+        mode: "0644"
       become: true
 
     - name: Add passwordless sudo permissions.

@@ -63,7 +63,7 @@ function k9s-update() {
     k9s_location=$(which k9s)
     sudo mv k9s $k9s_location
     new_version=$(k9s version -s | grep -oE "v[0-9]+\.[0-9]+\.[0-9]+")
-    echo "New local version: $new_version"    
+    echo "New local version: $new_version"
   fi
 }
 

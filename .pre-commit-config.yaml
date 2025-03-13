@@ -17,7 +17,7 @@ repos:
     rev: v1.35.1
     hooks:
       - id: yamllint
-        exclude: "^(ansible/playbooks/files/argocd-install.yaml|manifests/base/argocd/image-updater.yaml)"
+        exclude: "^(.*/argocd-install.yaml|.*/image-updater.yaml)"
   - repo: https://github.com/PyCQA/isort
     rev: 6.0.0
     hooks:

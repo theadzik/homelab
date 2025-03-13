@@ -15,10 +15,15 @@
         state: present
       loop: "{{ common_packages }}"
       become: true
-
+    - name: Ensure ansible download location.
+      ansible.builtin.file:
+        path: "{{ downloads_dir }}"
+        state: directory
   roles:
-    - role: wsl
+    - role: ubuntu
     - role: k8s-tools
     - role: oh-my-zsh
     - role: git
     - role: docker
+    - role: jetbrains
+      tags: pycharm

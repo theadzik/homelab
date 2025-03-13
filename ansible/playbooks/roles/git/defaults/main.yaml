@@ -1,8 +1,8 @@
 ssl_libs:
   - libssl1.1_1.1.1f-1ubuntu2.24_amd64.deb
-downloads_dir: /home/{{ ansible_user }}/.downloads
 git_dir: /home/{{ ansible_user }}/git
 repositories:
   - homelab
   - notepad
   - dyndns-cloudflare
+  - blog

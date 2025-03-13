@@ -11,12 +11,6 @@
     update: false
   loop: "{{ repositories }}"
 
-- name: Create .downloads directory.
-  ansible.builtin.file:
-    path: "{{ downloads_dir }}"
-    state: directory
-    mode: '0755'
-
 - name: Download ssl_libs packages.
   ansible.builtin.get_url:
     url: http://security.ubuntu.com/ubuntu/pool/main/o/openssl/{{ item }}
@@ -49,9 +43,12 @@
     mode: "755"
   become: true
 
-- name: Install pre-commit python package.
+- name: Install pipx packages.
   community.general.pipx:
-    name: pre-commit
+    name: "{{ item }}"
+  loop:
+    - detect-secrets
+    - pre-commit
 
 - name: Ensure pre-commit dependencies are present.
   ansible.builtin.apt:

@@ -47,7 +47,7 @@
 
 - name: Copy hardened sshd config.
   ansible.builtin.copy:
-    src: ./files/ssh-hardening.conf
+    src: ssh-hardening.conf
     dest: /etc/ssh/sshd_config.d/ssh-hardening.conf
     owner: root
     group: root
