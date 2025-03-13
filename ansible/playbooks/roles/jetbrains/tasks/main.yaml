@@ -1,0 +1,36 @@
+---
+- name: Download Pycharm Community.
+  ansible.builtin.get_url:
+    url: "https://download.jetbrains.com/product?code=PCA&latest&distribution=linux"
+    dest: /tmp
+  register: download
+
+- name: Get Pycharm Version.
+  ansible.builtin.set_fact:
+    version: "{{ download.dest | regex_search('[0-9]+.[0-9]+.[0-9]+') }}"
+
+- name: Create pycharm versioned directory.
+  ansible.builtin.file:
+    path: /opt/pycharm-{{ version }}
+    state: directory
+  become: true
+  register: pycharm_directory
+
+- block:
+    - name: Extract Pycharm.
+      ansible.builtin.unarchive:
+        src: "{{ download.dest }}"
+        dest: "{{ pycharm_directory.path }}"
+        remote_src: true
+        extra_opts: ["--strip-components=1"]
+    - name: Change pycharm.sh file permission.
+      ansible.builtin.file:
+        path: "{{ pycharm_directory.path }}/bin/pycharm.sh"
+        mode: '0755'
+    - name: Create a symlink to pycharm.sh.
+      file:
+        src: "{{ pycharm_directory.path }}/bin/pycharm.sh"
+        dest: "/usr/bin/pycharm"
+        state: link
+  when: pycharm_directory.changed
+  become: true

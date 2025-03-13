@@ -21,6 +21,15 @@
         mode: "0644"
       become: true
 
+    - name: Copy locale.conf.
+      ansible.builtin.copy:
+        src: "./files/locale.conf"
+        dest: "/etc/locale.conf"
+        owner: root
+        group: root
+        mode: "0644"
+      become: true
+
     - name: Add passwordless sudo permissions.
       ansible.builtin.template:
         src: "./files/sudoers.j2"

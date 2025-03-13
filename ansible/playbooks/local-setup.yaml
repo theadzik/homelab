@@ -22,3 +22,5 @@
     - role: oh-my-zsh
     - role: git
     - role: docker
+    - role: jetbrains
+      tags: pycharm
