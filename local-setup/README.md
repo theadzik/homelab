@@ -1,6 +1,4 @@
-# Steps to config Ubuntu
-
-## Ubuntu
+# Steps to bootstrap Ubuntu
 
 1. Create user `adzik`.
 1. Copy contents of `local-setup/0-set-git.sh` to a file and run it with `bash 0-set-git.sh`
