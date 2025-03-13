@@ -31,12 +31,19 @@
     return_content: true
   register: gitcrypt_latest
 
+- name: Create git-crypt version file.
+  ansible.builtin.copy:
+    content: ""
+    dest: "{{ downloads_dir }}/git-crypt-{{ gitcrypt_latest.json.name }}"
+    force: false
+  register: gitcrypt_version
+
 - name: Download git-crypt.
   loop: "{{ gitcrypt_latest.json.assets }}"
   loop_control:
     label: "{{ item.name }}"
     break_when: "'linux-x86_64' in item.name"
-  when: "'linux-x86_64' in item.name"
+  when: "gitcrypt_version.changed and 'linux-x86_64' in item.name"
   ansible.builtin.get_url:
     url: "{{ item.browser_download_url }}"
     dest: /usr/bin/git-crypt
@@ -65,12 +72,19 @@
     return_content: true
   register: hadolint_latest
 
+- name: Create hadolint version file.
+  ansible.builtin.copy:
+    content: ""
+    dest: "{{ downloads_dir }}/hadolint-{{ hadolint_latest.json.name }}"
+    force: false
+  register: hadolint_version
+
 - name: Download hadolint.
   loop: "{{ hadolint_latest.json.assets }}"
   loop_control:
     label: "{{ item.name }}"
     break_when: "'Linux-x86_64' in item.name"
-  when: "'Linux-x86_64' in item.name"
+  when: "hadolint_version.changed and 'Linux-x86_64' in item.name"
   ansible.builtin.get_url:
     url: "{{ item.browser_download_url }}"
     dest: /usr/bin/hadolint
