@@ -23,6 +23,7 @@
     - role: ubuntu
     - role: k8s-tools
     - role: oh-my-zsh
+      tags: omz
     - role: git
     - role: docker
     - role: jetbrains
