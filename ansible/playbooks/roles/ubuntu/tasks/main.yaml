@@ -9,7 +9,7 @@
   become: true
   register: libinput_conf
 
-# Fix touchpad scolling speed.
+# Fix touchpad scrolling speed.
 - block:
     - name: Ensure dependencies for libinput are present.
       ansible.builtin.apt:
@@ -47,49 +47,27 @@
       become: true
   when: libinput_conf.changed
 
-- block:
-    - name: Check if resolv.conf is a link.
-      stat:
-        path: "{{ resolv_conf_path }}"
-        follow: false
-      register: link_stats
+- name: Copy locale.conf.
+  ansible.builtin.copy:
+    src: "locale.conf"
+    dest: "/etc/locale.conf"
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
 
-    - name: Remove resolv.conf link.
-      file:
-        path: "{{ resolv_conf_path }}"
-        state: absent
-      when: link_stats.stat.islnk | default(false)
-
-    - name: Copy resolv.conf.
-      ansible.builtin.copy:
-        src: "resolv.conf"
-        dest: "{{ resolv_conf_path }}"
-        owner: root
-        group: root
-        mode: "0644"
-      become: true
-
-    - name: Copy locale.conf.
-      ansible.builtin.copy:
-        src: "locale.conf"
-        dest: "/etc/locale.conf"
-        owner: root
-        group: root
-        mode: "0644"
-      become: true
-
-    - name: Add passwordless sudo permissions.
-      ansible.builtin.template:
-        src: "sudoers.j2"
-        dest: "/etc/sudoers.d/{{ ansible_user }}"
-        owner: root
-        group: root
-        mode: "0440"
+- name: Add passwordless sudo permissions.
+  ansible.builtin.template:
+    src: "sudoers.j2"
+    dest: "/etc/sudoers.d/{{ ansible_user }}"
+    owner: root
+    group: root
+    mode: "0440"
   become: true
 
 - name: Set locale to C.UTF-8
   ansible.builtin.copy:
-    src: "locale"
+    src: "locale.conf"
     dest: "/etc/locale.conf"
     owner: root
     group: root
