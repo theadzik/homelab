@@ -1,6 +1,6 @@
 ---
 
-# Servers should be restarted sequientally to avoid etcd learner issues
+# Servers should be restarted sequentially to avoid etcd learner issues
 # Agents have no such limitation
 - name: Upgrade K3s Servers
   hosts: server
