@@ -133,10 +133,10 @@
     }
   ],
   "results": {
-    "ansible/playbooks/roles/k3s_bootstrap/files/argocd-install.yaml": [
+    "ansible/playbooks/files/argocd-install.yaml": [
       {
         "type": "Secret Keyword",
-        "filename": "ansible/playbooks/roles/k3s_bootstrap/files/argocd-install.yaml",
+        "filename": "ansible/playbooks/files/argocd-install.yaml",
         "hashed_secret": "9fff20bb0cb0b87abf555d61d0223da615f8f88c",
         "is_verified": false,
         "line_number": 24840,
@@ -144,7 +144,7 @@
       },
       {
         "type": "Secret Keyword",
-        "filename": "ansible/playbooks/roles/k3s_bootstrap/files/argocd-install.yaml",
+        "filename": "ansible/playbooks/files/argocd-install.yaml",
         "hashed_secret": "49157360f694a2b0f7b054d1d5523f407e1c3ab9",
         "is_verified": false,
         "line_number": 24961,
@@ -296,5 +296,5 @@
       }
     ]
   },
-  "generated_at": "2025-03-13T12:26:14Z"
+  "generated_at": "2025-03-15T17:38:29Z"
 }

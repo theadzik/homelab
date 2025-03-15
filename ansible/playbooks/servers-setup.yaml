@@ -1,22 +1,21 @@
-- name: Configure all nodes.
+---
+- name: Cluster prep
   hosts: k3s_cluster
+  gather_facts: true
   become: true
-  vars_files:
-    - vars/common.yaml
-
   roles:
-    - prereq
-    - raspberrypi
-    - fail2ban
-    - ssh_hardening
+    - role: prereq
+    - role: fail2ban
+    - role: ssh_hardening
+    - role: raspberrypi
+    - role: argo_storage
+      vars:
+        argo_name: argocd
+        uid: 999
+        gid: 999
+        git_crypt_source: "../../../git-crypt-key"
     - role: oh-my-zsh
       become: false
-    - role: local_storage
-      vars:
-        local_data_directories:
-          - name: argocd
-            uid: 999
-            gid: 999
 
   pre_tasks:
     - name: Upgrade system with apt.
@@ -24,11 +23,9 @@
         upgrade: true
         cache_valid_time: 3600
 
-- name: Setup K3S server.
+- name: Setup K3S server
   hosts: server
   become: true
-  vars_files:
-    - vars/servers-secrets.yaml
   roles:
     - role: k3s_server
       vars:
@@ -37,15 +34,5 @@
 - name: Setup K3S agent
   hosts: agent
   become: true
-  vars_files:
-    - vars/servers-secrets.yaml
   roles:
     - role: k3s_agent
-
-- name: Bootstrap ArgoCD
-  hosts: server[0]
-  roles:
-    - role: k3s_bootstrap
-      vars:
-        git_crypt_source: "../../../git-crypt-key"
-        git_crypt_dest: "/mnt/kubernetes-disks/argocd/"
