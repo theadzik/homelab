@@ -64,24 +64,10 @@
     cmd: fc-cache -f -v
   when: fonts_installed.changed
 
-- name: Read gnome-terminal profile.
-  community.general.dconf:
-    key: "/org/gnome/terminal/legacy/profiles:/default"
-    value: ""
-    state: read
-  register: gnome_terminal_profiles
-
-- set_fact:
-    profile_id: "{{ gnome_terminal_profiles.value | regex_search('[a-f0-9\\-]+') }}" # Extract uid from string
-
-- name: Set font in gnome-terminal.
-  community.general.dconf:
-    key: "/org/gnome/terminal/legacy/profiles:/:{{ profile_id }}/font"
-    value: "'Droid Sans Mono for Powerline 13'"
-    state: present
-
-- name: Use custom font in gnome-terminal.
-  community.general.dconf:
-    key: "/org/gnome/terminal/legacy/profiles:/:{{ profile_id }}/use-system-font"
-    value: "false"
-    state: present
+- name: Copy terminator config.
+  ansible.builtin.copy:
+    src: "terminator.config"
+    dest: "/home/{{ ansible_user }}/.config/terminator/config"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: 0644
