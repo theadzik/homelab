@@ -45,29 +45,3 @@
     regexp: '^({{ ansible_user }}.*bin/)(bash)'
     line: \g<1>zsh
     backrefs: true
-
-- name: Clone fonts repository.
-  ansible.builtin.git:
-    repo: "https://github.com/powerline/fonts.git"
-    dest: "{{ downloads_dir }}/fonts"
-    depth: 1
-
-- name: Install fonts.
-  ansible.builtin.shell:
-    chdir: "{{ downloads_dir }}/fonts"
-    cmd: ./install.sh
-    creates: "/home/{{ ansible_user }}/.local/share/fonts/Droid Sans Mono for Powerline.otf"
-  register: fonts_installed
-
-- name: Reset font cache.
-  ansible.builtin.shell:
-    cmd: fc-cache -f -v
-  when: fonts_installed.changed
-
-- name: Copy terminator config.
-  ansible.builtin.copy:
-    src: "terminator.config"
-    dest: "/home/{{ ansible_user }}/.config/terminator/config"
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
-    mode: 0644

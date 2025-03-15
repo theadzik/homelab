@@ -1,0 +1,3 @@
+---
+local_data_base_directory: /mnt/kubernetes-disks
+local_data_permissions: 02774
