@@ -9,6 +9,7 @@
   become: true
   register: libinput_conf
 
+# Fix touchpad scolling speed.
 - block:
     - name: Ensure dependencies for libinput are present.
       ansible.builtin.apt:
@@ -84,4 +85,13 @@
         owner: root
         group: root
         mode: "0440"
+  become: true
+
+- name: Set locale to C.UTF-8
+  ansible.builtin.copy:
+    src: "locale"
+    dest: "/etc/locale.conf"
+    owner: root
+    group: root
+    mode: "0644"
   become: true
