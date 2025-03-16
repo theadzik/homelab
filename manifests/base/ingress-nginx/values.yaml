@@ -28,6 +28,12 @@ controller:
     brotli-types: "*"
     gzip-types: "*"
     use-gzip: "true"
+    keep-alive: "10"
+    config.ssl-ciphers: "EECDH+AESGCM:EDH+AESGCM"
+    enable-ocsp: "true"
+    hsts-preload: "true"
+    client-header-timeout: "10"
+    client-body-timeout: "10"
   enableAnnotationValidations: true
   podLabels:
     type: ingress
