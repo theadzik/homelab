@@ -120,3 +120,30 @@
     name: kubectx
     state: present
   become: true
+
+- name: Check latest kustomize.
+  uri:
+    url: https://api.github.com/repos/kubernetes-sigs/kustomize/releases/latest
+    return_content: true
+  register: kustomize_latest
+
+- name: Create kustomize version file.
+  ansible.builtin.copy:
+    content: ""
+    dest: "{{ downloads_dir }}/kustomize-{{ kustomize_latest.json.name | split('/') | last }}"
+    force: false
+  register: kustomize_version
+
+- name: Download kustomize.
+  loop: "{{ kustomize_latest.json.assets }}"
+  loop_control:
+    label: "{{ item.name }}"
+    break_when: "'linux_amd64.tar.gz' in item.name"
+  when: "kustomize_version.changed and 'linux_amd64.tar.gz' in item.name"
+  ansible.builtin.unarchive:
+    remote_src: true
+    keep_newer: true
+    src: "{{ item.browser_download_url }}"
+    dest: /usr/bin
+    mode: "755"
+  become: true
