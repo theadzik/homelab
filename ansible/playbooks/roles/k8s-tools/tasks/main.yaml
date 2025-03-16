@@ -109,6 +109,12 @@
     stdin: "{{ helm_installer.content }}"
     creates: "/usr/local/bin/helm"
 
+- name: Add helm repository.
+  kubernetes.core.helm_repository:
+    name: "{{ item.repo_name }}"
+    repo_url: "{{ item.repo_url }}"
+  loop: "{{ helm_repos }}"
+
 - name: Ensure kubectx is present.
   ansible.builtin.apt:
     name: kubectx
