@@ -408,7 +408,9 @@
       "\"Rządzić\" to sprawować rządy, stać na czele, posiadać władzę, mieć wpływy.",
       "Ponadto \"rządzić\" było znane już w staropolszczyźnie pod postacią \"riad\".",
       "Oznacza to więc, że zapis z użyciem \"rz\" jest motywowany historycznie.",
-      "\"Żądza\" pisana przez \"ż\" jest rzeczownikiem oznaczającym niepohamowane pragnienie posiadania lub doznawania czegoś lub silny pociąg fizyczny."
+      "Słowo \"żądza\" oraz odmiany jego odmiany \"żądzą\", \"żądzę\" itd.",
+      "pisane przez \"ż\" są rzeczownikiem oznaczającym niepohamowane pragnienie posiadania",
+      "lub doznawania czegoś lub silny pociąg fizyczny."
     ],
     "search_rule": "\\b[zż][aą]d[zź](|e|ę|isz|i|imy|icie|a|ą|ic|ić)\\b",
     "sources": [
