@@ -598,5 +598,23 @@
       "https://sjp.pwn.pl/poradnia/haslo/Zlodziei;22156.html",
       "https://sjp.pwn.pl/szukaj/z%C5%82odziej.html"
     ]
+  },
+  "złoty": {
+    "explanations": [
+      "Słowo złoty ma kilka znaczeń. Może oznaczać kruszec, kolor, a także przymiotnik.",
+      "Użycie złowa \"złoty\" w tym kontekście jest zawsze prawidłowe.",
+      "\"Złoty\" jest również jednostką monetarną używaną w Polsce.",
+      "Możemy powiedzieć \"jeden złoty\", ale gdy mówimy o większych kwotach zawsze powinniśmy prawidłowo odmienić słowo \"złoty\".",
+      "Gdy ostatnią cyfrą liczby jest 2, 3 lub 4, a przedostatnią nie jest 1, to odmieniamy słowo \"złoty\" przez \"-e\", czyli \"złote\".",
+      "Na przykład, czterdzieści dwa złote, sto trzydzieści cztery złote, 432 złote itp.",
+      "W innych przypadkach odmieniamy słowo \"złoty\" przez \"-ych\", czyli \"złotych\".",
+      "Na przykład, sto złotych, pięćset złotych, dwieście czternaście złotych, 11 złotych itp."
+    ],
+    "search_rule": "\\bzłoty\\b",
+    "sources": [
+      "https://sjp.pwn.pl/so/zloty;4541837.html",
+      "https://sjp.pwn.pl/poradnia/haslo/kwoty;11166.html",
+      "https://poradniajezykowa.uw.edu.pl/porady/slowny-zapis-kwoty/"
+    ]
   }
 }
