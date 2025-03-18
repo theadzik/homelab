@@ -12,4 +12,5 @@ common_packages:
   - git
   - jq
   - bind9-dnsutils
+  - net-tools
 downloads_dir: "/home/{{ ansible_user }}/.downloads"
