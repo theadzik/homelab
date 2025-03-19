@@ -139,7 +139,7 @@
         "filename": "ansible/playbooks/files/argocd-install.yaml",
         "hashed_secret": "9fff20bb0cb0b87abf555d61d0223da615f8f88c",
         "is_verified": false,
-        "line_number": 24840,
+        "line_number": 24877,
         "is_secret": false
       },
       {
@@ -147,7 +147,7 @@
         "filename": "ansible/playbooks/files/argocd-install.yaml",
         "hashed_secret": "49157360f694a2b0f7b054d1d5523f407e1c3ab9",
         "is_verified": false,
-        "line_number": 24961,
+        "line_number": 24999,
         "is_secret": false
       }
     ],
@@ -296,5 +296,5 @@
       }
     ]
   },
-  "generated_at": "2025-03-15T17:38:29Z"
+  "generated_at": "2025-03-19T06:18:27Z"
 }
