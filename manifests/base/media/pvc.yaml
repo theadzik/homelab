@@ -43,13 +43,13 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: deluge-downloads-pvc
+  name: deluge-config-pvc
 spec:
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: 128Gi
+      storage: 512Mi
   storageClassName: longhorn
 
 ---
@@ -57,7 +57,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: deluge-config-pvc
+  name: sonarr-config-pvc
 spec:
   accessModes:
     - ReadWriteMany

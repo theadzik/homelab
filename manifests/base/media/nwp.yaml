@@ -20,6 +20,27 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
+  name: allow-sonarr-to-deluge
+spec:
+  podSelector:
+    matchLabels:
+      app: deluge
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: sonarr
+      ports:
+        - protocol: TCP
+          port: 8112
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
   name: deluge-allow-incoming-tcp
 spec:
   podSelector:

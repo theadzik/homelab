@@ -1,33 +1,27 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: deluge
+  name: sonarr
   labels:
-    app: deluge
+    app: sonarr
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: deluge
+      app: sonarr
   template:
     metadata:
       labels:
-        app: deluge
+        app: sonarr
     spec:
       containers:
-        - name: deluge
-          image: lscr.io/linuxserver/deluge:latest
+        - name: sonarr
+          image: ghcr.io/hotio/sonarr:release
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8112
+            - containerPort: 8989
               protocol: "TCP"
               name: web
-            - containerPort: 6881
-              protocol: "TCP"
-              name: inbound-tpc
-            - containerPort: 6881
-              protocol: "UDP"
-              name: inbound-udp
           resources:
             requests:
               cpu: 250m
@@ -35,7 +29,7 @@ spec:
           volumeMounts:
             - mountPath: /config
               name: config
-            - mountPath: /media
+            - mountPath: /data
               name: media
           env:
             - name: "TZ"
@@ -60,4 +54,4 @@ spec:
             claimName: shared-media-pvc
         - name: config
           persistentVolumeClaim:
-            claimName: deluge-config-pvc
+            claimName: sonarr-config-pvc

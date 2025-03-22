@@ -245,6 +245,16 @@
         "is_secret": false
       }
     ],
+    "manifests/base/media/ingress-sonarr.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/base/media/ingress-sonarr.yaml",
+        "hashed_secret": "643d72fdf9b05acc55c8ff7ed26a56a8983ff3f6",
+        "is_verified": false,
+        "line_number": 13,
+        "is_secret": false
+      }
+    ],
     "manifests/base/pihole/ingress.yaml": [
       {
         "type": "Secret Keyword",
@@ -296,5 +306,5 @@
       }
     ]
   },
-  "generated_at": "2025-03-19T06:18:27Z"
+  "generated_at": "2025-03-22T18:09:22Z"
 }

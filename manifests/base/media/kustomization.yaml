@@ -5,11 +5,14 @@ resources:
   - deployment-auto-ffsubsync.yaml
   - deployment-jellyfin.yaml
   - ingress-deluge.yaml
+  - ingress-sonarr.yaml
   - ingress-jellyfin.yaml
   - namespace.yaml
   - nwp.yaml
   - pvc.yaml
   - service-deluge.yaml
+  - service-sonarr.yaml
   - service-jellyfin.yaml
+  - statefulset-sonarr.yaml
   - statefulset-deluge.yaml
   - ../image-pull-secret
