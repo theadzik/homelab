@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: media
 resources:
   - deployment-auto-ffsubsync.yaml
+  - deployment-sonarr.yaml
   - deployment-jellyfin.yaml
   - ingress-deluge.yaml
   - ingress-sonarr.yaml
@@ -13,6 +14,5 @@ resources:
   - service-deluge.yaml
   - service-sonarr.yaml
   - service-jellyfin.yaml
-  - statefulset-sonarr.yaml
   - statefulset-deluge.yaml
   - ../image-pull-secret
