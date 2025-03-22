@@ -5,7 +5,7 @@ metadata:
   labels:
     app: deluge
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: deluge

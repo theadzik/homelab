@@ -5,7 +5,7 @@ metadata:
   labels:
     app: auto-ffsubsync
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: auto-ffsubsync
