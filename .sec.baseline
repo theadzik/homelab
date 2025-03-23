@@ -225,6 +225,16 @@
         "is_secret": false
       }
     ],
+    "manifests/base/media/ingress-bazarr.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/base/media/ingress-bazarr.yaml",
+        "hashed_secret": "5912ca219281be3ac4a87c5af154b253e58f75b1",
+        "is_verified": false,
+        "line_number": 13,
+        "is_secret": false
+      }
+    ],
     "manifests/base/media/ingress-deluge.yaml": [
       {
         "type": "Secret Keyword",
@@ -316,5 +326,5 @@
       }
     ]
   },
-  "generated_at": "2025-03-23T10:37:19Z"
+  "generated_at": "2025-03-23T12:59:35Z"
 }
