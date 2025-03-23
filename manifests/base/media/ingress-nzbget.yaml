@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nzbget
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt-prod"
+    nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.0.0/16,10.0.0.0/8
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - nzbget.zmuda.pro
+      secretName: nzbget-tls
+  rules:
+    - host: nzbget.zmuda.pro
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nzbget-http
+                port:
+                  number: 6789

@@ -43,8 +43,8 @@ spec:
               name: cache
             - mountPath: /config
               name: config
-            - mountPath: /media
-              name: media
+            - mountPath: /downloads
+              name: downloads
             - mountPath: /data
               name: data
           env:
@@ -59,7 +59,7 @@ spec:
             - name: "HOSTNAME"
               value: "jellyfin.zmuda.pro"
       volumes:
-        - name: media
+        - name: downloads
           persistentVolumeClaim:
             claimName: shared-media-pvc
         - name: data

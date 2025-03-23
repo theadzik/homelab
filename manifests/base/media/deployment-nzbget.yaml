@@ -1,33 +1,27 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
-  name: deluge
+  name: nzbget
   labels:
-    app: deluge
+    app: nzbget
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: deluge
+      app: nzbget
   template:
     metadata:
       labels:
-        app: deluge
+        app: nzbget
     spec:
       containers:
-        - name: deluge
-          image: lscr.io/linuxserver/deluge:latest
+        - name: nzbget
+          image: lscr.io/linuxserver/nzbget:latest
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8112
+            - containerPort: 6789
               protocol: "TCP"
               name: web
-            - containerPort: 6881
-              protocol: "TCP"
-              name: inbound-tpc
-            - containerPort: 6881
-              protocol: "UDP"
-              name: inbound-udp
           resources:
             requests:
               cpu: 250m
@@ -37,6 +31,8 @@ spec:
               name: config
             - mountPath: /downloads
               name: downloads
+            - mountPath: /intermediate
+              name: intermediate
           env:
             - name: "TZ"
               value: "Europe/Warsaw"
@@ -44,20 +40,22 @@ spec:
               value: "1000"
             - name: "PGID"
               value: "1000"
-      affinity:
-        podAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                      - jellyfin
-              topologyKey: kubernetes.io/hostname
+            - name: "NZBGET_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: nzbget-secret
+                  key: username
+            - name: "NZBGET_PASS"
+              valueFrom:
+                secretKeyRef:
+                  name: nzbget-secret
+                  key: password
       volumes:
         - name: downloads
           persistentVolumeClaim:
             claimName: shared-media-pvc
         - name: config
           persistentVolumeClaim:
-            claimName: deluge-config-pvc
+            claimName: nzbget-config-pvc
+        - name: intermediate
+          emptyDir: {}

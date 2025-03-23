@@ -29,8 +29,8 @@ spec:
           volumeMounts:
             - mountPath: /config
               name: config
-            - mountPath: /data
-              name: media
+            - mountPath: /downloads
+              name: downloads
           env:
             - name: "TZ"
               value: "Europe/Warsaw"
@@ -49,7 +49,7 @@ spec:
                       - jellyfin
               topologyKey: kubernetes.io/hostname
       volumes:
-        - name: media
+        - name: downloads
           persistentVolumeClaim:
             claimName: shared-media-pvc
         - name: config

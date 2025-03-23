@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: all-allow-from-ingress
+  name: ingress-allow-media
 spec:
   podSelector: {}
   policyTypes:
@@ -14,46 +14,7 @@ spec:
         - podSelector:
             matchLabels:
               type: ingress
-
----
-
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: allow-sonarr-to-deluge
-spec:
-  podSelector:
-    matchLabels:
-      app: deluge
-  policyTypes:
-    - Ingress
-  ingress:
     - from:
-        - podSelector:
+        - namespaceSelector:
             matchLabels:
-              app: sonarr
-      ports:
-        - protocol: TCP
-          port: 8112
-
----
-
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: deluge-allow-incoming-tcp
-spec:
-  podSelector:
-    matchLabels:
-      app: deluge
-  policyTypes:
-    - Ingress
-  ingress:
-    - from:
-        - ipBlock:
-            cidr: 0.0.0.0/0
-      ports:
-        - protocol: TCP
-          port: 6881
-        - protocol: UDP
-          port: 6881
+              kubernetes.io/metadata.name: media

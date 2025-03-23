@@ -245,6 +245,16 @@
         "is_secret": false
       }
     ],
+    "manifests/base/media/ingress-nzbget.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/base/media/ingress-nzbget.yaml",
+        "hashed_secret": "77284c103ffa2db8e5dc5027499f76c8e5c756df",
+        "is_verified": false,
+        "line_number": 13,
+        "is_secret": false
+      }
+    ],
     "manifests/base/media/ingress-sonarr.yaml": [
       {
         "type": "Secret Keyword",
@@ -306,5 +316,5 @@
       }
     ]
   },
-  "generated_at": "2025-03-22T18:09:22Z"
+  "generated_at": "2025-03-23T10:37:19Z"
 }

@@ -67,3 +67,17 @@ spec:
   storageClassName: longhorn
 
 ---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nzbget-config-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 128Mi
+  storageClassName: longhorn
+
+---

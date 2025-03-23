@@ -6,11 +6,12 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd-image-updater.argoproj.io/image-list: jellyfin=jellyfin/jellyfin:latest,deluge=lscr.io/linuxserver/deluge:latest,sonarr=ghcr.io/hotio/sonarr:release,ffsubsync=theadzik/auto-ffsubsync:latest
+    argocd-image-updater.argoproj.io/image-list: jellyfin=jellyfin/jellyfin:latest,deluge=lscr.io/linuxserver/deluge:latest,sonarr=ghcr.io/hotio/sonarr:release,ffsubsync=theadzik/auto-ffsubsync:latest,nzbget=lscr.io/linuxserver/nzbget:latest
     argocd-image-updater.argoproj.io/jellyfin.update-strategy: digest
     argocd-image-updater.argoproj.io/sonarr.update-strategy: digest
     argocd-image-updater.argoproj.io/deluge.update-strategy: digest
     argocd-image-updater.argoproj.io/ffsubsync.update-strategy: digest
+    argocd-image-updater.argoproj.io/nzbget.update-strategy: digest
 spec:
   project: default
   source:

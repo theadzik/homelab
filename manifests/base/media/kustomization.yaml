@@ -4,15 +4,19 @@ namespace: media
 resources:
   - deployment-auto-ffsubsync.yaml
   - deployment-sonarr.yaml
+  - deployment-nzbget.yaml
   - deployment-jellyfin.yaml
   - ingress-deluge.yaml
+  - ingress-nzbget.yaml
   - ingress-sonarr.yaml
   - ingress-jellyfin.yaml
   - namespace.yaml
   - nwp.yaml
   - pvc.yaml
+  - secret-nzbget.yaml
   - service-deluge.yaml
   - service-sonarr.yaml
   - service-jellyfin.yaml
+  - service-nzbget.yaml
   - statefulset-deluge.yaml
   - ../image-pull-secret

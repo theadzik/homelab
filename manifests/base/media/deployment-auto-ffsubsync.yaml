@@ -25,14 +25,14 @@ spec:
               cpu: 100m
               memory: 128Mi
           volumeMounts:
-            - mountPath: /media
-              name: media
+            - mountPath: /downloads
+              name: downloads
           env:
             - name: "VIDEO_DIRECTORY"
-              value: "/media"
+              value: "/downloads"
             - name: "LOG_LEVEL"
               value: "INFO"
       volumes:
-        - name: media
+        - name: downloads
           persistentVolumeClaim:
             claimName: shared-media-pvc
