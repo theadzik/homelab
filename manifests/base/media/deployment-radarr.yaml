@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: radarr
+  labels:
+    app: radarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: radarr
+  template:
+    metadata:
+      labels:
+        app: radarr
+    spec:
+      containers:
+        - name: radarr
+          image: ghcr.io/hotio/radarr:release
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 7878
+              protocol: "TCP"
+              name: web
+          resources:
+            requests:
+              cpu: 250m
+              memory: 1Gi
+          volumeMounts:
+            - mountPath: /config
+              name: config
+            - mountPath: /downloads
+              name: downloads
+          env:
+            - name: "TZ"
+              value: "Europe/Warsaw"
+            - name: "PUID"
+              value: "1000"
+            - name: "PGID"
+              value: "1000"
+      volumes:
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: shared-media-pvc
+        - name: config
+          persistentVolumeClaim:
+            claimName: radarr-config-pvc

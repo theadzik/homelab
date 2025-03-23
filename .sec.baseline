@@ -265,6 +265,16 @@
         "is_secret": false
       }
     ],
+    "manifests/base/media/ingress-radarr.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/base/media/ingress-radarr.yaml",
+        "hashed_secret": "835a7b6aa76c9ac582dcc06a7dcbbcd762b425be",
+        "is_verified": false,
+        "line_number": 13,
+        "is_secret": false
+      }
+    ],
     "manifests/base/media/ingress-sonarr.yaml": [
       {
         "type": "Secret Keyword",
@@ -326,5 +336,5 @@
       }
     ]
   },
-  "generated_at": "2025-03-23T12:59:35Z"
+  "generated_at": "2025-03-23T19:46:21Z"
 }

@@ -6,11 +6,13 @@ resources:
   - deployment-bazarr.yaml
   - deployment-jellyfin.yaml
   - deployment-nzbget.yaml
+  - deployment-radarr.yaml
   - deployment-sonarr.yaml
   - ingress-bazarr.yaml
   - ingress-deluge.yaml
   - ingress-jellyfin.yaml
   - ingress-nzbget.yaml
+  - ingress-radarr.yaml
   - ingress-sonarr.yaml
   - namespace.yaml
   - nwp.yaml
@@ -20,6 +22,7 @@ resources:
   - service-deluge.yaml
   - service-jellyfin.yaml
   - service-nzbget.yaml
+  - service-radarr.yaml
   - service-sonarr.yaml
   - statefulset-deluge.yaml
   - ../image-pull-secret
