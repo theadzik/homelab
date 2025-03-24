@@ -20,15 +20,12 @@ spec:
         - name: dockerhub-image-pull-secret
       containers:
         - name: jellyfin
-          image: jellyfin/jellyfin:latest
+          image: lscr.io/linuxserver/jellyfin:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8096
               protocol: "TCP"
               name: jellyfin
-            - containerPort: 80
-              protocol: "TCP"
-              name: http
           resources:
             requests:
               cpu: 200m
@@ -45,29 +42,27 @@ spec:
               name: config
             - mountPath: /downloads
               name: downloads
-            - mountPath: /data
-              name: data
+            - mountPath: /data/metadata
+              name: metadata
           env:
-            - name: "JELLYFIN_DATA_DIR"
-              value: "/data"
-            - name: "JELLYFIN_CONFIG_DIR"
-              value: "/config"
-            - name: "JELLYFIN_CACHE_DIR"
-              value: "/cache"
-            - name: "JELLYFIN_PublishedServerUrl"
-              value: "https://jellyfin.zmuda.pro"
+            - name: "TZ"
+              value: "Europe/Warsaw"
+            - name: "PUID"
+              value: "1000"
+            - name: "PGID"
+              value: "1000"
             - name: "HOSTNAME"
               value: "jellyfin.zmuda.pro"
       volumes:
         - name: downloads
           persistentVolumeClaim:
             claimName: shared-media-pvc
-        - name: data
-          persistentVolumeClaim:
-            claimName: jellyfin-data-pvc
         - name: config
           persistentVolumeClaim:
-            claimName: jellyfin-config-pvc
+            claimName: jellyfin-linux-config-pvc
+        - name: metadata
+          persistentVolumeClaim:
+            claimName: jellyfin-metadata-pvc
         - name: tmp
           emptyDir: {}
         - name: cache

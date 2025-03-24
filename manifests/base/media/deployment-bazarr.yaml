@@ -29,12 +29,8 @@ spec:
           volumeMounts:
             - mountPath: /config
               name: config
-            - mountPath: /tv
+            - mountPath: /downloads
               name: downloads
-              subPath: shows
-            - mountPath: /movies
-              name: downloads
-              subPath: movies
           env:
             - name: "TZ"
               value: "Europe/Warsaw"

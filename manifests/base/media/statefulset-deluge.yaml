@@ -44,16 +44,6 @@ spec:
               value: "1000"
             - name: "PGID"
               value: "1000"
-      affinity:
-        podAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                      - jellyfin
-              topologyKey: kubernetes.io/hostname
       volumes:
         - name: downloads
           persistentVolumeClaim:
