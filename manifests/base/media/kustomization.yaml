@@ -4,12 +4,14 @@ namespace: media
 resources:
   - deployment-auto-ffsubsync.yaml
   - deployment-bazarr.yaml
+  - deployment-jackett.yaml
   - deployment-jellyfin.yaml
   - deployment-nzbget.yaml
   - deployment-radarr.yaml
   - deployment-sonarr.yaml
   - ingress-bazarr.yaml
   - ingress-deluge.yaml
+  - ingress-jackett.yaml
   - ingress-jellyfin.yaml
   - ingress-nzbget.yaml
   - ingress-radarr.yaml
@@ -20,6 +22,7 @@ resources:
   - secret-nzbget.yaml
   - service-bazarr.yaml
   - service-deluge.yaml
+  - service-jackett.yaml
   - service-jellyfin.yaml
   - service-nzbget.yaml
   - service-radarr.yaml

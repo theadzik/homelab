@@ -245,6 +245,16 @@
         "is_secret": false
       }
     ],
+    "manifests/base/media/ingress-jackett.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/base/media/ingress-jackett.yaml",
+        "hashed_secret": "5b964e3329850e0ca7954024f589bf4f8f0b8e54",
+        "is_verified": false,
+        "line_number": 13,
+        "is_secret": false
+      }
+    ],
     "manifests/base/media/ingress-jellyfin.yaml": [
       {
         "type": "Secret Keyword",
@@ -336,5 +346,5 @@
       }
     ]
   },
-  "generated_at": "2025-03-23T19:46:21Z"
+  "generated_at": "2025-03-25T11:39:23Z"
 }

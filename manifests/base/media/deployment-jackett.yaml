@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jackett
+  labels:
+    app: jackett
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jackett
+  template:
+    metadata:
+      labels:
+        app: jackett
+    spec:
+      containers:
+        - name: jackett
+          image: lscr.io/linuxserver/jackett:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9117
+              protocol: "TCP"
+              name: web
+          resources:
+            requests:
+              cpu: 250m
+              memory: 1Gi
+          volumeMounts:
+            - mountPath: /config
+              name: config
+            - mountPath: /downloads
+              name: downloads
+              subPath: downloads
+          env:
+            - name: "TZ"
+              value: "Europe/Warsaw"
+            - name: "PUID"
+              value: "1000"
+            - name: "PGID"
+              value: "1000"
+            - name: "AUTO_UPDATE"
+              value: "false"
+      volumes:
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: shared-media-pvc
+        - name: config
+          persistentVolumeClaim:
+            claimName: jackett-config-pvc
