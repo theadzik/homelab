@@ -43,28 +43,13 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: jellyfin-config-pvc
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 256Mi
-  storageClassName: longhorn
-
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
   name: jellyfin-linux-config-pvc
 spec:
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: 256Mi
+      storage: 512Mi
   storageClassName: longhorn
 
 ---

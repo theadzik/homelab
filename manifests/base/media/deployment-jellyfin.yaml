@@ -28,8 +28,8 @@ spec:
               name: jellyfin
           resources:
             requests:
-              cpu: 200m
-              memory: 1Gi
+              cpu: 500m
+              memory: 2Gi
               gpu.intel.com/i915: 1
             limits:
               gpu.intel.com/i915: 1
