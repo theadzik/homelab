@@ -25,6 +25,7 @@ all:
         server_config_yaml: |
           disable:
             - traefik
+            - servicelb
           kube-controller-manager-arg:
             - "bind-address=0.0.0.0"
           kube-proxy-arg:
