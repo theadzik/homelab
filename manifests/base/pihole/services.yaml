@@ -19,7 +19,6 @@ metadata:
   annotations:
     metallb.universe.tf/loadBalancerIPs: 192.168.0.51
 spec:
-  externalTrafficPolicy: Local  # Needed for pihole to get real client IPs
   ports:
     - port: 53
       protocol: UDP
