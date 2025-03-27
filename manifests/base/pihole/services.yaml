@@ -17,7 +17,7 @@ kind: Service
 metadata:
   name: pihole-dns
   annotations:
-    metallb.universe.tf/loadBalancerIPs: 192.168.0.51
+    metallb.io/loadBalancerIPs: 192.168.0.51
 spec:
   ports:
     - port: 53
