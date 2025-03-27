@@ -12,7 +12,7 @@ resources:
   - services.yaml
   - statefulset.yaml
   - ../image-pull-secret
-configMapGenerator:
-  - name: pihole-config
-    envs:
-      - configs/config.yaml
+secretGenerator:
+  - name: pihole-toml
+    files:
+      - configs/pihole-secret.toml
