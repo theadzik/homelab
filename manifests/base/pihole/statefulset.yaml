@@ -47,6 +47,9 @@ spec:
             capabilities:
               add:
                 - NET_ADMIN
+          envFrom:
+            - configMapRef:
+                name: pihole-config
           env:
             - name: FTLCONF_webserver_api_password
               valueFrom:
@@ -60,13 +63,6 @@ spec:
           volumeMounts:
             - mountPath: /etc/pihole
               name: pihole-main
-            - mountPath: /etc/pihole/pihole.toml
-              name: pihole-toml
-              subPath: pihole.toml
-      volumes:
-        - name: pihole-toml
-          secret:
-            secretName: pihole-toml
   volumeClaimTemplates:
     - metadata:
         name: pihole-main
