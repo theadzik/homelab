@@ -14,5 +14,6 @@ resources:
   - pihole.yaml
   - priority-classes.yaml
   - reddit-meaningofwords.yaml
+  - synology-csi.yaml
   - vaultwarden.yaml
   - zmuda-pro-blog.yaml
