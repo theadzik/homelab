@@ -1,0 +1,24 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: synology-iscsi-retain
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
+provisioner: csi.san.synology.com
+parameters:
+  fsType: 'btrfs'
+reclaimPolicy: Retain
+allowVolumeExpansion: true
+
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: synology-iscsi-delete
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "false"
+provisioner: csi.san.synology.com
+parameters:
+  fsType: 'btrfs'
+reclaimPolicy: Delete
+allowVolumeExpansion: true
