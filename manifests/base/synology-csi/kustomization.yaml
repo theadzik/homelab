@@ -8,9 +8,9 @@ resources:
   - namespace.yml
   - node.yml
   - storage-class.yml
-  - snapshotter/snapshotter.yaml
+  - snapshotter/snapshotter.yml
   - snapshotter/volume-snapshot-class.yml
 secretGenerator:
   - name: client-info-secret
     files:
-      - configs/client-info-secret.yaml
+      - client-info.yml=configs/client-info-secret.yml

@@ -325,10 +325,10 @@
         "is_secret": false
       }
     ],
-    "manifests/base/synology-csi/snapshotter/snapshotter.yaml": [
+    "manifests/base/synology-csi/snapshotter/snapshotter.yml": [
       {
         "type": "Secret Keyword",
-        "filename": "manifests/base/synology-csi/snapshotter/snapshotter.yaml",
+        "filename": "manifests/base/synology-csi/snapshotter/snapshotter.yml",
         "hashed_secret": "c5ae2f4efb6b79939944b24f1cf3dd1e13e14faf",
         "is_verified": false,
         "line_number": 106,
@@ -376,5 +376,5 @@
       }
     ]
   },
-  "generated_at": "2025-03-28T20:00:29Z"
+  "generated_at": "2025-03-28T21:00:14Z"
 }
