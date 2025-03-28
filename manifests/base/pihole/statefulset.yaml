@@ -63,13 +63,6 @@ spec:
           volumeMounts:
             - mountPath: /etc/pihole
               name: pihole-main
-      volumes:
-        - name: a-records
-          configMap:
-            name: a-records
-        - name: cname-records
-          configMap:
-            name: cname-records
   volumeClaimTemplates:
     - metadata:
         name: pihole-main

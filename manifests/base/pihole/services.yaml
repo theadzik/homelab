@@ -16,8 +16,9 @@ apiVersion: v1
 kind: Service
 metadata:
   name: pihole-dns
+  annotations:
+    metallb.io/loadBalancerIPs: 192.168.0.53
 spec:
-  externalTrafficPolicy: Local  # Needed for pihole to get real client IPs
   ports:
     - port: 53
       protocol: UDP

@@ -10,6 +10,7 @@ resources:
   - intel-device-plugin.yaml
   - longhorn.yaml
   - media.yaml
+  - metal-lb.yaml
   - pihole.yaml
   - priority-classes.yaml
   - reddit-meaningofwords.yaml
