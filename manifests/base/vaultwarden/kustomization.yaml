@@ -3,7 +3,7 @@ kind: Kustomization
 namespace: vaultwarden
 resources:
   - namespace.yaml
-  - pv.yaml
+  - pvc.yaml
   - secret.yaml
   - nwp.yaml
   - ingress.yaml
