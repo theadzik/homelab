@@ -5,7 +5,7 @@ metadata:
   labels:
     app: reddit-meaningofwords
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: reddit-meaningofwords
@@ -73,7 +73,7 @@ spec:
             name: reddit-meaningofwords-files
         - name: database
           persistentVolumeClaim:
-            claimName: bot-database
+            claimName: database-bot
 
 ---
 
@@ -84,7 +84,7 @@ metadata:
   labels:
     app: bullying-detector
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: bullying-detector
@@ -144,4 +144,4 @@ spec:
       volumes:
         - name: cache
           persistentVolumeClaim:
-            claimName: bullying-cache
+            claimName: cache-bullying

@@ -3,7 +3,7 @@ kind: Kustomization
 namespace: reddit-meaningofwords
 resources:
   - namespace.yaml
-  - pv.yaml
+  - pvc.yaml
   - configmaps.yaml
   - secret.yaml
   - deployment.yaml
