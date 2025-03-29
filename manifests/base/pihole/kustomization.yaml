@@ -10,7 +10,7 @@ resources:
   - pdb.yaml
   - secret.yaml
   - services.yaml
-  - statefulset.yaml
+  - deployment.yaml
   - ../image-pull-secret
 configMapGenerator:
   - name: pihole-config

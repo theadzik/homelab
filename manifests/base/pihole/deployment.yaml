@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: pihole
 spec:
@@ -9,12 +9,15 @@ spec:
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
+          whenUnsatisfiable: ScheduleAnyway
           matchLabelKeys:
             - pod-template-hash
       priorityClassName: high-priority
       imagePullSecrets:
         - name: dockerhub-image-pull-secret
+      volumes:
+        - name: pihole
+          emptyDir: {}
       containers:
         - name: pihole
           image: pihole/pihole:latest
@@ -62,13 +65,4 @@ spec:
               value: "20004"
           volumeMounts:
             - mountPath: /etc/pihole
-              name: pihole-main
-  volumeClaimTemplates:
-    - metadata:
-        name: pihole-main
-      spec:
-        accessModes: ["ReadWriteMany"]
-        storageClassName: "longhorn"
-        resources:
-          requests:
-            storage: 512Mi
+              name: pihole

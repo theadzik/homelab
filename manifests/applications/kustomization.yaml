@@ -8,7 +8,6 @@ resources:
   - crowdsec.yaml
   - ingress-nginx.yaml
   - intel-device-plugin.yaml
-  - longhorn.yaml
   - media.yaml
   - metal-lb.yaml
   - pihole.yaml
