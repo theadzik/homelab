@@ -42,6 +42,19 @@ lapi:
         name: nginx-apikey
     - secretRef:
         name: enroll-key
+  persistentVolume:
+    data:
+      enabled: true
+      accessModes:
+        - ReadWriteOnce
+      storageClassName: "synology-iscsi-delete"
+      size: 1Gi
+    config:
+      enabled: true
+      accessModes:
+        - ReadWriteOnce
+      storageClassName: "synology-iscsi-delete"
+      size: 1Gi
 appsec:
   enabled: true
   replicas: 1
