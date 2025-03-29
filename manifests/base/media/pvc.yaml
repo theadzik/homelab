@@ -136,115 +136,115 @@ spec:
     requests:
       storage: 3Ti
   storageClassName: synology-iscsi-retain
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: jellyfin-metadata
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 3Gi
-  storageClassName: synology-iscsi-retain
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: jellyfin-config
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 1Gi
-  storageClassName: synology-iscsi-retain
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: deluge-config
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 1Gi
-  storageClassName: synology-iscsi-retain
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: sonarr-config
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 1Gi
-  storageClassName: synology-iscsi-retain
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: radarr-config
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 1Gi
-  storageClassName: synology-iscsi-retain
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: nzbget-config
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 1Gi
-  storageClassName: synology-iscsi-retain
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: bazarr-config
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 1Gi
-  storageClassName: synology-iscsi-retain
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: jackett-config
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 1Gi
-  storageClassName: synology-iscsi-retain
+#
+#---
+#
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: jellyfin-metadata
+#spec:
+#  accessModes:
+#    - ReadWriteMany
+#  resources:
+#    requests:
+#      storage: 3Gi
+#  storageClassName: synology-iscsi-retain
+#
+#---
+#
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: jellyfin-config
+#spec:
+#  accessModes:
+#    - ReadWriteMany
+#  resources:
+#    requests:
+#      storage: 1Gi
+#  storageClassName: synology-iscsi-retain
+#
+#---
+#
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: deluge-config
+#spec:
+#  accessModes:
+#    - ReadWriteMany
+#  resources:
+#    requests:
+#      storage: 1Gi
+#  storageClassName: synology-iscsi-retain
+#
+#---
+#
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: sonarr-config
+#spec:
+#  accessModes:
+#    - ReadWriteMany
+#  resources:
+#    requests:
+#      storage: 1Gi
+#  storageClassName: synology-iscsi-retain
+#
+#---
+#
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: radarr-config
+#spec:
+#  accessModes:
+#    - ReadWriteMany
+#  resources:
+#    requests:
+#      storage: 1Gi
+#  storageClassName: synology-iscsi-retain
+#
+#---
+#
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: nzbget-config
+#spec:
+#  accessModes:
+#    - ReadWriteMany
+#  resources:
+#    requests:
+#      storage: 1Gi
+#  storageClassName: synology-iscsi-retain
+#
+#---
+#
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: bazarr-config
+#spec:
+#  accessModes:
+#    - ReadWriteMany
+#  resources:
+#    requests:
+#      storage: 1Gi
+#  storageClassName: synology-iscsi-retain
+#
+#---
+#
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  name: jackett-config
+#spec:
+#  accessModes:
+#    - ReadWriteMany
+#  resources:
+#    requests:
+#      storage: 1Gi
+#  storageClassName: synology-iscsi-retain

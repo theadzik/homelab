@@ -7,6 +7,7 @@ metadata:
 provisioner: csi.san.synology.com
 parameters:
   fsType: 'btrfs'
+  formatOptions: '--nodiscard'
 reclaimPolicy: Retain
 allowVolumeExpansion: true
 
@@ -20,5 +21,6 @@ metadata:
 provisioner: csi.san.synology.com
 parameters:
   fsType: 'btrfs'
+  formatOptions: '--nodiscard'
 reclaimPolicy: Delete
 allowVolumeExpansion: true
