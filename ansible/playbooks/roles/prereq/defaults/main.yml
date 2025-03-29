@@ -6,8 +6,6 @@ prereq_packages:
   - wget
   - curl
   - vim
-  - open-iscsi  # Needed for longhorn https://longhorn.io/docs/1.7.2/deploy/install/#installing-open-iscsi
-  - nfs-common  # Needed for longhorn https://longhorn.io/docs/1.7.2/deploy/install/#installing-nfsv4-client
 kubelet_conf:
   vm.panic_on_oom: 0
   vm.overcommit_memory: 1
