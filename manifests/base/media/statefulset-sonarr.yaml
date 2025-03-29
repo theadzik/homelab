@@ -1,25 +1,25 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: nzbget
+  name: sonarr
   labels:
-    app: nzbget
+    app: sonarr
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
-      app: nzbget
+      app: sonarr
   template:
     metadata:
       labels:
-        app: nzbget
+        app: sonarr
     spec:
       containers:
-        - name: nzbget
-          image: lscr.io/linuxserver/nzbget:latest
+        - name: sonarr
+          image: ghcr.io/hotio/sonarr:release
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 6789
+            - containerPort: 8989
               protocol: "TCP"
               name: web
           resources:
@@ -31,8 +31,6 @@ spec:
               name: config
             - mountPath: /downloads
               name: downloads
-            - mountPath: /intermediate
-              name: intermediate
           env:
             - name: "TZ"
               value: "Europe/Warsaw"
@@ -40,22 +38,10 @@ spec:
               value: "1000"
             - name: "PGID"
               value: "1000"
-            - name: "NZBGET_USER"
-              valueFrom:
-                secretKeyRef:
-                  name: nzbget-secret
-                  key: username
-            - name: "NZBGET_PASS"
-              valueFrom:
-                secretKeyRef:
-                  name: nzbget-secret
-                  key: password
       volumes:
         - name: downloads
           persistentVolumeClaim:
-            claimName: shared-media-pvc
+            claimName: downloads
         - name: config
           persistentVolumeClaim:
-            claimName: nzbget-config-pvc
-        - name: intermediate
-          emptyDir: {}
+            claimName: sonarr-config

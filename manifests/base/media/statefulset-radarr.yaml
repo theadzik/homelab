@@ -1,11 +1,11 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: radarr
   labels:
     app: radarr
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: radarr
@@ -41,7 +41,7 @@ spec:
       volumes:
         - name: downloads
           persistentVolumeClaim:
-            claimName: shared-media-pvc
+            claimName: downloads
         - name: config
           persistentVolumeClaim:
-            claimName: radarr-config-pvc
+            claimName: radarr-config

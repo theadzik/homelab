@@ -1,25 +1,25 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: sonarr
+  name: bazarr
   labels:
-    app: sonarr
+    app: bazarr
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
-      app: sonarr
+      app: bazarr
   template:
     metadata:
       labels:
-        app: sonarr
+        app: bazarr
     spec:
       containers:
-        - name: sonarr
-          image: ghcr.io/hotio/sonarr:release
+        - name: bazarr
+          image: lscr.io/linuxserver/bazarr:latest
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8989
+            - containerPort: 6767
               protocol: "TCP"
               name: web
           resources:
@@ -41,7 +41,7 @@ spec:
       volumes:
         - name: downloads
           persistentVolumeClaim:
-            claimName: shared-media-pvc
+            claimName: downloads
         - name: config
           persistentVolumeClaim:
-            claimName: sonarr-config-pvc
+            claimName: bazarr-config

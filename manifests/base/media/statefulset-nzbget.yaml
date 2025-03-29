@@ -1,25 +1,25 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: bazarr
+  name: nzbget
   labels:
-    app: bazarr
+    app: nzbget
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
-      app: bazarr
+      app: nzbget
   template:
     metadata:
       labels:
-        app: bazarr
+        app: nzbget
     spec:
       containers:
-        - name: bazarr
-          image: lscr.io/linuxserver/bazarr:latest
+        - name: nzbget
+          image: lscr.io/linuxserver/nzbget:latest
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 6767
+            - containerPort: 6789
               protocol: "TCP"
               name: web
           resources:
@@ -31,6 +31,8 @@ spec:
               name: config
             - mountPath: /downloads
               name: downloads
+            - mountPath: /intermediate
+              name: intermediate
           env:
             - name: "TZ"
               value: "Europe/Warsaw"
@@ -38,10 +40,22 @@ spec:
               value: "1000"
             - name: "PGID"
               value: "1000"
+            - name: "NZBGET_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: nzbget-secret
+                  key: username
+            - name: "NZBGET_PASS"
+              valueFrom:
+                secretKeyRef:
+                  name: nzbget-secret
+                  key: password
       volumes:
         - name: downloads
           persistentVolumeClaim:
-            claimName: shared-media-pvc
+            claimName: downloads
         - name: config
           persistentVolumeClaim:
-            claimName: bazarr-config-pvc
+            claimName: nzbget-config
+        - name: intermediate
+          emptyDir: {}

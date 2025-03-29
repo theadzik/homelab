@@ -1,11 +1,11 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: jackett
   labels:
     app: jackett
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: jackett
@@ -44,7 +44,7 @@ spec:
       volumes:
         - name: downloads
           persistentVolumeClaim:
-            claimName: shared-media-pvc
+            claimName: downloads
         - name: config
           persistentVolumeClaim:
-            claimName: jackett-config-pvc
+            claimName: jackett-config

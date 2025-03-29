@@ -1,12 +1,10 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: jellyfin
   labels:
     app: jellyfin
 spec:
-  strategy:
-    type: Recreate  # We only have 1 gpu enabled server
   replicas: 1
   selector:
     matchLabels:
