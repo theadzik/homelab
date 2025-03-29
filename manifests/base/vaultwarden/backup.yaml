@@ -59,7 +59,7 @@ spec:
           volumes:
             - name: data
               persistentVolumeClaim:
-                claimName: vaultwarden-main
+                claimName: vaultwarden
             - name: backup
               emptyDir: {}
             - name: rclone-conf
