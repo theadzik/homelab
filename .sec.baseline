@@ -151,42 +151,6 @@
         "is_secret": false
       }
     ],
-    "manifests/applications/kube-prometheus-stack.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/applications/kube-prometheus-stack.yaml",
-        "hashed_secret": "04faa9447742187d9c28c09ae9c1050b26454cbe",
-        "is_verified": false,
-        "line_number": 111,
-        "is_secret": false
-      },
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/applications/kube-prometheus-stack.yaml",
-        "hashed_secret": "ac98dbe3cb4390b6aa655c674205fefe45deb8e6",
-        "is_verified": false,
-        "line_number": 124,
-        "is_secret": false
-      }
-    ],
-    "manifests/applications/longhorn.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/applications/longhorn.yaml",
-        "hashed_secret": "13204ee2a9a7552faf84cadc1df77855d8721c21",
-        "is_verified": false,
-        "line_number": 27,
-        "is_secret": false
-      },
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/applications/longhorn.yaml",
-        "hashed_secret": "123a5a750ed491c9b1c6d2aa9a851557c77c00cd",
-        "is_verified": false,
-        "line_number": 32,
-        "is_secret": false
-      }
-    ],
     "manifests/base/argocd/image-updater.yaml": [
       {
         "type": "Secret Keyword",
@@ -376,5 +340,5 @@
       }
     ]
   },
-  "generated_at": "2025-03-28T21:00:14Z"
+  "generated_at": "2025-03-29T14:29:27Z"
 }
