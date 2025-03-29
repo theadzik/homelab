@@ -5,7 +5,7 @@ metadata:
   labels:
     app: reddit-meaningofwords
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: reddit-meaningofwords
@@ -84,7 +84,7 @@ metadata:
   labels:
     app: bullying-detector
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: bullying-detector
@@ -95,6 +95,16 @@ spec:
     spec:
       imagePullSecrets:
         - name: dockerhub-image-pull-secret
+      initContainers:
+        - name: change-cache-owner
+          image: alpine:3.21
+          command:
+            - chown
+            - 10009:20009
+            - /.cache
+          volumeMounts:
+            - mountPath: /.cache
+              name: cache
       containers:
         - name: model
           image: theadzik/bullying-detector:latest
