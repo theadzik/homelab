@@ -267,3 +267,12 @@
     state: present
     sysctl_file: "{{ kubelet_conf_dest }}"
   with_dict: "{{ kubelet_conf }}"
+
+- name: Disable swap permanently, persist reboots
+  replace:
+    path: /etc/fstab
+    regexp: '^(\s*)([^#\n]+\s+)(\w+\s+)swap(\s+.*)$'
+    replace: '#\1\2\3swap\4'
+  when:
+    - ansible_distribution == 'Debian'
+    - ansible_swaptotal_mb > 0
