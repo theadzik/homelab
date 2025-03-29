@@ -7,7 +7,7 @@ metadata:
 spec:
   strategy:
     type: Recreate  # We only have 1 gpu enabled server
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: jellyfin
@@ -56,13 +56,13 @@ spec:
       volumes:
         - name: downloads
           persistentVolumeClaim:
-            claimName: shared-media-pvc
+            claimName: downloads
         - name: config
           persistentVolumeClaim:
-            claimName: jellyfin-linux-config-pvc
+            claimName: jellyfin-config
         - name: metadata
           persistentVolumeClaim:
-            claimName: jellyfin-metadata-pvc
+            claimName: jellyfin-metadata
         - name: tmp
           emptyDir: {}
         - name: cache
