@@ -63,6 +63,7 @@ spec:
         runAsUser: 10005
         runAsGroup: 20005
         fsGroup: 20005
+        fsGroupChangePolicy: OnRootMismatch
       volumes:
         - name: temp
           emptyDir: {}
