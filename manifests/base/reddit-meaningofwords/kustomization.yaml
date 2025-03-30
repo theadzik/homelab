@@ -2,23 +2,33 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: reddit-meaningofwords
 resources:
-  - namespace.yaml
-  - pvc.yaml
-  - configmaps.yaml
-  - secret.yaml
   - deployment.yaml
+  - namespace.yaml
   - nwp.yaml
+  - pvc.yaml
   - service.yaml
   - ../image-pull-secret
 
-# Pod automatically loads new files, no need to restart it by adding hash to the name
-generatorOptions:
-  disableNameSuffixHash: true
 configMapGenerator:
-  - name: reddit-meaningofwords-files
+  - name: bot-files
+    options:
+      # Pod automatically loads new files, no need to restart it by adding hash to the name
+      disableNameSuffixHash: true
     files:
       - configs/dictionary.json
       - configs/prompt-checker.txt
       - configs/prompt-bully.txt
       - configs/prompt-bad-bot.txt
       - configs/signature.md
+  - name: bot-envs
+    envs:
+      - configs/bot.env
+  - name: bullying-detector-envs
+    envs:
+      - configs/bullying-detector.env
+
+secretGenerator:
+  - name: bot-secret-envs
+    envs:
+      - configs/bot-secret.env
+    type: Opaque

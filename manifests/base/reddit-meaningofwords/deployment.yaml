@@ -22,9 +22,9 @@ spec:
           imagePullPolicy: IfNotPresent
           envFrom:
             - secretRef:
-                name: reddit-meaningofwords-secret
+                name: bot-secret-envs
             - configMapRef:
-                name: reddit-meaningofwords-config
+                name: bot-envs
           volumeMounts:
             - mountPath: /tmp
               name: temp
@@ -70,7 +70,7 @@ spec:
           emptyDir: {}
         - name: config-volume
           configMap:
-            name: reddit-meaningofwords-files
+            name: bot-files
         - name: database
           persistentVolumeClaim:
             claimName: database-bot
@@ -111,7 +111,7 @@ spec:
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
-                name: bullying-detector-config
+                name: bullying-detector-envs
           readinessProbe:
             httpGet:
               path: /readyz
@@ -124,7 +124,7 @@ spec:
               path: /alivez
               port: http-port
             periodSeconds: 120
-            initialDelaySeconds: 120
+            initialDelaySeconds: 90
             failureThreshold: 3
             successThreshold: 1
             timeoutSeconds: 2
