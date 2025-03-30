@@ -153,5 +153,4 @@ spec:
           type: RuntimeDefault
       volumes:
         - name: cache
-          persistentVolumeClaim:
-            claimName: cache-bullying
+          emptyDir: {}

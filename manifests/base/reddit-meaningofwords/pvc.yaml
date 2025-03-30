@@ -9,17 +9,3 @@ spec:
     requests:
       storage: 1Gi
   storageClassName: synology-iscsi-retain
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: cache-bullying
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 2Gi
-  storageClassName: synology-iscsi-delete
