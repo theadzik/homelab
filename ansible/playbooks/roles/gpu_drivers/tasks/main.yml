@@ -5,21 +5,24 @@
     - name: Add backports to apt sources for kernel update
       ansible.builtin.lineinfile:
         path: /etc/apt/sources.list
-        regexp: 'deb http://deb.debian.org/debian bookworm-backports main'
+        regexp: 'bookworm-backports'
         line: 'deb http://deb.debian.org/debian bookworm-backports main # Added by k3s-ansible'
         state: present
     - name: Upgrade system with apt.
       ansible.builtin.apt:
         upgrade: true
-        cache_valid_time: 3600
     - name: Ensure firmware-linux-nonfree is present.
       ansible.builtin.apt:
         name: firmware-linux-nonfree
         state: present
+    - name: Ensure linux image is present.
+      ansible.builtin.apt:
+        name: "{{ linux_image_version }}"
+        state: present
     - name: Remove backports from apt sources
       ansible.builtin.lineinfile:
         path: /etc/apt/sources.list
-        regexp: 'deb http://deb.debian.org/debian bookworm-backports main'
+        regexp: 'deb http://deb.debian.org/debian bookworm-backports main # Added by k3s-ansible'
         state: absent
     - name: Update initramfs
       ansible.builtin.command:

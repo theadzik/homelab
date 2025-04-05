@@ -60,6 +60,11 @@
         daemon_reload: true
         name: k3s
 
+    - name: Wait before another server restart
+      when: "server_group in group_names"
+      ansible.builtin.pause:
+        minutes: 1
+
     - name: Restart K3s service [agent]
       when: "agent_group in group_names"
       ansible.builtin.systemd:
