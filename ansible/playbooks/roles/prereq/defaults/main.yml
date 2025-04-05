@@ -6,6 +6,8 @@ prereq_packages:
   - wget
   - curl
   - vim
+  - open-iscsi  # Needed for Synology CSI
+  - nfs-common  # Needed for Synology CSI
 kubelet_conf:
   vm.panic_on_oom: 0
   vm.overcommit_memory: 1

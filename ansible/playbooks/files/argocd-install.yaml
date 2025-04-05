@@ -25469,6 +25469,7 @@ spec:
         volumeMounts:
         - mountPath: /git-crypt
           name: git-crypt
+          readOnly: true
         - mountPath: /app/config/ssh
           name: ssh-known-hosts
         - mountPath: /app/config/tls
@@ -25510,8 +25511,8 @@ spec:
       serviceAccountName: argocd-repo-server
       volumes:
       - name: git-crypt
-        persistentVolumeClaim:
-          claimName: argocd
+        hostPath:
+          path: "/mnt/kubernetes-disks/argocd"
       - configMap:
           name: argocd-ssh-known-hosts-cm
         name: ssh-known-hosts
@@ -26443,54 +26444,3 @@ spec:
       app.kubernetes.io/name: argocd-server
   policyTypes:
   - Ingress
-
----
-
-kind: StorageClass
-apiVersion: storage.k8s.io/v1
-metadata:
-  name: local-storage
-provisioner: kubernetes.io/no-provisioner
-volumeBindingMode: WaitForFirstConsumer
-reclaimPolicy: Retain
-
----
-
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: argocd
-  labels:
-    type: local
-spec:
-  storageClassName: local-storage
-  capacity:
-    storage: 16Mi
-  accessModes:
-    - ReadWriteOnce
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - server-1
-  local:
-    path: "/mnt/kubernetes-disks/argocd"
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: argocd
-  namespace: argocd
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 32Mi
-  storageClassName: "local-storage"
-  volumeName: argocd

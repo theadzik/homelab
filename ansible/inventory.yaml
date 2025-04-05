@@ -10,10 +10,11 @@ all:
       children:
         server:
           hosts:
-            192.168.0.2:
+            192.168.0.4:
+            192.168.0.3:
+            192.168.0.5:
         agent:
           hosts:
-            192.168.0.3:
 
       vars:
         ansible_port: 22
@@ -46,5 +47,7 @@ all:
         intel:
           hosts:
             192.168.0.3:
+            192.168.0.4:
+            192.168.0.5:
   vars:
     ansible_user: adzik
