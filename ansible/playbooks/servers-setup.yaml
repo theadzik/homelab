@@ -3,6 +3,11 @@
   hosts: k3s_cluster
   gather_facts: true
   become: true
+  pre_tasks:
+    - name: Upgrade system with apt.
+      ansible.builtin.apt:
+        upgrade: true
+        cache_valid_time: 3600
   roles:
     - role: prereq
     - role: gpu_drivers
@@ -16,14 +21,6 @@
         uid: 999
         gid: 999
         git_crypt_source: "../../../git-crypt-key"
-    - role: oh-my-zsh
-      become: false
-
-  pre_tasks:
-    - name: Upgrade system with apt.
-      ansible.builtin.apt:
-        upgrade: true
-        cache_valid_time: 3600
   handlers:
     - name: Reboot machine
       ansible.builtin.reboot:
