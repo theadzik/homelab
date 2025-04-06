@@ -1,6 +1,11 @@
 ---
-- name: Download K3s install script
-  when: ansible_distribution  == "Debian"
+- name: Check kernel version
+  ansible.builtin.command:
+    cmd: uname -r
+  register: kernel_version
+  changed_when: false
+- name: Download kernel and gpu drivers.
+  when: ansible_distribution  == "Debian" and kernel_version.stdout != linux_image_version
   block:
     - name: Add backports to apt sources for kernel update
       ansible.builtin.lineinfile:
@@ -15,10 +20,11 @@
       ansible.builtin.apt:
         name: firmware-linux-nonfree
         state: present
-    - name: Ensure linux image is present.
+    - name: Ensure linux image version is correct.
       ansible.builtin.apt:
-        name: "{{ linux_image_version }}"
+        name: "linux-image-{{ linux_image_version }}"
         state: present
+      notify: Reboot machine
     - name: Remove backports from apt sources
       ansible.builtin.lineinfile:
         path: /etc/apt/sources.list
@@ -30,11 +36,3 @@
     - name: Update grub
       ansible.builtin.command:
         cmd: update-grub
-    - name: Reboot if required
-      stat:
-        path: /var/run/reboot-required
-      register: reboot_required_file
-    - name: Reboot machine
-      when: reboot_required_file.stat.exists == true
-      ansible.builtin.reboot:
-        reboot_timeout: 3600

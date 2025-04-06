@@ -5,6 +5,9 @@
   become: true
   roles:
     - role: prereq
+    - role: gpu_drivers
+      vars:
+        linux_image_version: 6.12.12+bpo-amd64
     - role: fail2ban
     - role: ssh_hardening
     - role: raspberrypi
@@ -22,6 +25,9 @@
       ansible.builtin.apt:
         upgrade: true
         cache_valid_time: 3600
+  handlers:
+    - name: Reboot machine
+      ansible.builtin.reboot:
 
 - name: Setup K3S server
   hosts: server

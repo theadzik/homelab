@@ -267,6 +267,7 @@
     state: present
     sysctl_file: "{{ kubelet_conf_dest }}"
   with_dict: "{{ kubelet_conf }}"
+  notify: Reboot machine
 
 - name: Disable swap permanently, persist reboots
   replace:
@@ -276,3 +277,4 @@
   when:
     - ansible_distribution == 'Debian'
     - ansible_swaptotal_mb > 0
+  notify: Reboot machine
