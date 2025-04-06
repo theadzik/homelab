@@ -10,7 +10,6 @@
         linux_image_version: 6.12.12+bpo-amd64
     - role: fail2ban
     - role: ssh_hardening
-    - role: raspberrypi
     - role: argo_storage
       vars:
         argo_name: argocd
