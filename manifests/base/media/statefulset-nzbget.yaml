@@ -4,15 +4,18 @@ metadata:
   name: nzbget
   labels:
     app: nzbget
+    app.kubernetes.io/part-of: media
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: nzbget
+      app.kubernetes.io/part-of: media
   template:
     metadata:
       labels:
         app: nzbget
+        app.kubernetes.io/part-of: media
     spec:
       containers:
         - name: nzbget
@@ -33,6 +36,8 @@ spec:
               name: downloads
             - mountPath: /intermediate
               name: intermediate
+            - mountPath: /temp
+              name: tmp
           env:
             - name: "TZ"
               value: "Europe/Warsaw"
@@ -58,4 +63,7 @@ spec:
           persistentVolumeClaim:
             claimName: nzbget-config
         - name: intermediate
+          persistentVolumeClaim:
+            claimName: nzbget-intermediate
+        - name: tmp
           emptyDir: {}

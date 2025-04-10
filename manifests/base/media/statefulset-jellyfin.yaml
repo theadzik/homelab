@@ -4,15 +4,18 @@ metadata:
   name: jellyfin
   labels:
     app: jellyfin
+    app.kubernetes.io/part-of: media
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: jellyfin
+      app.kubernetes.io/part-of: media
   template:
     metadata:
       labels:
         app: jellyfin
+        app.kubernetes.io/part-of: media
     spec:
       imagePullSecrets:
         - name: dockerhub-image-pull-secret

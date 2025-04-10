@@ -4,15 +4,18 @@ metadata:
   name: deluge
   labels:
     app: deluge
+    app.kubernetes.io/part-of: media
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: deluge
+      app.kubernetes.io/part-of: media
   template:
     metadata:
       labels:
         app: deluge
+        app.kubernetes.io/part-of: media
     spec:
       containers:
         - name: deluge

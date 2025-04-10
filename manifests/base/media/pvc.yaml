@@ -8,7 +8,7 @@ spec:
   resources:
     requests:
       storage: 3Ti
-  storageClassName: synology-iscsi-retain
+  storageClassName: synology-nfs-retain
 
 ---
 
@@ -18,10 +18,10 @@ metadata:
   name: jellyfin-metadata
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
-      storage: 3Gi
+      storage: 5Gi
   storageClassName: synology-iscsi-retain
 
 ---
@@ -32,10 +32,10 @@ metadata:
   name: jellyfin-config
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 2Gi
   storageClassName: synology-iscsi-retain
 
 ---
@@ -46,10 +46,10 @@ metadata:
   name: deluge-config
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 2Gi
   storageClassName: synology-iscsi-retain
 
 ---
@@ -60,10 +60,10 @@ metadata:
   name: sonarr-config
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 2Gi
   storageClassName: synology-iscsi-retain
 
 ---
@@ -74,10 +74,10 @@ metadata:
   name: radarr-config
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 2Gi
   storageClassName: synology-iscsi-retain
 
 ---
@@ -88,11 +88,25 @@ metadata:
   name: nzbget-config
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 5Gi
   storageClassName: synology-iscsi-retain
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nzbget-intermediate
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 512Gi
+  storageClassName: synology-iscsi-delete
 
 ---
 
@@ -102,10 +116,10 @@ metadata:
   name: bazarr-config
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 2Gi
   storageClassName: synology-iscsi-retain
 
 ---
@@ -116,8 +130,8 @@ metadata:
   name: jackett-config
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 2Gi
   storageClassName: synology-iscsi-retain

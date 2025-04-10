@@ -24,3 +24,33 @@ parameters:
   formatOptions: '--nodiscard'
 reclaimPolicy: Delete
 allowVolumeExpansion: true
+
+---
+
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: synology-nfs-retain
+provisioner: csi.san.synology.com
+parameters:
+  protocol: "nfs"
+  mountPermissions: '0755'
+mountOptions:
+  - nfsvers=4.1
+reclaimPolicy: Retain
+allowVolumeExpansion: true
+
+---
+
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: synology-nfs-delete
+provisioner: csi.san.synology.com
+parameters:
+  protocol: "nfs"
+  mountPermissions: '0755'
+mountOptions:
+  - nfsvers=4.1
+reclaimPolicy: Delete
+allowVolumeExpansion: true
