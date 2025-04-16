@@ -151,6 +151,16 @@
         "is_secret": false
       }
     ],
+    "ansible/playbooks/roles/nut_client/defaults/main.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "ansible/playbooks/roles/nut_client/defaults/main.yaml",
+        "hashed_secret": "e5e9fa1ba31ecd1ae84f75caaa474f3a663f05f4",
+        "is_verified": false,
+        "line_number": 4,
+        "is_secret": false
+      }
+    ],
     "manifests/base/argocd/image-updater.yaml": [
       {
         "type": "Secret Keyword",
@@ -340,5 +350,5 @@
       }
     ]
   },
-  "generated_at": "2025-03-29T14:29:27Z"
+  "generated_at": "2025-04-16T07:52:18Z"
 }

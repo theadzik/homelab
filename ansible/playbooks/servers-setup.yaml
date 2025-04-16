@@ -21,6 +21,7 @@
         uid: 999
         gid: 999
         git_crypt_source: "../../../git-crypt-key"
+    - role: nut_client
   handlers:
     - name: Reboot machine
       ansible.builtin.reboot:

@@ -1,0 +1,5 @@
+---
+nut_name: "ups"
+nut_username: "monuser"
+nut_password: "secret"
+nut_server_ip: "192.168.0.6"
