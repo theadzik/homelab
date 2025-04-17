@@ -15,4 +15,5 @@ resources:
   - reddit-meaningofwords.yaml
   - synology-csi.yaml
   - vaultwarden.yaml
+  - velero.yaml
   - zmuda-pro-blog.yaml
