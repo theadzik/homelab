@@ -1,0 +1,70 @@
+# Labels settings in namespace
+namespace:
+  labels:
+    - key: pod-security.kubernetes.io/enforce
+      value: privileged
+    - key: pod-security.kubernetes.io/enforce-version
+      value: latest
+
+image:
+  imagePullSecrets:
+    - name: dockerhub-image-pull-secret
+
+resources:
+  requests:
+    cpu: 500m
+    memory: 128Mi
+  limits:
+    cpu: 1000m
+    memory: 512Mi
+
+metrics:
+  enabled: false
+
+kubectl:
+  image:
+    repository: docker.io/bitnami/kubectl
+    tag: 1.32.3
+
+initContainers:
+  - name: velero-plugin-for-aws
+    image: velero/velero-plugin-for-aws:v1.12.0
+    imagePullPolicy: IfNotPresent
+    volumeMounts:
+      - mountPath: /target
+        name: plugins
+
+configuration:
+  backupStorageLocation:
+    - name: minio
+      provider: s3
+      bucket: velero
+      default: true
+      accessMode: ReadWrite
+      credential:
+        name: velero-credentials
+        key: credentials
+      config:
+        region: minio
+        s3ForcePathStyle: true
+        s3Url: 192.168.0.6:9000
+        insecureSkipTLSVerify: true
+
+
+credentials:
+  useSecret: true
+  existingSecret: minio-credentials
+
+backupsEnabled: true
+snapshotsEnabled: false
+
+schedules:
+  k3s-full:
+    disabled: false
+    schedule: "0 0 * * *"
+    useOwnerReferencesInBackup: false
+    paused: false
+    skipImmediately: false
+    template:
+      ttl: "720h"
+      storageLocation: minio
