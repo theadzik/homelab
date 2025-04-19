@@ -339,6 +339,16 @@
         "is_secret": false
       }
     ],
+    "manifests/base/velero/values.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/base/velero/values.yaml",
+        "hashed_secret": "2f7c7f277713d283f6e23d276750ebcdd2993000",
+        "is_verified": false,
+        "line_number": 56,
+        "is_secret": false
+      }
+    ],
     "manifests/base/zmuda-pro-blog/ingress.yaml": [
       {
         "type": "Secret Keyword",
@@ -350,5 +360,5 @@
       }
     ]
   },
-  "generated_at": "2025-04-16T07:52:18Z"
+  "generated_at": "2025-04-19T07:39:16Z"
 }
