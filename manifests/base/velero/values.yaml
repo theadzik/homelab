@@ -37,17 +37,17 @@ initContainers:
 configuration:
   backupStorageLocation:
     - name: minio
-      provider: s3
+      provider: aws
       bucket: velero
       default: true
       accessMode: ReadWrite
       credential:
-        name: velero-credentials
-        key: credentials
+        name: minio-credentials
+        key: cloud
       config:
         region: minio
         s3ForcePathStyle: true
-        s3Url: 192.168.0.6:9000
+        s3Url: http://192.168.0.6:9000
         insecureSkipTLSVerify: true
 
 
