@@ -44,17 +44,9 @@ lapi:
         name: enroll-key
   persistentVolume:
     data:
-      enabled: true
-      accessModes:
-        - ReadWriteOnce
-      storageClassName: "synology-iscsi-delete"
-      size: 1Gi
+      enabled: false
     config:
-      enabled: true
-      accessModes:
-        - ReadWriteOnce
-      storageClassName: "synology-iscsi-delete"
-      size: 1Gi
+      enabled: false
 appsec:
   enabled: true
   replicas: 1
