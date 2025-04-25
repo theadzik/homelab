@@ -6,7 +6,7 @@ metadata:
     app: radarr
     app.kubernetes.io/part-of: media
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: radarr
@@ -47,4 +47,4 @@ spec:
             claimName: downloads
         - name: config
           persistentVolumeClaim:
-            claimName: radarr-config
+            claimName: radarr-config-ssd
