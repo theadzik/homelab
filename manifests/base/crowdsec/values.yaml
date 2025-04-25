@@ -47,13 +47,13 @@ lapi:
       enabled: true
       accessModes:
         - ReadWriteOnce
-      storageClassName: "synology-iscsi-delete"
+      storageClassName: "synology-nfs-delete"
       size: 1Gi
     config:
       enabled: true
       accessModes:
         - ReadWriteOnce
-      storageClassName: "synology-iscsi-delete"
+      storageClassName: "synology-nfs-delete"
       size: 1Gi
 appsec:
   enabled: true
