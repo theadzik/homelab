@@ -2,23 +2,19 @@ version: 2
 updates:
   - package-ecosystem: "pip"
     directories:
-      - "/apps/bullying-detector"
-      - "/apps/reddit-meaningofwords"
+      - "/"
     schedule:
       interval: "weekly"
       day: "friday"
   - package-ecosystem: "docker"
     directories:
-      - "/apps/bullying-detector"
-      - "/apps/reddit-meaningofwords"
-      - "/apps/vaultwarden/backup/"
-      - "/apps/vaultwarden/restore/"
+      - "/"
     schedule:
       interval: "weekly"
       day: "friday"
   - package-ecosystem: "github-actions"
     directories:
-      - "/.github"
+      - "/"
     schedule:
       interval: "weekly"
     groups:
