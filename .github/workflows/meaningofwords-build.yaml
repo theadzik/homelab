@@ -11,6 +11,8 @@ on:
       - "apps/reddit-meaningofwords/**"
 jobs:
   meaningofwords-build:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
