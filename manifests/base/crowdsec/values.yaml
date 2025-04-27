@@ -12,9 +12,11 @@ config:
     db_config:
       flush:
         bouncers_autodelete:
-          api_key: "1d"
+          cert: "7d"
+          api_key: "7d"
         agents_autodelete:
-          login_password: "1d"
+          cert: "7d"
+          login_password: "7d"
 
 agent:
   acquisition:
@@ -47,13 +49,13 @@ lapi:
       enabled: true
       accessModes:
         - ReadWriteOnce
-      storageClassName: "synology-nfs-delete"
+      storageClassName: "synology-iscsi-delete-ssd"
       size: 1Gi
     config:
       enabled: true
       accessModes:
         - ReadWriteOnce
-      storageClassName: "synology-nfs-delete"
+      storageClassName: "synology-iscsi-delete-ssd"
       size: 1Gi
 appsec:
   enabled: true
