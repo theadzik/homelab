@@ -127,6 +127,20 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: nzbget-config-ssd
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: synology-iscsi-retain-ssd
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: nzbget-intermediate
 spec:
   accessModes:

@@ -61,7 +61,7 @@ spec:
             claimName: downloads
         - name: config
           persistentVolumeClaim:
-            claimName: nzbget-config
+            claimName: nzbget-config-ssd
         - name: intermediate
           persistentVolumeClaim:
             claimName: nzbget-intermediate
