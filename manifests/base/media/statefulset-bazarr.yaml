@@ -47,4 +47,4 @@ spec:
             claimName: downloads
         - name: config
           persistentVolumeClaim:
-            claimName: bazarr-config
+            claimName: bazarr-config-ssd
