@@ -28,6 +28,8 @@ class BadBotResponse(BaseModel):
 
 
 class OpenAIChecker:
+    MODEL_VERSION = "o4-mini-2025-04-16"
+
     def __init__(self):
         with open(
             os.getenv("REDDIT_CHECKER_PROMPT_PATH"), mode="r", encoding="utf-8"
@@ -56,8 +58,7 @@ class OpenAIChecker:
         max_tokens = self.token_limit
         try:
             chat_completion = client.beta.chat.completions.parse(
-                model="gpt-4o-2024-08-06",
-                max_tokens=max_tokens,
+                model=self.MODEL_VERSION,
                 response_format=response_format,
                 messages=prompt,
                 presence_penalty=self.presence_penalty,

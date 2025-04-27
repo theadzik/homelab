@@ -29,6 +29,8 @@ reddit = praw.Reddit(
 
 bullying_analyzer = BullyingClient()
 database_client = DatabaseClientSingleton()
+bot_commenter = BotCommenter()
+openai_checker = OpenAIChecker()
 
 logger.info(f"User-Agent: {USER_AGENT}")
 logger.info("Scanning comments.")
@@ -37,7 +39,6 @@ logger.info("Scanning comments.")
 def handle_keyword(
     comment: praw.models.Comment, keyword_found: str, match: str
 ) -> None:
-    bot_commenter = BotCommenter()
     if comment.author.name == bot_commenter.bot_name:
         logger.debug("It's my own comment! Skipping.")
         return
@@ -63,8 +64,6 @@ def handle_keyword(
     logger.info(bot_commenter.REDDIT_BASE_URL + comment.permalink)
     logger.info(f"Calling OpenAI for explanation: {keyword_found}")
 
-    # Initializing every time to update prompts without restarting.
-    openai_checker = OpenAIChecker()
     content = openai_checker.get_explanation(
         body=limited_body, word=keyword_found, extra_info=extra_info
     )
@@ -82,7 +81,6 @@ def handle_keyword(
 
 
 def handle_direct_reply(comment: praw.models.Comment) -> None:
-    bot_commenter = BotCommenter()
     logger.info(bot_commenter.REDDIT_BASE_URL + comment.permalink)
     if bot_commenter.is_asking_for_block(comment=comment):
         logger.warning(f"Blocking user {comment.author}")
@@ -95,7 +93,6 @@ def handle_direct_reply(comment: praw.models.Comment) -> None:
             logger.info(f"{comment.author} is a ghost. Skipping.")
             return
         logger.warning("Bad bot detected :(")
-        openai_checker = OpenAIChecker()
         content = openai_checker.get_bad_bot_response(comment.body)
         _ = bot_commenter.reply_with_retry(comment=comment, reply=content.response)
         database_client.save_ghost(comment.author, "Bad bot comment")
@@ -107,7 +104,6 @@ def handle_direct_reply(comment: praw.models.Comment) -> None:
         logger.warning("Bullying detected :(")
         logger.warning(f"{comment.body}")
         if not database_client.is_warned_bully(comment.author):
-            openai_checker = OpenAIChecker()
             content = openai_checker.get_bullying_response(comment.body)
 
             if content.is_bullying:
@@ -132,8 +128,6 @@ def handle_direct_reply(comment: praw.models.Comment) -> None:
 
 
 def handle_comment(comment: praw.models.Comment) -> None:
-    # Initializing on every loop to reload dictionary without restarting.
-    bot_commenter = BotCommenter()
     logger.debug(f"Found a comment: {comment.permalink}")
 
     if database_client.is_banned_bully(comment.author):
