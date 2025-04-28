@@ -6,6 +6,7 @@ resources:
   - ingress-deluge.yaml
   - ingress-jackett.yaml
   - ingress-jellyfin.yaml
+  - ingress-lidarr.yaml
   - ingress-nzbget.yaml
   - ingress-radarr.yaml
   - ingress-sonarr.yaml
@@ -17,6 +18,7 @@ resources:
   - service-deluge.yaml
   - service-jackett.yaml
   - service-jellyfin.yaml
+  - service-lidarr.yaml
   - service-nzbget.yaml
   - service-radarr.yaml
   - service-sonarr.yaml
@@ -24,6 +26,7 @@ resources:
   - statefulset-deluge.yaml
   - statefulset-jackett.yaml
   - statefulset-jellyfin.yaml
+  - statefulset-lidarr.yaml
   - statefulset-nzbget.yaml
   - statefulset-radarr.yaml
   - statefulset-sonarr.yaml
