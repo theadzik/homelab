@@ -43,8 +43,6 @@ spec:
               name: config
             - mountPath: /downloads
               name: downloads
-            - mountPath: /data/metadata
-              name: metadata
           env:
             - name: "TZ"
               value: "Europe/Warsaw"
@@ -60,10 +58,7 @@ spec:
             claimName: downloads
         - name: config
           persistentVolumeClaim:
-            claimName: jellyfin-config
-        - name: metadata
-          persistentVolumeClaim:
-            claimName: jellyfin-metadata
+            claimName: jellyfin-config-ssd
         - name: tmp
           emptyDir: {}
         - name: cache
