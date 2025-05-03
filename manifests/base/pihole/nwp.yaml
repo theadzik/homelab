@@ -17,8 +17,6 @@ spec:
           protocol: UDP
         - port: 53
           protocol: TCP
-        - port: 67
-          protocol: UDP
     - from:
         - namespaceSelector:
             matchLabels:
@@ -26,3 +24,6 @@ spec:
         - podSelector:
             matchLabels:
               type: ingress
+      ports:
+        - port: 80
+          protocol: TCP

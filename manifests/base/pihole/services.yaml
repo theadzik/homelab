@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: pihole-http
 spec:
+  selector:
+    app.kubernetes.io/instance: primary
   ports:
     - port: 80
       protocol: TCP
@@ -28,8 +30,4 @@ spec:
       protocol: TCP
       targetPort: 53
       name: dns-tcp
-    - port: 67
-      protocol: UDP
-      targetPort: 67
-      name: dhcp
   type: LoadBalancer

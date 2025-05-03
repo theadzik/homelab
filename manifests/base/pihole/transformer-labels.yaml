@@ -4,7 +4,7 @@ metadata:
   name: pihole-labels
 labels:
   app.kubernetes.io/name: pihole
-  app.kubernetes.io/instance: pihole
+  app.kubernetes.io/component: dns-server
 fieldSpecs:
   - kind: Service
     path: spec/selector
@@ -12,12 +12,15 @@ fieldSpecs:
   - kind: PodDisruptionBudget
     path: spec/selector/matchLabels
     create: true
-  - kind: Deployment
+  - kind: StatefulSet
     path: spec/selector/matchLabels
     create: true
-  - kind: Deployment
+  - kind: StatefulSet
+    path: metadata/labels
+    create: true
+  - kind: StatefulSet
     path: spec/template/metadata/labels
     create: true
-  - kind: Deployment
+  - kind: StatefulSet
     path: spec/template/spec/topologySpreadConstraints/labelSelector/matchLabels
     create: true
