@@ -31,6 +31,13 @@ spec:
         - port: 80
           protocol: TCP
     - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: external-dns
+      ports:
+        - port: 80
+          protocol: TCP
+    - from:
         - podSelector:
             matchLabels:
               app.kubernetes.io/component: sync
