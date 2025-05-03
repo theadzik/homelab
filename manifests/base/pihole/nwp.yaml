@@ -3,7 +3,10 @@ kind: NetworkPolicy
 metadata:
   name: pihole-nwp
 spec:
-  podSelector: {}
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: pihole
+      app.kubernetes.io/component: dns-server
   policyTypes:
     - Ingress
   ingress:
@@ -24,6 +27,13 @@ spec:
         - podSelector:
             matchLabels:
               type: ingress
+      ports:
+        - port: 80
+          protocol: TCP
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/component: sync
       ports:
         - port: 80
           protocol: TCP

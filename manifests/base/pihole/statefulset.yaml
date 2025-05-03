@@ -6,6 +6,7 @@ metadata:
     app.kubernetes.io/instance: primary
 spec:
   replicas: 1
+  serviceName: pihole-dns
   selector:
     matchLabels:
       app.kubernetes.io/instance: primary
@@ -89,6 +90,7 @@ metadata:
     app.kubernetes.io/instance: secondary
 spec:
   replicas: 1
+  serviceName: pihole-dns
   selector:
     matchLabels:
       app.kubernetes.io/instance: secondary
@@ -129,6 +131,8 @@ spec:
               protocol: "TCP"
             - containerPort: 53
               protocol: "UDP"
+            - containerPort: 80
+              protocol: "TCP"
           securityContext:
             allowPrivilegeEscalation: true
             capabilities:
