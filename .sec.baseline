@@ -285,7 +285,7 @@
         "filename": "manifests/base/pihole/ingress.yaml",
         "hashed_secret": "cec45245e661ad3db0f1b10d14b2de0744d95672",
         "is_verified": false,
-        "line_number": 14,
+        "line_number": 13,
         "is_secret": false
       }
     ],
@@ -370,5 +370,5 @@
       }
     ]
   },
-  "generated_at": "2025-04-28T04:53:01Z"
+  "generated_at": "2025-05-03T15:56:07Z"
 }

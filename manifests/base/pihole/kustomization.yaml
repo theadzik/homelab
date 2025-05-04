@@ -8,10 +8,10 @@ resources:
   - namespace.yaml
   - nwp.yaml
   - pdb.yaml
-  - secret.yaml
   - services.yaml
-  - deployment.yaml
+  - statefulset.yaml
   - ../image-pull-secret
+  - ../pihole-password
 configMapGenerator:
   - name: pihole-config
     envs:

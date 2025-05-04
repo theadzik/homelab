@@ -6,6 +6,7 @@ resources:
   - cert-manager.yaml
   - cloudflared.yaml
   - crowdsec.yaml
+  - external-dns.yaml
   - ingress-nginx.yaml
   - intel-device-plugin.yaml
   - media.yaml
