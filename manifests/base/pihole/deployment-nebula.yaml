@@ -21,7 +21,7 @@ spec:
         - name: sync
           image: ghcr.io/lovelaze/nebula-sync:v0.11.0
           env:
-            - name: FTLCONF_webserver_api_password
+            - name: WEBPASSWORD
               valueFrom:
                 secretKeyRef:
                   name: web-password
