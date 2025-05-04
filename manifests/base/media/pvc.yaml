@@ -15,34 +15,6 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: jellyfin-metadata
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
-  storageClassName: synology-iscsi-retain
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: jellyfin-config
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 2Gi
-  storageClassName: synology-iscsi-retain
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
   name: jellyfin-config-ssd
 spec:
   accessModes:
@@ -51,48 +23,6 @@ spec:
     requests:
       storage: 5Gi
   storageClassName: synology-iscsi-retain-ssd
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: deluge-config
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 2Gi
-  storageClassName: synology-iscsi-retain
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: sonarr-config
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 2Gi
-  storageClassName: synology-iscsi-retain
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: radarr-config
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 2Gi
-  storageClassName: synology-iscsi-retain
 
 ---
 
@@ -127,20 +57,6 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nzbget-config
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
-  storageClassName: synology-iscsi-retain
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
   name: nzbget-config-ssd
 spec:
   accessModes:
@@ -169,20 +85,6 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: bazarr-config
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 2Gi
-  storageClassName: synology-iscsi-retain
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
   name: bazarr-config-ssd
 spec:
   accessModes:
@@ -205,17 +107,3 @@ spec:
     requests:
       storage: 5Gi
   storageClassName: synology-iscsi-retain-ssd
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: jackett-config
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 2Gi
-  storageClassName: synology-iscsi-retain

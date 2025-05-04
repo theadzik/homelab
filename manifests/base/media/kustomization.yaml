@@ -3,8 +3,6 @@ kind: Kustomization
 namespace: media
 resources:
   - ingress-bazarr.yaml
-  - ingress-deluge.yaml
-  - ingress-jackett.yaml
   - ingress-jellyfin.yaml
   - ingress-lidarr.yaml
   - ingress-nzbget.yaml
@@ -15,16 +13,12 @@ resources:
   - pvc.yaml
   - secret-nzbget.yaml
   - service-bazarr.yaml
-  - service-deluge.yaml
-  - service-jackett.yaml
   - service-jellyfin.yaml
   - service-lidarr.yaml
   - service-nzbget.yaml
   - service-radarr.yaml
   - service-sonarr.yaml
   - statefulset-bazarr.yaml
-  - statefulset-deluge.yaml
-  - statefulset-jackett.yaml
   - statefulset-jellyfin.yaml
   - statefulset-lidarr.yaml
   - statefulset-nzbget.yaml
