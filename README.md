@@ -22,5 +22,3 @@ Containerized applications:
 
 * `/applications` - contains ArgoCD applications deploying all other manifests
 * `/base` - contains kustomizations to deploy all applications
-* `/overlay` - so far it is unused, but left as the reference for future changes
-  needed to deploy to dev cluster
