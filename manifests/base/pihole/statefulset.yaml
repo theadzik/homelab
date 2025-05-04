@@ -78,7 +78,7 @@ spec:
         storageClassName: "synology-iscsi-retain-ssd"
         resources:
           requests:
-            storage: 512Mi
+            storage: 1Gi
 
 ---
 
@@ -162,4 +162,4 @@ spec:
         storageClassName: "synology-iscsi-retain-ssd"
         resources:
           requests:
-            storage: 512Mi
+            storage: 1Gi

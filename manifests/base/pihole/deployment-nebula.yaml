@@ -2,22 +2,20 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nebula-sync
-labels:
-  app.kubernetes.io/name: pihole
-  app.kubernetes.io/component: sync
+  labels:
+    app.kubernetes.io/name: pihole
+    app.kubernetes.io/component: sync
 spec:
   replicas: 1
   selector:
     matchLabels:
-      labels:
-        app.kubernetes.io/name: pihole
-        app.kubernetes.io/component: sync
+      app.kubernetes.io/name: pihole
+      app.kubernetes.io/component: sync
   template:
     metadata:
       labels:
-        labels:
-          app.kubernetes.io/name: pihole
-          app.kubernetes.io/component: sync
+        app.kubernetes.io/name: pihole
+        app.kubernetes.io/component: sync
     spec:
       containers:
         - name: sync
@@ -29,9 +27,9 @@ spec:
                   name: web-password
                   key: WEBPASSWORD
             - name: PRIMARY
-              value: http://pihole-primary-0.pihole-dns|$WEBPASSWORD
-            - name: REPLICA
-              value: http://pihole-secondary-0.pihole-dns|$WEBPASSWORD
+              value: http://pihole-primary-0.pihole-dns|$(WEBPASSWORD)
+            - name: REPLICAS
+              value: http://pihole-secondary-0.pihole-dns|$(WEBPASSWORD)
             - name: FULL_SYNC
               value: "true"
             - name: RUN_GRAVITY
