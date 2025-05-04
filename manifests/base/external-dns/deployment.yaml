@@ -16,7 +16,7 @@ spec:
       serviceAccountName: external-dns
       containers:
         - name: external-dns
-          image: registry.k8s.io/external-dns/external-dns:v20250504-v0.16.1-130-gd55f2881 # Alpha build
+          image: gcr.io/k8s-staging-external-dns/external-dns:v20250504-v0.16.1-130-gd55f2881 # Staging build
           env:
             - name: EXTERNAL_DNS_PIHOLE_PASSWORD
               valueFrom:
@@ -30,7 +30,7 @@ spec:
             - --policy=upsert-only
             - --provider=pihole
             - --pihole-api-version=6
-            - --pihole-server=http://pihole-web.pihole.svc.cluster.local
+            - --pihole-server=http://pihole-primary-0.pihole-dns.pihole.svc.cluster.local
             - --pihole-tls-skip-verify
       securityContext:
         fsGroup: 65534
