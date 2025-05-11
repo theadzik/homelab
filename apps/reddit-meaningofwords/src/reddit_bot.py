@@ -4,7 +4,6 @@ import random
 import re
 import time
 
-import nltk
 import praw
 from custom_logger import get_logger
 from database import DatabaseClientSingleton
@@ -32,10 +31,6 @@ class BotCommenter:
         logger.debug(f"Loaded {len(self.words_to_check)} rules.")
         self.bot_name = os.environ["REDDIT_USERNAME"]
         self.REDDIT_BASE_URL = "https://reddit.com"
-        if not os.path.isdir(
-            os.path.join(os.environ["NLTK_DIRECTORY"], "tokenizers", "punkt_tab")
-        ):
-            nltk.download("punkt_tab", download_dir=os.environ["NLTK_DIRECTORY"])
 
     def find_keywords(self, body: str, skip_citations: bool = True) -> (str, str):
         database_client = DatabaseClientSingleton()
@@ -67,33 +62,6 @@ class BotCommenter:
         skip_citations_pattern = r"^(?! *?>)(?:.*?)("
         pattern = f"{skip_citations_pattern}{original_pattern})"
         return pattern
-
-    @staticmethod
-    def get_sentence_indexes(word: str, body: str, limit: int = 0) -> (int, int):
-        """Finds a 'word' in 'body' and returns the first sentence with the 'word'.
-        By default, only the sentence with the word is returned.
-        When the limit is >0, the sentence is returned with additional sentences before and after it.
-        """
-        sentences = nltk.tokenize.sent_tokenize(body, language="polish")
-        num_of_sentences = len(sentences)
-        for index, sentence in enumerate(sentences):
-            if word in sentence:
-                start_index = max(0, index - limit)
-                end_index = min(num_of_sentences, index + limit + 1)
-                logger.debug(
-                    f"Calculated start and end indexes of sentences [{start_index}:{end_index}]"
-                )
-                return start_index, end_index
-
-    @staticmethod
-    def get_sentences(body: str, start_index: int, end_index: int) -> str:
-        """We assume that sent_tokenize will always return the same indexes for
-        normalized and non-normalized text.
-        """
-        all_sentences = nltk.tokenize.sent_tokenize(body, language="polish")
-        relevant_sentences = " ".join(all_sentences[start_index:end_index])
-        logger.debug(f"Found relevant sentences:\n{relevant_sentences}")
-        return relevant_sentences
 
     def parse_reddit_explanation(
         self, content: WordCheckerResponse, sources: str
