@@ -9,7 +9,7 @@ spec:
   sources:
     - chart: node-feature-discovery
       repoURL: https://kubernetes-sigs.github.io/node-feature-discovery/charts
-      targetRevision: 0.17.2
+      targetRevision: 0.17.3
       helm:
         releaseName: nfd
     - chart: intel-device-plugins-operator

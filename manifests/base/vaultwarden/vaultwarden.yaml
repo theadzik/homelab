@@ -51,7 +51,7 @@ spec:
               cpu: "100m"
       containers:
         - name: vaultwarden
-          image: vaultwarden/server:latest
+          image: vaultwarden/server:1.33.2-alpine
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
