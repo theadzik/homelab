@@ -1,0 +1,44 @@
+deployment:
+  replicas: 2
+  minReadySeconds: 10
+  imagePullSecrets:
+    - dockerhub-image-pull-secret
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+
+ingressClass:
+  enabled: true
+  isDefaultClass: false
+
+gateway:
+  enabled: false
+
+providers:
+  kubernetesIngress:
+    enabled: false
+
+  kubernetesGateway:
+    enabled: true
+    experimentalChannel: false
+
+metrics:
+  prometheus: null
+
+service:
+  annotations:
+    metallb.io/loadBalancerIPs: 192.168.0.51
+    external-dns.alpha.kubernetes.io/hostname: gateway.internal
+
+topologySpreadConstraints:
+  - labelSelector:
+      matchLabels:
+        app.kubernetes.io/name: '{{ template "traefik.name" . }}'
+    matchLabelKeys:
+      - pod-template-hash
+    topologyKey: kubernetes.io/hostname
+    maxSkew: 1
+    whenUnsatisfiable: ScheduleAnyway
+
+priorityClassName: "system-cluster-critical"

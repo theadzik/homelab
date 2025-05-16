@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik
+  annotations:
+    argocd.argoproj.io/sync-wave: "-10"
+spec:
+  project: default
+  sources:
+    - chart: traefik
+      repoURL: https://traefik.github.io/charts
+      targetRevision: 35.2.0
+      helm:
+        releaseName: traefik
+        valueFiles:
+          - $homelab/manifests/base/traefik/values.yaml
+    - path: manifests/base/traefik
+      repoURL: 'https://github.com/theadzik/homelab'
+      targetRevision: HEAD
+      ref: homelab
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: traefik
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
