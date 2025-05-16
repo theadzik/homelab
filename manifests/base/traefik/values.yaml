@@ -9,10 +9,6 @@ podDisruptionBudget:
   minAvailable: 1
 
 ingressClass:
-  enabled: true
-  isDefaultClass: false
-
-gateway:
   enabled: false
 
 providers:
