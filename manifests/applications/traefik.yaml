@@ -14,10 +14,12 @@ spec:
         releaseName: traefik
         valueFiles:
           - $homelab/manifests/base/traefik/values.yaml
-    - path: manifests/base/traefik
-      repoURL: 'https://github.com/theadzik/homelab'
+    - repoURL: 'https://github.com/theadzik/homelab'
       targetRevision: HEAD
       ref: homelab
+    - repoURL: 'https://github.com/kubernetes-sigs/gateway-api.git'
+      targetRevision: v1.3.0
+      path: config/crd
   destination:
     server: "https://kubernetes.default.svc"
     namespace: traefik
