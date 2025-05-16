@@ -15,6 +15,7 @@ resources:
   - priority-classes.yaml
   - reddit-meaningofwords.yaml
   - synology-csi.yaml
+  - traefik.yaml
   - vaultwarden.yaml
   - velero.yaml
   - zmuda-pro-blog.yaml
