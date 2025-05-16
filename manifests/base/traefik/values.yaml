@@ -2,7 +2,7 @@ deployment:
   replicas: 2
   minReadySeconds: 10
   imagePullSecrets:
-    - dockerhub-image-pull-secret
+    - name: dockerhub-image-pull-secret
 
 podDisruptionBudget:
   enabled: true

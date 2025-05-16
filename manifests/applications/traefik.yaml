@@ -20,6 +20,9 @@ spec:
     - repoURL: 'https://github.com/kubernetes-sigs/gateway-api.git'
       targetRevision: v1.3.0
       path: config/crd
+    - path: manifests/base/image-pull-secret
+      repoURL: 'https://github.com/theadzik/homelab'
+      targetRevision: HEAD
   destination:
     server: "https://kubernetes.default.svc"
     namespace: traefik
