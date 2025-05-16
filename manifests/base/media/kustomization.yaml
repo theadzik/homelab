@@ -2,7 +2,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: media
 resources:
-  - gateway-jellyfin.yaml
   - ingress-bazarr.yaml
   - ingress-jellyfin.yaml
   - ingress-lidarr.yaml

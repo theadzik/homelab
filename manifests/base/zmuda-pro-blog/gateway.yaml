@@ -4,12 +4,12 @@ metadata:
   name: jellyfin
 spec:
   hostnames:
-    - gateway-jellyfin.zmuda.pro
+    - gateway.zmuda.pro
   rules:
     - matches:
         - path:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: jellyfin-http
-          port: 8096
+        - name: zmuda-pro-blog-http
+          port: 8080
