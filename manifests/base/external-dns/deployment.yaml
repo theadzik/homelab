@@ -32,5 +32,9 @@ spec:
             - --pihole-api-version=6
             - --pihole-server=http://pihole-primary-0.pihole-dns.pihole.svc.cluster.local
             - --pihole-tls-skip-verify
+            - --source=gateway-httproute
+            - --source=gateway-tlsroute
+            - --source=gateway-tcproute
+            - --source=gateway-udproute
       securityContext:
         fsGroup: 65534
