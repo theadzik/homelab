@@ -34,7 +34,10 @@ spec:
             periodSeconds: 30
           livenessProbe:
             exec:
-              command: ['dig', '@127.0.0.1', 'cloudflare.com']
+              command:
+                - "/bin/sh"
+                - "-c"
+                - "dig @127.0.0.1 cloudflare.com && dig @127.0.0.1 jellyfin.zmuda.pro"
             timeoutSeconds: 1
             initialDelaySeconds: 10
             periodSeconds: 30
@@ -118,7 +121,10 @@ spec:
             periodSeconds: 30
           livenessProbe:
             exec:
-              command: ['dig', '@127.0.0.1', 'cloudflare.com']
+              command:
+                - "/bin/sh"
+                - "-c"
+                - "dig @127.0.0.1 cloudflare.com && dig @127.0.0.1 jellyfin.zmuda.pro"
             timeoutSeconds: 1
             initialDelaySeconds: 10
             periodSeconds: 30
