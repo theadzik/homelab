@@ -2,6 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: media
 resources:
+  - gateway-jellyfin.yaml
   - ingress-bazarr.yaml
   - ingress-jellyfin.yaml
   - ingress-lidarr.yaml
@@ -26,14 +27,6 @@ resources:
   - statefulset-sonarr.yaml
 
 patches:
-#  - patch: |-
-#      - op: replace
-#        path: /spec/replicas
-#        value: 0
-#    target:
-#      kind: StatefulSet
-#      group: apps
-#      version: v1
   - patch: |-
       - op: add
         path: /spec/template/spec/priorityClassName
