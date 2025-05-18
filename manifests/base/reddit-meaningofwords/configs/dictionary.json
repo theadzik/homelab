@@ -391,6 +391,26 @@
       "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/przekonujacy-albo-przekonywajacy,c,"
     ]
   },
+  "przynajmniej/bynajmniej": {
+    "explanations": [
+      "Słowo 'bynajmniej' jest partykułą, za pomocą której wyrażamy przeczenie.",
+      "Często występuje wraz ze słowem 'nie' lub samodzielnie jako wykrzyknienie (Bynajmniej!).",
+      "Partykuła 'bynajmniej' znaczeniowo najbliższa jest połączeniu 'wcale nie'",
+      "i w żadnym wypadku nie powinna być używana w znaczeniu 'przynajmniej', 'chociaż' czy 'w każdym razie'.",
+      "Przykłady prawidłowego użycia: Bynajmniej nie jestem zainteresowana tym tematem. Nie jest to bynajmniej dla mnie trudne.",
+      "'Przynajmniej' to partykuła wyznaczająca minimalny zakres czegoś,",
+      "lub komunikująca, że ilość lub miara czegoś jest nie mniejsza od wymienionej.",
+      "Przykłady prawidłowego użycia: Przynajmniej ona mnie rozumie. Zjedz przynajmniej dwa jabłka."
+    ],
+    "search_rule": "\\bbynajmniej\\b",
+    "sources": [
+      "https://sjp.pwn.pl/slowniki/bynajmniej.html",
+      "https://sjp.pwn.pl/poradnia/haslo/bynajmniej-przynajmniej;7222.html",
+      "https://poradnia-jezykowa.uni.lodz.pl/faq/bynajmniej/",
+      "https://sjp.pwn.pl/sjp/przynajmniej;2512323.html",
+      "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/bynajmniej-,c,"
+    ]
+  },
   "rzygać": {
     "explanations": [
       "Poprawny zapis tego słowa to \"rzygać\".",
