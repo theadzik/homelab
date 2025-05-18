@@ -112,6 +112,16 @@
       "https://www.nck.pl/projekty-kulturalne/projekty/ojczysty-dodaj-do-ulubionych/ciekawostki-jezykowe/dlatego-ze-czy-dlatego-ze-,c,"
     ]
   },
+  "dobrzy": {
+    "explanations": [
+      "Forma \"dobrzy\" to forma mianownika i wołacza liczby mnogiej przymiotnika rodzaju męskiego \"dobry\"",
+      "Błędną formę \"dobzi\" tworzy się przez analogię do przymiotnika \"duży\", którego formy mianownika i wołacza liczby mnogiej to \"duzi\"."
+    ],
+    "search_rule": "\\bdobzi\\b",
+    "sources": [
+      "https://wsjp.pl/haslo/do_druku/775/dobry"
+    ]
+  },
   "dopóki": {
     "explanations": [
       "\"Dopóki\" należy do wyrażeń przyimkowych, które we współczesnej polszczyźnie przekształciły się we zrosty.",
