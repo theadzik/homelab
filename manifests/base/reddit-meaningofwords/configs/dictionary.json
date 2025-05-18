@@ -68,7 +68,7 @@
       "Ponadto w ujęciu logicznym nie można cofnąć się ani do przodu, ani w bok. Oba wyrazy są samodzielne znaczeniowo, dlatego nie należy ich łączyć.",
       "Prawidłowo możemy powiedzieć po prostu \"cofać się\"."
     ],
-    "search_rule": "cof[a-ząćęłśż]+ si[eę] (do ty[lł]u|w ty[lł])",
+    "search_rule": "cof[a-ząćęłśż]+ (si[eę] |)(do ty[lł]u|w ty[lł])",
     "sources": [
       "https://sjp.pwn.pl/slowniki/pleonazm",
       "https://sjp.pwn.pl/poradnia/haslo/jeszcze-o-pleonazmach;13540.html",
