@@ -228,7 +228,7 @@
       "Prawidłowym będzie więc użycie \"na tapetę\" w innym niż wyżej wymienionym kontekscie,",
       "na przykład: \"patrzyłem na tapetę\" lub \"chlapać na tapetę\"."
     ],
-    "search_rule": "\bna tapet[eę]",
+    "search_rule": "\\bna tapet[eę]",
     "sources": [
       "https://sjp.pwn.pl/poradnia/haslo/na-tapet-czy-na-tapete;15076.html",
       "https://wsjp.pl/haslo/podglad/105674/ktos-bierze-na-tapet-kogoscos",
