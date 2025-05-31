@@ -24,6 +24,7 @@ resources:
   - statefulset-nzbget.yaml
   - statefulset-radarr.yaml
   - statefulset-sonarr.yaml
+  - vpa.yaml
 
 patches:
 #  - patch: |-
@@ -41,4 +42,12 @@ patches:
     target:
       kind: StatefulSet
       group: apps
+      version: v1
+  - patch: |-
+      - op: replace
+        path: /spec/updatePolicy/updateMode
+        value: "Off"
+    target:
+      kind: VerticalPodAutoscaler
+      group: autoscaling.k8s.io
       version: v1

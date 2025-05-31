@@ -17,8 +17,6 @@ spec:
         app: jellyfin
         app.kubernetes.io/part-of: media
     spec:
-      imagePullSecrets:
-        - name: dockerhub-image-pull-secret
       containers:
         - name: jellyfin
           image: lscr.io/linuxserver/jellyfin:latest
