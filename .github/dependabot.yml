@@ -9,6 +9,7 @@ updates:
   - package-ecosystem: "docker"
     directories:
       - "/apps/*"
+      - "/apps/vaultwarden/*"
     schedule:
       interval: "weekly"
       day: "friday"
