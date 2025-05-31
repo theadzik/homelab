@@ -26,7 +26,13 @@ spec:
           ports:
             - containerPort: 8096
               protocol: "TCP"
-              name: jellyfin
+              name: web
+          livenessProbe:
+            httpGet:
+              path: /system/ping
+              port: web
+            initialDelaySeconds: 30
+            periodSeconds: 30
           resources:
             requests:
               cpu: 1000m

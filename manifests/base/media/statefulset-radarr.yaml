@@ -25,6 +25,12 @@ spec:
             - containerPort: 7878
               protocol: "TCP"
               name: web
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: web
+            initialDelaySeconds: 30
+            periodSeconds: 30
           resources:
             requests:
               cpu: 250m

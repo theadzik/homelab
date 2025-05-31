@@ -22,4 +22,4 @@ spec:
               service:
                 name: jellyfin-http
                 port:
-                  name: jellyfin
+                  name: web

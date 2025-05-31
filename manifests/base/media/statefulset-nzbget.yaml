@@ -25,6 +25,11 @@ spec:
             - containerPort: 6789
               protocol: "TCP"
               name: web
+          livenessProbe:
+            tcpSocket:
+              port: web
+            initialDelaySeconds: 30
+            periodSeconds: 30
           resources:
             requests:
               cpu: 1000m
