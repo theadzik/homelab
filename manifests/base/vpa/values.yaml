@@ -1,0 +1,17 @@
+admissionController:
+  extraArgs:
+    feature-gates: "InPlaceOrRecreate=true"
+
+recommender:
+  extraArgs:
+    feature-gates: "InPlaceOrRecreate=true"
+
+updater:
+  extraArgs:
+    feature-gates: "InPlaceOrRecreate=true"
+
+crds:
+  image:
+    registry: docker.io
+    repository: bitnami/kubectl
+    tag: 1.31.1

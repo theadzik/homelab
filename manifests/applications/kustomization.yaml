@@ -17,4 +17,5 @@ resources:
   - synology-csi.yaml
   - vaultwarden.yaml
   - velero.yaml
+  - vpa.yaml
   - zmuda-pro-blog.yaml
