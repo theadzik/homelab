@@ -5,5 +5,5 @@ resources:
   - cluster-role.yaml
   - deployment.yaml
   - namespace.yaml
+  - secret.yaml
   - service-account.yaml
-  - ../pihole-password
