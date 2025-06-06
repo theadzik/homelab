@@ -18,19 +18,28 @@ spec:
         - name: external-dns
           image: registry.k8s.io/external-dns/external-dns:v0.17.0
           env:
-            - name: EXTERNAL_DNS_PIHOLE_PASSWORD
+            - name: CF_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: web-password
-                  key: WEBPASSWORD
+                  name: cloudflare-api-key
+                  key: apiKey
+            - name: CF_API_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: cloudflare-api-key
+                  key: email
+            - name: CF_API_ZONE_ID
+              valueFrom:
+                secretKeyRef:
+                  name: cloudflare-api-key
+                  key: zoneId
           args:
             - --source=service
             - --source=ingress
-            - --registry=noop
-            - --policy=upsert-only
-            - --provider=pihole
-            - --pihole-api-version=6
-            - --pihole-server=http://pihole-primary-0.pihole-dns.pihole.svc.cluster.local
-            - --pihole-tls-skip-verify
+            - --domain-filter=zmuda.pro
+            - --zone-id-filter=$(CF_API_ZONE_ID)
+            - --provider=cloudflare
+            - --cloudflare-record-comment="provisioned by external-dns"
+            - --annotation-filter="external-dns.alpha.kubernetes.io/exclude notin (true)"
       securityContext:
         fsGroup: 65534

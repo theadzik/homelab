@@ -209,26 +209,6 @@
         "is_secret": false
       }
     ],
-    "manifests/base/media/ingress-deluge.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/media/ingress-deluge.yaml",
-        "hashed_secret": "e40ef122181501782589c4f1fb1bbf25cd9eb311",
-        "is_verified": false,
-        "line_number": 13,
-        "is_secret": false
-      }
-    ],
-    "manifests/base/media/ingress-jackett.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/media/ingress-jackett.yaml",
-        "hashed_secret": "5b964e3329850e0ca7954024f589bf4f8f0b8e54",
-        "is_verified": false,
-        "line_number": 13,
-        "is_secret": false
-      }
-    ],
     "manifests/base/media/ingress-jellyfin.yaml": [
       {
         "type": "Secret Keyword",
@@ -274,16 +254,6 @@
         "type": "Secret Keyword",
         "filename": "manifests/base/media/ingress-sonarr.yaml",
         "hashed_secret": "643d72fdf9b05acc55c8ff7ed26a56a8983ff3f6",
-        "is_verified": false,
-        "line_number": 13,
-        "is_secret": false
-      }
-    ],
-    "manifests/base/pihole/ingress.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/pihole/ingress.yaml",
-        "hashed_secret": "cec45245e661ad3db0f1b10d14b2de0744d95672",
         "is_verified": false,
         "line_number": 13,
         "is_secret": false
@@ -365,10 +335,10 @@
         "filename": "manifests/base/zmuda-pro-blog/ingress.yaml",
         "hashed_secret": "b0807dfa70e3df5d968a9fcee52a238ab3a5dcbd",
         "is_verified": false,
-        "line_number": 12,
+        "line_number": 13,
         "is_secret": false
       }
     ]
   },
-  "generated_at": "2025-05-03T15:56:07Z"
+  "generated_at": "2025-06-06T17:29:04Z"
 }
