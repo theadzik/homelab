@@ -157,7 +157,7 @@
         "filename": "manifests/base/argocd/image-updater.yaml",
         "hashed_secret": "cc05cdcb849e9ecb5b4dad1a9acc582c0cc91d53",
         "is_verified": false,
-        "line_number": 288,
+        "line_number": 294,
         "is_secret": false
       }
     ],
@@ -312,5 +312,5 @@
       }
     ]
   },
-  "generated_at": "2025-06-07T09:51:05Z"
+  "generated_at": "2025-06-07T09:56:05Z"
 }
