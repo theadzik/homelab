@@ -24,12 +24,19 @@ jobs:
       - name: Get App Version
         id: get_version
         run: |
-          version=$(yq -r '.spec.version' ansible/playbooks/files/argocd-helm.yaml)
+          set -e
+
           repo=$(yq -r '.spec.repo' ansible/playbooks/files/argocd-helm.yaml)
+          echo "Repository url: $repo"
           chart=$(yq -r '.spec.chart' ansible/playbooks/files/argocd-helm.yaml)
+          echo "Chart name: $chart"
+          chart_version=$(yq -r '.spec.version' ansible/playbooks/files/argocd-helm.yaml)
+          echo "Chart version: $chart_version"
 
           helm repo add argocd $repo
-          version=$(helm search repo argocd/$chart --version $version -o json | jq -r '.[0].app_version')
+          version=$(helm search repo argocd/$chart --version $chart_version -o json | jq -r '.[0].app_version')
+          echo "App version: $version"
+
           echo "version=$version" >> $GITHUB_OUTPUT
 
   build:
