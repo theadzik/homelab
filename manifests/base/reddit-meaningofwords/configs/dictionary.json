@@ -640,7 +640,8 @@
       "Gdy ostatnią cyfrą liczby jest 2, 3 lub 4, a przedostatnią nie jest 1, to odmieniamy słowo \"złoty\" przez \"-e\", czyli \"złote\".",
       "Na przykład, czterdzieści dwa złote, sto trzydzieści cztery złote, 432 złote itp.",
       "W innych przypadkach odmieniamy słowo \"złoty\" przez \"-ych\", czyli \"złotych\".",
-      "Na przykład, sto złotych, pięćset złotych, dwieście czternaście złotych, 11 złotych itp."
+      "Na przykład, sto złotych, pięćset złotych, dwieście czternaście złotych, 11 złotych itp.",
+      "Upewnij się, że słowo \"złoty\" odnosi się do podanej kwoty, a nie innego słowa. Jeżeli nie odnosi się do kwoty, uznaj to słowo za prawidłowo użyte."
     ],
     "search_rule": "\\bzłoty\\b",
     "sources": [
