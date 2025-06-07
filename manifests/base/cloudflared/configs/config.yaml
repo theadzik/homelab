@@ -11,8 +11,4 @@ ingress:
     originServerName: vault.zmuda.pro
     service: https://ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
     http2Origin: true
-  - hostname: test.zmuda.pro
-    originServerName: test.zmuda.pro
-    service: https://ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
-    http2Origin: true
   - service: http_status:404
