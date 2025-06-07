@@ -10,7 +10,7 @@ spec:
   chart: argo-cd
   repo: https://argoproj.github.io/argo-helm
   valuesSecrets:
-    - name: secret-values
+    - name: helm-argocd-values
       ignoreUpdates: false
       keys:
         - configs
