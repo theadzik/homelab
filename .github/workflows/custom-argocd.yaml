@@ -1,13 +1,46 @@
 name: custom-argocd-build
 on:
-  schedule:
-    - cron: "12 10 * * 6"
   workflow_dispatch:
   pull_request:
     paths:
       - "apps/custom-argocd/**"
+      - "ansible/playbooks/files/argocd-helm.yaml"
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/custom-argocd/**"
+      - "ansible/playbooks/files/argocd-helm.yaml"
 jobs:
+  get-version:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Get App Version
+        id: get_version
+        run: |
+          set -e
+
+          repo=$(yq -r '.spec.repo' ansible/playbooks/files/argocd-helm.yaml)
+          echo "Repository url: $repo"
+          chart=$(yq -r '.spec.chart' ansible/playbooks/files/argocd-helm.yaml)
+          echo "Chart name: $chart"
+          chart_version=$(yq -r '.spec.version' ansible/playbooks/files/argocd-helm.yaml)
+          echo "Chart version: $chart_version"
+
+          helm repo add argocd $repo
+          version=$(helm search repo argocd/$chart --version $chart_version -o json | jq -r '.[0].app_version')
+          echo "App version: $version"
+
+          echo "version=$version" >> $GITHUB_OUTPUT
+
   build:
+    needs: get-version
     permissions:
       contents: read
     runs-on: ubuntu-latest
@@ -24,14 +57,17 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: docker/build-push-action@v6
         with:
-          platforms: "linux/amd64,linux/arm64"
+          platforms: "linux/amd64"
           context: "{{defaultContext}}:apps/custom-argocd"
           push: false
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/custom-argocd:${{ needs.get-version.outputs.version }}
+          build-args: TAG=${{ needs.get-version.outputs.version }}
       - name: Build and push
         if: github.event_name != 'pull_request'
         uses: docker/build-push-action@v6
         with:
-          platforms: "linux/amd64,linux/arm64"
+          platforms: "linux/amd64"
           context: "{{defaultContext}}:apps/custom-argocd"
           push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/custom-argocd:latest
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/custom-argocd:${{ needs.get-version.outputs.version }}
+          build-args: TAG=${{ needs.get-version.outputs.version }}

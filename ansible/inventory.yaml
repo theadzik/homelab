@@ -38,10 +38,10 @@ all:
         agent_config_yaml: |
           protect-kernel-defaults: true
         extra_manifests:
-          - 'files/argocd-install.yaml'
-          - 'files/argocd-bootstrap.yaml'
           - 'files/argocd-namespace.yaml'
-
+          - 'files/argocd-values-secret.yaml'
+          - 'files/argocd-helm.yaml'
+          - 'files/argocd-bootstrap.yaml'
     gpu:
       children:
         intel:
