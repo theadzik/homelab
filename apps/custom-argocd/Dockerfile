@@ -1,5 +1,5 @@
-# hadolint ignore=DL3007
-FROM quay.io/argoproj/argocd:latest
+ARG TAG=latest
+FROM quay.io/argoproj/argocd:${TAG}
 
 # Switch to root for the ability to perform install
 USER root
