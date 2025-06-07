@@ -20,7 +20,7 @@ for filename in kustomization["resources"]:
     application_file = open(search_path + filename, "r")
     sync_priority = 0
     for line in application_file:
-        if re.search("argocd.argoproj.io/sync-wave", line):
+        if re.search(r"argocd\.argoproj\.io/sync-wave", line):
             sync_priority = int(re.search("(-|)[0-9]+", line).group(0))
             break
 
