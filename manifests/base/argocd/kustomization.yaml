@@ -6,4 +6,4 @@ resources:
   - configmap.yaml
   - ingress.yaml
   - image-updater.yaml
-  - image-pull-secret.yaml
+  - ../image-pull-secret
