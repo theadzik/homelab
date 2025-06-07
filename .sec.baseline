@@ -133,24 +133,6 @@
     }
   ],
   "results": {
-    "ansible/playbooks/files/argocd-install.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "ansible/playbooks/files/argocd-install.yaml",
-        "hashed_secret": "9fff20bb0cb0b87abf555d61d0223da615f8f88c",
-        "is_verified": false,
-        "line_number": 24877,
-        "is_secret": false
-      },
-      {
-        "type": "Secret Keyword",
-        "filename": "ansible/playbooks/files/argocd-install.yaml",
-        "hashed_secret": "49157360f694a2b0f7b054d1d5523f407e1c3ab9",
-        "is_verified": false,
-        "line_number": 24999,
-        "is_secret": false
-      }
-    ],
     "ansible/playbooks/roles/nut_client/defaults/main.yaml": [
       {
         "type": "Secret Keyword",
@@ -176,16 +158,6 @@
         "hashed_secret": "cc05cdcb849e9ecb5b4dad1a9acc582c0cc91d53",
         "is_verified": false,
         "line_number": 288,
-        "is_secret": false
-      }
-    ],
-    "manifests/base/argocd/ingress.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/argocd/ingress.yaml",
-        "hashed_secret": "bfc1b86ce643b65bd540989213254b01fd6ad418",
-        "is_verified": false,
-        "line_number": 16,
         "is_secret": false
       }
     ],
@@ -340,5 +312,5 @@
       }
     ]
   },
-  "generated_at": "2025-06-07T07:03:55Z"
+  "generated_at": "2025-06-07T09:51:05Z"
 }

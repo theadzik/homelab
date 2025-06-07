@@ -1,0 +1,65 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  namespace: kube-system
+  name: argocd
+spec:
+  targetNamespace: argocd
+  createNamespace: true
+  version: 8.0.15
+  chart: argo-cd
+  repo: https://argoproj.github.io/argo-helm
+  valuesSecrets:
+    - name: secret-values
+      ignoreUpdates: false
+      keys:
+        - configs
+  valuesContent: |-
+    global:
+      domain: argocd.zmuda.pro
+      image:
+        repository: theadzik/custom-argocd
+        tag: ""
+
+      imagePullSecrets:
+        - name: dockerhub-image-pull-secret
+
+      networkPolicy:
+        create: true
+        defaultDenyIngress: false
+
+      priorityClassName: "system-cluster-critical"
+
+    configs:
+      rbac:
+        policy.csv: |
+          p, role:authenticated, *, *, *, deny
+          g, zmuda-pro:argocd-admins, role:admin
+        policy.default: role:authenticated
+        scopes: '[groups, email]'
+        policy.matchMode: 'glob'
+
+    server:
+      ingress:
+        enabled: true
+        annotations:
+          cert-manager.io/cluster-issuer: "lets-encrypt-prod"
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+          nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+          nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.0.0/16,10.0.0.0/8
+          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+        ingressClassName: "nginx"
+        tls: true
+
+    repoServer:
+      env:
+        - name: GITCRYPT_KEY_PATH
+          value: "/git-crypt/git-crypt-key"
+      volumeMounts:
+        - mountPath: /git-crypt
+          name: git-crypt
+          readOnly: true
+      volumes:
+        - name: git-crypt
+          hostPath:
+            path: "/mnt/kubernetes-disks/argocd"
