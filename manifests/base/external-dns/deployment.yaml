@@ -24,11 +24,9 @@ spec:
                   name: cloudflare-api-key
                   key: CF_API_TOKEN
           args:
-            - --source=service
             - --source=ingress
             - --domain-filter=zmuda.pro
             - --provider=cloudflare
             - --annotation-filter=external-dns.alpha.kubernetes.io/exclude notin (true)
-            - --log-level=debug
       securityContext:
         fsGroup: 65534
