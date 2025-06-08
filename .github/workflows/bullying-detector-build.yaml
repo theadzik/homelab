@@ -24,15 +24,13 @@ jobs:
         if: github.event_name != 'pull_request'
         id: vars
         run: |
-          if [ ${event} == "schedule" ]; then
+          if [ ${{ github.event_name }} == "schedule" ]; then
             full_tag=$(git tag -n0 "bullying-detector-*" | tail -n 1)
             echo "docker_tag=$(echo $full_tag | cut -d'-' -f3)" >> $GITHUB_OUTPUT
             echo "git_tag=$full_tag" >> $GITHUB_OUTPUT
           else
             echo "docker_tag=$(echo ${GITHUB_REF} | cut -d'-' -f3)" >> $GITHUB_OUTPUT
           fi
-        env:
-          event: ${{ github.event_name }}
       - uses: actions/checkout@v4
         name: Checkout latest tag
         if: ${{ github.event_name == 'schedule' }}
