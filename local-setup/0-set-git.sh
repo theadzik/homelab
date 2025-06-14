@@ -19,13 +19,13 @@ git config --global user.email "$email"
 git config --global core.editor "vim"
 git config --global --add --bool push.autoSetupRemote true
 
-mkdir "$git_config"
+mkdir -p "$git_config"
 echo "$email $(cat "$key_path_pub")" > "$git_config/allowed-signers"
 git config --global commit.gpgsign true
 git config --global gpg.format ssh
 git config --global user.signingkey "$key_path_pub"
 
-mkdir "$HOME/git"
+mkdir -p "$HOME/git"
 
 echo "======== PUBLIC KEY ========"
 cat "$key_path_pub"
