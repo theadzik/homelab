@@ -8,29 +8,6 @@
         group: root
         mode: "0644"
 
-    - name: Check if resolv.conf is a link.
-      stat:
-        path: "{{ resolv_conf_path }}"
-        follow: false
-      register: link_stats
-
-    - name: Remove resolv.conf link.
-      file:
-        path: "{{ resolv_conf_path }}"
-        state: absent
-      when: link_stats.stat.islnk | default(false)
-
-    - name: Copy resolv.conf.
-      ansible.builtin.copy:
-        src: "resolv.conf"
-        dest: "{{ resolv_conf_path }}"
-        owner: root
-        group: root
-        mode: "0644"
-        attributes: "+ie"
-        force: true
-      become: true
-
     - name: Add passwordless sudo permissions.
       ansible.builtin.template:
         src: "sudoers.j2"

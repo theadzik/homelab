@@ -1,6 +1,5 @@
 arch_mapping:  # Map ansible architecture {{ ansible_architecture }} names to Docker's architecture names
   x86_64: amd64
-  aarch64: arm64
 
 docker_package:
   - apt-transport-https
@@ -8,8 +7,5 @@ docker_package:
   - curl
   - gnupg
   - software-properties-common
-  - qemu-user-static
 
 distribution: "{{ ansible_distribution | lower }}"
-qemu_service_name: qemu-startup
-qemu_service_path: /usr/local/sbin
