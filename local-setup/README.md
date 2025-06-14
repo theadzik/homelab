@@ -12,7 +12,7 @@
 1. Download git-crypt key and put it in `~/git`
 1. `git-crypt unlock ../git-crypt-key`
 1. Add new ssh keys to servers.
-    * Get master key from vaultwarden.
+    * Get Server Master key from vaultwarden.
     * `ssh-copy-id -i ~/.ssh/id_ed25519 -o 'IdentityFile id_ed25519' -f adzik@server-1.internal`
     * `ssh-copy-id -i ~/.ssh/id_ed25519 -o 'IdentityFile id_ed25519' -f adzik@server-2.internal`
     * Delete master key.
