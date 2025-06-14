@@ -8,7 +8,7 @@ git_config="$HOME/.config/git"
 email="adam@zmuda.pro"
 name="Adam Żmuda"
 
-ssh-keygen -t ed25519 -C "$email" -N "" -f "$key_path"
+ssh-keygen -t ed25519 -C "$email" -f "$key_path"
 eval "$(ssh-agent -s)"
 ssh-add "$key_path"
 

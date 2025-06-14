@@ -20,11 +20,8 @@
         path: "{{ downloads_dir }}"
         state: directory
   roles:
-    - role: ubuntu
+    - role: wsl
     - role: k8s-tools
     - role: oh-my-zsh
-      tags: omz
     - role: git
     - role: docker
-    - role: jetbrains
-      tags: pycharm

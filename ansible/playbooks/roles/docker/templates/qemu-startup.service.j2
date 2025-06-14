@@ -1,7 +1,0 @@
-[Unit]
-Description=Enabling QEMU build service for Docker.
-After=docker.service
-[Service]
-ExecStart=/bin/bash {{ qemu_service_path }}/{{ qemu_service_name }}.sh
-[Install]
-WantedBy=multi-user.target
