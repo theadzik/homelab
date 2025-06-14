@@ -133,8 +133,14 @@
       become: false
       changed_when: false
 
-    # Copy the k3s config to a second file to detect changes.
-    # If no changes are found, we can skip copying the kubeconfig to the control node.
+    - name: Check whether .kube/config exists
+      ansible.builtin.stat:
+        path: "/home/{{ ansible_user }}/.kube/config"
+      register: kube_config
+      delegate_to: 127.0.0.1
+      become: false
+      changed_when: false
+
     - name: Copy k3s.yaml to second file
       ansible.builtin.copy:
         src: /etc/rancher/k3s/k3s.yaml
@@ -146,7 +152,7 @@
     - name: Apply K3S kubeconfig to control node
       when:
         - kubectl_installed.rc == 0
-        - copy_k3s_yaml_file.changed
+        - copy_k3s_yaml_file.changed or not kube_config.stat.exists
       block:
         - name: Copy kubeconfig to control node
           ansible.builtin.fetch:
