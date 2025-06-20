@@ -1,4 +1,4 @@
-fastapi[standard]==0.115.12
+fastapi[standard]==0.115.13
 torch==2.7.1
 transformers==4.52.4
 --index-url https://download.pytorch.org/whl/cpu
