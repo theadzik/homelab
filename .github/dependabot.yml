@@ -9,7 +9,8 @@ updates:
   - package-ecosystem: "docker"
     directories:
       - "/apps/custom-argocd"
-      - "/apps/vaultwarden/**"
+      - "/apps/vaultwarden/backup"
+      - "/apps/vaultwarden/restore"
     schedule:
       interval: "weekly"
       day: "friday"
