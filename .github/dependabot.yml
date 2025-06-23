@@ -2,14 +2,14 @@ version: 2
 updates:
   - package-ecosystem: "pip"
     directories:
-      - "/apps/*"
+      - "/.github/scripts/sync-waves-inventory"
     schedule:
       interval: "weekly"
       day: "friday"
   - package-ecosystem: "docker"
     directories:
-      - "/apps/*"
-      - "/apps/vaultwarden/*"
+      - "/apps/custom-argocd"
+      - "/apps/vaultwarden/**"
     schedule:
       interval: "weekly"
       day: "friday"
