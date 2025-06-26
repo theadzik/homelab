@@ -1,11 +1,3 @@
-# Labels settings in namespace
-namespace:
-  labels:
-    - key: pod-security.kubernetes.io/enforce
-      value: privileged
-    - key: pod-security.kubernetes.io/enforce-version
-      value: latest
-
 image:
   imagePullSecrets:
     - name: dockerhub-image-pull-secret
