@@ -23,7 +23,7 @@ spec:
       priorityClassName: high-priority
       containers:
         - name: cloudflared
-          image: cloudflare/cloudflared:latest
+          image: cloudflare/cloudflared:2025.6.1
           args:
             - "tunnel"
             - "--config"

@@ -6,15 +6,15 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd-image-updater.argoproj.io/image-list: cloudflare=cloudflare/cloudflared:latest
-    argocd-image-updater.argoproj.io/cloudflare.update-strategy: digest
+    argocd-image-updater.argoproj.io/image-list: cloudflare=cloudflare/cloudflared
+    argocd-image-updater.argoproj.io/cloudflare.update-strategy: semver
     argocd.argoproj.io/sync-wave: "-10"
 spec:
   project: default
   source:
     path: manifests/base/cloudflared
     repoURL: 'https://github.com/theadzik/homelab'
-    targetRevision: HEAD
+    targetRevision: main
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:
