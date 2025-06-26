@@ -9,17 +9,17 @@ spec:
   sources:
     - chart: node-feature-discovery
       repoURL: https://kubernetes-sigs.github.io/node-feature-discovery/charts
-      targetRevision: 0.17.3
+      targetRevision: 0.17.*
       helm:
         releaseName: nfd
     - chart: intel-device-plugins-operator
       repoURL: https://intel.github.io/helm-charts/
-      targetRevision: 0.32.0
+      targetRevision: 0.32.*
       helm:
         releaseName: operator
     - chart: intel-device-plugins-gpu
       repoURL: https://intel.github.io/helm-charts/
-      targetRevision: 0.32.0
+      targetRevision: 0.32.*
       helm:
         releaseName: gpu
         valuesObject:
