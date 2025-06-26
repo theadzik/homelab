@@ -16,7 +16,7 @@ configMapGenerator:
       - configs/prompt-checker.txt
       - configs/prompt-bully.txt
       - configs/prompt-bad-bot.txt
-      - configs/signature.md
+      - configs/signature.txt
   - name: bot-envs
     envs:
       - configs/bot.env
