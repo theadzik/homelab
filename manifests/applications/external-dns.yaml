@@ -4,12 +4,15 @@ metadata:
   name: external-dns
   annotations:
     argocd.argoproj.io/sync-wave: "-10"
+    argocd-image-updater.argoproj.io/image-list: external=registry.k8s.io/external-dns/external-dns
+    argocd-image-updater.argoproj.io/external.update-strategy: semver
+    argocd-image-updater.argoproj.io/write-back-method: git
 spec:
   project: default
   sources:
     - path: manifests/base/external-dns
       repoURL: 'https://github.com/theadzik/homelab'
-      targetRevision: HEAD
+      targetRevision: main
   destination:
     server: "https://kubernetes.default.svc"
     namespace: external-dns
