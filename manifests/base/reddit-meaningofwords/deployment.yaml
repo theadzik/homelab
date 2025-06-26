@@ -18,7 +18,7 @@ spec:
         - name: dockerhub-image-pull-secret
       containers:
         - name: reddit-bot
-          image: theadzik/meaningofwords:latest
+          image: theadzik/meaningofwords:2025.06.2
           imagePullPolicy: IfNotPresent
           envFrom:
             - secretRef:
@@ -108,8 +108,8 @@ spec:
               name: cache
       containers:
         - name: model
-          image: theadzik/bullying-detector:latest
-          imagePullPolicy: Always
+          image: theadzik/bullying-detector:2025.06.2
+          imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
                 name: bullying-detector-envs

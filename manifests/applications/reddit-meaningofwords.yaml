@@ -6,15 +6,16 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd-image-updater.argoproj.io/image-list: reddit=theadzik/meaningofwords:latest,bullying=theadzik/bullying-detector:latest
-    argocd-image-updater.argoproj.io/reddit.update-strategy: digest
-    argocd-image-updater.argoproj.io/bullying.update-strategy: digest
+    argocd-image-updater.argoproj.io/image-list: reddit=theadzik/meaningofwords,bullying=theadzik/bullying-detector
+    argocd-image-updater.argoproj.io/reddit.update-strategy: semver
+    argocd-image-updater.argoproj.io/bullying.update-strategy: semver
+    argocd-image-updater.argoproj.io/write-back-method: git
 spec:
   project: default
   source:
     path: manifests/base/reddit-meaningofwords
     repoURL: 'https://github.com/theadzik/homelab'
-    targetRevision: HEAD
+    targetRevision: main
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:
