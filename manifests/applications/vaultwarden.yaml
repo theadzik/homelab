@@ -5,12 +5,17 @@ metadata:
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: vaultwarden=vaultwarden/server:1.x.x-alpine,restore=theadzik/vw-restore
+    argocd-image-updater.argoproj.io/vaultwarden.update-strategy: semver
+    argocd-image-updater.argoproj.io/restore.update-strategy: semver
+    argocd-image-updater.argoproj.io/write-back-method: git
 spec:
   project: default
   source:
     path: manifests/base/vaultwarden
     repoURL: 'https://github.com/theadzik/homelab'
-    targetRevision: HEAD
+    targetRevision: main
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:

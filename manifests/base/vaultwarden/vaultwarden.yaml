@@ -21,7 +21,7 @@ spec:
         - name: dockerhub-image-pull-secret
       initContainers:
         - name: restore
-          image: theadzik/vw-restore:latest
+          image: theadzik/vw-restore:2025.5.1
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - mountPath: /home/vaultwarden
