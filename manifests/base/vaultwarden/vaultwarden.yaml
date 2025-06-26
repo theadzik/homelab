@@ -22,7 +22,7 @@ spec:
       initContainers:
         - name: restore
           image: theadzik/vw-restore:latest
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           volumeMounts:
             - mountPath: /home/vaultwarden
               name: rclone-conf

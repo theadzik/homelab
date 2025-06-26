@@ -227,7 +227,7 @@ spec:
               name: argocd-image-updater-config
               optional: true
         image: quay.io/argoprojlabs/argocd-image-updater:v0.16.0
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
             path: /healthz
