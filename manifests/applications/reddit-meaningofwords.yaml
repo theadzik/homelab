@@ -15,7 +15,7 @@ spec:
   source:
     path: manifests/base/reddit-meaningofwords
     repoURL: 'https://github.com/theadzik/homelab'
-    targetRevision: HEAD
+    targetRevision: main
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:
