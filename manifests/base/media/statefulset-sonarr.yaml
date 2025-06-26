@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: sonarr
-          image: ghcr.io/hotio/sonarr:release
+          image: ghcr.io/hotio/sonarr:release-4.0.15.2941
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8989

@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: radarr
-          image: ghcr.io/hotio/radarr:release
+          image: ghcr.io/hotio/radarr:release-5.26.2.10099
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 7878

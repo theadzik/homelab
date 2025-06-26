@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: nzbget
-          image: lscr.io/linuxserver/nzbget:latest
+          image: lscr.io/linuxserver/nzbget:25.0.20250620
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 6789
