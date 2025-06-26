@@ -6,14 +6,15 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd-image-updater.argoproj.io/image-list: resume=theadzik/zmuda-pro-blog:latest
-    argocd-image-updater.argoproj.io/resume.update-strategy: digest
+    argocd-image-updater.argoproj.io/image-list: blog=theadzik/zmuda-pro-blog
+    argocd-image-updater.argoproj.io/blog.update-strategy: semver
+    argocd-image-updater.argoproj.io/write-back-method: git
 spec:
   project: default
   source:
     path: manifests/base/zmuda-pro-blog
     repoURL: 'https://github.com/theadzik/homelab'
-    targetRevision: HEAD
+    targetRevision: main
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:

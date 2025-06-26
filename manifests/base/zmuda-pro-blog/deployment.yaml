@@ -19,7 +19,7 @@ spec:
         - name: dockerhub-image-pull-secret
       containers:
         - name: nginx
-          image: theadzik/zmuda-pro-blog:latest
+          image: theadzik/zmuda-pro-blog:2025.6.8
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
