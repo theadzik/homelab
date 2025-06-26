@@ -1,0 +1,4 @@
+kustomize:
+  images:
+  - vaultwarden/server:1.34.1
+  - theadzik/vw-restore:2025.6.1
