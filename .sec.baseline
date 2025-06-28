@@ -171,6 +171,15 @@
         "is_secret": false
       }
     ],
+    "manifests/base/kube-prometheus-stack/helm-chart.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/base/kube-prometheus-stack/helm-chart.yaml",
+        "hashed_secret": "127d2b8daeac1087c69c5b9b588f829ff662c9a5",
+        "is_verified": false,
+        "line_number": 9
+      }
+    ],
     "manifests/base/media/ingress-bazarr.yaml": [
       {
         "type": "Secret Keyword",
@@ -312,5 +321,5 @@
       }
     ]
   },
-  "generated_at": "2025-06-26T17:32:22Z"
+  "generated_at": "2025-06-28T07:54:27Z"
 }

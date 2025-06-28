@@ -1,0 +1,39 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: dashboards
+spec:
+  repo: https://prometheus-community.github.io/helm-charts
+  chart: kube-prometheus-stack
+  version: 56.0.1
+  valuesContent: |-
+    prometheus:
+      prometheusSpec:
+        retentionSize: 1GiB
+    grafana:
+      defaultDashboardsTimezone: Europe/Warsaw
+      defaultDashboardsEditable: true
+      admin:
+        existingSecret: grafana-admin-secret
+        userKey: admin-user
+        passwordKey: admin-password
+      ingress:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          cert-manager.io/cluster-issuer: "lets-encrypt-prod"
+        hosts:
+          - dashboards.zmuda.pro
+        tls:
+          - secretName: dashboards-zmuda-tls
+            hosts:
+              - dashboards.zmuda.pro
+
+    kubeEtcd:
+      enabled: false
+
+    nodeExporter:
+      enabled: true
+      operatingSystems:
+        darwin:
+          enabled: false
