@@ -72,3 +72,4 @@ spec:
             claimName: nzbget-intermediate
         - name: tmp
           emptyDir: {}
+  serviceName: nzbget

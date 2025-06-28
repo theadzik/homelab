@@ -54,3 +54,4 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: bazarr-config-ssd
+  serviceName: bazarr

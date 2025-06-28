@@ -3,7 +3,7 @@ kind: Service
 metadata:
   labels:
     app: radarr
-  name: radarr-http
+  name: radarr
 spec:
   ports:
     - port: 7878
@@ -12,4 +12,4 @@ spec:
       name: web
   selector:
     app: radarr
-  type: ClusterIP
+  clusterIP: None

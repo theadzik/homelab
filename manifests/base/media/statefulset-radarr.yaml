@@ -54,3 +54,4 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: radarr-config-ssd
+  serviceName: radarr

@@ -3,7 +3,7 @@ kind: Service
 metadata:
   labels:
     app: sonarr
-  name: sonarr-http
+  name: sonarr
 spec:
   ports:
     - port: 8989
@@ -12,4 +12,4 @@ spec:
       name: web
   selector:
     app: sonarr
-  type: ClusterIP
+  clusterIP: None
