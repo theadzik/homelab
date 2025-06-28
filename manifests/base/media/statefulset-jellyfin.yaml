@@ -67,3 +67,4 @@ spec:
           emptyDir: {}
         - name: cache
           emptyDir: {}
+  serviceName: jellyfin

@@ -20,6 +20,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: jellyfin-http
+                name: jellyfin
                 port:
                   name: web

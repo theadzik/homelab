@@ -54,3 +54,4 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: sonarr-config-ssd
+  serviceName: sonarr

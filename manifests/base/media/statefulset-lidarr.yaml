@@ -54,3 +54,4 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: lidarr-config-ssd
+  serviceName: lidarr

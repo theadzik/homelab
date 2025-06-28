@@ -3,7 +3,7 @@ kind: Service
 metadata:
   labels:
     app: jellyfin
-  name: jellyfin-http
+  name: jellyfin
 spec:
   ports:
     - port: 8096
@@ -12,4 +12,4 @@ spec:
       name: web
   selector:
     app: jellyfin
-  type: ClusterIP
+  clusterIP: None
