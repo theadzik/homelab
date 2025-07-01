@@ -88,5 +88,5 @@ export PATH="$PATH:/mnt/c/Program Files/Oracle/VirtualBox"
 # Don't save commands starting with a space to history
 export HISTCONTROL=ignoreboth
 
-eval `ssh-agent`
+eval "$(ssh-agent -s)" > /dev/null
 ssh-add ~/.ssh/id_ed25519
