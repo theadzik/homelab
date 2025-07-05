@@ -191,7 +191,7 @@
       {
         "type": "Secret Keyword",
         "filename": "manifests/base/kube-prometheus-stack/values.yaml",
-        "hashed_secret": "25ae1e6cc55a01e7530397bde9afb748c54bea0a",
+        "hashed_secret": "6bf62b4456cf51708b514be8a57e132ef19fbe4c",
         "is_verified": false,
         "line_number": 38,
         "is_secret": false
@@ -338,5 +338,5 @@
       }
     ]
   },
-  "generated_at": "2025-07-05T08:54:32Z"
+  "generated_at": "2025-07-05T08:59:50Z"
 }
