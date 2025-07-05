@@ -1,0 +1,51 @@
+crds:
+  enabled: true
+  upgradeJob:
+    enabled: true
+
+prometheus:
+  prometheusSpec:
+    retentionSize: 32Gi
+    resources:
+      requests:
+        cpu: 200m
+        memory: 4Gi
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: synology-iscsi-retain-ssd
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 64Gi
+
+grafana:
+  defaultDashboardsTimezone: Europe/Warsaw
+  defaultDashboardsEditable: true
+  admin:
+    existingSecret: grafana-admin-secret
+    userKey: admin-user
+    passwordKey: admin-password
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: "lets-encrypt-prod"
+      nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.0.0/16,10.0.0.0/8
+    hosts:
+      - grafana.zmuda.pro
+    tls:
+      - secretName: grafana-zmuda-tls
+        hosts:
+          - grafana.zmuda.pro
+  grafana.ini:
+    server:
+      root_url: grafana.zmuda.pro
+    auth.github:
+      enabled: true
+      scopes: user:email,read:org
+      auth_url: https://github.com/login/oauth/authorize
+      token_url: https://github.com/login/oauth/access_token
+      api_url: https://api.github.com/user
+      allow_sign_up: false
+      auto_login: true

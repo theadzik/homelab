@@ -171,6 +171,32 @@
         "is_secret": false
       }
     ],
+    "manifests/base/kube-prometheus-stack/values.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/base/kube-prometheus-stack/values.yaml",
+        "hashed_secret": "f1447181cf19d81ff8048e969ea3e9eb3f1bc87d",
+        "is_verified": false,
+        "line_number": 26,
+        "is_secret": false
+      },
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/base/kube-prometheus-stack/values.yaml",
+        "hashed_secret": "fc4b79ff2005c1bfacead828184f0c8aad8fd860",
+        "is_verified": false,
+        "line_number": 28,
+        "is_secret": false
+      },
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/base/kube-prometheus-stack/values.yaml",
+        "hashed_secret": "6bf62b4456cf51708b514be8a57e132ef19fbe4c",
+        "is_verified": false,
+        "line_number": 38,
+        "is_secret": false
+      }
+    ],
     "manifests/base/media/ingress-bazarr.yaml": [
       {
         "type": "Secret Keyword",
@@ -312,5 +338,5 @@
       }
     ]
   },
-  "generated_at": "2025-06-26T17:32:22Z"
+  "generated_at": "2025-07-05T08:59:50Z"
 }
