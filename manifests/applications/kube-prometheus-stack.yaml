@@ -14,7 +14,6 @@ spec:
         releaseName: kube-prometheus-stack
         valueFiles:
           - $homelab/manifests/base/kube-prometheus-stack/values.yaml
-          - $homelab/manifests/base/kube-prometheus-stack/values-secret.yaml
     - repoURL: 'https://github.com/theadzik/homelab'
       path: manifests/base/kube-prometheus-stack
       targetRevision: main

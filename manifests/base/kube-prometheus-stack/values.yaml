@@ -2,10 +2,11 @@ crds:
   enabled: true
   upgradeJob:
     enabled: true
+    forceConflicts: true
 
 prometheus:
   prometheusSpec:
-    retentionSize: 32Gi
+    retentionSize: 32GiB
     resources:
       requests:
         cpu: 200m
@@ -38,14 +39,21 @@ grafana:
       - secretName: grafana-zmuda-tls
         hosts:
           - grafana.zmuda.pro
+  envFromSecret: "grafana-oauth-secret"
   grafana.ini:
     server:
-      root_url: grafana.zmuda.pro
+      root_url: "https://%(domain)s/"
     auth.github:
       enabled: true
       scopes: user:email,read:org
       auth_url: https://github.com/login/oauth/authorize
       token_url: https://github.com/login/oauth/access_token
       api_url: https://api.github.com/user
-      allow_sign_up: false
+      client_id: $__env{CLIENT_ID}
+      client_secret: $__env{CLIENT_SECRET}
+      allow_sign_up: true
       auto_login: true
+      team_ids: "13497491"
+      allowed_organizations: zmuda-pro
+      allowed_domains: zmuda.pro
+      role_attribute_path: contains(groups[*], '@zmuda-pro/grafana-admins') && 'Admin' || 'Viewer'
