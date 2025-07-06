@@ -177,7 +177,7 @@
         "filename": "manifests/base/kube-prometheus-stack/values.yaml",
         "hashed_secret": "f1447181cf19d81ff8048e969ea3e9eb3f1bc87d",
         "is_verified": false,
-        "line_number": 27,
+        "line_number": 24,
         "is_secret": false
       },
       {
@@ -185,7 +185,7 @@
         "filename": "manifests/base/kube-prometheus-stack/values.yaml",
         "hashed_secret": "fc4b79ff2005c1bfacead828184f0c8aad8fd860",
         "is_verified": false,
-        "line_number": 29,
+        "line_number": 26,
         "is_secret": false
       },
       {
@@ -193,7 +193,7 @@
         "filename": "manifests/base/kube-prometheus-stack/values.yaml",
         "hashed_secret": "6bf62b4456cf51708b514be8a57e132ef19fbe4c",
         "is_verified": false,
-        "line_number": 39,
+        "line_number": 36,
         "is_secret": false
       },
       {
@@ -201,7 +201,7 @@
         "filename": "manifests/base/kube-prometheus-stack/values.yaml",
         "hashed_secret": "0edf4ebb9d68a3f7803b37d46623a0faf71b9b9a",
         "is_verified": false,
-        "line_number": 42,
+        "line_number": 39,
         "is_secret": false
       }
     ],
@@ -346,5 +346,5 @@
       }
     ]
   },
-  "generated_at": "2025-07-05T17:46:09Z"
+  "generated_at": "2025-07-06T07:54:30Z"
 }

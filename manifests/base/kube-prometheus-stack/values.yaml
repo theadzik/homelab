@@ -1,5 +1,5 @@
 crds:
-  enabled: true
+  enabled: false
 
 prometheus:
   prometheusSpec:

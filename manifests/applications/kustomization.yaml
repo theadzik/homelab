@@ -10,6 +10,7 @@ resources:
   - ingress-nginx.yaml
   - intel-device-plugin.yaml
   - kube-prometheus-stack.yaml
+  - kube-prometheus-stack-crd.yaml
   - media.yaml
   - metal-lb.yaml
   - priority-classes.yaml
