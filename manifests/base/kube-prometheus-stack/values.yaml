@@ -54,6 +54,27 @@ grafana:
       allowed_organizations: zmuda-pro
       allowed_domains: zmuda.pro
       role_attribute_path: contains(groups[*], '@zmuda-pro/grafana-admins') && 'Admin' || 'Viewer'
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+        - name: 'default'
+          orgId: 1
+          folder: ''
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/default
+  dashboards:
+    default:
+      nginx:
+        gnetId: 9614
+        datasource: Prometheus
+      nginx-ng:
+        url: https://raw.githubusercontent.com/theadzik/grafana-dashboards/refs/heads/main/kubernetes-nginx-ingress-via-prometheus.json
+        curlOptions: "-sLf"
+        datasource: Prometheus
 
 kubeScheduler:
   endpoints:
