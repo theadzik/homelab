@@ -40,3 +40,9 @@ controller:
   enableAnnotationValidations: true
   podLabels:
     type: ingress
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      additionalLabels:
+        release: "kube-prometheus-stack"
