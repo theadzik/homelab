@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pihole
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: pihole=pihole/pihole:latest
+    argocd-image-updater.argoproj.io/pihole.update-strategy: digest
+    argocd.argoproj.io/sync-wave: "-10"
+spec:
+  project: default
+  source:
+    path: manifests/base/pihole
+    repoURL: 'https://github.com/theadzik/homelab'
+    targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

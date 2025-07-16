@@ -265,6 +265,16 @@
         "is_secret": false
       }
     ],
+    "manifests/base/pihole/ingress.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/base/pihole/ingress.yaml",
+        "hashed_secret": "cec45245e661ad3db0f1b10d14b2de0744d95672",
+        "is_verified": false,
+        "line_number": 13,
+        "is_secret": false
+      }
+    ],
     "manifests/base/synology-csi/controller.yml": [
       {
         "type": "Secret Keyword",
@@ -346,5 +356,5 @@
       }
     ]
   },
-  "generated_at": "2025-07-06T07:54:30Z"
+  "generated_at": "2025-07-16T14:22:34Z"
 }
