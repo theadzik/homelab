@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: external-dns
+  name: external-dns-cloudflare
 spec:
   strategy:
     type: Recreate
@@ -27,6 +27,6 @@ spec:
             - --source=ingress
             - --domain-filter=zmuda.pro
             - --provider=cloudflare
-            - --annotation-filter=external-dns.alpha.kubernetes.io/exclude notin (true)
+            - "--label-filter='dns-type: external'"
       securityContext:
         fsGroup: 65534
