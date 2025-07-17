@@ -25,6 +25,7 @@ spec:
                   key: WEBPASSWORD
           args:
             - --source=ingress
+            - --source=service
             - --registry=noop
             - --policy=upsert-only
             - --provider=pihole
