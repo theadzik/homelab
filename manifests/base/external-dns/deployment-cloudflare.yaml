@@ -7,11 +7,11 @@ spec:
     type: Recreate
   selector:
     matchLabels:
-      app: external-dns
+      app: external-dns-cloudflare
   template:
     metadata:
       labels:
-        app: external-dns
+        app: external-dns-cloudflare
     spec:
       serviceAccountName: external-dns
       containers:

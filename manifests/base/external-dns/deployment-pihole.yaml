@@ -7,11 +7,11 @@ spec:
     type: Recreate
   selector:
     matchLabels:
-      app: external-dns
+      app: external-dns-pihole
   template:
     metadata:
       labels:
-        app: external-dns
+        app: external-dns-pihole
     spec:
       serviceAccountName: external-dns
       containers:
