@@ -32,6 +32,6 @@ spec:
             - --pihole-api-version=6
             - --pihole-server=http://pihole-primary-0.pihole-dns.pihole.svc.cluster.local
             - --pihole-tls-skip-verify
-            - "--label-filter='dns-type: internal'"
+            - --label-filter=dns-type in (internal)
       securityContext:
         fsGroup: 65534

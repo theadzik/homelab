@@ -27,6 +27,6 @@ spec:
             - --source=ingress
             - --domain-filter=zmuda.pro
             - --provider=cloudflare
-            - "--label-filter='dns-type: external'"
+            - --label-filter=dns-type in (external)
       securityContext:
         fsGroup: 65534
