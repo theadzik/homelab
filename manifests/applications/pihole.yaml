@@ -6,8 +6,9 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd-image-updater.argoproj.io/image-list: pihole=pihole/pihole:latest
+    argocd-image-updater.argoproj.io/image-list: pihole=pihole/pihole:latest,nebula=ghcr.io/lovelaze/nebula-sync
     argocd-image-updater.argoproj.io/pihole.update-strategy: digest
+    argocd-image-updater.argoproj.io/nebula.update-strategy: semver
     argocd-image-updater.argoproj.io/write-back-method: git
     argocd.argoproj.io/sync-wave: "-10"
 spec:
