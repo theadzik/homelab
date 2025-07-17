@@ -193,7 +193,7 @@
         "filename": "manifests/base/kube-prometheus-stack/values.yaml",
         "hashed_secret": "6bf62b4456cf51708b514be8a57e132ef19fbe4c",
         "is_verified": false,
-        "line_number": 36,
+        "line_number": 38,
         "is_secret": false
       },
       {
@@ -201,7 +201,7 @@
         "filename": "manifests/base/kube-prometheus-stack/values.yaml",
         "hashed_secret": "0edf4ebb9d68a3f7803b37d46623a0faf71b9b9a",
         "is_verified": false,
-        "line_number": 39,
+        "line_number": 41,
         "is_secret": false
       }
     ],
@@ -271,7 +271,7 @@
         "filename": "manifests/base/pihole/ingress.yaml",
         "hashed_secret": "cec45245e661ad3db0f1b10d14b2de0744d95672",
         "is_verified": false,
-        "line_number": 13,
+        "line_number": 15,
         "is_secret": false
       }
     ],
@@ -356,5 +356,5 @@
       }
     ]
   },
-  "generated_at": "2025-07-17T16:50:44Z"
+  "generated_at": "2025-07-17T16:54:28Z"
 }
