@@ -3,7 +3,9 @@ kind: Kustomization
 namespace: external-dns
 resources:
   - cluster-role.yaml
-  - deployment.yaml
+  - deployment-cloudflare.yaml
+  - deployment-pihole.yaml
   - namespace.yaml
   - secret.yaml
   - service-account.yaml
+  - ../pihole-password

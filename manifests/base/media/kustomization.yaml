@@ -27,14 +27,6 @@ resources:
   - vpa.yaml
 
 patches:
-#  - patch: |-
-#      - op: replace
-#        path: /spec/replicas
-#        value: 0
-#    target:
-#      kind: StatefulSet
-#      group: apps
-#      version: v1
   - patch: |-
       - op: add
         path: /spec/template/spec/priorityClassName
@@ -51,3 +43,6 @@ patches:
       kind: VerticalPodAutoscaler
       group: autoscaling.k8s.io
       version: v1
+  - path: ./patches/ingress-internal.yaml
+    target:
+      kind: Ingress

@@ -1,27 +1,26 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: vaultwarden
+  name: pihole
   annotations:
     cert-manager.io/cluster-issuer: "lets-encrypt-prod"
-    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
-    external-dns.alpha.kubernetes.io/target: "e48d5ef2-41f9-4ca5-a8bf-f60af8d77921.cfargotunnel.com"
+    nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.0.0/16,10.0.0.0/8
   labels:
-    dns-type: external
+    dns-type: internal
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - vault.zmuda.pro
-      secretName: vaultwarden-tls
+        - pihole.zmuda.pro
+      secretName: pihole-tls
   rules:
-    - host: vault.zmuda.pro
+    - host: pihole.zmuda.pro
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: vaultwarden-http
+                name: pihole-http
                 port:
                   number: 80

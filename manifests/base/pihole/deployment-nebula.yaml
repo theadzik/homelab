@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nebula-sync
+  labels:
+    app.kubernetes.io/name: pihole
+    app.kubernetes.io/component: sync
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: pihole
+      app.kubernetes.io/component: sync
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: pihole
+        app.kubernetes.io/component: sync
+    spec:
+      containers:
+        - name: sync
+          image: ghcr.io/lovelaze/nebula-sync:v0.11.0
+          env:
+            - name: WEBPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: web-password
+                  key: WEBPASSWORD
+            - name: PRIMARY
+              value: http://pihole-primary-0.pihole-dns|$(WEBPASSWORD)
+            - name: REPLICAS
+              value: http://pihole-secondary-0.pihole-dns|$(WEBPASSWORD),http://pihole-secondary-1.pihole-dns|$(WEBPASSWORD)
+            - name: FULL_SYNC
+              value: "true"
+            - name: RUN_GRAVITY
+              value: "true"
+            - name: CRON
+              value: "*/5 * * * *"
