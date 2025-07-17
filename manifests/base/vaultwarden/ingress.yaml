@@ -6,6 +6,8 @@ metadata:
     cert-manager.io/cluster-issuer: "lets-encrypt-prod"
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
     external-dns.alpha.kubernetes.io/target: "e48d5ef2-41f9-4ca5-a8bf-f60af8d77921.cfargotunnel.com"
+  labels:
+    dns-type: external
 spec:
   ingressClassName: nginx
   tls:

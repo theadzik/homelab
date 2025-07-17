@@ -321,7 +321,7 @@
         "filename": "manifests/base/vaultwarden/ingress.yaml",
         "hashed_secret": "e26ffc62e90a334f716003985b02a5f5851c1be5",
         "is_verified": false,
-        "line_number": 14,
+        "line_number": 16,
         "is_secret": false
       }
     ],
@@ -351,10 +351,10 @@
         "filename": "manifests/base/zmuda-pro-blog/ingress.yaml",
         "hashed_secret": "b0807dfa70e3df5d968a9fcee52a238ab3a5dcbd",
         "is_verified": false,
-        "line_number": 14,
+        "line_number": 16,
         "is_secret": false
       }
     ]
   },
-  "generated_at": "2025-07-16T14:22:34Z"
+  "generated_at": "2025-07-17T16:32:43Z"
 }
