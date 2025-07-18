@@ -31,7 +31,7 @@ spec:
               port: 53
             timeoutSeconds: 1
             initialDelaySeconds: 5
-            periodSeconds: 30
+            periodSeconds: 10
           livenessProbe:
             exec:
               command:
@@ -40,8 +40,8 @@ spec:
                 - "dig @127.0.0.1 pi.hole"
             timeoutSeconds: 1
             failureThreshold: 2
-            initialDelaySeconds: 10
-            periodSeconds: 30
+            initialDelaySeconds: 30
+            periodSeconds: 10
           resources:
             requests:
               cpu: 100m
@@ -119,7 +119,7 @@ spec:
               port: 53
             timeoutSeconds: 1
             initialDelaySeconds: 5
-            periodSeconds: 30
+            periodSeconds: 10
           livenessProbe:
             exec:
               command:
@@ -128,8 +128,8 @@ spec:
                 - "dig @127.0.0.1 pi.hole"
             timeoutSeconds: 1
             failureThreshold: 2
-            initialDelaySeconds: 10
-            periodSeconds: 30
+            initialDelaySeconds: 30
+            periodSeconds: 10
           resources:
             requests:
               cpu: 100m
