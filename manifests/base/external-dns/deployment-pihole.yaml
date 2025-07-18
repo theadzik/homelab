@@ -25,12 +25,10 @@ spec:
                   key: WEBPASSWORD
           args:
             - --source=ingress
-            - --source=service
             - --registry=noop
-            - --policy=upsert-only
             - --provider=pihole
             - --pihole-api-version=6
-            - --pihole-server=http://pihole-primary-0.pihole-dns.pihole.svc.cluster.local
+            - --pihole-server=http://pihole-http.pihole.svc.cluster.local
             - --pihole-tls-skip-verify
             - --label-filter=dns-type in (internal)
       securityContext:
