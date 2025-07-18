@@ -3,7 +3,7 @@ kind: Application
 metadata:
   name: external-dns
   annotations:
-    argocd.argoproj.io/sync-wave: "-10"
+    argocd.argoproj.io/sync-wave: "-5"
     argocd-image-updater.argoproj.io/image-list: external=registry.k8s.io/external-dns/external-dns
     argocd-image-updater.argoproj.io/external.update-strategy: semver
     argocd-image-updater.argoproj.io/write-back-method: git

@@ -37,8 +37,9 @@ spec:
               command:
                 - "/bin/sh"
                 - "-c"
-                - "dig @127.0.0.1 cloudflare.com && dig @127.0.0.1 jellyfin.zmuda.pro"
+                - "dig @127.0.0.1 pi.hole"
             timeoutSeconds: 1
+            failureThreshold: 2
             initialDelaySeconds: 10
             periodSeconds: 30
           resources:
@@ -124,8 +125,9 @@ spec:
               command:
                 - "/bin/sh"
                 - "-c"
-                - "dig @127.0.0.1 cloudflare.com && dig @127.0.0.1 jellyfin.zmuda.pro"
+                - "dig @127.0.0.1 pi.hole"
             timeoutSeconds: 1
+            failureThreshold: 2
             initialDelaySeconds: 10
             periodSeconds: 30
           resources:
