@@ -6,7 +6,7 @@ metadata:
 spec:
   targetNamespace: argocd
   createNamespace: true
-  version: 8.0.15
+  version: 8.1.3
   chart: argo-cd
   repo: https://argoproj.github.io/argo-helm
   valuesSecrets:
