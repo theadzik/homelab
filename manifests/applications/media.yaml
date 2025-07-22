@@ -10,10 +10,12 @@ metadata:
       jellyfin=lscr.io/linuxserver/jellyfin:10.x.x,\
       lidarr=blampe/lidarr:latest,\
       nzbget=lscr.io/linuxserver/nzbget:25.x.x,\
-      radarr=ghcr.io/hotio/radarr:release-5.x.x.x,\
-      sonarr=ghcr.io/hotio/sonarr:release-4.x.x.x"
+      radarr=ghcr.io/hotio/radarr:release,\
+      sonarr=ghcr.io/hotio/sonarr:release"
     argocd-image-updater.argoproj.io/write-back-method: git
     argocd-image-updater.argoproj.io/lidarr.update-strategy: digest
+    argocd-image-updater.argoproj.io/radarr.update-strategy: digest
+    argocd-image-updater.argoproj.io/sonarr.update-strategy: digest
 spec:
   project: default
   source:
