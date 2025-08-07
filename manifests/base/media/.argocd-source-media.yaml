@@ -6,4 +6,4 @@ kustomize:
   - ghcr.io/hotio/radarr:release@sha256:79c751100d1398305f05290068cef7367dc8cf1c3d7642db1da70a10da9dfa6e
   - ghcr.io/hotio/sonarr:release@sha256:6a8f771b42a96683af146aff683122102193767c12f3fb9b5c1c90e42a111896
   - lscr.io/linuxserver/lidarr@sha256:71fe6d5702691c6ac8961b9b1042fdea1ff833a49c82c5e165346fa88999a48a
-  - blampe/lidarr:latest@sha256:e0183648fe90dca3ad2ebbad16e6d7b8e1a20ed73c4682f34ed23e85ee6df792
+  - blampe/lidarr:latest@sha256:69a8c6e03502268d60338a5b04499ee7c341117697d2f71dbd70283ddd7c734d
