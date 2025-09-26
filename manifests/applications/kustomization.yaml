@@ -15,7 +15,7 @@ resources:
   - metal-lb.yaml
   - pihole.yaml
   - priority-classes.yaml
-  - reddit-meaningofwords.yaml
+  # - reddit-meaningofwords.yaml
   - synology-csi.yaml
   - vaultwarden.yaml
   - velero.yaml
