@@ -2,7 +2,7 @@ kustomize:
   images:
   - lscr.io/linuxserver/bazarr:1.5.3
   - lscr.io/linuxserver/jellyfin:10.10.7
-  - lscr.io/linuxserver/nzbget:25.3.20250919
+  - lscr.io/linuxserver/nzbget:25.3.20250926
   - ghcr.io/hotio/radarr:release@sha256:663f5c41459c4b31c8106ab62910546601ec31b321d275477606a66bc0f291a8
   - ghcr.io/hotio/sonarr:release@sha256:35326d5936cc14a0245c0cec08f5c5f116cc9bddb1032c52d734a97138b822e1
   - lscr.io/linuxserver/lidarr:develop@sha256:1999106aa1760da7e5f790bb145906cfd340e68020eb582accd29f3d3b975b17
