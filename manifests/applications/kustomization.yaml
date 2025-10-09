@@ -9,8 +9,8 @@ resources:
   - external-dns.yaml
   - ingress-nginx.yaml
   - intel-device-plugin.yaml
-  - kube-prometheus-stack.yaml
-  - kube-prometheus-stack-crd.yaml
+#  - kube-prometheus-stack.yaml
+#  - kube-prometheus-stack-crd.yaml
   - media.yaml
   - metal-lb.yaml
   - pihole.yaml
