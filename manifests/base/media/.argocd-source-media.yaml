@@ -1,6 +1,6 @@
 kustomize:
   images:
-  - lscr.io/linuxserver/bazarr:latest@sha256:b515d79a4f7aa4bbbdfe45376d996a9bae2794faa16aca5a2beab0dba0c0b074
+  - lscr.io/linuxserver/bazarr:1.5.3
   - lscr.io/linuxserver/jellyfin:10.10.7
   - lscr.io/linuxserver/nzbget:25.4.20251017
   - ghcr.io/hotio/radarr:release@sha256:42ca21d9bab4df84af1898e7256256b85a04b207e72c620ac382ac4151d65dd0
