@@ -41,8 +41,8 @@ controller:
   podLabels:
     type: ingress
   metrics:
-    enabled: true
+    enabled: false
     serviceMonitor:
-      enabled: true
+      enabled: false
       additionalLabels:
         release: "kube-prometheus-stack"
