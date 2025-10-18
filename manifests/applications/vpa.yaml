@@ -9,7 +9,7 @@ spec:
   sources:
     - chart: vertical-pod-autoscaler
       repoURL: https://cowboysysop.github.io/charts
-      targetRevision: 10.*.*
+      targetRevision: 11.*.*
       helm:
         releaseName: vertical-pod-autoscaler
         valueFiles:
