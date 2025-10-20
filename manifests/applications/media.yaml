@@ -7,7 +7,7 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
   annotations:
     argocd-image-updater.argoproj.io/image-list: "bazarr=lscr.io/linuxserver/bazarr:1.x.x,\
-      jellyfin=lscr.io/linuxserver/jellyfin:10.x.x,\
+      jellyfin=lscr.io/linuxserver/jellyfin:10.10.x,\
       lidarr=lscr.io/linuxserver/lidarr:develop,\
       nzbget=lscr.io/linuxserver/nzbget:25.x.x,\
       radarr=ghcr.io/hotio/radarr:release,\
