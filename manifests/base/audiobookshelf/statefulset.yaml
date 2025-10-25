@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: audiobookshelf
+  labels:
+    app: audiobookshelf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: audiobookshelf
+  template:
+    metadata:
+      labels:
+        app: audiobookshelf
+    spec:
+      containers:
+        - name: audiobookshelf
+          image: ghcr.io/advplyr/audiobookshelf:2.30.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              protocol: "TCP"
+              name: web
+          resources:
+            requests:
+              cpu: 100m
+              memory: 512Mi
+          volumeMounts:
+            - mountPath: /audiobooks
+              name: audiobooks
+            - mountPath: /config
+              name: config
+            - mountPath: /metadata
+              name: metadata
+            - mountPath: /podcasts
+              name: podcasts
+      volumes:
+        - name: audiobooks
+          persistentVolumeClaim:
+            claimName: audiobooks
+        - name: config
+          persistentVolumeClaim:
+            claimName: config
+        - name: metadata
+          persistentVolumeClaim:
+            claimName: metadata
+        - name: podcasts
+          persistentVolumeClaim:
+            claimName: podcasts
+  serviceName: audiobookshelf

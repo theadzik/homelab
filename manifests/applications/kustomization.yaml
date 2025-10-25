@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: argocd
 resources:
   - argocd.yaml
+  - audiobookshelf.yaml
   - cert-manager.yaml
   - cloudflared.yaml
   - crowdsec.yaml
