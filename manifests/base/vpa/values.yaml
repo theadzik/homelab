@@ -4,7 +4,7 @@ admissionController:
 
 recommender:
   extraArgs:
-    feature-gates: "InPlaceOrRecreate=true"
+    round-memory-bytes: "1048576" # 1 MiB
 
 updater:
   extraArgs:
