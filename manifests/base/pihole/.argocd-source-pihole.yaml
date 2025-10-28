@@ -1,4 +1,4 @@
 kustomize:
   images:
-  - pihole/pihole:latest@sha256:db6cdcd9f5d24401f4724001cb82c73c8a843c273d9a74d34c4e46119e507516
+  - pihole/pihole:latest@sha256:7f2dff3f60615e1b9982824cab30e10d399bd1178691e13a96359ea50323db69
   - ghcr.io/lovelaze/nebula-sync:v0.11.1
