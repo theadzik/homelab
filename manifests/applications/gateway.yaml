@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    path: manifests/base/gateway
+    path: manifests/base/gateway-api
     repoURL: 'https://github.com/theadzik/homelab'
     targetRevision: main
   destination:
