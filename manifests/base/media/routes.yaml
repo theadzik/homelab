@@ -6,7 +6,7 @@ metadata:
     dns-type: internal
 spec:
   hostnames:
-  - test.jellyfin.zmuda.pro
+  - jellyfin.test.zmuda.pro
   parentRefs:
     - name: https
       namespace: kgateway-system
