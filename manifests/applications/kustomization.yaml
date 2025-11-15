@@ -8,8 +8,11 @@ resources:
   - cloudflared.yaml
   - crowdsec.yaml
   - external-dns.yaml
+  - gateway.yaml
+  - gateway-api-crd.yaml
   - ingress-nginx.yaml
   - intel-device-plugin.yaml
+  - kgateway.yaml
 #  - kube-prometheus-stack.yaml
 #  - kube-prometheus-stack-crd.yaml
   - media.yaml

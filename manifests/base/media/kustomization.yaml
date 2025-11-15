@@ -11,6 +11,7 @@ resources:
   - namespace.yaml
   - nwp.yaml
   - pvc.yaml
+  - routes.yaml
   - secret-nzbget.yaml
   - service-bazarr.yaml
   - service-jellyfin.yaml
