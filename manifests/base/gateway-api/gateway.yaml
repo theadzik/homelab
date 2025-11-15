@@ -3,6 +3,10 @@ apiVersion: gateway.networking.k8s.io/v1
 metadata:
   name: https
   namespace: kgateway-system
+  labels:
+    dns-type: internal
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt-prod"
 spec:
   gatewayClassName: kgateway
   listeners:
@@ -12,3 +16,8 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+      hostname: "*.test.zmuda.pro"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: test-zmuda-pro-tls

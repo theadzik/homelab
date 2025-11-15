@@ -28,6 +28,10 @@ spec:
               requests:
                 cpu: 10m
                 memory: 128Mi
+          config:
+            apiVersion: controller.config.cert-manager.io/v1alpha1
+            kind: ControllerConfiguration
+            enableGatewayAPI: true
     - path: manifests/base/cert-manager
       repoURL: 'https://github.com/theadzik/homelab'
       targetRevision: HEAD
