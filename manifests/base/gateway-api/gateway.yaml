@@ -1,0 +1,14 @@
+kind: Gateway
+apiVersion: gateway.networking.k8s.io/v1
+metadata:
+  name: http
+  namespace: kgateway-system
+spec:
+  gatewayClassName: kgateway
+  listeners:
+    - protocol: HTTPS
+      port: 443
+      name: https
+      allowedRoutes:
+        namespaces:
+          from: All
