@@ -12,8 +12,6 @@ spec:
   project: default
   source:
     chart: kgateway-crds
-    helm:
-      skipCrds: false
     repoURL: cr.kgateway.dev/kgateway-dev/charts
     targetRevision: v2.1.*
   syncPolicy:
@@ -39,8 +37,6 @@ spec:
   project: default
   source:
     chart: kgateway
-    helm:
-      skipCrds: false
     repoURL: cr.kgateway.dev/kgateway-dev/charts
     targetRevision: v2.1.*
   syncPolicy:
