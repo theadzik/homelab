@@ -9,15 +9,6 @@ metadata:
     cert-manager.io/cluster-issuer: "lets-encrypt-prod"
 spec:
   gatewayClassName: kgateway
-  listeners:
-    - protocol: HTTPS
-      port: 443
-      name: https
-      allowedRoutes:
-        namespaces:
-          from: All
-      hostname: "*.test.zmuda.pro"
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - name: test-zmuda-pro-tls
+  allowedListeners:
+    namespaces:
+      from: All
