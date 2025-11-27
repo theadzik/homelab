@@ -107,6 +107,23 @@ allowVolumeExpansion: true
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
+  name: synology-nfs-retain-ssd-postgres
+provisioner: csi.san.synology.com
+parameters:
+  protocol: "nfs"
+  mountPermissions: '0755'
+  location: "/volume2"
+mountOptions:
+  - nfsvers=4.1
+  - hard
+reclaimPolicy: Retain
+allowVolumeExpansion: true
+
+---
+
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
   name: synology-nfs-delete-ssd
 provisioner: csi.san.synology.com
 parameters:

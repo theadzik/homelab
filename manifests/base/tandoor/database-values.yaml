@@ -1,0 +1,12 @@
+version:
+  postgresql: "18"
+
+cluster:
+  instances: 3
+  storage:
+    size: 4Gi
+    storageClass: "synology-nfs-retain-ssd-postgres"
+  envFrom:
+    - secretRef:
+        name: db-credentials
+        optional: true

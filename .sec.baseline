@@ -235,16 +235,6 @@
         "is_secret": false
       }
     ],
-    "manifests/base/media/ingress-lidarr.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/media/ingress-lidarr.yaml",
-        "hashed_secret": "9fb18d953f4912a4ee501e4297d5acbd3e13b93c",
-        "is_verified": false,
-        "line_number": 9,
-        "is_secret": false
-      }
-    ],
     "manifests/base/media/ingress-nzbget.yaml": [
       {
         "type": "Secret Keyword",
@@ -366,5 +356,5 @@
       }
     ]
   },
-  "generated_at": "2025-10-25T09:09:13Z"
+  "generated_at": "2025-11-27T17:59:44Z"
 }

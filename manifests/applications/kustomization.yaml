@@ -22,6 +22,7 @@ resources:
   - priority-classes.yaml
   # - reddit-meaningofwords.yaml
   - synology-csi.yaml
+  - tandoor.yaml
   - vaultwarden.yaml
   - velero.yaml
   - vpa.yaml
