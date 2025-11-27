@@ -6,7 +6,6 @@ cluster:
   storage:
     size: 4Gi
     storageClass: "synology-nfs-retain-ssd-postgres"
-  envFrom:
-    - secretRef:
-        name: db-credentials
-        optional: true
+  initdb:
+    database: "recipes"
+    owner: "recipes"
