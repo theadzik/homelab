@@ -6,6 +6,7 @@ resources:
   - audiobookshelf.yaml
   - cert-manager.yaml
   - cloudflared.yaml
+  - cnpg.yaml
   - crowdsec.yaml
   - external-dns.yaml
   - gateway.yaml
