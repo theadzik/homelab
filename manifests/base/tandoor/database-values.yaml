@@ -1,3 +1,6 @@
+version:
+  postgresql: "18"
+
 cluster:
   instances: 3
   storage:
