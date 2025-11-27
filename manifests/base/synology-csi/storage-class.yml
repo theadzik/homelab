@@ -111,7 +111,6 @@ metadata:
 provisioner: csi.san.synology.com
 parameters:
   protocol: "nfs"
-  mountPermissions: '0755'
   location: "/volume2"
 mountOptions:
   - nfsvers=4.1
