@@ -183,11 +183,9 @@ spec:
             runAsUser: 65534
       volumes:
         - name: media
-          persistentVolumeClaim:
-            claimName: recipes-media
+          emptyDir: {}
         - name: static
-          persistentVolumeClaim:
-            claimName: recipes-static
+          emptyDir: {}
         - name: nginx-config
           configMap:
             name: recipes-nginx-config
