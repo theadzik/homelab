@@ -10,7 +10,7 @@ spec:
   resources:
     requests:
       storage: 1Gi
-  storageClassName: "synology-iscsi-retain"
+  storageClassName: "synology-nfs-delete"
 
 ---
 
@@ -26,4 +26,4 @@ spec:
   resources:
     requests:
       storage: 1Gi
-  storageClassName: "synology-iscsi-retain"
+  storageClassName: "synology-nfs-delete"
