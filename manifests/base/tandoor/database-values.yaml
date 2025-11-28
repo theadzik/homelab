@@ -5,7 +5,7 @@ cluster:
   instances: 3
   storage:
     size: 4Gi
-    storageClass: "synology-nfs-retain-ssd-postgres"
+    storageClass: "synology-iscsi-delete-ssd"
   initdb:
     database: "recipes"
     owner: "recipes"
