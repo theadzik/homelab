@@ -3,8 +3,9 @@ kind: Kustomization
 namespace: tandoor
 resources:
   - configmap.yaml
-#  - deployment.yaml
+  - deployment.yaml
   - ingress.yaml
   - pvc.yaml
+  - secret.yaml
   - service.yaml
   - serviceaccount.yaml

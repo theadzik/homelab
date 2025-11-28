@@ -35,19 +35,22 @@ spec:
             - name: DB_ENGINE
               value: django.db.backends.postgresql
             - name: POSTGRES_HOST
-              value: recipes-postgresql
+              valueFrom:
+                secretKeyRef:
+                  name: database-cluster-app
+                  key: host
             - name: POSTGRES_PORT
               value: "5432"
             - name: POSTGRES_USER
-              value: postgres
+              value: recipes
             - name: POSTGRES_DB
               value: recipes
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: recipes
-                  key: postgresql-postgres-password
-          image: vabene1111/recipes
+                  name: database-cluster-app
+                  key: password
+          image: vabene1111/recipes:2.3.6
           imagePullPolicy: Always
           resources:
             requests:
@@ -80,7 +83,7 @@ spec:
               subPath: files
       containers:
         - name: recipes-nginx
-          image: nginx:latest
+          image: nginx:1.29.3-alpine
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
@@ -161,18 +164,21 @@ spec:
             - name: DB_ENGINE
               value: django.db.backends.postgresql
             - name: POSTGRES_HOST
-              value: recipes-postgresql
+              valueFrom:
+                secretKeyRef:
+                  name: database-cluster-app
+                  key: host
             - name: POSTGRES_PORT
               value: "5432"
             - name: POSTGRES_USER
-              value: postgres
+              value: recipes
             - name: POSTGRES_DB
               value: recipes
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: recipes
-                  key: postgresql-postgres-password
+                  name: database-cluster-app
+                  key: password
           securityContext:
             runAsUser: 65534
       volumes:
