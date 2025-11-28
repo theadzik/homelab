@@ -5,7 +5,7 @@ cluster:
   instances: 3
   storage:
     size: 4Gi
-    storageClass: "synology-iscsi-delete-ssd"
+    storageClass: "synology-iscsi-retain"
   initdb:
     database: "recipes"
     owner: "recipes"
