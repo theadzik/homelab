@@ -305,6 +305,16 @@
         "is_secret": false
       }
     ],
+    "manifests/base/tandoor/ingress.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "manifests/base/tandoor/ingress.yaml",
+        "hashed_secret": "efb4f483ddfedfa76c9dd21eb5f3ac2efc978c70",
+        "is_verified": false,
+        "line_number": 39,
+        "is_secret": false
+      }
+    ],
     "manifests/base/vaultwarden/backup.yaml": [
       {
         "type": "Secret Keyword",
@@ -356,5 +366,5 @@
       }
     ]
   },
-  "generated_at": "2025-11-27T17:59:44Z"
+  "generated_at": "2025-11-28T12:11:53Z"
 }

@@ -110,7 +110,7 @@ spec:
               subPath: nginx-config
               readOnly: true
         - name: recipes
-          image: vabene1111/recipes
+          image: vabene1111/recipes:2.3.6
           imagePullPolicy: IfNotPresent
           command:
             - /opt/recipes/venv/bin/gunicorn
@@ -153,7 +153,7 @@ spec:
             - name: DEBUG
               value: "0"
             - name: ALLOWED_HOSTS
-              value: '*'
+              value: 'recipes.zmuda.pro'
             - name: SECRET_KEY
               valueFrom:
                 secretKeyRef:

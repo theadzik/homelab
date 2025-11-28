@@ -2,12 +2,14 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-  #cert-manager.io/cluster-issuer: letsencrypt-prod
-  #kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  labels:
+    dns-type: internal
   name: recipes
 spec:
+  ingressClassName: nginx
   rules:
-    - host: recipes.local
+    - host: recipes.zmuda.pro
       http:
         paths:
           - backend:
@@ -31,7 +33,7 @@ spec:
                   number: 80
             path: /static
             pathType: Prefix
-  #tls:
-  #- hosts:
-  #  - recipes.local
-  #  secretName: recipes-local-tls
+  tls:
+    - hosts:
+        - recipes.zmuda.pro
+      secretName: recipes-local-tls
