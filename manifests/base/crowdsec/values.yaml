@@ -12,11 +12,11 @@ config:
     db_config:
       flush:
         bouncers_autodelete:
-          cert: "7d"
-          api_key: "7d"
+          cert: "1d"
+          api_key: "1d"
         agents_autodelete:
-          cert: "7d"
-          login_password: "7d"
+          cert: "1d"
+          login_password: "1d"
 
 agent:
   acquisition:
