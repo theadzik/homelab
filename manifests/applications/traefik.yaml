@@ -7,9 +7,9 @@ metadata:
 spec:
   project: default
   sources:
-    - chart: traefik
+    - path: .
       repoURL: oci://ghcr.io/traefik/helm/traefik
-      targetRevision: 37.4.*
+      targetRevision: 37.4.0
       helm:
         releaseName: traefik
         valueFiles:
