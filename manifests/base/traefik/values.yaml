@@ -28,6 +28,8 @@ topologySpreadConstraints:
   - labelSelector:
       matchLabels:
         app.kubernetes.io/name: '{{ template "traefik.name" . }}'
+      matchLabelKeys:
+        - pod-template-hash
     maxSkew: 1
     topologyKey: kubernetes.io/hostname
     whenUnsatisfiable: DoNotSchedule
@@ -36,8 +38,4 @@ providers:
   kubernetesIngressNginx:
     enabled: true
     throttleDuration: "2s"
-
-    ingressClass: "nginx"
-    controllerClass: "k8s.io/ingress-nginx"
-    watchIngressWithoutClass: false
-    ingressClassByName: false
+    watchNamespace: "tandoor"
