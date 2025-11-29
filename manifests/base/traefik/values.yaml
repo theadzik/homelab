@@ -42,4 +42,4 @@ providers:
 
 logs:
   general:
-    level: "DEBUG"  # @schema enum:[TRACE,DEBUG,INFO,WARN,ERROR,FATAL,PANIC]; default: "INFO"
+    level: "TRACE"
