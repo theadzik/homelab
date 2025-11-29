@@ -37,7 +37,7 @@ providers:
     enabled: true
     throttleDuration: "2s"
 
-    ingressClass: "nginx-test"
+    ingressClass: "nginx"
     controllerClass: "k8s.io/ingress-nginx"
     watchIngressWithoutClass: false
     ingressClassByName: false
