@@ -9,7 +9,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: recipes.zmuda.pro
+    - host: tandoor.zmuda.pro
       http:
         paths:
           - backend:
@@ -35,5 +35,5 @@ spec:
             pathType: Prefix
   tls:
     - hosts:
-        - recipes.zmuda.pro
-      secretName: recipes-local-tls
+        - tandoor.zmuda.pro
+      secretName: tandoor-zmuda-pro-tls

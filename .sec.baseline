@@ -309,7 +309,7 @@
       {
         "type": "Secret Keyword",
         "filename": "manifests/base/tandoor/ingress.yaml",
-        "hashed_secret": "efb4f483ddfedfa76c9dd21eb5f3ac2efc978c70",
+        "hashed_secret": "3ad19aa5dc443364d67dcacb1b0e5048b9708095",
         "is_verified": false,
         "line_number": 39,
         "is_secret": false
@@ -366,5 +366,5 @@
       }
     ]
   },
-  "generated_at": "2025-11-28T12:11:53Z"
+  "generated_at": "2025-11-29T10:22:10Z"
 }
