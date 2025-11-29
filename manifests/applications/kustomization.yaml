@@ -23,6 +23,7 @@ resources:
   # - reddit-meaningofwords.yaml
   - synology-csi.yaml
   - tandoor.yaml
+  - traefik.yaml
   - vaultwarden.yaml
   - velero.yaml
   - vpa.yaml

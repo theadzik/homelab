@@ -1,0 +1,43 @@
+controller:
+  extraVolumes:
+    - name: crowdsec-bouncer-plugin
+      emptyDir: {}
+  extraInitContainers:
+    - name: init-clone-crowdsec-bouncer
+      image: crowdsecurity/lua-bouncer-plugin
+      imagePullPolicy: IfNotPresent
+      envFrom:
+        - secretRef:
+            name: crowdsec-apikey
+      env:
+        - name: API_URL
+          value: "http://crowdsec-service.crowdsec.svc.cluster.local:8080"
+        - name: BOUNCER_CONFIG
+          value: "/crowdsec/crowdsec-bouncer.conf"
+        - name: BAN_TEMPLATE_PATH
+          value: "/etc/nginx/lua/plugins/crowdsec/templates/ban.html"
+        - name: APPSEC_URL
+          value: "http://crowdsec-appsec-service.crowdsec.svc.cluster.local:7422"
+        - name: APPSEC_FAILURE_ACTION
+          value: passthrough
+        - name: APPSEC_CONNECT_TIMEOUT
+          value: "100"
+        - name: APPSEC_SEND_TIMEOUT
+          value: "100"
+        - name: APPSEC_PROCESS_TIMEOUT
+          value: "1000"
+        - name: ALWAYS_SEND_TO_APPSEC
+          value: "false"
+      command: ['sh', '-c', "sh /docker_start.sh; mkdir -p /lua_plugins/crowdsec/; cp -R /crowdsec/* /lua_plugins/crowdsec/"]
+      volumeMounts:
+        - name: crowdsec-bouncer-plugin
+          mountPath: /lua_plugins
+  extraVolumeMounts:
+    - name: crowdsec-bouncer-plugin
+      mountPath: /etc/nginx/lua/plugins/crowdsec
+      subPath: crowdsec
+  config:
+    plugins: "crowdsec"
+    lua-shared-dicts: "crowdsec_cache: 50m"
+    server-snippet: |
+      resolver local=on ipv6=off;

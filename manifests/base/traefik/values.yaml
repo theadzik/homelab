@@ -1,0 +1,43 @@
+deployment:
+  replicas: 2
+  minReadySeconds: 10
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+
+priorityClassName: "system-cluster-critical"
+
+tolerations:
+  - key: "node-role.kubernetes.io/control-plane"
+    operator: "Exists"
+    effect: "NoSchedule"
+
+affinity:
+  nodeAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+            - key: node-role.kubernetes.io/control-plane
+              operator: In
+              values:
+                - "true"
+
+topologySpreadConstraints:
+  - labelSelector:
+      matchLabels:
+        app.kubernetes.io/name: '{{ template "traefik.name" . }}'
+    maxSkew: 1
+    topologyKey: kubernetes.io/hostname
+    whenUnsatisfiable: DoNotSchedule
+
+providers:
+  kubernetesIngressNginx:
+    enabled: true
+    throttleDuration: "2s"
+
+    ingressClass: "nginx-test"
+    controllerClass: "k8s.io/ingress-nginx"
+    watchIngressWithoutClass: false
+    ingressClassByName: false
