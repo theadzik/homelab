@@ -23,9 +23,13 @@ agent:
     - namespace: ingress-nginx
       podName: ingress-nginx-*
       program: nginx-ingress-controller
+    - namespace: traefik
+      podName: traefik-*
+      program: traefik
   env:
     - name: COLLECTIONS
-      value: "crowdsecurity/nginx"
+      value: "crowdsecurity/nginx crowdsecurity/traefik"
+
 lapi:
   resources:
     limits:
@@ -40,6 +44,8 @@ lapi:
     - name: ENROLL_TAGS
       value: 'k8s linux'
   envFrom:
+    - secretRef:
+        name: traefik-apikey
     - secretRef:
         name: nginx-apikey
     - secretRef:
@@ -57,6 +63,7 @@ lapi:
         - ReadWriteOnce
       storageClassName: "synology-iscsi-delete-ssd"
       size: 1Gi
+
 appsec:
   enabled: true
   replicas: 1
@@ -73,9 +80,11 @@ appsec:
     - source: appsec
       listen_addr: "0.0.0.0:7422"
       path: /
-      appsec_config: crowdsecurity/appsec-default
+      appsec_configs:
+        - crowdsecurity/appsec-default
+        - crowdsecurity/crs
       labels:
         type: appsec
   env:
     - name: COLLECTIONS
-      value: "crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-generic-rules"
+      value: "crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-crs crowdsecurity/appsec-generic-rules"

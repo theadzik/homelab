@@ -38,8 +38,3 @@ providers:
   kubernetesIngressNginx:
     enabled: true
     throttleDuration: "2s"
-    watchNamespace: "tandoor"
-
-logs:
-  general:
-    level: "TRACE"
