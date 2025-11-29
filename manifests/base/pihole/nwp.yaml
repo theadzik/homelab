@@ -33,6 +33,20 @@ spec:
     - from:
         - namespaceSelector:
             matchLabels:
+              kubernetes.io/metadata.name: kgateway-system
+      ports:
+        - port: 80
+          protocol: TCP
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: traefik
+      ports:
+        - port: 80
+          protocol: TCP
+    - from:
+        - namespaceSelector:
+            matchLabels:
               kubernetes.io/metadata.name: external-dns
       ports:
         - port: 80
