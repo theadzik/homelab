@@ -39,3 +39,7 @@ providers:
     enabled: true
     throttleDuration: "2s"
     watchNamespace: "tandoor"
+
+logs:
+  general:
+    level: "DEBUG"  # @schema enum:[TRACE,DEBUG,INFO,WARN,ERROR,FATAL,PANIC]; default: "INFO"
