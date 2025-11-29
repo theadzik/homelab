@@ -28,8 +28,8 @@ topologySpreadConstraints:
   - labelSelector:
       matchLabels:
         app.kubernetes.io/name: '{{ template "traefik.name" . }}'
-      matchLabelKeys:
-        - pod-template-hash
+    matchLabelKeys:
+      - pod-template-hash
     maxSkew: 1
     topologyKey: kubernetes.io/hostname
     whenUnsatisfiable: DoNotSchedule
