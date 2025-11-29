@@ -5,7 +5,6 @@ resources:
   - configmap.yaml
   - deployment.yaml
   - ingress.yaml
-  - nwp.yaml
   - secret.yaml
   - service.yaml
   - serviceaccount.yaml
