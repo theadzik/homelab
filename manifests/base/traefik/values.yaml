@@ -48,4 +48,8 @@ experimental:
 logs:
   access:
     enabled: true
-    format: genericCLF
+    format: json
+  fields:
+    headers:
+      names:
+        User-Agent: keep
