@@ -58,6 +58,9 @@ spec:
     spec:
       serviceAccount: csi-node-sa
       hostNetwork: true
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          effect: "NoSchedule"
       containers:
         - name: csi-driver-registrar
           securityContext:
