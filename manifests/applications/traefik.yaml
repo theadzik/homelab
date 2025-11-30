@@ -46,6 +46,7 @@ spec:
           - $repo/manifests/base/traefik/values.yaml
     - repoURL: 'https://github.com/theadzik/homelab'
       targetRevision: HEAD
+      path: manifests/base/traefik
       ref: repo
   destination:
     server: "https://kubernetes.default.svc"
