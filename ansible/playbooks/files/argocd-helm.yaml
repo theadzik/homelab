@@ -44,13 +44,9 @@ spec:
         enabled: true
         annotations:
           cert-manager.io/cluster-issuer: "lets-encrypt-prod"
-          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-          nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-          nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.0.0/16,10.0.0.0/8
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
         labels:
           dns-type: internal
-        ingressClassName: "nginx"
+        ingressClassName: "traefik"
         tls: true
 
     repoServer:
