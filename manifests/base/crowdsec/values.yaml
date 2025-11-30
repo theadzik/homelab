@@ -35,6 +35,8 @@ agent:
 
 lapi:
   replicas: 2
+  strategy:
+    type: RollingUpdate
   resources:
     limits:
       memory: 500Mi
@@ -74,7 +76,7 @@ appsec:
   enabled: true
   replicas: 2
   strategy:
-    type: Recreate
+    type: RollingUpdate
   resources:
     limits:
       memory: 250Mi
