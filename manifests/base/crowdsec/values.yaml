@@ -28,8 +28,13 @@ agent:
   env:
     - name: COLLECTIONS
       value: "crowdsecurity/traefik"
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"
 
 lapi:
+  replicas: 2
   resources:
     limits:
       memory: 500Mi
@@ -60,10 +65,14 @@ lapi:
         - ReadWriteOnce
       storageClassName: "synology-iscsi-delete-ssd"
       size: 1Gi
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"
 
 appsec:
   enabled: true
-  replicas: 1
+  replicas: 2
   strategy:
     type: Recreate
   resources:
@@ -85,3 +94,7 @@ appsec:
   env:
     - name: COLLECTIONS
       value: "crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-crs crowdsecurity/appsec-generic-rules"
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"
