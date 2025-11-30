@@ -9,7 +9,7 @@ metadata:
   labels:
     dns-type: external
 spec:
-  ingressClassName: nginx
+  ingressClassName: traefik
   tls:
     - hosts:
         - vault.zmuda.pro

@@ -5,10 +5,10 @@ no-autoupdate: true
 ingress:
   - hostname: zmuda.pro
     originServerName: zmuda.pro
-    service: https://ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
+    service: https://traefik.traefik.svc.cluster.local:443
     http2Origin: true
   - hostname: vault.zmuda.pro
     originServerName: vault.zmuda.pro
-    service: https://ingress-nginx-controller.ingress-nginx.svc.cluster.local:443
+    service: https://traefik.traefik.svc.cluster.local:443
     http2Origin: true
   - service: http_status:404
