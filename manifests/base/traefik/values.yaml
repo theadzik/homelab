@@ -53,3 +53,10 @@ logs:
     headers:
       names:
         User-Agent: keep
+
+ports:
+  web:
+    redirections:
+      entryPoint:
+        to: https
+        scheme: https
