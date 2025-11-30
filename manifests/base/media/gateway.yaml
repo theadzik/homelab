@@ -30,8 +30,9 @@ spec:
   hostnames:
     - jellyfin.test.zmuda.pro
   parentRefs:
-    - name: https
-      namespace: kgateway-system
+    - name: media-listeners
+      kind: XListenerSet
+      group: gateway.networking.x-k8s.io
       sectionName: media-listeners
   rules:
     - backendRefs:
