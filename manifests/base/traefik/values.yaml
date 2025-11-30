@@ -58,5 +58,5 @@ ports:
   web:
     redirections:
       entryPoint:
-        to: https
+        to: websecure
         scheme: https
