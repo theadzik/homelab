@@ -4,11 +4,10 @@ metadata:
   name: pihole
   annotations:
     cert-manager.io/cluster-issuer: "lets-encrypt-prod"
-    nginx.ingress.kubernetes.io/whitelist-source-range: 192.168.0.0/16,10.0.0.0/8
   labels:
     dns-type: internal
 spec:
-  ingressClassName: nginx
+  ingressClassName: traefik
   tls:
     - hosts:
         - pihole.zmuda.pro

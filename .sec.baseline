@@ -167,7 +167,7 @@
         "filename": "manifests/base/audiobookshelf/ingress.yaml",
         "hashed_secret": "329af59950a4b9745c9b06468baf10daa7ded10e",
         "is_verified": false,
-        "line_number": 16,
+        "line_number": 14,
         "is_secret": false
       }
     ],
@@ -203,7 +203,7 @@
         "filename": "manifests/base/kube-prometheus-stack/values.yaml",
         "hashed_secret": "6bf62b4456cf51708b514be8a57e132ef19fbe4c",
         "is_verified": false,
-        "line_number": 38,
+        "line_number": 37,
         "is_secret": false
       },
       {
@@ -211,7 +211,7 @@
         "filename": "manifests/base/kube-prometheus-stack/values.yaml",
         "hashed_secret": "0edf4ebb9d68a3f7803b37d46623a0faf71b9b9a",
         "is_verified": false,
-        "line_number": 41,
+        "line_number": 40,
         "is_secret": false
       }
     ],
@@ -271,7 +271,7 @@
         "filename": "manifests/base/pihole/ingress.yaml",
         "hashed_secret": "cec45245e661ad3db0f1b10d14b2de0744d95672",
         "is_verified": false,
-        "line_number": 15,
+        "line_number": 14,
         "is_secret": false
       }
     ],
@@ -366,5 +366,5 @@
       }
     ]
   },
-  "generated_at": "2025-11-29T10:22:10Z"
+  "generated_at": "2025-11-30T08:27:15Z"
 }
