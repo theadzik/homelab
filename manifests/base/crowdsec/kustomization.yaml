@@ -4,5 +4,4 @@ generatorOptions:
   disableNameSuffixHash: true
 resources:
   - enroll-key-secret.yaml
-  - nginx-apikey-secret.yaml
   - traefik-apikey-secret.yaml

@@ -20,15 +20,12 @@ config:
 
 agent:
   acquisition:
-    - namespace: ingress-nginx
-      podName: ingress-nginx-*
-      program: nginx-ingress-controller
     - namespace: traefik
       podName: traefik-*
       program: traefik
   env:
     - name: COLLECTIONS
-      value: "crowdsecurity/nginx crowdsecurity/traefik"
+      value: "crowdsecurity/traefik"
 
 lapi:
   resources:
@@ -46,8 +43,6 @@ lapi:
   envFrom:
     - secretRef:
         name: traefik-apikey
-    - secretRef:
-        name: nginx-apikey
     - secretRef:
         name: enroll-key
   persistentVolume:
