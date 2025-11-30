@@ -56,14 +56,14 @@ lapi:
     data:
       enabled: true
       accessModes:
-        - ReadWriteOnce
-      storageClassName: "synology-iscsi-delete-ssd"
+        - ReadWriteMany
+      storageClassName: "synology-nfs-delete-ssd"
       size: 1Gi
     config:
       enabled: true
       accessModes:
-        - ReadWriteOnce
-      storageClassName: "synology-iscsi-delete-ssd"
+        - ReadWriteMany
+      storageClassName: "synology-nfs-delete-ssd"
       size: 1Gi
   tolerations:
     - key: "node-role.kubernetes.io/control-plane"
