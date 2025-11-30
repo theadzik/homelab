@@ -44,9 +44,11 @@ experimental:
     bouncer:
       moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
       version: v1.4.6
+      hash: "sha256:4ab4f3f18304a506517dae3919b9222a134d1da1"
     cloudflare:
       moduleName: github.com/agence-gaya/traefik-plugin-cloudflare
       version: v1.2.0
+      hash: "sha256:6e693e531b047429f40e65a29f5c6c034ca92498"
 
 logs:
   access:

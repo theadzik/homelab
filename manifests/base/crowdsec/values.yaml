@@ -93,7 +93,7 @@ appsec:
         type: appsec
   env:
     - name: COLLECTIONS
-      value: "crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-crs crowdsecurity/appsec-generic-rules"
+      value: "crowdsecurity/appsec-virtual-patching crowdsecurity/appsec-crs crowdsecurity/appsec-generic-rules crowdsecurity/base-http-scenarios crowdsecurity/http-cve crowdsecurity/http-dos crowdsecurity/traefik"
   tolerations:
     - key: "node-role.kubernetes.io/control-plane"
       operator: "Exists"
