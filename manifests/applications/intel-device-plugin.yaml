@@ -9,21 +9,33 @@ spec:
   sources:
     - chart: node-feature-discovery
       repoURL: https://kubernetes-sigs.github.io/node-feature-discovery/charts
-      targetRevision: 0.17.*
+      targetRevision: 0.18.*
       helm:
         releaseName: nfd
+        valuesObject:
+          worker:
+            tolerations:
+              - key: "node-role.kubernetes.io/control-plane"
+                effect: "NoSchedule"
     - chart: intel-device-plugins-operator
       repoURL: https://intel.github.io/helm-charts/
-      targetRevision: 0.32.*
+      targetRevision: 0.34.*
       helm:
         releaseName: operator
+        valuesObject:
+          tolerations:
+            - key: "node-role.kubernetes.io/control-plane"
+              effect: "NoSchedule"
     - chart: intel-device-plugins-gpu
       repoURL: https://intel.github.io/helm-charts/
-      targetRevision: 0.32.*
+      targetRevision: 0.34.*
       helm:
         releaseName: gpu
         valuesObject:
           name: gpudeviceplugin-ds
+          tolerations:
+            - key: "node-role.kubernetes.io/control-plane"
+              effect: "NoSchedule"
   ignoreDifferences:
     - group: "*"
       kind: GpuDevicePlugin
