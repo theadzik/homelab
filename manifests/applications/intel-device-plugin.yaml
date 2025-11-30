@@ -16,6 +16,7 @@ spec:
           worker:
             tolerations:
               - key: "node-role.kubernetes.io/control-plane"
+                operator: Exists
                 effect: "NoSchedule"
     - chart: intel-device-plugins-operator
       repoURL: https://intel.github.io/helm-charts/
@@ -25,6 +26,7 @@ spec:
         valuesObject:
           tolerations:
             - key: "node-role.kubernetes.io/control-plane"
+              operator: Exists
               effect: "NoSchedule"
     - chart: intel-device-plugins-gpu
       repoURL: https://intel.github.io/helm-charts/
@@ -35,6 +37,7 @@ spec:
           name: gpudeviceplugin-ds
           tolerations:
             - key: "node-role.kubernetes.io/control-plane"
+              operator: Exists
               effect: "NoSchedule"
   ignoreDifferences:
     - group: "*"

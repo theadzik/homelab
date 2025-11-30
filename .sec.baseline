@@ -291,7 +291,7 @@
         "filename": "manifests/base/synology-csi/node.yml",
         "hashed_secret": "c5ae2f4efb6b79939944b24f1cf3dd1e13e14faf",
         "is_verified": false,
-        "line_number": 134,
+        "line_number": 135,
         "is_secret": false
       }
     ],
@@ -366,5 +366,5 @@
       }
     ]
   },
-  "generated_at": "2025-11-30T15:46:25Z"
+  "generated_at": "2025-11-30T15:52:28Z"
 }
