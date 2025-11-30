@@ -42,7 +42,4 @@ providers:
 logs:
   access:
     enabled: true
-    format: common
-    fields:
-      headers:
-        defaultmode: keep
+    format: genericCLF
