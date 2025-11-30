@@ -38,3 +38,11 @@ providers:
   kubernetesIngressNginx:
     enabled: true
     throttleDuration: "2s"
+
+logs:
+  access:
+    enabled: true
+    format: common
+    fields:
+      headers:
+        defaultmode: keep
