@@ -39,6 +39,12 @@ providers:
     enabled: true
     throttleDuration: "2s"
 
+experimental:
+  plugins:
+    bouncer:
+      moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
+      version: v1.4.6
+
 logs:
   access:
     enabled: true
