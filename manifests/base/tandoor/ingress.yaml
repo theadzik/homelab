@@ -7,7 +7,7 @@ metadata:
     dns-type: internal
   name: recipes
 spec:
-  ingressClassName: nginx
+  ingressClassName: traefik
   rules:
     - host: tandoor.zmuda.pro
       http:
