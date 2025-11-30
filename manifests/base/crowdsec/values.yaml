@@ -2,6 +2,8 @@ container_runtime: containerd
 config:
   config.yaml.local: |
     api:
+      client:
+        unregister_on_exit: true
       server:
         use_forwarded_for_headers: true
         auto_registration:
