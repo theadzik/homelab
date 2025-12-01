@@ -143,21 +143,13 @@
         "is_secret": false
       }
     ],
-    "manifests/base/argocd/image-updater.yaml": [
+    "manifests/base/argocd-image-updater/values.yaml": [
       {
         "type": "Secret Keyword",
-        "filename": "manifests/base/argocd/image-updater.yaml",
+        "filename": "manifests/base/argocd-image-updater/values.yaml",
         "hashed_secret": "3b10339de9724ce87c5bb01f693f8d6f11b4e9ac",
         "is_verified": false,
-        "line_number": 100,
-        "is_secret": false
-      },
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/argocd/image-updater.yaml",
-        "hashed_secret": "cc05cdcb849e9ecb5b4dad1a9acc582c0cc91d53",
-        "is_verified": false,
-        "line_number": 294,
+        "line_number": 8,
         "is_secret": false
       }
     ],
@@ -366,5 +358,5 @@
       }
     ]
   },
-  "generated_at": "2025-11-30T15:52:28Z"
+  "generated_at": "2025-12-01T16:33:46Z"
 }

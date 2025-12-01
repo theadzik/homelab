@@ -1,0 +1,26 @@
+image:
+  pullPolicy: IfNotPresent
+
+registries:
+  - name: Docker Hub
+    prefix: docker.io
+    api_url: https://registry-1.docker.io
+    credentials: pullsecret:argocd/dockerhub-image-pull-secret
+    limit: 10
+    default: true
+
+tolerations:
+  - key: "node-role.kubernetes.io/control-plane"
+    operator: "Exists"
+    effect: "NoSchedule"
+
+affinity:
+  nodeAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+        matchExpressions:
+          - key: "node-role.kubernetes.io/control-plane"
+            operator: In
+            values:
+              - true

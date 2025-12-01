@@ -17,6 +17,18 @@ spec:
   valuesContent: |-
     global:
       domain: argocd.zmuda.pro
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
+      affinity:
+        nodeAffinity:
+          type: soft
+          matchExpressions:
+            - key: "node-role.kubernetes.io/control-plane"
+              operator: "In"
+              values:
+                - "true"
       image:
         repository: theadzik/custom-argocd
         tag: ""

@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-image-updater
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "-50"
+spec:
+  project: default
+  sources:
+    - path: .
+      repoURL: oci://ghcr.io/argoproj/argo-helm/argocd-image-updater
+      targetRevision: 1.*
+      helm:
+        releaseName: argocd-image-updater
+        valueFiles:
+          - $repo/manifests/base/argocd-image-updater/values.yaml
+    - repoURL: 'https://github.com/theadzik/homelab'
+      path: manifests/base/image-pull-secret
+      targetRevision: main
+      ref: repo
+  destination:
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
