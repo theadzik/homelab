@@ -4,6 +4,8 @@ metadata:
   name: crowdsec
   annotations:
     argocd.argoproj.io/sync-wave: "-15"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   sources:

@@ -5,6 +5,8 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "-15"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
@@ -13,6 +15,7 @@ spec:
     targetRevision: main
   destination:
     server: https://kubernetes.default.svc
+    namespace: kgateway-system
   syncPolicy:
     automated:
       prune: true

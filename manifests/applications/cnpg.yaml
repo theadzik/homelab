@@ -4,12 +4,14 @@ metadata:
   name: cnpg
   annotations:
     argocd.argoproj.io/sync-wave: "-5"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   sources:
     - chart: cloudnative-pg
       repoURL: https://cloudnative-pg.github.io/charts
-      targetRevision: 0.26.1
+      targetRevision: 0.26.*
       helm:
         releaseName: cnpg
         valueFiles:

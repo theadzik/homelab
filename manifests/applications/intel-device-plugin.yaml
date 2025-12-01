@@ -4,6 +4,8 @@ metadata:
   name: gpu-device-plugin
   annotations:
     argocd.argoproj.io/sync-wave: "-20"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   sources:

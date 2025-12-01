@@ -13,6 +13,7 @@ spec:
     targetRevision: main
   destination:
     server: https://kubernetes.default.svc
+    namespace: audiobookshelf
   syncPolicy:
     automated:
       prune: true

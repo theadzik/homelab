@@ -18,6 +18,7 @@ spec:
     targetRevision: main
   destination:
     server: https://kubernetes.default.svc
+    namespace: reddit-meaningofwords
   syncPolicy:
     automated:
       prune: true

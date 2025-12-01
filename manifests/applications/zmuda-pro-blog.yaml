@@ -17,6 +17,7 @@ spec:
     targetRevision: main
   destination:
     server: https://kubernetes.default.svc
+    namespace: zmuda-pro-blog
   syncPolicy:
     automated:
       prune: true
