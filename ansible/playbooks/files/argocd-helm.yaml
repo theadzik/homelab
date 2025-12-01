@@ -43,6 +43,8 @@ spec:
       priorityClassName: "system-cluster-critical"
 
     configs:
+      params:
+        server.insecure: true
       rbac:
         policy.csv: |
           p, role:authenticated, *, *, *, deny
