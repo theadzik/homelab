@@ -23,6 +23,17 @@ spec:
   destination:
     server: "https://kubernetes.default.svc"
     namespace: crowdsec
+  ignoreDifferences:
+    - group: ""
+      kind: "Secret"
+      name: "crowdsec-lapi-secrets"
+      jsonPointers:
+        - /data
+    - group: "apps"
+      kind: "Deployment"
+      name: "crowdsec-lapi"
+      jsonPointers:
+        - /spec/template/metadata/annotations/checksum~1lapi-secret # ~1 = /
   syncPolicy:
     automated:
       prune: true
