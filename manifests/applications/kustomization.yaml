@@ -11,7 +11,6 @@ resources:
   - external-dns.yaml
   - gateway.yaml
   - gateway-api-crd.yaml
-  - ingress-nginx.yaml
   - intel-device-plugin.yaml
   - kgateway.yaml
 #  - kube-prometheus-stack.yaml
