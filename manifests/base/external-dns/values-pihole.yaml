@@ -1,0 +1,14 @@
+provider:
+  name: pihole
+env:
+  - name: EXTERNAL_DNS_PIHOLE_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: web-password
+        key: WEBPASSWORD
+extraArgs:
+  pihole-server: "http://pihole-http.pihole.svc.cluster.local"
+  pihole-api-version: "6"
+  pihole-tls-skip-verify: ""
+labelFilter: dns-type in (internal)
+registry: noop
