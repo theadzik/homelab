@@ -17,3 +17,7 @@ configMapGenerator:
   - name: pihole-config
     envs:
       - configs/config.yaml
+patches:
+  - path: ./patches/statefulset.yaml
+    target:
+      kind: StatefulSet

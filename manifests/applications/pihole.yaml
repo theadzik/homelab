@@ -6,10 +6,6 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd-image-updater.argoproj.io/image-list: pihole=pihole/pihole:latest,nebula=ghcr.io/lovelaze/nebula-sync
-    argocd-image-updater.argoproj.io/pihole.update-strategy: digest
-    argocd-image-updater.argoproj.io/nebula.update-strategy: semver
-    argocd-image-updater.argoproj.io/write-back-method: git
     argocd.argoproj.io/sync-wave: "-10"
 spec:
   project: default
@@ -24,3 +20,26 @@ spec:
     automated:
       prune: true
       selfHeal: true
+
+---
+
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: pihole
+spec:
+  namespace: pihole
+  applicationRefs:
+    - namePattern: "pihole"
+      writeBackConfig:
+        method: "git"
+      images:
+        - alias: "pihole"
+          imageName: "pihole/pihole"
+          commonUpdateSettings:
+            updateStrategy: "alphabetical"
+            allowTags: "regexp:^[0-9]{4}\\.[0-9]{2}\\.[0-9]+$"
+        - alias: "nebula"
+          imageName: "ghcr.io/lovelaze/nebula-sync"
+          commonUpdateSettings:
+            updateStrategy: "semver"

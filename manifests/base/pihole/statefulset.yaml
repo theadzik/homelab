@@ -6,7 +6,6 @@ metadata:
     app.kubernetes.io/instance: primary
 spec:
   replicas: 1
-  serviceName: pihole-dns
   selector:
     matchLabels:
       app.kubernetes.io/instance: primary
@@ -14,75 +13,6 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/instance: primary
-    spec:
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: ScheduleAnyway
-      priorityClassName: high-priority
-      imagePullSecrets:
-        - name: dockerhub-image-pull-secret
-      containers:
-        - name: pihole
-          image: pihole/pihole:2025.04.0
-          imagePullPolicy: IfNotPresent
-          readinessProbe:
-            tcpSocket:
-              port: 53
-            timeoutSeconds: 1
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          livenessProbe:
-            exec:
-              command:
-                - "/bin/sh"
-                - "-c"
-                - "dig @127.0.0.1 pi.hole"
-            timeoutSeconds: 1
-            failureThreshold: 2
-            initialDelaySeconds: 30
-            periodSeconds: 10
-          resources:
-            requests:
-              cpu: 100m
-              memory: 256Mi
-          ports:
-            - containerPort: 53
-              protocol: "TCP"
-            - containerPort: 53
-              protocol: "UDP"
-            - containerPort: 80
-              protocol: "TCP"
-          securityContext:
-            allowPrivilegeEscalation: true
-            capabilities:
-              add:
-                - NET_ADMIN
-          envFrom:
-            - configMapRef:
-                name: pihole-config
-          env:
-            - name: FTLCONF_webserver_api_password
-              valueFrom:
-                secretKeyRef:
-                  name: web-password
-                  key: WEBPASSWORD
-            - name: PIHOLE_UID
-              value: "1000"
-            - name: PIHOLE_GID
-              value: "1000"
-          volumeMounts:
-            - mountPath: /etc/pihole
-              name: pihole-primary
-  volumeClaimTemplates:
-    - metadata:
-        name: pihole-primary
-      spec:
-        accessModes: ["ReadWriteOnce"]
-        storageClassName: "synology-iscsi-retain-ssd"
-        resources:
-          requests:
-            storage: 1Gi
 
 ---
 
@@ -94,7 +24,6 @@ metadata:
     app.kubernetes.io/instance: secondary
 spec:
   replicas: 2
-  serviceName: pihole-dns
   selector:
     matchLabels:
       app.kubernetes.io/instance: secondary
@@ -102,72 +31,3 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/instance: secondary
-    spec:
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: ScheduleAnyway
-      priorityClassName: high-priority
-      imagePullSecrets:
-        - name: dockerhub-image-pull-secret
-      containers:
-        - name: pihole
-          image: pihole/pihole:2025.04.0
-          imagePullPolicy: IfNotPresent
-          readinessProbe:
-            tcpSocket:
-              port: 53
-            timeoutSeconds: 1
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          livenessProbe:
-            exec:
-              command:
-                - "/bin/sh"
-                - "-c"
-                - "dig @127.0.0.1 pi.hole"
-            timeoutSeconds: 1
-            failureThreshold: 2
-            initialDelaySeconds: 30
-            periodSeconds: 10
-          resources:
-            requests:
-              cpu: 100m
-              memory: 256Mi
-          ports:
-            - containerPort: 53
-              protocol: "TCP"
-            - containerPort: 53
-              protocol: "UDP"
-            - containerPort: 80
-              protocol: "TCP"
-          securityContext:
-            allowPrivilegeEscalation: true
-            capabilities:
-              add:
-                - NET_ADMIN
-          envFrom:
-            - configMapRef:
-                name: pihole-config
-          env:
-            - name: FTLCONF_webserver_api_password
-              valueFrom:
-                secretKeyRef:
-                  name: web-password
-                  key: WEBPASSWORD
-            - name: PIHOLE_UID
-              value: "1000"
-            - name: PIHOLE_GID
-              value: "1000"
-          volumeMounts:
-            - mountPath: /etc/pihole
-              name: pihole-secondary
-  volumeClaimTemplates:
-    - metadata:
-        name: pihole-secondary
-      spec:
-        accessModes: ["ReadWriteOnce"]
-        storageClassName: "synology-iscsi-retain-ssd"
-        resources:
-          requests:
-            storage: 1Gi
