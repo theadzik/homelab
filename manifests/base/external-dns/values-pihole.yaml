@@ -9,6 +9,6 @@ env:
 extraArgs:
   pihole-server: "http://pihole-http.pihole.svc.cluster.local"
   pihole-api-version: "6"
-  pihole-tls-skip-verify: ""
+  pihole-tls-skip-verify:
 labelFilter: dns-type in (internal)
 registry: noop
