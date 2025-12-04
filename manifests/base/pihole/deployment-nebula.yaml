@@ -35,4 +35,18 @@ spec:
             - name: RUN_GRAVITY
               value: "true"
             - name: CRON
-              value: "*/5 * * * *"
+              value: "*/1 * * * *"
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - preference:
+                matchExpressions:
+                  - key: "node-role.kubernetes.io/control-plane"
+                    operator: In
+                    values:
+                      - "true"
+              weight: 1
