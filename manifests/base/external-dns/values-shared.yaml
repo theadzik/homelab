@@ -1,0 +1,25 @@
+image:
+  tag: "v0.20.0"
+
+affinity:
+  nodeAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+            - key: "node-role.kubernetes.io/control-plane"
+              operator: In
+              values:
+                - "true"
+
+domainFilters:
+  - zmuda.pro
+
+sources:
+  - service
+  - ingress
+
+tolerations:
+  - key: "node-role.kubernetes.io/control-plane"
+    operator: "Exists"
+    effect: "NoSchedule"

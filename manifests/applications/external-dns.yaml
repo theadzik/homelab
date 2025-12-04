@@ -4,15 +4,29 @@ metadata:
   name: external-dns
   annotations:
     argocd.argoproj.io/sync-wave: "-5"
-    argocd-image-updater.argoproj.io/image-list: external=registry.k8s.io/external-dns/external-dns
-    argocd-image-updater.argoproj.io/external.update-strategy: semver
-    argocd-image-updater.argoproj.io/write-back-method: git
 spec:
   project: default
   sources:
-    - path: manifests/base/external-dns
-      repoURL: 'https://github.com/theadzik/homelab'
+    - chart: external-dns
+      repoURL: https://kubernetes-sigs.github.io/external-dns/
+      targetRevision: 1.19.*
+      helm:
+        releaseName: pihole
+        valueFiles:
+          - $repo/manifests/base/external-dns/values-shared.yaml
+          - $repo/manifests/base/external-dns/values-pihole.yaml
+    - chart: external-dns
+      repoURL: https://kubernetes-sigs.github.io/external-dns/
+      targetRevision: 1.19.*
+      helm:
+        releaseName: cloudflare
+        valueFiles:
+          - $repo/manifests/base/external-dns/values-shared.yaml
+          - $repo/manifests/base/external-dns/values-cloudflare.yaml
+    - repoURL: "https://github.com/theadzik/homelab"
+      path: "manifests/base/external-dns"
       targetRevision: main
+      ref: repo
   destination:
     server: "https://kubernetes.default.svc"
     namespace: external-dns
