@@ -29,7 +29,7 @@ rules:
     resources: ["pods"]
     verbs: ["get", "list", "watch"]
   - apiGroups: ["storage.k8s.io"]
-    resources: ["csinodes"]
+    resources: ["csinodes", "volumeattributesclasses"]
     verbs: ["get", "list", "watch"]
   - apiGroups: ["csi.storage.k8s.io"]
     resources: ["csinodeinfos"]
@@ -91,7 +91,7 @@ spec:
             capabilities:
               add: ["SYS_ADMIN"]
             allowPrivilegeEscalation: true
-          image: registry.k8s.io/sig-storage/csi-provisioner:v3.0.0
+          image: registry.k8s.io/sig-storage/csi-provisioner:v6.1.0
           args:
             - --timeout=60s
             - --csi-address=$(ADDRESS)
@@ -110,10 +110,11 @@ spec:
             capabilities:
               add: ["SYS_ADMIN"]
             allowPrivilegeEscalation: true
-          image: registry.k8s.io/sig-storage/csi-attacher:v3.3.0
+          image: registry.k8s.io/sig-storage/csi-attacher:v4.10.0
           args:
             - --v=5
             - --csi-address=$(ADDRESS)
+            - --timeout=60s
           env:
             - name: ADDRESS
               value: /var/lib/csi/sockets/pluginproxy/csi.sock
@@ -127,10 +128,11 @@ spec:
             capabilities:
               add: ["SYS_ADMIN"]
             allowPrivilegeEscalation: true
-          image: registry.k8s.io/sig-storage/csi-resizer:v1.3.0
+          image: registry.k8s.io/sig-storage/csi-resizer:v2.0.0
           args:
             - --v=5
             - --csi-address=$(ADDRESS)
+            - --timeout=60s
           env:
             - name: ADDRESS
               value: /var/lib/csi/sockets/pluginproxy/csi.sock
@@ -161,6 +163,20 @@ spec:
             - name: client-info
               mountPath: /etc/synology
               readOnly: true
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                  - key: "node-role.kubernetes.io/control-plane"
+                    operator: In
+                    values:
+                      - "true"
       volumes:
         - name: socket-dir
           emptyDir: {}

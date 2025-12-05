@@ -273,7 +273,7 @@
         "filename": "manifests/base/synology-csi/controller.yml",
         "hashed_secret": "c5ae2f4efb6b79939944b24f1cf3dd1e13e14faf",
         "is_verified": false,
-        "line_number": 169,
+        "line_number": 185,
         "is_secret": false
       }
     ],
@@ -358,5 +358,5 @@
       }
     ]
   },
-  "generated_at": "2025-12-04T12:07:23Z"
+  "generated_at": "2025-12-05T09:07:44Z"
 }
