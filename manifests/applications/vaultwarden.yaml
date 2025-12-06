@@ -5,11 +5,6 @@ metadata:
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
-  annotations:
-    argocd-image-updater.argoproj.io/image-list: vaultwarden=vaultwarden/server:1.x.x-alpine,restore=theadzik/vw-restore
-    argocd-image-updater.argoproj.io/vaultwarden.update-strategy: semver
-    argocd-image-updater.argoproj.io/restore.update-strategy: semver
-    argocd-image-updater.argoproj.io/write-back-method: git
 spec:
   project: default
   source:
@@ -23,3 +18,29 @@ spec:
     automated:
       prune: true
       selfHeal: true
+
+---
+
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: vaultwarden
+spec:
+  namespace: vaultwarden
+  applicationRefs:
+    - namePattern: "vaultwarden"
+      writeBackConfig:
+        method: "git"
+      images:
+        - alias: "vaultvarden"
+          imageName: "vaultwarden/server:~1"
+          commonUpdateSettings:
+            updateStrategy: "semver"
+        - alias: "restore"
+          imageName: "theadzik/vw-restore"
+          commonUpdateSettings:
+            updateStrategy: "semver"
+        - alias: "backup"
+          imageName: "theadzik/vw-backup"
+          commonUpdateSettings:
+            updateStrategy: "semver"
