@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # https://github.com/dani-garcia/vaultwarden/wiki/Backing-up-your-vault
 # https://github.com/rclone/rclone/issues/3655
 

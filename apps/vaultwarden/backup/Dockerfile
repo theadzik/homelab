@@ -5,7 +5,6 @@ ARG GROUP_ID=20001
 
 RUN apk add --no-cache --upgrade \
     sqlite \
-    bash \
     openssl \
     rclone
 

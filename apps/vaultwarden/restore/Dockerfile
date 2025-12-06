@@ -4,7 +4,6 @@ ARG USER_ID=10001
 ARG GROUP_ID=20001
 
 RUN apk add --no-cache --upgrade \
-    bash \
     openssl \
     rclone
 
