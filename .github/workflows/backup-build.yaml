@@ -50,14 +50,14 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: docker/build-push-action@v6
         with:
-          platforms: "linux/amd64,linux/arm64"
+          platforms: "linux/amd64"
           context: "{{defaultContext}}:apps/vaultwarden/backup"
           push: false
       - name: Build and push
         if: github.event_name != 'pull_request'
         uses: docker/build-push-action@v6
         with:
-          platforms: "linux/amd64,linux/arm64"
+          platforms: "linux/amd64"
           context: "{{defaultContext}}:apps/vaultwarden/backup"
           push: true
           tags: ${{ vars.DOCKERHUB_USERNAME }}/vw-backup:${{steps.vars.outputs.docker_tag }},${{ vars.DOCKERHUB_USERNAME }}/vw-backup:latest
