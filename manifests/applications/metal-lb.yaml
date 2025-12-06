@@ -9,10 +9,16 @@ metadata:
     argocd.argoproj.io/sync-wave: "-35"
 spec:
   project: default
-  source:
-    path: manifests/base/metal-lb
-    repoURL: 'https://github.com/theadzik/homelab'
-    targetRevision: HEAD
+  sources:
+    - path: manifests/base/metal-lb
+      repoURL: 'https://github.com/theadzik/homelab'
+      targetRevision: main
+    - chart: metallb
+      repoURL: https://metallb.github.io/metallb
+      targetRevision: v0.15.*
+      helm:
+        valuesFiles:
+          - manifests/base/metal-lb/values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: metallb-system
@@ -20,3 +26,10 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    managedNamespaceMetadata:
+      labels:
+        pod-security.kubernetes.io/enforce: privileged
+        pod-security.kubernetes.io/audit: privileged
+        pod-security.kubernetes.io/warn: privileged
+    syncOptions:
+      - CreateNamespace=true
