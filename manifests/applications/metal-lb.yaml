@@ -13,12 +13,14 @@ spec:
     - path: manifests/base/metal-lb
       repoURL: 'https://github.com/theadzik/homelab'
       targetRevision: main
+      ref: repo
     - chart: metallb
       repoURL: https://metallb.github.io/metallb
       targetRevision: v0.15.*
       helm:
-        valuesFiles:
-          - manifests/base/metal-lb/values.yaml
+        releaseName: metallb
+        valueFiles:
+          - $repo/manifests/base/metal-lb/values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: metallb-system
