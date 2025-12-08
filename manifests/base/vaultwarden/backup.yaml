@@ -28,12 +28,9 @@ spec:
                   readOnly: true
                 - mountPath: /tmp
                   name: tmp
-              env:
-                - name: BACKUP_ENCRYPTION_KEY
-                  valueFrom:
-                    secretKeyRef:
-                      name: vw-config
-                      key: BACKUP_ENCRYPTION_KEY
+              envFrom:
+                - secretRef:
+                    name: backup-encryption-secret
               securityContext:
                 readOnlyRootFilesystem: true
                 allowPrivilegeEscalation: false

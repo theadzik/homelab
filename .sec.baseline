@@ -313,7 +313,7 @@
         "filename": "manifests/base/vaultwarden/backup.yaml",
         "hashed_secret": "7218ca7db60e5be810c8e1c0ec8d5378ac2519e4",
         "is_verified": false,
-        "line_number": 67,
+        "line_number": 64,
         "is_secret": false
       }
     ],
@@ -333,7 +333,7 @@
         "filename": "manifests/base/vaultwarden/vaultwarden.yaml",
         "hashed_secret": "7218ca7db60e5be810c8e1c0ec8d5378ac2519e4",
         "is_verified": false,
-        "line_number": 135,
+        "line_number": 95,
         "is_secret": false
       }
     ],
@@ -358,5 +358,5 @@
       }
     ]
   },
-  "generated_at": "2025-12-05T09:07:44Z"
+  "generated_at": "2025-12-08T14:17:40Z"
 }

@@ -30,12 +30,9 @@ spec:
               name: data
             - mountPath: /tmp
               name: tmp
-          env:
-            - name: BACKUP_ENCRYPTION_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: vw-config
-                  key: BACKUP_ENCRYPTION_KEY
+          envFrom:
+            - secretRef:
+                name: backup-encryption-secret
           securityContext:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
@@ -68,6 +65,9 @@ spec:
             requests:
               memory: "128Mi"
               cpu: "100m"
+          envFrom:
+            - secretRef:
+                name: vw-secrets
           env:
             - name: DOMAIN
               value: 'https://vault.zmuda.pro'
@@ -75,48 +75,8 @@ spec:
               value: 'false'
             - name: SIGNUPS_VERIFY
               value: 'true'
-            - name: ADMIN_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: vw-config
-                  key: ADMIN_TOKEN
             - name: PUSH_ENABLED
               value: 'true'
-            - name: PUSH_INSTALLATION_ID
-              valueFrom:
-                secretKeyRef:
-                  name: vw-config
-                  key: PUSH_INSTALLATION_ID
-            - name: PUSH_INSTALLATION_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: vw-config
-                  key: PUSH_INSTALLATION_KEY
-            - name: SMTP_HOST
-              value: smtp-relay.gmail.com
-            - name: HELO_NAME
-              value: smtp-relay.gmail.com
-            - name: SMTP_AUTH_MECHANISM
-              value: Login
-            - name: SMTP_SECURITY
-              value: force_tls
-            - name: SMTP_PORT
-              value: "465"
-            - name: SMTP_FROM
-              valueFrom:
-                secretKeyRef:
-                  name: vw-config
-                  key: SMTP_FROM
-            - name: SMTP_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: vw-config
-                  key: SMTP_USERNAME
-            - name: SMTP_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: vw-config
-                  key: SMTP_PASSWORD
           volumeMounts:
             - mountPath: /data
               name: data
