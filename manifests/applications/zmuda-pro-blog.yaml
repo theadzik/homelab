@@ -5,10 +5,6 @@ metadata:
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
-  annotations:
-    argocd-image-updater.argoproj.io/image-list: blog=theadzik/zmuda-pro-blog
-    argocd-image-updater.argoproj.io/blog.update-strategy: semver
-    argocd-image-updater.argoproj.io/write-back-method: git
 spec:
   project: default
   source:
