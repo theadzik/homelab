@@ -133,6 +133,26 @@
     }
   ],
   "results": {
+    ".github/workflows/backup-build.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": ".github/workflows/backup-build.yaml",
+        "hashed_secret": "3e26d6750975d678acb8fa35a0f69237881576b0",
+        "is_verified": false,
+        "line_number": 24,
+        "is_secret": false
+      }
+    ],
+    ".github/workflows/restore-build.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": ".github/workflows/restore-build.yaml",
+        "hashed_secret": "3e26d6750975d678acb8fa35a0f69237881576b0",
+        "is_verified": false,
+        "line_number": 24,
+        "is_secret": false
+      }
+    ],
     "ansible/playbooks/roles/nut_client/defaults/main.yaml": [
       {
         "type": "Secret Keyword",
@@ -358,5 +378,5 @@
       }
     ]
   },
-  "generated_at": "2025-12-08T14:17:40Z"
+  "generated_at": "2025-12-13T12:28:31Z"
 }

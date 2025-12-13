@@ -1,0 +1,35 @@
+on:
+  workflow_call:
+    inputs:
+      tag-prefix:
+        required: true
+        type: string
+    outputs:
+      git_tag:
+        description: "The newest git tag matching the prefix"
+        value: ${{ jobs.get-tag.outputs.git_tag }}
+      docker_tag:
+        description: "The extracted docker tag from the git tag"
+        value: ${{ jobs.get-tag.outputs.docker_tag }}
+
+jobs:
+  get-tag:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Get newest image tag
+        id: vars
+        run: |
+          full_tag=$(git tag -n0 "$TAG_PREFIX*" | sort -V | tail -n 1)
+          echo "docker_tag=$(echo $full_tag | cut -d'-' -f3)" >> $GITHUB_OUTPUT
+          echo "git_tag=$full_tag" >> $GITHUB_OUTPUT
+        env:
+          TAG_PREFIX: ${{ inputs.tag-prefix }}
+    outputs:
+      git_tag: ${{ steps.vars.outputs.git_tag }}
+      docker_tag: ${{ steps.vars.outputs.docker_tag }}
