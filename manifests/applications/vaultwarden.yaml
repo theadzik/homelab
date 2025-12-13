@@ -39,10 +39,10 @@ spec:
         - alias: "restore"
           imageName: "theadzik/vw-restore"
           commonUpdateSettings:
-            updateStrategy: "alphabetical"
+            updateStrategy: "semver"
             allowTags: "regexp:^[0-9]{4}\\.[0-9]+\\.[0-9]+$"
         - alias: "backup"
           imageName: "theadzik/vw-backup"
           commonUpdateSettings:
-            updateStrategy: "alphabetical"
+            updateStrategy: "semver"
             allowTags: "regexp:^[0-9]{4}\\.[0-9]+\\.[0-9]+$"
