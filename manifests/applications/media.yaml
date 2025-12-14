@@ -5,17 +5,6 @@ metadata:
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
-  annotations:
-    argocd-image-updater.argoproj.io/image-list: "bazarr=lscr.io/linuxserver/bazarr:1.x.x,\
-      jellyfin=lscr.io/linuxserver/jellyfin:10.11.x,\
-      lidarr=lscr.io/linuxserver/lidarr:develop,\
-      nzbget=lscr.io/linuxserver/nzbget:25.x.x,\
-      radarr=ghcr.io/hotio/radarr:release,\
-      sonarr=ghcr.io/hotio/sonarr:release"
-    argocd-image-updater.argoproj.io/write-back-method: git
-    argocd-image-updater.argoproj.io/lidarr.update-strategy: digest
-    argocd-image-updater.argoproj.io/radarr.update-strategy: digest
-    argocd-image-updater.argoproj.io/sonarr.update-strategy: digest
 spec:
   project: default
   source:
@@ -29,3 +18,38 @@ spec:
     automated:
       prune: true
       selfHeal: true
+
+---
+
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: media
+spec:
+  namespace: argocd
+  applicationRefs:
+    - namePattern: "media"
+      writeBackConfig:
+        method: "git"
+      images:
+        - alias: "jellyfin"
+          imageName: "lscr.io/linuxserver/jellyfin:~10.11"
+          commonUpdateSettings:
+            updateStrategy: "semver"
+        - alias: "bazarr"
+          imageName: "lscr.io/linuxserver/bazarr:~1"
+          commonUpdateSettings:
+            updateStrategy: "semver"
+        - alias: "radarr"
+          imageName: "lscr.io/linuxserver/radarr:~6"
+          commonUpdateSettings:
+            updateStrategy: "semver"
+            allowTags: "regexp:^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        - alias: "sonarr"
+          imageName: "ghcr.io/hotio/sonarr:release"
+          commonUpdateSettings:
+            updateStrategy: "digest"
+        - alias: "nzbget"
+          imageName: "lscr.io/linuxserver/nzbget:~25"
+          commonUpdateSettings:
+            updateStrategy: "semver"

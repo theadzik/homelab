@@ -19,8 +19,11 @@ spec:
     spec:
       containers:
         - name: radarr
-          image: ghcr.io/hotio/radarr:release-5.26.2.10099
+          image: lscr.io/linuxserver/radarr:6.0.4
           imagePullPolicy: IfNotPresent
+          securityContext:
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
           ports:
             - containerPort: 7878
               protocol: "TCP"
@@ -40,6 +43,8 @@ spec:
               name: config
             - mountPath: /downloads
               name: downloads
+            - mountPath: /run
+              name: run
           env:
             - name: "TZ"
               value: "Europe/Warsaw"
@@ -54,4 +59,6 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: radarr-config-ssd
+        - name: run
+          emptyDir: {}
   serviceName: radarr
