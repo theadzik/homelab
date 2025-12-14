@@ -3,7 +3,4 @@ kustomize:
   - lscr.io/linuxserver/bazarr:1.5.3
   - lscr.io/linuxserver/jellyfin:10.11.4
   - lscr.io/linuxserver/nzbget:25.4.20251212
-  - ghcr.io/hotio/radarr:release@sha256:b21a39295e1533746acd1b39c17c6ace299baf511306113e1df77cfc04fb348f
-  - ghcr.io/hotio/sonarr:release@sha256:cf94f1ad94e3c39b4f880a2d80419a972ce70b0e95c24b7dfffc94255b8c776d
-  - lscr.io/linuxserver/lidarr@sha256:71fe6d5702691c6ac8961b9b1042fdea1ff833a49c82c5e165346fa88999a48a
   - lscr.io/linuxserver/radarr:6.0.4
