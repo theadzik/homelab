@@ -22,7 +22,6 @@ spec:
         environment: production
     spec:
       restartPolicy: Always
-      serviceAccount: recipes
       serviceAccountName: recipes
       initContainers:
         - name: init-chmod-data
