@@ -34,11 +34,6 @@ topologySpreadConstraints:
     topologyKey: kubernetes.io/hostname
     whenUnsatisfiable: DoNotSchedule
 
-providers:
-  kubernetesIngressNginx:
-    enabled: true
-    throttleDuration: "2s"
-
 experimental:
   plugins:
     bouncer:
