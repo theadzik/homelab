@@ -9,7 +9,7 @@ spec:
   sources:
     - path: .
       repoURL: oci://ghcr.io/traefik/helm/traefik-crds
-      targetRevision: 1.12.0
+      targetRevision: 1.*.*
       helm:
         releaseName: traefik-crds
     - repoURL: 'https://github.com/theadzik/homelab'
@@ -40,7 +40,7 @@ spec:
   sources:
     - path: .
       repoURL: oci://ghcr.io/traefik/helm/traefik
-      targetRevision: 37.4.0
+      targetRevision: 37.*.*
       helm:
         releaseName: traefik
         skipCrds: true
