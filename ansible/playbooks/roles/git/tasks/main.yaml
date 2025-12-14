@@ -11,20 +11,6 @@
     update: false
   loop: "{{ repositories }}"
 
-- name: Download ssl_libs packages.
-  ansible.builtin.get_url:
-    url: http://security.ubuntu.com/ubuntu/pool/main/o/openssl/{{ item }}
-    dest: "{{ downloads_dir }}/{{ item }}"
-  loop: "{{ ssl_libs }}"
-  register: downloaded_ssl_libs
-
-- name: Install ssl_libs packages.
-  ansible.builtin.apt:
-    deb: "{{ downloads_dir }}/{{ item }}"
-  loop: "{{ ssl_libs }}"
-  become: true
-  when: downloaded_ssl_libs.changed
-
 - name: Check latest git-crypt.
   uri:
     url: https://api.github.com/repos/AGWA/git-crypt/releases/latest
