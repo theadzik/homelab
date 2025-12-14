@@ -28,7 +28,7 @@ kind: ImageUpdater
 metadata:
   name: pihole
 spec:
-  namespace: pihole
+  namespace: argocd
   applicationRefs:
     - namePattern: "pihole"
       writeBackConfig:
