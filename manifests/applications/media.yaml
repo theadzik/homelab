@@ -33,7 +33,7 @@ spec:
         method: "git"
       images:
         - alias: "jellyfin"
-          imageName: "lscr.io/linuxserver/jellyfin:~10.11"
+          imageName: "lscr.io/linuxserver/jellyfin:~10"
           commonUpdateSettings:
             updateStrategy: "semver"
         - alias: "bazarr"
@@ -46,9 +46,10 @@ spec:
             updateStrategy: "semver"
             allowTags: "regexp:^[0-9]+\\.[0-9]+\\.[0-9]+$"
         - alias: "sonarr"
-          imageName: "ghcr.io/hotio/sonarr:release"
+          imageName: "lscr.io/linuxserver/sonarr:~4"
           commonUpdateSettings:
-            updateStrategy: "digest"
+            updateStrategy: "semver"
+            allowTags: "regexp:^[0-9]+\\.[0-9]+\\.[0-9]+$"
         - alias: "nzbget"
           imageName: "lscr.io/linuxserver/nzbget:~25"
           commonUpdateSettings:

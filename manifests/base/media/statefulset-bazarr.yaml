@@ -21,6 +21,11 @@ spec:
         - name: bazarr
           image: lscr.io/linuxserver/bazarr:1.5.2
           imagePullPolicy: IfNotPresent
+          securityContext:
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsGroup: 1000
+            runAsUser: 1000
           ports:
             - containerPort: 6767
               protocol: "TCP"
@@ -40,6 +45,8 @@ spec:
               name: config
             - mountPath: /downloads
               name: downloads
+            - mountPath: /run
+              name: run
           env:
             - name: "TZ"
               value: "Europe/Warsaw"
@@ -54,4 +61,6 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: bazarr-config-ssd
+        - name: run
+          emptyDir: {}
   serviceName: bazarr
