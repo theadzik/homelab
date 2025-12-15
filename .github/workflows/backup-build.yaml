@@ -1,6 +1,5 @@
 name: vw-backup-build
-permissions:
-  contents: read
+
 on:
   push:
     tags:
@@ -8,6 +7,9 @@ on:
   schedule:
     - cron: "37 10 * * 6"
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   get-tag:
