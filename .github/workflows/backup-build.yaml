@@ -1,4 +1,6 @@
 name: vw-backup-build
+permissions:
+  contents: read
 on:
   push:
     tags:
