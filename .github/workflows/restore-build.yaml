@@ -7,6 +7,9 @@ on:
     - cron: "22 12 * * 6"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   get-tag:
     uses: theadzik/homelab/.github/workflows/get-tag.yaml@main
