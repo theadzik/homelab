@@ -21,7 +21,7 @@ spec:
               command:
                 - "/bin/sh"
                 - "-c"
-                - "dig @127.0.0.1 pi.hole"
+                - "dig @127.0.0.1 localhost.internal"
             timeoutSeconds: 1
             failureThreshold: 2
             initialDelaySeconds: 30
@@ -51,6 +51,10 @@ spec:
                 secretKeyRef:
                   name: web-password
                   key: WEBPASSWORD
+            - name: FTLCONF_dns_domain_name
+              value: "internal"
+            - name: FTLCONF_dns_hosts
+              value: '["127.0.0.1 localhost.internal"]'
             - name: PIHOLE_UID
               value: "1000"
             - name: PIHOLE_GID
