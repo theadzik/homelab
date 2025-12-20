@@ -2,7 +2,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: pretty-format-json
         args:
@@ -14,16 +14,16 @@ repos:
       - id: check-merge-conflict
       - id: mixed-line-ending
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.35.1
+    rev: v1.37.1
     hooks:
       - id: yamllint
         exclude: "^(.*/argocd-install.yaml|.*/image-updater.yaml)"
   - repo: https://github.com/PyCQA/isort
-    rev: 6.0.0
+    rev: 7.0.0
     hooks:
       - id: isort
   - repo: https://github.com/psf/black
-    rev: 25.1.0
+    rev: 25.12.0
     hooks:
       - id: black
   - repo: https://github.com/Lucas-C/pre-commit-hooks
@@ -35,11 +35,11 @@ repos:
     hooks:
       - id: shellcheck
   - repo: https://github.com/markdownlint/markdownlint
-    rev: v0.12.0
+    rev: v0.15.0
     hooks:
       - id: markdownlint
   - repo: https://github.com/hadolint/hadolint
-    rev: v2.13.1-beta
+    rev: v2.14.0
     hooks:
       - id: hadolint
   - repo: https://github.com/Yelp/detect-secrets
