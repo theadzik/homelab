@@ -21,9 +21,9 @@
 - name: Ensure Docker repository is added to apt.
   ansible.builtin.apt_repository:
     repo: >-
-      deb [arch={{ arch_mapping[ansible_architecture] | default(ansible_architecture) }}
+      deb [arch={{ arch_mapping[ansible_facts["architecture"]] | default(ansible_facts["architecture"]) }}
       signed-by=/etc/apt/keyrings/docker.gpg]
-      https://download.docker.com/linux/{{ distribution }} {{ ansible_lsb.codename }} stable
+      https://download.docker.com/linux/{{ distribution }} {{ ansible_facts["lsb"].codename }} stable
     filename: docker
     state: present
   become: true

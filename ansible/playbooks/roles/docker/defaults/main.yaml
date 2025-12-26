@@ -1,4 +1,4 @@
-arch_mapping:  # Map ansible architecture {{ ansible_architecture }} names to Docker's architecture names
+arch_mapping:  # Map ansible architecture {{ ansible_facts["architecture"] }} names to Docker's architecture names
   x86_64: amd64
 
 docker_package:
@@ -8,4 +8,4 @@ docker_package:
   - gnupg
   - software-properties-common
 
-distribution: "{{ ansible_distribution | lower }}"
+distribution: "{{ ansible_facts['distribution'] | lower }}"
