@@ -6,7 +6,7 @@
     msg: "Minimum ansible-core version required is 2.14"
 
 - name: Install Dependent Ubuntu Packages
-  when: ansible_distribution in ['Ubuntu']
+  when: ansible_facts["distribution"] in ["Ubuntu"]
   ansible.builtin.apt:
     name: policycoreutils  # Used by installation script to restore SELinux context
     update_cache: true
@@ -24,7 +24,7 @@
     value: "1"
     state: present
     reload: true
-  when: ansible_all_ipv6_addresses
+  when: ansible_facts["all_ipv6_addresses"] | length > 0
 
 - name: Populate service facts
   ansible.builtin.service_facts:
@@ -114,7 +114,7 @@
             groups[server_group] | default([])
             + groups[agent_group] | default([])
           )
-          | map('extract', hostvars, ['ansible_default_ipv4', 'address'])
+          | map('extract', hostvars, ['ansible_facts["default_ipv4"]', 'address'])
           | flatten | unique | list
         }}
 
@@ -132,13 +132,13 @@
     content: "br_netfilter"
     dest: /etc/modules-load.d/br_netfilter.conf
     mode: "u=rw,g=,o="
-  when: (ansible_os_family == 'RedHat' or ansible_distribution == 'Archlinux')
+  when: (ansible_facts["os_family"] == 'RedHat' or ansible_facts["distribution"] == 'Archlinux')
 
 - name: Load br_netfilter
   community.general.modprobe:
     name: br_netfilter
     state: present
-  when: (ansible_os_family == 'RedHat' or ansible_distribution == 'Archlinux')
+  when: (ansible_facts["os_family"] == 'RedHat' or ansible_facts["distribution"] == 'Archlinux')
 
 - name: Set bridge-nf-call-iptables (just to be sure)
   ansible.posix.sysctl:
@@ -146,7 +146,7 @@
     value: "1"
     state: present
     reload: true
-  when: (ansible_os_family == 'RedHat' or ansible_distribution == 'Archlinux')
+  when: (ansible_facts["os_family"] == 'RedHat' or ansible_facts["distribution"] == 'Archlinux')
   loop:
     - net.bridge.bridge-nf-call-iptables
     - net.bridge.bridge-nf-call-ip6tables
@@ -164,7 +164,7 @@
 
 - name: Install Apparmor Parser [Suse]
   when:
-    - ansible_os_family == 'Suse'
+    - ansible_facts["os_family"] == 'Suse'
     - apparmor_status is defined
     - apparmor_status.stdout == "Y"
   ansible.builtin.package:
@@ -173,7 +173,7 @@
 
 - name: Install Apparmor Parser [Debian]
   when:
-    - ansible_distribution == 'Debian'
+    - ansible_facts["distribution"] == 'Debian'
     - ansible_facts['distribution_major_version'] == "11"
     - apparmor_status is defined
     - apparmor_status.stdout == "Y"
@@ -205,7 +205,7 @@
     insertafter: EOF
     path: /etc/sudoers
     validate: 'visudo -cf %s'
-  when: ansible_os_family == 'RedHat'
+  when: ansible_facts["os_family"] == 'RedHat'
 
 - name: Setup alternative K3s directory
   when:
@@ -275,6 +275,6 @@
     regexp: '^(\s*)([^#\n]+\s+)(\w+\s+)swap(\s+.*)$'
     replace: '#\1\2\3swap\4'
   when:
-    - ansible_distribution == 'Debian'
-    - ansible_swaptotal_mb > 0
+    - ansible_facts["distribution"] == 'Debian'
+    - ansible_facts["swaptotal_mb"] > 0
   notify: Reboot machine

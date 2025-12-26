@@ -6,7 +6,7 @@
     size: "4096"
     path: "/etc/ssh/ssh_host_rsa_key"
     force: false
-    comment: "{{ ansible_hostname }}"
+    comment: "{{ ansible_facts['hostname'] }}"
     regenerate: partial_idempotence
   notify: Restart ssh
 
@@ -17,7 +17,7 @@
     size: "521"
     path: "/etc/ssh/ssh_host_ed25519_key"
     force: false
-    comment: "{{ ansible_hostname }}"
+    comment: "{{ ansible_facts['hostname'] }}"
     regenerate: partial_idempotence
   notify: Restart ssh
 
@@ -42,8 +42,7 @@
     [ -r /etc/ssh/moduli.new -a -s /etc/ssh/moduli.new ] &&
     mv /etc/ssh/moduli.new /etc/ssh/moduli || true
   notify: Restart ssh
-  when:
-    - sshd_register_moduli.stdout
+  when: sshd_register_moduli.stdout != ""
 
 - name: Copy hardened sshd config.
   ansible.builtin.copy:

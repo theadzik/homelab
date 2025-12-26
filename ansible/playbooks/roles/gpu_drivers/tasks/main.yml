@@ -5,7 +5,7 @@
   register: kernel_version
   changed_when: false
 - name: Download kernel and gpu drivers.
-  when: ansible_distribution  == "Debian" and kernel_version.stdout != linux_image_version
+  when: ansible_facts["distribution"]  == "Debian" and kernel_version.stdout != linux_image_version
   block:
     - name: Add backports to apt sources for kernel update
       ansible.builtin.lineinfile:
