@@ -11,7 +11,7 @@ spec:
   source:
     repoURL: https://github.com/kubernetes-sigs/gateway-api
     path: config/crd/experimental
-    targetRevision: v1.4.0
+    targetRevision: v1.4.1
   destination:
     server: "https://kubernetes.default.svc"
     namespace: kube-system
