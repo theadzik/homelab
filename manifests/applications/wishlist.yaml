@@ -73,6 +73,6 @@ spec:
     - namePattern: "wishlist"
       images:
         - alias: "wishlist-job"
-          imageName: "theadzik/games-whishlist-*"
+          imageName: "theadzik/games-wishlist-*"
           commonUpdateSettings:
             updateStrategy: "digest"
