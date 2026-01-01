@@ -60,3 +60,19 @@ spec:
     automated:
       prune: true
       selfHeal: true
+
+---
+
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: wishlist
+spec:
+  namespace: argocd
+  applicationRefs:
+    - namePattern: "wishlist"
+      images:
+        - alias: "wishlist-job"
+          imageName: "theadzik/games-whishlist-*"
+          commonUpdateSettings:
+            updateStrategy: "digest"
