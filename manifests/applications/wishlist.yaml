@@ -52,7 +52,7 @@ spec:
   source:
     path: kubernetes
     repoURL: 'https://github.com/karolina-warda/games-wishlist'
-    targetRevision: main
+    targetRevision: master
   destination:
     server: https://kubernetes.default.svc
     namespace: wishlist
