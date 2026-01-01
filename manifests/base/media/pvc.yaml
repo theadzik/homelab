@@ -77,8 +77,8 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 512Gi
-  storageClassName: synology-iscsi-delete
+      storage: 128Gi
+  storageClassName: synology-iscsi-delete-ssd
 
 ---
 
