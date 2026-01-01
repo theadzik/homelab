@@ -1,0 +1,62 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name:  wishlist
+  namespace: argocd
+spec:
+  destinations:
+    - namespace: 'wishlist'
+      server: '*'
+  sourceRepos:
+    - "https://github.com/karolina-warda/*"
+    - "https://github.com/theadzik/*"
+
+---
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wishlist-cluster
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  project: default
+  source:
+    path: manifests/base/wishlist
+    repoURL: 'https://github.com/theadzik/homelab'
+    targetRevision: main
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: wishlist
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
+---
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wishlist
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "15"
+spec:
+  project: wishlist
+  source:
+    path: kubernetes
+    repoURL: 'https://github.com/karolina-warda/games-wishlist'
+    targetRevision: main
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: wishlist
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

@@ -26,4 +26,5 @@ resources:
   - vaultwarden.yaml
   - velero.yaml
   - vpa.yaml
+  - wishlist.yaml
   - zmuda-pro-blog.yaml
