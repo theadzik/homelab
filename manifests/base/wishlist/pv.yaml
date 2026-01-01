@@ -10,7 +10,7 @@ spec:
   accessModes:
     - ReadWriteMany
   claimRef:
-    name: games-wishlist-pvc
+    name: wishlist-pvc
     namespace: wishlist
   nfs:
     path: /volume1/wishlist
