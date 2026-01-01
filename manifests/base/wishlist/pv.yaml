@@ -13,5 +13,5 @@ spec:
     name: wishlist-pvc
     namespace: wishlist
   nfs:
-    path: /volume1/wishlist
+    path: /volume1/games-wishlist
     server: 192.168.0.6
