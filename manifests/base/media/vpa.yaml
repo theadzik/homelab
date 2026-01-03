@@ -8,7 +8,7 @@ spec:
     kind: StatefulSet
     name: bazarr
   updatePolicy:
-    updateMode: "Off"
+    updateMode: "InPlaceOrRecreate"
 
 ---
 
@@ -22,7 +22,7 @@ spec:
     kind: StatefulSet
     name: jellyfin
   updatePolicy:
-    updateMode: "Off"
+    updateMode: "InPlaceOrRecreate"
 
 ---
 
@@ -36,7 +36,7 @@ spec:
     kind: StatefulSet
     name: nzbget
   updatePolicy:
-    updateMode: "Off"
+    updateMode: "InPlaceOrRecreate"
 
 ---
 
@@ -50,7 +50,7 @@ spec:
     kind: StatefulSet
     name: radarr
   updatePolicy:
-    updateMode: "Off"
+    updateMode: "InPlaceOrRecreate"
 
 ---
 
@@ -64,4 +64,4 @@ spec:
     kind: StatefulSet
     name: sonarr
   updatePolicy:
-    updateMode: "Off"
+    updateMode: "InPlaceOrRecreate"
