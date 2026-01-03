@@ -18,6 +18,7 @@ admissionController:
       effect: "NoSchedule"
 
 recommender:
+  replicas: 1
   extraArgs:
     - --round-memory-bytes=1048576 # 1 MiB
   affinity:
@@ -37,6 +38,7 @@ recommender:
       effect: "NoSchedule"
 
 updater:
+  replicas: 1
   extraArgs:
     - --feature-gates=InPlaceOrRecreate=true
   affinity:
