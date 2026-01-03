@@ -47,6 +47,8 @@ spec:
               name: downloads
             - mountPath: /run
               name: run
+            - mountPath: /tmp
+              name: tmp
           env:
             - name: "TZ"
               value: "Europe/Warsaw"
@@ -62,5 +64,7 @@ spec:
           persistentVolumeClaim:
             claimName: bazarr-config-ssd
         - name: run
+          emptyDir: {}
+        - name: tmp
           emptyDir: {}
   serviceName: bazarr
