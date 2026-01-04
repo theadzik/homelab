@@ -1,3 +1,3 @@
 kustomize:
   images:
-  - theadzik/zmuda-pro-blog:2025.12.2
+  - theadzik/zmuda-pro-blog:2026.1.1
