@@ -25,14 +25,9 @@ spec:
   ignoreDifferences:
     - group: ""
       kind: "Secret"
-      name: "vertical-pod-autoscaler-admission-controller-tls"
+      name: "vpa-tls-certs"
       jsonPointers:
         - /data
-    - group: "apps"
-      kind: "Deployment"
-      name: "vertical-pod-autoscaler-admission-controller"
-      jsonPointers:
-        - /spec/template/metadata/annotations/checksum~1tls-secret # ~1 = /
   syncPolicy:
     automated:
       prune: true
