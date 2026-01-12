@@ -1,0 +1,7 @@
+# e15b3d83240d04ef607b8ce3799151a1635c5d49e7ccf9f581c51918d5caad15
+customization:
+    extraKernelArgs:
+        - talos.platform=metal
+    systemExtensions:
+        officialExtensions:
+            - siderolabs/i915
