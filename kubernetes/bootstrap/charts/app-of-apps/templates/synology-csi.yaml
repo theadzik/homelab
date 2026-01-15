@@ -10,9 +10,9 @@ metadata:
 spec:
   project: default
   source:
-    path: manifests/base/synology-csi
-    repoURL: 'https://github.com/theadzik/homelab'
-    targetRevision: HEAD
+    path: kubernetes/kustomizations/synology-csi
+    repoURL: {{ .Values.spec.sources.repoURL }}
+    targetRevision: {{ .Values.spec.sources.targetRevision }}
   destination:
     server: https://kubernetes.default.svc
     namespace: synology-csi
@@ -20,3 +20,5 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
