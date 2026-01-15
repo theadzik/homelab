@@ -1,0 +1,13 @@
+machine:
+  install:
+    wipe: true
+    disk: /dev/nvme0n1
+---
+apiVersion: v1alpha1
+kind: ExtensionServiceConfig
+name: nut-client
+configFiles:
+  - content: |-
+      MONITOR ups@192.168.0.6 1 monuser secret secondary
+      SHUTDOWNCMD "/sbin/poweroff"
+    mountPath: /usr/local/etc/nut/upsmon.conf

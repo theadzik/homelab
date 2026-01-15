@@ -1,0 +1,7 @@
+# ca3fbb9c3bb73ff71b7629ef5b487c827b93878609f361b0e1e555342378b595
+customization:
+  systemExtensions:
+    officialExtensions:
+      - siderolabs/i915
+      - siderolabs/iscsi-tools
+      - siderolabs/nut-client

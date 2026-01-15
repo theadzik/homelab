@@ -176,3 +176,7 @@ vendor
 
 # ansible
 .ansible
+
+controlplane.yaml
+worker.yaml
+talosconfig
