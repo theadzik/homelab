@@ -23,7 +23,7 @@ jobs:
         id: get_version
         run: |
           set -e
-          
+
           repo="https://argoproj.github.io/argo-helm"
           echo "Repository url: $repo"
           chart="argo-cd"
