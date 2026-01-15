@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     chart: app-of-apps
-    repoURL: 'https://github.com/theadzik/homelab'
+    repoURL: 'https://github.com/theadzik/homelab/bootstrap/charts'
     targetRevision: feat/talos-migration
     helm:
       valuesObject:

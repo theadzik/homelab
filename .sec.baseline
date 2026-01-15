@@ -153,6 +153,16 @@
         "is_secret": false
       }
     ],
+    "bootstrap/argocd-helm-values.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "bootstrap/argocd-helm-values.yaml",
+        "hashed_secret": "3108772db9f5d6285ac14a1f3e8577bca4a7bd1a",
+        "is_verified": false,
+        "line_number": 60,
+        "is_secret": false
+      }
+    ],
     "manifests/base/argocd-image-updater/values.yaml": [
       {
         "type": "Secret Keyword",
@@ -366,17 +376,7 @@
         "line_number": 17,
         "is_secret": false
       }
-    ],
-    "manifests/bootstrap/argocd-helm-values.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/bootstrap/argocd-helm-values.yaml",
-        "hashed_secret": "3108772db9f5d6285ac14a1f3e8577bca4a7bd1a",
-        "is_verified": false,
-        "line_number": 60,
-        "is_secret": false
-      }
     ]
   },
-  "generated_at": "2026-01-15T14:42:26Z"
+  "generated_at": "2026-01-15T17:17:38Z"
 }
