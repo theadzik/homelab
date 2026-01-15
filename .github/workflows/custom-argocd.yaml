@@ -26,11 +26,11 @@ jobs:
         run: |
           set -e
 
-          repo=$(yq -r '.spec.repo' ansible/playbooks/files/argocd-helm.yaml)
+          repo="https://argoproj.github.io/argo-helm"
           echo "Repository url: $repo"
-          chart=$(yq -r '.spec.chart' ansible/playbooks/files/argocd-helm.yaml)
+          chart="argo-cd"
           echo "Chart name: $chart"
-          chart_version=$(yq -r '.spec.version' ansible/playbooks/files/argocd-helm.yaml)
+          chart_version="9.3.4"
           echo "Chart version: $chart_version"
 
           helm repo add argocd $repo
