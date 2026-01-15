@@ -60,3 +60,15 @@ schedules:
     template:
       ttl: "720h"
       storageLocation: minio
+  persistent-volumes:
+    disabled: false
+    schedule: "0 1 * * *"
+    useOwnerReferencesInBackup: true
+    paused: false
+    skipImmediately: false
+    template:
+      includedResources:
+        - persistentvolumes
+        - persistentvolumeclaims
+      ttl: "720h"
+      storageLocation: minio
