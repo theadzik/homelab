@@ -1,8 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: pihole
-  namespace: argocd
+  name: cloudflared
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
@@ -10,12 +9,12 @@ metadata:
 spec:
   project: default
   source:
-    path: manifests/base/pihole
-    repoURL: 'https://github.com/theadzik/homelab'
-    targetRevision: HEAD
+    path: kubernetes/kustomizations/cloudflared
+    repoURL: {{ .Values.spec.sources.repoURL }}
+    targetRevision: {{ .Values.spec.sources.targetRevision }}
   destination:
     server: https://kubernetes.default.svc
-    namespace: pihole
+    namespace: cloudflared
   syncPolicy:
     automated:
       prune: true
@@ -26,20 +25,15 @@ spec:
 apiVersion: argocd-image-updater.argoproj.io/v1alpha1
 kind: ImageUpdater
 metadata:
-  name: pihole
+  name: cloudflared
 spec:
-  namespace: argocd
   applicationRefs:
-    - namePattern: "pihole"
+    - namePattern: "cloudflared"
       writeBackConfig:
         method: "git"
       images:
-        - alias: "pihole"
-          imageName: "pihole/pihole"
-          commonUpdateSettings:
-            updateStrategy: "alphabetical"
-            allowTags: "regexp:^[0-9]{4}\\.[0-9]{2}\\.[0-9]+$"
-        - alias: "nebula"
-          imageName: "ghcr.io/lovelaze/nebula-sync"
+        - alias: "cloudflared"
+          imageName: "cloudflare/cloudflared"
           commonUpdateSettings:
             updateStrategy: "semver"
+            allowTags: "regexp:^[0-9]{4}\\.[0-9]+\\.[0-9]+$"

@@ -32,9 +32,9 @@ spec:
             apiVersion: controller.config.cert-manager.io/v1alpha1
             kind: ControllerConfiguration
             enableGatewayAPI: true
-    - path: manifests/base/cert-manager
-      repoURL: 'https://github.com/theadzik/homelab'
-      targetRevision: HEAD
+    - path: kubernetes/kustomizations/cert-manager
+      repoURL: {{ .Values.spec.sources.repoURL }}
+      targetRevision: {{ .Values.spec.sources.targetRevision }}
   destination:
     server: "https://kubernetes.default.svc"
     namespace: cert-manager

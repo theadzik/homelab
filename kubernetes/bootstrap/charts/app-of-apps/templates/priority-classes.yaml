@@ -1,21 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: gateway
+  name: priority-classes
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "-15"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "-40"
 spec:
   project: default
   source:
-    path: manifests/base/gateway-api
-    repoURL: 'https://github.com/theadzik/homelab'
-    targetRevision: main
+    path: kubernetes/kustomizations/priority-classes
+    repoURL: {{ .Values.spec.sources.repoURL }}
+    targetRevision: {{ .Values.spec.sources.targetRevision }}
   destination:
     server: https://kubernetes.default.svc
-    namespace: kgateway-system
+    namespace: kube-system
   syncPolicy:
     automated:
       prune: true

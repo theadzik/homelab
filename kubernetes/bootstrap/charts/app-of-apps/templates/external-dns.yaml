@@ -13,19 +13,19 @@ spec:
       helm:
         releaseName: pihole
         valueFiles:
-          - $repo/manifests/base/external-dns/values-shared.yaml
-          - $repo/manifests/base/external-dns/values-pihole.yaml
+          - $repo/kubernetes/helm/external-dns/values-shared.yaml
+          - $repo/kubernetes/helm/external-dns/values-pihole.yaml
     - chart: external-dns
       repoURL: https://kubernetes-sigs.github.io/external-dns/
       targetRevision: 1.20.*
       helm:
         releaseName: cloudflare
         valueFiles:
-          - $repo/manifests/base/external-dns/values-shared.yaml
-          - $repo/manifests/base/external-dns/values-cloudflare.yaml
-    - repoURL: "https://github.com/theadzik/homelab"
-      path: "manifests/base/external-dns"
-      targetRevision: main
+          - $repo/kubernetes/helm/external-dns/values-shared.yaml
+          - $repo/kubernetes/helm/external-dns/values-cloudflare.yaml
+    - path: "kubernetes/kustomizations/external-dns"
+      repoURL: {{ .Values.spec.sources.repoURL }}
+      targetRevision: {{ .Values.spec.sources.targetRevision }}
       ref: repo
   destination:
     server: "https://kubernetes.default.svc"
