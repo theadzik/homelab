@@ -2,7 +2,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: argocd-image-updater
-  namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
@@ -17,9 +16,9 @@ spec:
         releaseName: argocd-image-updater
         valueFiles:
           - $repo/manifests/base/argocd-image-updater/values.yaml
-    - repoURL: 'https://github.com/theadzik/homelab'
+    - repoURL: {{ .Values.spec.sources.repoURL }}
+      targetRevision: {{ .Values.spec.sources.targetRevision }}
       path: manifests/base/image-pull-secret
-      targetRevision: HEAD
       ref: repo
   destination:
     server: https://kubernetes.default.svc

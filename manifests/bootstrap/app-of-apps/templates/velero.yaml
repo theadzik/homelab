@@ -21,8 +21,8 @@ spec:
       targetRevision: HEAD
       ref: velero
     - path: manifests/base/image-pull-secret
-      repoURL: 'https://github.com/theadzik/homelab'
-      targetRevision: HEAD
+      repoURL: {{ .Values.spec.sources.repoURL }}
+      targetRevision: {{ .Values.spec.sources.targetRevision }}
   destination:
     server: "https://kubernetes.default.svc"
     namespace: velero

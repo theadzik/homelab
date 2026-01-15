@@ -12,9 +12,6 @@ spec:
       targetRevision: 1.*.*
       helm:
         releaseName: traefik-crds
-    - repoURL: 'https://github.com/theadzik/homelab'
-      targetRevision: HEAD
-      ref: repo
   destination:
     server: "https://kubernetes.default.svc"
     namespace: traefik
@@ -46,8 +43,8 @@ spec:
         skipCrds: true
         valueFiles:
           - $repo/manifests/base/traefik/values.yaml
-    - repoURL: 'https://github.com/theadzik/homelab'
-      targetRevision: HEAD
+    - repoURL: {{ .Values.spec.sources.repoURL }}
+      targetRevision: {{ .Values.spec.sources.targetRevision }}
       path: manifests/base/traefik
       ref: repo
   destination:

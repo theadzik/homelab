@@ -5,6 +5,7 @@ extends: default
 rules:
   document-start: disable
   line-length: disable
+  braces: disable
   truthy:
     ignore: |
       /.github/workflows

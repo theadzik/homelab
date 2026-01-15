@@ -2,7 +2,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: metal-lb
-  namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
@@ -11,8 +10,8 @@ spec:
   project: default
   sources:
     - path: manifests/base/metal-lb
-      repoURL: 'https://github.com/theadzik/homelab'
-      targetRevision: HEAD
+      repoURL: {{ .Values.spec.sources.repoURL }}
+      targetRevision: {{ .Values.spec.sources.targetRevision }}
       ref: repo
     - chart: metallb
       repoURL: https://metallb.github.io/metallb
