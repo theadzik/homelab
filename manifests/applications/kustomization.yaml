@@ -3,28 +3,28 @@ kind: Kustomization
 namespace: argocd
 resources:
   - argocd-image-updater.yaml
-  - audiobookshelf.yaml
-  - cert-manager.yaml
-  - cloudflared.yaml
-  - cnpg.yaml
-  - crowdsec.yaml
-  - external-dns.yaml
-  - gateway.yaml
-  - gateway-api-crd.yaml
-  - intel-device-plugin.yaml
-  - kgateway.yaml
+#  - audiobookshelf.yaml
+#  - cert-manager.yaml
+#  - cloudflared.yaml
+#  - cnpg.yaml
+#  - crowdsec.yaml
+#  - external-dns.yaml
+#  - gateway.yaml
+#  - gateway-api-crd.yaml
+#  - intel-device-plugin.yaml
+#  - kgateway.yaml
 #  - kube-prometheus-stack.yaml
 #  - kube-prometheus-stack-crd.yaml
-  - media.yaml
+#  - media.yaml
   - metal-lb.yaml
-  - pihole.yaml
-  - priority-classes.yaml
+#  - pihole.yaml
+#  - priority-classes.yaml
   # - reddit-meaningofwords.yaml
-  - synology-csi.yaml
-  - tandoor.yaml
+#  - synology-csi.yaml
+#  - tandoor.yaml
   - traefik.yaml
-  - vaultwarden.yaml
+#  - vaultwarden.yaml
   - velero.yaml
-  - vpa.yaml
-  - wishlist.yaml
-  - zmuda-pro-blog.yaml
+#  - vpa.yaml
+#  - wishlist.yaml
+#  - zmuda-pro-blog.yaml
