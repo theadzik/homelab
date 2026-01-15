@@ -2,15 +2,14 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: audiobookshelf
-  namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    path: manifests/base/audiobookshelf
-    repoURL: 'https://github.com/theadzik/homelab'
-    targetRevision: main
+    path: kubernetes/kustomizations/audiobookshelf
+    repoURL: {{ .Values.spec.sources.repoURL }}
+    targetRevision: {{ .Values.spec.sources.targetRevision }}
   destination:
     server: https://kubernetes.default.svc
     namespace: audiobookshelf
@@ -26,7 +25,6 @@ kind: ImageUpdater
 metadata:
   name: audiobookshelf
 spec:
-  namespace: argocd
   applicationRefs:
     - namePattern: "audiobookshelf"
       writeBackConfig:
