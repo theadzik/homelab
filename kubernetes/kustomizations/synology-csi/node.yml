@@ -97,7 +97,8 @@ spec:
             - --client-info
             - /etc/synology/client-info.yml
             - --log-level=info
-            - --chroot-dir=/host
+            - --chroot-dir=/host                                # needed for Talos
+            - --iscsiadm-path=/usr/local/sbin/iscsiadm          # needed for Talos
           env:
             - name: CSI_ENDPOINT
               value: unix://csi/csi.sock
