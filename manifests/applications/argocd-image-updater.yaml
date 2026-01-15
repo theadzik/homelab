@@ -19,7 +19,7 @@ spec:
           - $repo/manifests/base/argocd-image-updater/values.yaml
     - repoURL: 'https://github.com/theadzik/homelab'
       path: manifests/base/image-pull-secret
-      targetRevision: main
+      targetRevision: HEAD
       ref: repo
   destination:
     server: https://kubernetes.default.svc

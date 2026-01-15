@@ -12,7 +12,7 @@ spec:
   sources:
     - path: manifests/base/metal-lb
       repoURL: 'https://github.com/theadzik/homelab'
-      targetRevision: main
+      targetRevision: HEAD
       ref: repo
     - chart: metallb
       repoURL: https://metallb.github.io/metallb
