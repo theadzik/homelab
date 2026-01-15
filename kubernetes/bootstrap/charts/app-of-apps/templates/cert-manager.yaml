@@ -28,10 +28,6 @@ spec:
               requests:
                 cpu: 10m
                 memory: 128Mi
-          config:
-            apiVersion: controller.config.cert-manager.io/v1alpha1
-            kind: ControllerConfiguration
-            enableGatewayAPI: true
     - path: kubernetes/kustomizations/cert-manager
       repoURL: {{ .Values.spec.sources.repoURL }}
       targetRevision: {{ .Values.spec.sources.targetRevision }}
