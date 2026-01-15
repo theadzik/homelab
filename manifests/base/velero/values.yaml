@@ -51,7 +51,7 @@ backupsEnabled: true
 snapshotsEnabled: false
 
 schedules:
-  k3s-full:
+  talos-full:
     disabled: false
     schedule: "0 0 * * *"
     useOwnerReferencesInBackup: false
@@ -60,7 +60,7 @@ schedules:
     template:
       ttl: "720h"
       storageLocation: minio
-  persistent-volumes:
+  talos-pv-only:
     disabled: false
     schedule: "0 1 * * *"
     useOwnerReferencesInBackup: true

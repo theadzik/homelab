@@ -46,9 +46,9 @@ lapi:
       memory: 500Mi
   env:
     - name: ENROLL_INSTANCE_NAME
-      value: 'home-prod'
+      value: 'homelab-prod'
     - name: ENROLL_TAGS
-      value: 'k8s linux'
+      value: 'k8s linux talos'
   envFrom:
     - secretRef:
         name: traefik-apikey
