@@ -17,7 +17,7 @@ repos:
     rev: v1.37.1
     hooks:
       - id: yamllint
-        exclude: "^(.*/argocd-install.yaml|.*/image-updater.yaml)"
+        exclude: '^(.*\.argocd-source-.*\.yaml)'
   - repo: https://github.com/PyCQA/isort
     rev: 7.0.0
     hooks:
@@ -48,3 +48,4 @@ repos:
       - id: detect-secrets
         args: ['--baseline', '.sec.baseline']
         exclude: ".*secret.*"
+        exclude-lines: "secretName:"
