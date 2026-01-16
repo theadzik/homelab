@@ -14,7 +14,7 @@ spec:
             tcpSocket:
               port: 53
             timeoutSeconds: 1
-            initialDelaySeconds: 5
+            initialDelaySeconds: 150
             periodSeconds: 10
           livenessProbe:
             exec:
@@ -24,7 +24,7 @@ spec:
                 - "dig @127.0.0.1 localhost.internal"
             timeoutSeconds: 1
             failureThreshold: 2
-            initialDelaySeconds: 30
+            initialDelaySeconds: 150
             periodSeconds: 10
           resources:
             requests:
@@ -37,11 +37,6 @@ spec:
               protocol: "UDP"
             - containerPort: 80
               protocol: "TCP"
-          securityContext:
-            allowPrivilegeEscalation: true
-            capabilities:
-              add:
-                - NET_ADMIN
           envFrom:
             - configMapRef:
                 name: pihole-config
@@ -51,17 +46,11 @@ spec:
                 secretKeyRef:
                   name: web-password
                   key: WEBPASSWORD
-            - name: FTLCONF_dns_domain_name
-              value: "internal"
-            - name: FTLCONF_dns_hosts
-              value: '["127.0.0.1 localhost.internal"]'
-            - name: PIHOLE_UID
-              value: "1000"
-            - name: PIHOLE_GID
-              value: "1000"
           volumeMounts:
             - mountPath: /etc/pihole
               name: pihole
+            - mountPath: /tmp
+              name: tmp
       tolerations:
         - key: "node-role.kubernetes.io/control-plane"
           operator: "Exists"
@@ -73,6 +62,14 @@ spec:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
           whenUnsatisfiable: ScheduleAnyway
+      volumes:
+        - name: tmp
+          emptyDir: {}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+        runAsGroup: 1000
   volumeClaimTemplates:
     - metadata:
         name: pihole
