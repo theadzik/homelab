@@ -14,10 +14,10 @@ spec:
       helm:
         releaseName: database
         valueFiles:
-          - $repo/manifests/base/tandoor/database-values.yaml
-    - repoURL: 'https://github.com/theadzik/homelab'
-      path: manifests/base/tandoor
-      targetRevision: main
+          - $repo/kubernetes/helm/tandoor/database-values.yaml
+    - repoURL: {{ .Values.spec.sources.repoURL }}
+      targetRevision: {{ .Values.spec.sources.targetRevision }}
+      path: kubernetes/kustomizations/tandoor
       ref: repo
   destination:
     server: https://kubernetes.default.svc
