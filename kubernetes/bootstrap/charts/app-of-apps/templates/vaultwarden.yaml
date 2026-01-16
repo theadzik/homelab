@@ -8,9 +8,9 @@ metadata:
 spec:
   project: default
   source:
-    path: manifests/base/vaultwarden
-    repoURL: 'https://github.com/theadzik/homelab'
-    targetRevision: main
+    path: kubernetes/kustomizations/vaultwarden
+    repoURL: {{ .Values.spec.sources.repoURL }}
+    targetRevision: {{ .Values.spec.sources.targetRevision }}
   destination:
     server: https://kubernetes.default.svc
     namespace: vaultwarden

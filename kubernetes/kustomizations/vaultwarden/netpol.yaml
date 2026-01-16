@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: vaultwarden-nwp
+  name: vaultwarden-netpol
 spec:
   podSelector:
     matchLabels:
@@ -31,7 +31,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: default-deny-ingress-nwp
+  name: default-deny-ingress-netpol
 spec:
   podSelector: {}
   policyTypes:
