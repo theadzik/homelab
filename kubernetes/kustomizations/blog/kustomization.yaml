@@ -7,5 +7,5 @@ resources:
   - namespace.yaml
   - netpol.yaml
   - service.yaml
-#  - vpa.yaml
+  - vpa.yaml
   - ../image-pull-secret

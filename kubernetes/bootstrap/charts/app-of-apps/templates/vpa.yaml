@@ -15,10 +15,10 @@ spec:
       helm:
         releaseName: vertical-pod-autoscaler
         valueFiles:
-          - $homelab/manifests/base/vpa/values.yaml
-    - repoURL: 'https://github.com/theadzik/homelab'
-      targetRevision: main
-      ref: homelab
+          - $repo/kubernetes/helm/vpa/values.yaml
+    - repoURL: {{ .Values.spec.sources.repoURL }}
+      targetRevision: {{ .Values.spec.sources.targetRevision }}
+      ref: repo
   destination:
     server: "https://kubernetes.default.svc"
     namespace: vertical-pod-autoscaler
@@ -34,3 +34,6 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - ServerSideApply=true
+    retry:
+      limit: -1

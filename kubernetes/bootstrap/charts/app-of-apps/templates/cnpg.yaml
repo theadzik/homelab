@@ -11,14 +11,9 @@ spec:
   sources:
     - chart: cloudnative-pg
       repoURL: https://cloudnative-pg.github.io/charts
-      targetRevision: 0.26.*
+      targetRevision: 0.27.*
       helm:
         releaseName: cnpg
-        valueFiles:
-          - $repo/manifests/base/cnpg/values.yaml
-    - repoURL: 'https://github.com/theadzik/homelab'
-      targetRevision: main
-      ref: repo
   destination:
     server: "https://kubernetes.default.svc"
     namespace: cnpg-system
@@ -29,3 +24,5 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+    retry:
+      limit: -1
