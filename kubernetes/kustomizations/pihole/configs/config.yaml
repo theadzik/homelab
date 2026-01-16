@@ -1,6 +1,6 @@
 TZ=Europe/Warsaw
 FTLCONF_dns_listeningMode=all
-FTLCONF_dns_upstreams=1.1.1.1;2606:4700:4700::1111;8.8.8.8;2001:4860:4860::8888;9.9.9.9;2620:fe::fe;127.0.0.53#53
+FTLCONF_dns_upstreams=1.1.1.1;8.8.8.8;9.9.9.9
 FTLCONF_webserver_interface_theme=default-darker
 PIHOLE_UID=1000
 PIHOLE_GID=1000
