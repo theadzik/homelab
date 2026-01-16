@@ -2,15 +2,14 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: zmuda-pro-blog
-  namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    path: manifests/base/zmuda-pro-blog
-    repoURL: 'https://github.com/theadzik/homelab'
-    targetRevision: main
+    path: kubernetes/kustomizations/zmuda-pro-blog
+    repoURL: {{ .Values.spec.sources.repoURL }}
+    targetRevision: {{ .Values.spec.sources.targetRevision }}
   destination:
     server: https://kubernetes.default.svc
     namespace: zmuda-pro-blog

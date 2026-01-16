@@ -27,6 +27,7 @@ kind: ImageUpdater
 metadata:
   name: cloudflared
 spec:
+  namespace: argocd
   applicationRefs:
     - namePattern: "cloudflared"
       writeBackConfig:
