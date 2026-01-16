@@ -1,18 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: zmuda-pro-blog
+  name: blog
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    path: kubernetes/kustomizations/zmuda-pro-blog
+    path: kubernetes/kustomizations/blog
     repoURL: {{ .Values.spec.sources.repoURL }}
     targetRevision: {{ .Values.spec.sources.targetRevision }}
   destination:
     server: https://kubernetes.default.svc
-    namespace: zmuda-pro-blog
+    namespace: blog
   syncPolicy:
     automated:
       prune: true
@@ -25,11 +25,11 @@ spec:
 apiVersion: argocd-image-updater.argoproj.io/v1alpha1
 kind: ImageUpdater
 metadata:
-  name: zmuda-pro-blog
+  name: blog
 spec:
   namespace: argocd
   applicationRefs:
-    - namePattern: "zmuda-pro-blog"
+    - namePattern: "blog"
       writeBackConfig:
         method: "git"
       images:

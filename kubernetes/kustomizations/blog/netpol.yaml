@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: zmuda-pro-blog-nwp
+  name: zmuda-pro-blog-netpol
 spec:
   podSelector: {}
   policyTypes:
