@@ -10,18 +10,7 @@ spec:
     - from:
         - namespaceSelector:
             matchLabels:
-              kubernetes.io/metadata.name: ingress-nginx
-        - podSelector:
-            matchLabels:
-              type: ingress
-    - from:
-        - namespaceSelector:
-            matchLabels:
               kubernetes.io/metadata.name: media
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: kgateway-system
     - from:
         - namespaceSelector:
             matchLabels:

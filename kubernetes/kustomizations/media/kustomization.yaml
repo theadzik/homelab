@@ -2,14 +2,13 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: media
 resources:
-  - gateway.yaml
   - ingress-bazarr.yaml
   - ingress-jellyfin.yaml
   - ingress-nzbget.yaml
   - ingress-radarr.yaml
   - ingress-sonarr.yaml
   - namespace.yaml
-  - nwp.yaml
+  - netpol.yaml
   - pvc.yaml
   - secret-nzbget.yaml
   - service-bazarr.yaml
