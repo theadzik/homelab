@@ -2,15 +2,14 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: media
-  namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    path: manifests/base/media
-    repoURL: 'https://github.com/theadzik/homelab'
-    targetRevision: main
+    path: kubernetes/kustomizations/media
+    repoURL: {{ .Values.spec.sources.repoURL }}
+    targetRevision: {{ .Values.spec.sources.targetRevision }}
   destination:
     server: https://kubernetes.default.svc
     namespace: media
@@ -18,6 +17,8 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    retry:
+      limit: -1
 
 ---
 
