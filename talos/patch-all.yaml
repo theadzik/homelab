@@ -1,7 +1,7 @@
 machine:
   install:
-    wipe: true
     disk: /dev/nvme0n1
+    image: factory.talos.dev/installer/87286864e94c7d661c926a524c8e57f84d608488f0cd654a92b1e5f37d48b868:v1.12.1
 ---
 apiVersion: v1alpha1
 kind: ExtensionServiceConfig
