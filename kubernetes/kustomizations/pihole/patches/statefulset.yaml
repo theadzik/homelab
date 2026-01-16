@@ -37,11 +37,11 @@ spec:
               protocol: "UDP"
             - containerPort: 80
               protocol: "TCP"
-#          securityContext:
-#            allowPrivilegeEscalation: true
-#            capabilities:
-#              add:
-#                - NET_ADMIN
+          securityContext:
+            allowPrivilegeEscalation: true
+            capabilities:
+              add:
+                - NET_ADMIN
           envFrom:
             - configMapRef:
                 name: pihole-config
