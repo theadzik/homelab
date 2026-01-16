@@ -27,3 +27,5 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    retry:
+      limit: -1

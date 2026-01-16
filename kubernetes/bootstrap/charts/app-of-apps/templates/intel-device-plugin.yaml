@@ -57,3 +57,5 @@ spec:
     syncOptions:
       - RespectIgnoreDifferences=true
       - CreateNamespace=true
+    retry:
+      limit: -1
