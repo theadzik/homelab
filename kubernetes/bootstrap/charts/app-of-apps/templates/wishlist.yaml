@@ -2,7 +2,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
   name: wishlist
-  namespace: argocd
 spec:
   destinations:
     - namespace: 'wishlist'
@@ -17,7 +16,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: wishlist-cluster
-  namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
@@ -25,9 +23,9 @@ metadata:
 spec:
   project: default
   source:
-    path: manifests/base/wishlist
-    repoURL: 'https://github.com/theadzik/homelab'
-    targetRevision: main
+    path: kubernetes/kustomizations/wishlist
+    repoURL: {{ .Values.spec.sources.repoURL }}
+    targetRevision: {{ .Values.spec.sources.targetRevision }}
   destination:
     server: https://kubernetes.default.svc
     namespace: wishlist
@@ -35,6 +33,8 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    retry:
+      limit: -1
 
 ---
 
@@ -42,7 +42,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: wishlist
-  namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
@@ -60,6 +59,8 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    retry:
+      limit: -1
 
 ---
 
