@@ -14,7 +14,7 @@ spec:
             tcpSocket:
               port: 53
             timeoutSeconds: 1
-            initialDelaySeconds: 150
+            initialDelaySeconds: 20
             periodSeconds: 10
           livenessProbe:
             exec:
