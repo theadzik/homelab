@@ -9,15 +9,16 @@ metadata:
 spec:
   project: default
   sources:
+    - repoURL: oci://ghcr.io/intel/intel-resource-drivers-for-kubernetes/intel-gpu-resource-driver-chart
+      path: .
+      targetRevision: 0.9.*
+      helm:
+        releaseName: intel-gpu-resource-driver
+        valueFiles:
+          - $repo/kubernetes/helm/intel-gpu-resource-driver/values.yaml
     - repoURL: {{ .Values.spec.sources.repoURL }}
       targetRevision: {{ .Values.spec.sources.targetRevision }}
-      path: kubernetes/helm/intel-gpu-resource-driver
-      helm:
-        releaseName: intel-driver
-        valuesObject:
-          kubeletPlugin:
-            cdiStaticPath: /var/cdi/static
-            cdiDynamicPath: /var/cdi/dynamic
+      ref: repo
   destination:
     server: "https://kubernetes.default.svc"
     namespace: intel-gpu-resource-driver
