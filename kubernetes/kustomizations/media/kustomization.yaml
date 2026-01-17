@@ -10,6 +10,7 @@ resources:
   - namespace.yaml
   - netpol.yaml
   - pvc.yaml
+  - resourceclaimtemplate.yaml
   - secret-nzbget.yaml
   - service-bazarr.yaml
   - service-jellyfin.yaml

@@ -35,9 +35,8 @@ spec:
             requests:
               cpu: 1000m
               memory: 2Gi
-              gpu.intel.com/i915: 1
-            limits:
-              gpu.intel.com/i915: 1
+            claims:
+              - name: i915
           volumeMounts:
             - mountPath: /tmp
               name: tmp
@@ -67,4 +66,7 @@ spec:
           emptyDir: {}
         - name: cache
           emptyDir: {}
+      resourceClaims:
+        - name: i915
+          resourceClaimTemplateName: i915
   serviceName: jellyfin
