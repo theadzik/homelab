@@ -14,10 +14,10 @@ spec:
       path: kubernetes/helm/intel-gpu-resource-driver
       helm:
         releaseName: intel-driver
-        valueObject:
+        valuesObject:
           kubeletPlugin:
-            cdiStaticPath: /etc/cdi
-            cdiDynamicPath: /var/run/cdi
+            cdiStaticPath: /var/cdi/static
+            cdiDynamicPath: /var/cdi/dynamic
   destination:
     server: "https://kubernetes.default.svc"
     namespace: intel-gpu-resource-driver
