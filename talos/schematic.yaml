@@ -1,0 +1,10 @@
+# 87286864e94c7d661c926a524c8e57f84d608488f0cd654a92b1e5f37d48b868
+customization:
+  systemExtensions:
+    officialExtensions:
+      - siderolabs/i915
+      - siderolabs/nut-client
+      # https://github.com/siderolabs/talos/issues/11469#issuecomment-3679454197
+      - siderolabs/btrfs
+      - siderolabs/iscsi-tools
+      - siderolabs/util-linux-tools

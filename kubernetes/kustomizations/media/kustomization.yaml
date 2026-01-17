@@ -1,0 +1,38 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: media
+resources:
+  - ingress-bazarr.yaml
+  - ingress-jellyfin.yaml
+  - ingress-nzbget.yaml
+  - ingress-radarr.yaml
+  - ingress-sonarr.yaml
+  - namespace.yaml
+  - netpol.yaml
+  - pvc.yaml
+  - resourceclaimtemplate.yaml
+  - secret-nzbget.yaml
+  - service-bazarr.yaml
+  - service-jellyfin.yaml
+  - service-nzbget.yaml
+  - service-radarr.yaml
+  - service-sonarr.yaml
+  - statefulset-bazarr.yaml
+  - statefulset-jellyfin.yaml
+  - statefulset-nzbget.yaml
+  - statefulset-radarr.yaml
+  - statefulset-sonarr.yaml
+  - vpa.yaml
+
+patches:
+  - patch: |-
+      - op: add
+        path: /spec/template/spec/priorityClassName
+        value: high-priority
+    target:
+      kind: StatefulSet
+      group: apps
+      version: v1
+  - path: ./patches/ingress-internal.yaml
+    target:
+      kind: Ingress

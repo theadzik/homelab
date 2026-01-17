@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: external-dns
+  annotations:
+    argocd.argoproj.io/sync-wave: "-15"
+spec:
+  project: default
+  sources:
+    - chart: external-dns
+      repoURL: https://kubernetes-sigs.github.io/external-dns/
+      targetRevision: 1.20.*
+      helm:
+        releaseName: pihole
+        valueFiles:
+          - $repo/kubernetes/helm/external-dns/values-shared.yaml
+          - $repo/kubernetes/helm/external-dns/values-pihole.yaml
+    - chart: external-dns
+      repoURL: https://kubernetes-sigs.github.io/external-dns/
+      targetRevision: 1.20.*
+      helm:
+        releaseName: cloudflare
+        valueFiles:
+          - $repo/kubernetes/helm/external-dns/values-shared.yaml
+          - $repo/kubernetes/helm/external-dns/values-cloudflare.yaml
+    - path: "kubernetes/kustomizations/external-dns"
+      repoURL: {{ .Values.spec.sources.repoURL }}
+      targetRevision: {{ .Values.spec.sources.targetRevision }}
+      ref: repo
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: external-dns
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    retry:
+      limit: -1

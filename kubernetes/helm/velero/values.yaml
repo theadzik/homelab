@@ -1,0 +1,74 @@
+image:
+  imagePullSecrets:
+    - name: dockerhub-image-pull-secret
+
+resources:
+  requests:
+    cpu: 500m
+    memory: 128Mi
+  limits:
+    cpu: 1000m
+    memory: 512Mi
+
+metrics:
+  enabled: false
+
+kubectl:
+  image:
+    repository: docker.io/bitnamilegacy/kubectl
+    tag: 1.33.4
+
+initContainers:
+  - name: velero-plugin-for-aws
+    image: velero/velero-plugin-for-aws:v1.12.0
+    imagePullPolicy: IfNotPresent
+    volumeMounts:
+      - mountPath: /target
+        name: plugins
+
+configuration:
+  backupStorageLocation:
+    - name: minio
+      provider: aws
+      bucket: velero
+      default: true
+      accessMode: ReadWrite
+      credential:
+        name: minio-credentials
+        key: cloud
+      config:
+        region: minio
+        s3ForcePathStyle: true
+        s3Url: http://192.168.0.6:9000
+        insecureSkipTLSVerify: true
+
+
+credentials:
+  useSecret: true
+  existingSecret: minio-credentials
+
+backupsEnabled: true
+snapshotsEnabled: false
+
+schedules:
+  talos-full:
+    disabled: false
+    schedule: "0 0 * * *"
+    useOwnerReferencesInBackup: false
+    paused: false
+    skipImmediately: false
+    template:
+      ttl: "720h"
+      storageLocation: minio
+  talos-pv-only:
+    disabled: false
+    schedule: "0 1 * * *"
+    useOwnerReferencesInBackup: true
+    paused: false
+    skipImmediately: false
+    template:
+      includedResources:
+        - persistentvolumes
+        - persistentvolumeclaims
+      ttl: "720h"
+      storageLocation: minio

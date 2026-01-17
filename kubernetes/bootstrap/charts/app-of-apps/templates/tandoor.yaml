@@ -1,0 +1,53 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tandoor
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - chart: cluster
+      repoURL: https://cloudnative-pg.github.io/charts
+      targetRevision: 0.3.*
+      helm:
+        releaseName: database
+        valueFiles:
+          - $repo/kubernetes/helm/tandoor/database-values.yaml
+    - repoURL: {{ .Values.spec.sources.repoURL }}
+      targetRevision: {{ .Values.spec.sources.targetRevision }}
+      path: kubernetes/kustomizations/tandoor
+      ref: repo
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: tandoor
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    retry:
+      limit: -1
+
+---
+
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: tandoor
+spec:
+  namespace: argocd
+  applicationRefs:
+    - namePattern: "tandoor"
+      writeBackConfig:
+        method: "git"
+      images:
+        - alias: "nginx"
+          imageName: "nginx"
+          commonUpdateSettings:
+            updateStrategy: "semver"
+            allowTags: "regexp:^1\\.[0-9]+\\.[0-9]+-alpine$"
+        - alias: "recipes"
+          imageName: "vabene1111/recipes:~2"

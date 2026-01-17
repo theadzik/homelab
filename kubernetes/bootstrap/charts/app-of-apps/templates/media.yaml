@@ -1,0 +1,57 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: media
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    path: kubernetes/kustomizations/media
+    repoURL: {{ .Values.spec.sources.repoURL }}
+    targetRevision: {{ .Values.spec.sources.targetRevision }}
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: media
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      limit: -1
+
+---
+
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: media
+spec:
+  namespace: argocd
+  applicationRefs:
+    - namePattern: "media"
+      writeBackConfig:
+        method: "git"
+      images:
+        - alias: "jellyfin"
+          imageName: "lscr.io/linuxserver/jellyfin:~10"
+          commonUpdateSettings:
+            updateStrategy: "semver"
+        - alias: "bazarr"
+          imageName: "lscr.io/linuxserver/bazarr:~1"
+          commonUpdateSettings:
+            updateStrategy: "semver"
+        - alias: "radarr"
+          imageName: "lscr.io/linuxserver/radarr:~6"
+          commonUpdateSettings:
+            updateStrategy: "semver"
+            allowTags: "regexp:^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        - alias: "sonarr"
+          imageName: "lscr.io/linuxserver/sonarr:~4"
+          commonUpdateSettings:
+            updateStrategy: "semver"
+            allowTags: "regexp:^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        - alias: "nzbget"
+          imageName: "lscr.io/linuxserver/nzbget:~25"
+          commonUpdateSettings:
+            updateStrategy: "semver"

@@ -1,0 +1,6 @@
+apiVersion: v2
+name: app-of-apps
+description: ArgoCD App of Apps Pattern Chart
+type: application
+version: 1.0.0
+appVersion: "1.0.0"

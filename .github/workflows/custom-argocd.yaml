@@ -4,18 +4,20 @@ on:
   pull_request:
     paths:
       - ".github/workflows/custom-argocd.yaml"
+      - "apps/custom-argocd/**"
   push:
     branches:
       - main
     paths:
       - ".github/workflows/custom-argocd.yaml"
+      - "apps/custom-argocd/**"
 jobs:
   get-version:
     permissions:
       contents: read
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.get_version.outputs.version }}
+      app_version: ${{ steps.get_version.outputs.app_version }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -24,18 +26,21 @@ jobs:
         run: |
           set -e
 
-          repo="https://argoproj.github.io/argo-helm"
-          echo "Repository url: $repo"
-          chart="argo-cd"
-          echo "Chart name: $chart"
-          chart_version="9.3.4"
+          repo_url=$(jq -r '.repoURL' "$ARGOCD_VERSION_FILE")
+          chart_name=$(jq -r '.chartName' "$ARGOCD_VERSION_FILE")
+          chart_version=$(jq -r '.chartVersion' "$ARGOCD_VERSION_FILE")
+
+          echo "Repository url: $repo_url"
+          echo "Chart name: $chart_name"
           echo "Chart version: $chart_version"
 
-          helm repo add argocd $repo
-          version=$(helm search repo argocd/$chart --version $chart_version -o json | jq -r '.[0].app_version')
-          echo "App version: $version"
+          helm repo add argocd $repo_url
+          app_version=$(helm search repo argocd/$chart_name --version $chart_version -o json | jq -r '.[0].app_version')
+          echo "App version: $app_version"
 
-          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "app_version=$app_version" >> $GITHUB_OUTPUT
+        env:
+          ARGOCD_VERSION_FILE: "${{ github.workspace }}/apps/custom-argocd/argo-version.json"
 
   build:
     needs: get-version
@@ -58,8 +63,8 @@ jobs:
           platforms: "linux/amd64"
           context: "{{defaultContext}}:apps/custom-argocd"
           push: false
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/custom-argocd:${{ needs.get-version.outputs.version }}
-          build-args: TAG=${{ needs.get-version.outputs.version }}
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/custom-argocd:${{ needs.get-version.outputs.app_version }}
+          build-args: TAG=${{ needs.get-version.outputs.app_version }}
       - name: Build and push
         if: github.event_name != 'pull_request'
         uses: docker/build-push-action@v6
@@ -67,5 +72,5 @@ jobs:
           platforms: "linux/amd64"
           context: "{{defaultContext}}:apps/custom-argocd"
           push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/custom-argocd:${{ needs.get-version.outputs.version }}
-          build-args: TAG=${{ needs.get-version.outputs.version }}
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/custom-argocd:${{ needs.get-version.outputs.app_version }}
+          build-args: TAG=${{ needs.get-version.outputs.app_version }}

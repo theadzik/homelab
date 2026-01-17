@@ -130,6 +130,12 @@
       "pattern": [
         ".*secret.*"
       ]
+    },
+    {
+      "path": "detect_secrets.filters.regex.should_exclude_line",
+      "pattern": [
+        "secretName:"
+      ]
     }
   ],
   "results": {
@@ -153,230 +159,36 @@
         "is_secret": false
       }
     ],
-    "ansible/playbooks/roles/nut_client/defaults/main.yaml": [
+    "apps/custom-argocd/Dockerfile": [
       {
-        "type": "Secret Keyword",
-        "filename": "ansible/playbooks/roles/nut_client/defaults/main.yaml",
-        "hashed_secret": "e5e9fa1ba31ecd1ae84f75caaa474f3a663f05f4",
+        "type": "Hex High Entropy String",
+        "filename": "apps/custom-argocd/Dockerfile",
+        "hashed_secret": "c9fd8369ec16b25a72979082f10f3f8f697aab34",
         "is_verified": false,
         "line_number": 4,
         "is_secret": false
       }
     ],
-    "manifests/base/argocd-image-updater/values.yaml": [
+    "kubernetes/helm/argocd-image-updater/values.yaml": [
       {
         "type": "Secret Keyword",
-        "filename": "manifests/base/argocd-image-updater/values.yaml",
+        "filename": "kubernetes/helm/argocd-image-updater/values.yaml",
         "hashed_secret": "3b10339de9724ce87c5bb01f693f8d6f11b4e9ac",
         "is_verified": false,
         "line_number": 8,
         "is_secret": false
       }
     ],
-    "manifests/base/audiobookshelf/ingress.yaml": [
+    "kubernetes/helm/velero/values.yaml": [
       {
         "type": "Secret Keyword",
-        "filename": "manifests/base/audiobookshelf/ingress.yaml",
-        "hashed_secret": "329af59950a4b9745c9b06468baf10daa7ded10e",
-        "is_verified": false,
-        "line_number": 14,
-        "is_secret": false
-      }
-    ],
-    "manifests/base/cloudflared/deployment.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/cloudflared/deployment.yaml",
-        "hashed_secret": "f564423e09f67ad4329ed7f3edf239ba513e8be4",
-        "is_verified": false,
-        "line_number": 63,
-        "is_secret": false
-      }
-    ],
-    "manifests/base/kube-prometheus-stack/values.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/kube-prometheus-stack/values.yaml",
-        "hashed_secret": "f1447181cf19d81ff8048e969ea3e9eb3f1bc87d",
-        "is_verified": false,
-        "line_number": 24,
-        "is_secret": false
-      },
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/kube-prometheus-stack/values.yaml",
-        "hashed_secret": "fc4b79ff2005c1bfacead828184f0c8aad8fd860",
-        "is_verified": false,
-        "line_number": 26,
-        "is_secret": false
-      },
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/kube-prometheus-stack/values.yaml",
-        "hashed_secret": "6bf62b4456cf51708b514be8a57e132ef19fbe4c",
-        "is_verified": false,
-        "line_number": 37,
-        "is_secret": false
-      },
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/kube-prometheus-stack/values.yaml",
-        "hashed_secret": "0edf4ebb9d68a3f7803b37d46623a0faf71b9b9a",
-        "is_verified": false,
-        "line_number": 40,
-        "is_secret": false
-      }
-    ],
-    "manifests/base/media/ingress-bazarr.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/media/ingress-bazarr.yaml",
-        "hashed_secret": "5912ca219281be3ac4a87c5af154b253e58f75b1",
-        "is_verified": false,
-        "line_number": 9,
-        "is_secret": false
-      }
-    ],
-    "manifests/base/media/ingress-jellyfin.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/media/ingress-jellyfin.yaml",
-        "hashed_secret": "0ca35c739501f5e6c0a84ee80f8fd626fe0b0321",
-        "is_verified": false,
-        "line_number": 9,
-        "is_secret": false
-      }
-    ],
-    "manifests/base/media/ingress-nzbget.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/media/ingress-nzbget.yaml",
-        "hashed_secret": "77284c103ffa2db8e5dc5027499f76c8e5c756df",
-        "is_verified": false,
-        "line_number": 9,
-        "is_secret": false
-      }
-    ],
-    "manifests/base/media/ingress-radarr.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/media/ingress-radarr.yaml",
-        "hashed_secret": "835a7b6aa76c9ac582dcc06a7dcbbcd762b425be",
-        "is_verified": false,
-        "line_number": 9,
-        "is_secret": false
-      }
-    ],
-    "manifests/base/media/ingress-sonarr.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/media/ingress-sonarr.yaml",
-        "hashed_secret": "643d72fdf9b05acc55c8ff7ed26a56a8983ff3f6",
-        "is_verified": false,
-        "line_number": 9,
-        "is_secret": false
-      }
-    ],
-    "manifests/base/pihole/ingress.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/pihole/ingress.yaml",
-        "hashed_secret": "cec45245e661ad3db0f1b10d14b2de0744d95672",
-        "is_verified": false,
-        "line_number": 14,
-        "is_secret": false
-      }
-    ],
-    "manifests/base/synology-csi/controller.yml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/synology-csi/controller.yml",
-        "hashed_secret": "c5ae2f4efb6b79939944b24f1cf3dd1e13e14faf",
-        "is_verified": false,
-        "line_number": 185,
-        "is_secret": false
-      }
-    ],
-    "manifests/base/synology-csi/node.yml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/synology-csi/node.yml",
-        "hashed_secret": "c5ae2f4efb6b79939944b24f1cf3dd1e13e14faf",
-        "is_verified": false,
-        "line_number": 136,
-        "is_secret": false
-      }
-    ],
-    "manifests/base/synology-csi/snapshotter/snapshotter.yml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/synology-csi/snapshotter/snapshotter.yml",
-        "hashed_secret": "c5ae2f4efb6b79939944b24f1cf3dd1e13e14faf",
-        "is_verified": false,
-        "line_number": 106,
-        "is_secret": false
-      }
-    ],
-    "manifests/base/tandoor/ingress.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/tandoor/ingress.yaml",
-        "hashed_secret": "3ad19aa5dc443364d67dcacb1b0e5048b9708095",
-        "is_verified": false,
-        "line_number": 39,
-        "is_secret": false
-      }
-    ],
-    "manifests/base/vaultwarden/backup.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/vaultwarden/backup.yaml",
-        "hashed_secret": "7218ca7db60e5be810c8e1c0ec8d5378ac2519e4",
-        "is_verified": false,
-        "line_number": 64,
-        "is_secret": false
-      }
-    ],
-    "manifests/base/vaultwarden/ingress.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/vaultwarden/ingress.yaml",
-        "hashed_secret": "e26ffc62e90a334f716003985b02a5f5851c1be5",
-        "is_verified": false,
-        "line_number": 17,
-        "is_secret": false
-      }
-    ],
-    "manifests/base/vaultwarden/vaultwarden.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/vaultwarden/vaultwarden.yaml",
-        "hashed_secret": "7218ca7db60e5be810c8e1c0ec8d5378ac2519e4",
-        "is_verified": false,
-        "line_number": 95,
-        "is_secret": false
-      }
-    ],
-    "manifests/base/velero/values.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/velero/values.yaml",
+        "filename": "kubernetes/helm/velero/values.yaml",
         "hashed_secret": "2f7c7f277713d283f6e23d276750ebcdd2993000",
         "is_verified": false,
         "line_number": 48,
         "is_secret": false
       }
-    ],
-    "manifests/base/zmuda-pro-blog/ingress.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "manifests/base/zmuda-pro-blog/ingress.yaml",
-        "hashed_secret": "b0807dfa70e3df5d968a9fcee52a238ab3a5dcbd",
-        "is_verified": false,
-        "line_number": 17,
-        "is_secret": false
-      }
     ]
   },
-  "generated_at": "2026-01-10T18:34:17Z"
+  "generated_at": "2026-01-17T20:17:49Z"
 }

@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: intel-gpu-resource-driver
+  annotations:
+    argocd.argoproj.io/sync-wave: "-35"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - repoURL: oci://ghcr.io/intel/intel-resource-drivers-for-kubernetes/intel-gpu-resource-driver-chart
+      path: .
+      targetRevision: 0.9.*
+      helm:
+        releaseName: intel-gpu-resource-driver
+        valueFiles:
+          - $repo/kubernetes/helm/intel-gpu-resource-driver/values.yaml
+    - repoURL: {{ .Values.spec.sources.repoURL }}
+      targetRevision: {{ .Values.spec.sources.targetRevision }}
+      ref: repo
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: intel-gpu-resource-driver
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - RespectIgnoreDifferences=true
+      - ServerSideApply=true
+      - CreateNamespace=true
+    managedNamespaceMetadata:
+      labels:
+        pod-security.kubernetes.io/enforce: privileged
+    retry:
+      limit: -1

@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: vaultwarden
+resources:
+  - namespace.yaml
+  - pvc.yaml
+  - netpol.yaml
+  - ingress.yaml
+  - vaultwarden.yaml
+  - backup.yaml
+  - ../image-pull-secret
+
+secretGenerator:
+  - name: vw-secrets
+    envs:
+      - configs/vw-config-secret.env
+    type: Opaque
+  - name: backup-encryption-secret
+    envs:
+      - configs/backup-encryption-secret.env
+    type: Opaque
+  - name: rclone-secret
+    files:
+      - .rclone.conf=configs/rclone-secret.conf
+    type: Opaque

@@ -1,0 +1,51 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pihole
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "-20"
+spec:
+  project: default
+  source:
+    path: kubernetes/kustomizations/pihole
+    repoURL: {{ .Values.spec.sources.repoURL }}
+    targetRevision: {{ .Values.spec.sources.targetRevision }}
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: pihole
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      limit: -1
+    managedNamespaceMetadata:
+      labels:
+        pod-security.kubernetes.io/enforce: privileged
+    syncOptions:
+      - CreateNamespace=true
+
+---
+
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: pihole
+spec:
+  namespace: argocd
+  applicationRefs:
+    - namePattern: "pihole"
+      writeBackConfig:
+        method: "git"
+      images:
+        - alias: "pihole"
+          imageName: "pihole/pihole"
+          commonUpdateSettings:
+            updateStrategy: "alphabetical"
+            allowTags: "regexp:^[0-9]{4}\\.[0-9]{2}\\.[0-9]+$"
+        - alias: "nebula"
+          imageName: "ghcr.io/lovelaze/nebula-sync"
+          commonUpdateSettings:
+            updateStrategy: "semver"

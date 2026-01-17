@@ -1,0 +1,91 @@
+admissionController:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+  extraArgs:
+    - --feature-gates=InPlaceOrRecreate=true
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 1
+          preference:
+            matchExpressions:
+              - key: "node-role.kubernetes.io/control-plane"
+                operator: In
+                values:
+                  - "true"
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Equal"
+      value: "true"
+      effect: "NoSchedule"
+
+recommender:
+  replicas: 1
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+  extraArgs:
+    - --round-memory-bytes=1048576  # 1 MiB
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 1
+          preference:
+            matchExpressions:
+              - key: "node-role.kubernetes.io/control-plane"
+                operator: In
+                values:
+                  - "true"
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Equal"
+      value: "true"
+      effect: "NoSchedule"
+
+updater:
+  replicas: 1
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+  extraArgs:
+    - --feature-gates=InPlaceOrRecreate=true
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 1
+          preference:
+            matchExpressions:
+              - key: "node-role.kubernetes.io/control-plane"
+                operator: In
+                values:
+                  - "true"
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Equal"
+      value: "true"
+      effect: "NoSchedule"
+
+certGen:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 1
+          preference:
+            matchExpressions:
+              - key: "node-role.kubernetes.io/control-plane"
+                operator: In
+                values:
+                  - "true"
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Equal"
+      value: "true"
+      effect: "NoSchedule"

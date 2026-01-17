@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: synology-csi
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "-35"
+spec:
+  project: default
+  source:
+    path: kubernetes/kustomizations/synology-csi
+    repoURL: {{ .Values.spec.sources.repoURL }}
+    targetRevision: {{ .Values.spec.sources.targetRevision }}
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: synology-csi
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    managedNamespaceMetadata:
+      labels:
+        pod-security.kubernetes.io/enforce: privileged
+    retry:
+      limit: -1

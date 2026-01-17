@@ -14,10 +14,10 @@ repos:
       - id: check-merge-conflict
       - id: mixed-line-ending
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.37.1
+    rev: v1.38.0
     hooks:
       - id: yamllint
-        exclude: "^(.*/argocd-install.yaml|.*/image-updater.yaml)"
+        exclude: '^(.*\.argocd-source-.*\.yaml)'
   - repo: https://github.com/PyCQA/isort
     rev: 7.0.0
     hooks:
@@ -27,17 +27,18 @@ repos:
     hooks:
       - id: black
   - repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.5.5
+    rev: v1.5.6
     hooks:
       - id: remove-crlf
   - repo: https://github.com/syntaqx/git-hooks
     rev: v0.0.18
     hooks:
       - id: shellcheck
-  - repo: https://github.com/markdownlint/markdownlint
-    rev: v0.15.0
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.47.0
     hooks:
       - id: markdownlint
+        args: ["--fix"]
   - repo: https://github.com/hadolint/hadolint
     rev: v2.14.0
     hooks:
@@ -48,3 +49,4 @@ repos:
       - id: detect-secrets
         args: ['--baseline', '.sec.baseline']
         exclude: ".*secret.*"
+        exclude-lines: "secretName:"

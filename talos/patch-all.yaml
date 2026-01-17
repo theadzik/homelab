@@ -1,0 +1,24 @@
+machine:
+  # https://docs.siderolabs.com/talos/v1.12/configure-your-talos-cluster/images-container-runtime/containerd#set-cdi-plugin-spec-dirs-to-writable-directories
+  files:
+    - path: /etc/cri/conf.d/20-customization.part
+      op: create
+      content: |
+        [plugins."io.containerd.cri.v1.runtime"]
+          cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
+  install:
+    disk: /dev/nvme0n1
+    image: factory.talos.dev/installer/87286864e94c7d661c926a524c8e57f84d608488f0cd654a92b1e5f37d48b868:v1.12.1
+  network:
+    nameservers:
+      - 1.1.1.1
+      - 9.9.9.9
+---
+apiVersion: v1alpha1
+kind: ExtensionServiceConfig
+name: nut-client
+configFiles:
+  - content: |-
+      MONITOR ups@192.168.0.6 1 monuser secret secondary
+      SHUTDOWNCMD "/sbin/poweroff"
+    mountPath: /usr/local/etc/nut/upsmon.conf

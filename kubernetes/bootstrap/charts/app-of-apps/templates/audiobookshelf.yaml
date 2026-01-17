@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: audiobookshelf
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    path: kubernetes/kustomizations/audiobookshelf
+    repoURL: {{ .Values.spec.sources.repoURL }}
+    targetRevision: {{ .Values.spec.sources.targetRevision }}
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: audiobookshelf
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      limit: -1
+
+---
+
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: audiobookshelf
+spec:
+  namespace: argocd
+  applicationRefs:
+    - namePattern: "audiobookshelf"
+      writeBackConfig:
+        method: "git"
+      images:
+        - alias: "audiobookshelf"
+          imageName: "ghcr.io/advplyr/audiobookshelf:~2"

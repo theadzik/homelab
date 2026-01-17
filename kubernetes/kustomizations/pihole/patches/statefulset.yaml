@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: any
+spec:
+  serviceName: pihole-dns
+  template:
+    spec:
+      containers:
+        - name: pihole
+          image: pihole/pihole:2025.11.1
+          imagePullPolicy: IfNotPresent
+          readinessProbe:
+            tcpSocket:
+              port: 53
+            timeoutSeconds: 1
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          livenessProbe:
+            exec:
+              command:
+                - "/bin/sh"
+                - "-c"
+                - "dig @127.0.0.1 localhost.internal"
+            timeoutSeconds: 1
+            failureThreshold: 2
+            initialDelaySeconds: 150
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+          ports:
+            - containerPort: 53
+              protocol: "TCP"
+            - containerPort: 53
+              protocol: "UDP"
+            - containerPort: 80
+              protocol: "TCP"
+          envFrom:
+            - configMapRef:
+                name: pihole-config
+          env:
+            - name: FTLCONF_webserver_api_password
+              valueFrom:
+                secretKeyRef:
+                  name: web-password
+                  key: WEBPASSWORD
+          volumeMounts:
+            - mountPath: /etc/pihole
+              name: pihole
+            - mountPath: /tmp
+              name: tmp
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
+      priorityClassName: high-priority
+      imagePullSecrets:
+        - name: dockerhub-image-pull-secret
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+      volumes:
+        - name: tmp
+          emptyDir: {}
+  volumeClaimTemplates:
+    - metadata:
+        name: pihole
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: "synology-iscsi-retain-ssd"
+        resources:
+          requests:
+            storage: 1Gi

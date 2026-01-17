@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vertical-pod-autoscaler
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - chart: vertical-pod-autoscaler
+      repoURL: https://kubernetes.github.io/autoscaler
+      targetRevision: "*"
+      helm:
+        releaseName: vertical-pod-autoscaler
+        valueFiles:
+          - $repo/kubernetes/helm/vpa/values.yaml
+    - repoURL: {{ .Values.spec.sources.repoURL }}
+      targetRevision: {{ .Values.spec.sources.targetRevision }}
+      ref: repo
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: vertical-pod-autoscaler
+  ignoreDifferences:
+    - group: ""
+      kind: "Secret"
+      name: "vpa-tls-certs"
+      jsonPointers:
+        - /data
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+    retry:
+      limit: -1
