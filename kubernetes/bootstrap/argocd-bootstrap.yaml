@@ -12,7 +12,7 @@ spec:
   source:
     repoURL: "https://github.com/theadzik/homelab/"
     path: "kubernetes/bootstrap/charts/app-of-apps"
-    targetRevision: feat/talos-migration
+    targetRevision: main
     helm:
       parameters:
         - name: "spec.sources.targetRevision"
