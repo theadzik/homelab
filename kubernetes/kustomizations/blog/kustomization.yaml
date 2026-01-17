@@ -4,7 +4,6 @@ namespace: blog
 resources:
   - deployment.yaml
   - ingress.yaml
-  - namespace.yaml
   - netpol.yaml
   - service.yaml
   - vpa.yaml
