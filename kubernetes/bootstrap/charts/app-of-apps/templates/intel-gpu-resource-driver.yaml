@@ -30,5 +30,8 @@ spec:
       - RespectIgnoreDifferences=true
       - ServerSideApply=true
       - CreateNamespace=true
+    managedNamespaceMetadata:
+      labels:
+        pod-security.kubernetes.io/enforce: privileged
     retry:
       limit: -1

@@ -5,5 +5,4 @@ generatorOptions:
   disableNameSuffixHash: true
 resources:
   - enroll-key-secret.yaml
-  - namespace.yaml
   - traefik-apikey-secret.yaml
