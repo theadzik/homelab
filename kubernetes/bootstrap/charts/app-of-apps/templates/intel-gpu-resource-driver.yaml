@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: intel-gpu-resource-driver
+  annotations:
+    argocd.argoproj.io/sync-wave: "-20"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - chart: intel-gpu-resource-driver
+      repoURL: https://intel.github.io/helm-charts/
+      targetRevision: 0.7.0
+      helm:
+        releaseName: intel-driver
+        apiVersions:
+          - resource.k8s.io/v1/DeviceClass
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: intel-gpu-resource-driver
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - RespectIgnoreDifferences=true
+      - ServerSideApply=true
+      - CreateNamespace=true
+    retry:
+      limit: -1
