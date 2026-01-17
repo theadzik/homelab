@@ -32,6 +32,7 @@ agent:
     - key: "node-role.kubernetes.io/control-plane"
       operator: "Exists"
       effect: "NoSchedule"
+  priorityClassName: "system-node-critical"
 
 lapi:
   replicas: 2

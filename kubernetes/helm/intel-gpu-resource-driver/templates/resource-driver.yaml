@@ -85,3 +85,4 @@ spec:
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      priorityClassName: "system-node-critical"
