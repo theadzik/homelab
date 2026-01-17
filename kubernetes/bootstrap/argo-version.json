@@ -1,0 +1,5 @@
+{
+  "chartName": "argo-cd",
+  "chartVersion": "9.3.4",
+  "repoURL": "https://argoproj.github.io/argo-helm"
+}

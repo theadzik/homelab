@@ -2,14 +2,14 @@ name: update-sync-waves-inventory
 on:
   push:
     branches:
-      - "*"
+      - "main"
     paths:
-      - 'manifests/applications/*.yaml'
+      - 'kubernetes/bootstrap/charts/app-of-apps/templates/*'
   workflow_dispatch:
 
 env:
-  APPLICATIONS_PATH: "${{ github.workspace }}/manifests/applications/"
-  SYNC_FILE_NAME: "sync-waves.md"
+  APPLICATIONS_PATH: "${{ github.workspace }}/kubernetes/bootstrap/charts/app-of-apps/templates/"
+  OUTPUT_PATH: "${{ github.workspace }}/sync-waves-inventory.md"
 
 jobs:
   update-sync-waves-inventory:
@@ -39,7 +39,7 @@ jobs:
           git config --global user.name "${{ env.COMMIT_AUTHOR }}"
           git config --global user.email "${{ env.COMMIT_EMAIL }}"
 
-          manifest_path="$APPLICATIONS_PATH$SYNC_FILE_NAME"
+          manifest_path="$OUTPUT_PATH"
 
           if git diff --exit-code --quiet "$manifest_path"; then
             echo "No changes"

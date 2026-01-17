@@ -3,7 +3,7 @@ kind: Application
 metadata:
   name: external-dns
   annotations:
-    argocd.argoproj.io/sync-wave: "-5"
+    argocd.argoproj.io/sync-wave: "-15"
 spec:
   project: default
   sources:
