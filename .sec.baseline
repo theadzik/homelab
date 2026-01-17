@@ -159,6 +159,16 @@
         "is_secret": false
       }
     ],
+    "apps/custom-argocd/Dockerfile": [
+      {
+        "type": "Hex High Entropy String",
+        "filename": "apps/custom-argocd/Dockerfile",
+        "hashed_secret": "c9fd8369ec16b25a72979082f10f3f8f697aab34",
+        "is_verified": false,
+        "line_number": 4,
+        "is_secret": false
+      }
+    ],
     "kubernetes/helm/argocd-image-updater/values.yaml": [
       {
         "type": "Secret Keyword",
@@ -180,5 +190,5 @@
       }
     ]
   },
-  "generated_at": "2026-01-15T18:14:41Z"
+  "generated_at": "2026-01-17T20:17:49Z"
 }
