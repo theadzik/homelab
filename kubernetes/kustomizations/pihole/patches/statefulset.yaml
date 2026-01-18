@@ -55,13 +55,13 @@ spec:
         - key: "node-role.kubernetes.io/control-plane"
           operator: "Exists"
           effect: "NoSchedule"
-      priorityClassName: high-priority
+      priorityClassName: system-cluster-critical
       imagePullSecrets:
         - name: dockerhub-image-pull-secret
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: ScheduleAnyway
+          whenUnsatisfiable: DoNotSchedule
       volumes:
         - name: tmp
           emptyDir: {}

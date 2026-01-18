@@ -1,3 +1,5 @@
+kubeletPlugin:
+  tolerations: [] # Don't need gpu driver on master nodes
 cdi:
   staticPath: /var/cdi/static
   dynamicPath: /var/cdi/dynamic
