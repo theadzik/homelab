@@ -31,7 +31,8 @@ echo "======== PUBLIC KEY ========"
 cat "$key_path_pub"
 echo "======== PUBLIC KEY END ========"
 
-read -rp "Press [Enter] key after adding the SSH key GitHub..."
+echo "Add keys to GitHub: https://github.com/settings/ssh/new"
+read -rp "Press [Enter] after adding the SSH key to GitHub..."
 
 git clone "git@github.com:theadzik/homelab.git" "$HOME/git/homelab"
 
