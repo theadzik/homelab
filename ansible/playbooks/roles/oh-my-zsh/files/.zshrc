@@ -66,6 +66,3 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
 
 # Don't save commands starting with a space to history
 export HISTCONTROL=ignoreboth
-
-eval "$(ssh-agent -s)" > /dev/null
-ssh-add ~/.ssh/id_ed25519
