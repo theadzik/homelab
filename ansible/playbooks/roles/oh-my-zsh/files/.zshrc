@@ -53,8 +53,8 @@ alias gca="git commit -am"
 alias k="kubectl"
 alias kx="kubectx"
 alias kns="kubens"
+alias t="talosctl"
 alias tf="terraform"
-alias talosctl="t"
 
 source <(kubectl completion zsh)
 
