@@ -10,6 +10,6 @@ extraArgs:
   pihole-server: "http://pihole-http.pihole.svc.cluster.local"
   pihole-api-version: "6"
   pihole-tls-skip-verify:
-  policy: create-only
 labelFilter: dns-type in (internal)
 registry: noop
+policy: sync
