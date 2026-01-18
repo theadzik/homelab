@@ -1,5 +1,9 @@
 ---
-- name: Ensure updated {{ item }}.
+- name: "Tap siderolabs brew"
+  community.general.homebrew_tap:
+    name: siderolabs/tap
+    state: present
+- name: "Ensure updated tools are updated with brew."
   community.general.homebrew:
     name: "{{ item }}"
     state: latest
@@ -9,4 +13,4 @@
     - helm
     - kubectx
     - kustomize
-    - siderolabs/tap/talosctl
+    - siderolabs/tap/talosctl@1.12.1
