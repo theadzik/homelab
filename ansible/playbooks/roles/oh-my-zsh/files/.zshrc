@@ -22,7 +22,7 @@ export ZSH_HIGHLIGHT_MAXLENGTH=119
 export DISABLE_AUTO_TITLE="true"
 precmd() { eval "echo -ne '\e]2;${USER}@${HOST}\a'"; }
 
-export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:/home/linuxbrew/.linuxbrew/bin/:$PATH"
 export KUBECONFIG="$HOME/.kube/config"
 
 export DEFAULT_USER=adzik
