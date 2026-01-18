@@ -7,12 +7,4 @@
         owner: root
         group: root
         mode: "0644"
-
-    - name: Add passwordless sudo permissions.
-      ansible.builtin.template:
-        src: "sudoers.j2"
-        dest: "/etc/sudoers.d/{{ ansible_user }}"
-        owner: root
-        group: root
-        mode: "0440"
   become: true

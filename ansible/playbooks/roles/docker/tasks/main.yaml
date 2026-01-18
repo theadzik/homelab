@@ -1,7 +1,7 @@
 - name: Ensure a package is present.
   ansible.builtin.apt:
     name: "{{ item }}"
-    state: present
+    state: latest
   loop: "{{ docker_package }}"
   become: true
 
@@ -31,7 +31,7 @@
 - name: Ensure Docker packages are installed.
   ansible.builtin.apt:
     name: "{{ item }}"
-    state: present
+    state: latest
     update_cache: true
   loop:
     - docker-ce

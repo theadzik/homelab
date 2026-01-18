@@ -1,4 +1,0 @@
-git_dir: /home/{{ ansible_user }}/git
-repositories:
-  - homelab
-  - blog

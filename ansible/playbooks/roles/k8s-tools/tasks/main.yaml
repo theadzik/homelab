@@ -1,143 +1,17 @@
 ---
-- name: Get latest kubectl version.
-  ansible.builtin.uri:
-    url: https://dl.k8s.io/release/stable.txt
-    return_content: true
-  register: version
-
-- name: Create kubectl versioned directory.
-  ansible.builtin.file:
-    path: /opt/kubectl-{{ version.content }}
-    state: directory
-  become: true
-  register: kubectl_directory
-
-- block:
-    - name: Download the latest kubectl release.
-      ansible.builtin.uri:
-        url: https://dl.k8s.io/release/{{ version.content }}/bin/linux/amd64/kubectl
-        dest: /opt/kubectl-{{ version.content }}
-      register: kubectl
-      become: true
-
-    - name: Download the kubectl checksum.
-      ansible.builtin.uri:
-        url: https://dl.k8s.io/release/{{ version.content }}/bin/linux/amd64/kubectl.sha256
-        dest: /opt/kubectl-{{ version.content }}
-      register: kubectl
-      become: true
-
-    - name: Get kubectl sha256sum.
-      ansible.builtin.shell: sha256sum /opt/kubectl-{{ version.content }}/kubectl | cut -d " " -f1
-      register: file_shasum
-
-    - set_fact:
-        shasum1={{ file_shasum.stdout }}
-
-    - debug: var=shasum1
-      run_once: true
-
-    - name: Get sha256sum value from file.
-      ansible.builtin.command: cat /opt/kubectl-{{ version.content }}/kubectl.sha256
-      register: downloaded_shasum
-
-    - set_fact:
-        shasum2={{ downloaded_shasum.stdout }}
-
-    - debug: var=shasum2
-      run_once: true
-
-    - name: Assert that the kubectl binary is OK.
-      ansible.builtin.assert:
-        that:
-          - file_shasum.stdout == downloaded_shasum.stdout
-        fail_msg: "Shasum does not correspond"
-        success_msg: "kubectl shasum verified: ok"
-
-    - name: Change kubectl file permission.
-      ansible.builtin.file:
-        path: "/opt/kubectl-{{ version.content }}/kubectl"
-        mode: '0755'
-      become: true
-
-    - name: Create a symlink to kubectl.
-      ansible.builtin.file:
-        src: "/opt/kubectl-{{ version.content }}/kubectl"
-        dest: "/usr/bin/kubectl"
-        state: link
-      become: true
-  when: kubectl_directory.changed
-
-- name: Check latest k9s.
-  uri:
-    url: https://api.github.com/repos/derailed/k9s/releases/latest
-    return_content: true
-  register: k9s_latest
-
-- name: Create k9s version file.
-  ansible.builtin.copy:
-    content: ""
-    dest: "{{ downloads_dir }}/k9s-{{ k9s_latest.json.name }}"
-    force: false
-  register: k9s_version
-
-- name: Download k9s.
-  loop: "{{ k9s_latest.json.assets }}"
-  loop_control:
-    label: "{{ item.name }}"
-    break_when: "'k9s_Linux_amd64.tar.gz' in item.name"
-  when: "k9s_version.changed and 'k9s_Linux_amd64.tar.gz' in item.name"
-  ansible.builtin.unarchive:
-    remote_src: true
-    keep_newer: true
-    src: "{{ item.browser_download_url }}"
-    dest: /usr/bin
-    mode: "755"
-    extra_opts:
-      - k9s
-  become: true
-
-- name: Fetch helm install script.
-  ansible.builtin.uri:
-    url: https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4
-    return_content: true
-  register: helm_installer
-
-- name: Run helm_installer install script.
-  ansible.builtin.shell:
-    cmd: bash -s --
-    stdin: "{{ helm_installer.content }}"
-    creates: "/usr/local/bin/helm"
-
-- name: Ensure kubectx is present.
-  ansible.builtin.apt:
-    name: kubectx
+- name: "Tap siderolabs brew"
+  community.general.homebrew_tap:
+    name: siderolabs/tap
     state: present
-  become: true
-
-- name: Check latest kustomize.
-  uri:
-    url: https://api.github.com/repos/kubernetes-sigs/kustomize/releases/latest
-    return_content: true
-  register: kustomize_latest
-
-- name: Create kustomize version file.
-  ansible.builtin.copy:
-    content: ""
-    dest: "{{ downloads_dir }}/kustomize-{{ kustomize_latest.json.name | split('/') | last }}"
-    force: false
-  register: kustomize_version
-
-- name: Download kustomize.
-  loop: "{{ kustomize_latest.json.assets }}"
-  loop_control:
-    label: "{{ item.name }}"
-    break_when: "'linux_amd64.tar.gz' in item.name"
-  when: "kustomize_version.changed and 'linux_amd64.tar.gz' in item.name"
-  ansible.builtin.unarchive:
-    remote_src: true
-    keep_newer: true
-    src: "{{ item.browser_download_url }}"
-    dest: /usr/bin
-    mode: "755"
-  become: true
+- name: "Ensure updated tools are updated with brew."
+  community.general.homebrew:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - kubectl
+    - k9s
+    - helm
+    - kubectx
+    - kustomize
+    - gcc
+    - siderolabs/tap/talosctl
