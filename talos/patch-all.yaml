@@ -1,4 +1,7 @@
 machine:
+  kubelet:
+    extraArgs:
+      rotate-server-certificates: true
   # https://docs.siderolabs.com/talos/v1.12/configure-your-talos-cluster/images-container-runtime/containerd#set-cdi-plugin-spec-dirs-to-writable-directories
   files:
     - path: /etc/cri/conf.d/20-customization.part

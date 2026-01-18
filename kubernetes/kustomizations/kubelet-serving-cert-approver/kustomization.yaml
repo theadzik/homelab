@@ -1,0 +1,2 @@
+resources:
+  - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/refs/heads/release-0.10/deploy/standalone-install.yaml
