@@ -7,7 +7,6 @@ resources:
   - ingress-nzbget.yaml
   - ingress-radarr.yaml
   - ingress-sonarr.yaml
-  - namespace.yaml
   - netpol.yaml
   - pvc.yaml
   - resourceclaimtemplate.yaml
