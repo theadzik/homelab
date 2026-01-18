@@ -1,2 +1,3 @@
 common_packages: []
 downloads_dir: "/home/{{ ansible_user }}/.downloads"
+pipx_executable: "/home/linuxbrew/.linuxbrew/bin/pipx"

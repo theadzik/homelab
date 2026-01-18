@@ -39,4 +39,5 @@ git clone "git@github.com:theadzik/homelab.git" "$HOME/git/homelab"
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"
 
 brew install pipx
+sudo /home/linuxbrew/.linuxbrew/bin/pipx install pip --global
 pipx install --include-deps ansible

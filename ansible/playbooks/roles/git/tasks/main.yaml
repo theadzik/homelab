@@ -27,6 +27,7 @@
   community.general.pipx:
     name: "{{ item }}"
     state: latest
+    executable: "{{ pipx_executable }}"
   loop:
     - pre-commit
     - detect-secrets
