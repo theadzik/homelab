@@ -19,8 +19,29 @@
   when: "gitcrypt_version.changed and 'linux-x86_64' in item.name"
   ansible.builtin.get_url:
     url: "{{ item.browser_download_url }}"
-    dest: /usr/bin/git-crypt
+    dest: "{{ downloads_dir }}/git-crypt"
     mode: "755"
+  become: true
+
+- name: Check SHA256 sum
+  when: "gitcrypt_version.changed"
+  ansible.builtin.stat:
+    checksum_algorithm: sha256
+    path: "{{ downloads_dir }}/git-crypt"
+  register: gitcrypt_file
+
+  # This fails if a new version is released or someone tempers with the file
+- name: Downloaded git-crypt matches saved sha256
+  when: "gitcrypt_version.changed"
+  ansible.builtin.assert:
+    that: "'522683f89693ad2da1f3fa7e1076f5e8934619a55ff2e1246866eeb2ad587b0c' == gitcrypt_file.stat.checksum"  # pragma: allowlist secret
+
+- name: Move git-crypt to install location
+  when: "gitcrypt_version.changed"
+  ansible.builtin.copy:
+    remote_src: true
+    src: "{{ downloads_dir }}/git-crypt"
+    dest: "/usr/bin/git-crypt"
   become: true
 
 - name: Install pre-commit and hook dependencies using pipx.
