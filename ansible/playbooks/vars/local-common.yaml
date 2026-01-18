@@ -1,3 +1,10 @@
-common_packages: []
+common_packages:
+  # requirements brew
+  - build-essential
+  - procps
+  - curl
+  - file
+  - git
+  # eor brew
 downloads_dir: "/home/{{ ansible_user }}/.downloads"
 pipx_executable: "/home/linuxbrew/.linuxbrew/bin/pipx"

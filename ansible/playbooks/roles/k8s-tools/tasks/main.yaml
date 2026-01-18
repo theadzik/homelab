@@ -13,4 +13,5 @@
     - helm
     - kubectx
     - kustomize
+    - gcc
     - siderolabs/tap/talosctl
