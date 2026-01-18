@@ -30,3 +30,13 @@ mkdir -p "$HOME/git"
 echo "======== PUBLIC KEY ========"
 cat "$key_path_pub"
 echo "======== PUBLIC KEY END ========"
+
+read -rp "Press [Enter] key after adding the SSH key GitHub..."
+
+git clone "git@github.com:theadzik/homelab.git" "$HOME/git/homelab"
+
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"
+
+brew install pipx
+pipx install --include-deps ansible

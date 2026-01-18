@@ -1,17 +1,3 @@
-- name: Create git directory.
-  ansible.builtin.file:
-    path: "{{ git_dir }}"
-    state: directory
-    mode: '0755'
-
-- name: Clone my repositories.
-  ansible.builtin.git:
-    repo: "git@github.com:theadzik/{{ item }}.git"
-    dest: "{{ git_dir }}/{{ item }}"
-    update: false
-    accept_newhostkey: true
-  loop: "{{ repositories }}"
-
 - name: Check latest git-crypt.
   uri:
     url: https://api.github.com/repos/AGWA/git-crypt/releases/latest
@@ -37,65 +23,15 @@
     mode: "755"
   become: true
 
-- name: Check pipx version.
-  ansible.builtin.command:
-    cmd: pipx --version
-  register: pipx_version
-  changed_when: false
-
-- name: Upgrade pipx.
-  when: pipx_version.stdout is version('1.4.3', '<=')
-  ansible.builtin.command:
-    cmd: pipx install pipx --global --force
-  become: true
-
-
-- name: Install pipx packages.
-  ansible.builtin.command:
-    cmd: pipx install {{ item }}
-    creates: /home/{{ ansible_user }}/.local/bin/{{ item }}
-  loop:
-    - detect-secrets
-    - pre-commit
-
-- name: Ensure pre-commit dependencies are present.
-  ansible.builtin.apt:
+- name: Install pre-commit and hook dependencies using pipx.
+  community.general.pipx:
     name: "{{ item }}"
-    state: present
+    state: latest
   loop:
-    - build-essential
-    - autoconf
-    - libssl-dev
-    - libyaml-dev
-    - zlib1g-dev
-    - libffi-dev
-    - libgmp-dev
-    - rustc
-    - ruby-dev
-    - shellcheck
-  become: true
+    - pre-commit
+    - detect-secrets
 
-- name: Check latest hadolint.
-  uri:
-    url: https://api.github.com/repos/hadolint/hadolint/releases/latest
-    return_content: true
-  register: hadolint_latest
-
-- name: Create hadolint version file.
-  ansible.builtin.copy:
-    content: ""
-    dest: "{{ downloads_dir }}/hadolint-{{ hadolint_latest.json.name }}"
-    force: false
-  register: hadolint_version
-
-- name: Download hadolint.
-  loop: "{{ hadolint_latest.json.assets }}"
-  loop_control:
-    label: "{{ item.name }}"
-    break_when: "'Linux-x86_64' in item.name"
-  when: "hadolint_version.changed and 'Linux-x86_64' in item.name"
-  ansible.builtin.get_url:
-    url: "{{ item.browser_download_url }}"
-    dest: /usr/bin/hadolint
-    mode: "755"
-  become: true
+- name: Install hook dependencies using brew.
+  community.general.homebrew:
+    name: hadolint
+    state: latest
