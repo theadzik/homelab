@@ -4,3 +4,4 @@ namespace: traefik
 resources:
   - cloudflare-middleware.yaml
   - crowdsec-middleware-secret.yaml
+  - redirect-https-middleware.yaml

@@ -6,7 +6,7 @@ metadata:
     cert-manager.io/cluster-issuer: "lets-encrypt-prod"
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
     external-dns.alpha.kubernetes.io/target: "e48d5ef2-41f9-4ca5-a8bf-f60af8d77921.cfargotunnel.com"
-    traefik.ingress.kubernetes.io/router.middlewares: "blog-redirect-https@kubernetescrd,traefik-cloudflare@kubernetescrd,traefik-bouncer@kubernetescrd"
+    traefik.ingress.kubernetes.io/router.middlewares: "traefik-redirect-https@kubernetescrd,traefik-cloudflare@kubernetescrd,traefik-bouncer@kubernetescrd"
   labels:
     dns-type: external
 spec:
