@@ -26,31 +26,3 @@ spec:
                 name: vaultwarden-http
                 port:
                   number: 80
-
----
-
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: vaultwarden-internal
-  annotations:
-    cert-manager.io/cluster-issuer: "lets-encrypt-prod"
-  labels:
-    dns-type: internal
-spec:
-  ingressClassName: traefik
-  tls:
-    - hosts:
-        - vault.zmuda.pro
-      secretName: vaultwarden-tls
-  rules:
-    - host: vault.zmuda.pro
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: vaultwarden-http
-                port:
-                  number: 80
