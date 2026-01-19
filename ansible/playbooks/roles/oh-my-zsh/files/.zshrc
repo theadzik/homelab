@@ -57,6 +57,7 @@ alias t="talosctl"
 alias tf="terraform"
 
 source <(kubectl completion zsh)
+source <(talosctl completion zsh)
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -66,3 +67,6 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
 
 # Don't save commands starting with a space to history
 export HISTCONTROL=ignoreboth
+
+eval "$(ssh-agent -s)" > /dev/null
+ssh-add ~/.ssh/id_ed25519
