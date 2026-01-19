@@ -4,6 +4,7 @@ namespace: blog
 resources:
   - deployment.yaml
   - ingress.yaml
+  - middleware-redirect-https.yaml
   - netpol.yaml
   - service.yaml
   - vpa.yaml

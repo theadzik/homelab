@@ -6,6 +6,7 @@ resources:
   - pvc.yaml
   - netpol.yaml
   - ingress.yaml
+  - middleware-redirect-https.yaml
   - vaultwarden.yaml
   - backup.yaml
   - ../image-pull-secret
