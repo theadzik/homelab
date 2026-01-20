@@ -21,5 +21,6 @@ spec:
       selfHeal: true
     syncOptions:
       - ServerSideApply=true
+      - PruneLast=true
     retry:
       limit: -1

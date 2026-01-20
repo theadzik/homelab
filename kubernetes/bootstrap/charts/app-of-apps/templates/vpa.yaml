@@ -35,5 +35,6 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+      - PruneLast=true
     retry:
       limit: -1

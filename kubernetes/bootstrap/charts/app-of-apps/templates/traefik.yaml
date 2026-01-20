@@ -21,6 +21,7 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - PruneLast=true
     retry:
       limit: -1
 
@@ -58,3 +59,6 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - PruneLast=true
+    retry:
+      limit: -1

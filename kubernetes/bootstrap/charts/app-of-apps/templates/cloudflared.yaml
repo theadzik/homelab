@@ -21,6 +21,8 @@ spec:
       selfHeal: true
     retry:
       limit: -1
+    syncOptions:
+      - PruneLast=true
 
 ---
 

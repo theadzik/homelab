@@ -17,6 +17,8 @@ spec:
   syncPolicy:
     automated:
       selfHeal: true
+    syncOptions:
+      - PruneLast=true
 
 ---
 
