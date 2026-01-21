@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: metal-lb
+  name: cilium
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
@@ -9,29 +9,16 @@ metadata:
 spec:
   project: default
   sources:
-    - path: kubernetes/kustomizations/metal-lb
+    - path: kubernetes/kustomizations/cilium
       repoURL: {{ .Values.spec.sources.repoURL }}
       targetRevision: {{ .Values.spec.sources.targetRevision }}
-      ref: repo
-    - chart: metallb
-      repoURL: https://metallb.github.io/metallb
-      targetRevision: v0.15.*
-      helm:
-        releaseName: metallb
-        valueFiles:
-          - $repo/kubernetes/helm/metal-lb/values.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: metallb-system
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    managedNamespaceMetadata:
-      labels:
-        pod-security.kubernetes.io/enforce: privileged
     syncOptions:
-      - CreateNamespace=true
       - PruneLast=true
     retry:
       limit: -1
