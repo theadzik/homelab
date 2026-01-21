@@ -16,6 +16,12 @@ machine:
     nameservers:
       - 1.1.1.1
       - 9.9.9.9
+cluster:
+  network:
+    cni:
+      name: none
+  proxy:
+    disabled: true
 ---
 apiVersion: v1alpha1
 kind: ExtensionServiceConfig
