@@ -36,3 +36,10 @@ spec:
               value: "true"
             - name: CRON
               value: "*/1 * * * *"
+          resources:
+            requests:
+              cpu: 10m
+              memory: 64Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
