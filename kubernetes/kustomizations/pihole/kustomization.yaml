@@ -6,7 +6,7 @@ transformers:
 resources:
 #  - deployment-nebula.yaml
   - ingress.yaml
-  - nwp.yaml
+#  - nwp.yaml
   - pdb.yaml
   - services.yaml
   - statefulset.yaml
