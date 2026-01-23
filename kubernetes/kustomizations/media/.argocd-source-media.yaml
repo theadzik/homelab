@@ -2,6 +2,6 @@ kustomize:
   images:
   - lscr.io/linuxserver/bazarr:1.5.4
   - lscr.io/linuxserver/jellyfin:10.11.6
-  - lscr.io/linuxserver/nzbget:25.4.20260109
+  - lscr.io/linuxserver/nzbget:25.4.20260123
   - lscr.io/linuxserver/radarr:6.0.4
   - lscr.io/linuxserver/sonarr:4.0.16
