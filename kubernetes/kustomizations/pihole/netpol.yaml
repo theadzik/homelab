@@ -3,37 +3,35 @@ kind: CiliumNetworkPolicy
 metadata:
   name: pihole-netpol
 spec:
-  endpointSelector:
-    matchLabels:
-      app.kubernetes.io/name: pihole
-      app.kubernetes.io/component: dns-server
   ingress:
+    # Allow all in-cluster traffic to DNS
     - fromEntities:
-        - "all"
+        - cluster
       toPorts:
         - ports:
             - port: "53"
               protocol: TCP
             - port: "53"
               protocol: UDP
+    # Allow specific in-cluster services to port 80
     - fromEndpoints:
         - matchLabels:
-            k8s:io.kubernetes.pod.namespace: kube-system
-      toPorts:
-        - ports:
-            - port: "53"
-              protocol: TCP
-            - port: "53"
-              protocol: UDP
-    - fromEndpoints:
+            k8s:io.kubernetes.pod.namespace: external-dns
         - matchLabels:
             k8s:io.kubernetes.pod.namespace: traefik
         - matchLabels:
-            k8s:io.kubernetes.pod.namespace: external-dns
-            app.kubernetes.io/instance: pihole
-        - matchLabels:
-            app.kubernetes.io/component: sync
+            k8s:io.kubernetes.pod.namespace: pihole
+            app.kubernetes.io/name: nebula-sync
       toPorts:
         - ports:
             - port: "80"
               protocol: TCP
+    # Allow external traffic only from the home LAN subnet (DNS only)
+    - fromCIDR:
+        - 192.168.0.0/16
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: TCP
+            - port: "53"
+              protocol: UDP

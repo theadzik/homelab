@@ -24,3 +24,6 @@ fieldSpecs:
   - kind: StatefulSet
     path: spec/template/spec/topologySpreadConstraints/labelSelector/matchLabels
     create: true
+  - kind: CiliumNetworkPolicy
+    create: true
+    path: spec/endpointSelector/matchLabels

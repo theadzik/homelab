@@ -114,3 +114,4 @@ topologySpreadConstraints:  # Spread across nodes
 3. **Updating secrets**: Use git-crypt; never commit unencrypted; secrets should always include "secret" in the file name
 4. **Talos changes**: Edit `talos/schematic.yaml` or `talos/patch-all.yaml`, regenerate config
 5. **Local dev changes**: Update Ansible roles and playbooks, commit to git
+6. **Modifying Kubernetes resources**: Before adding fields to base resources (e.g., `deployment.yaml`, `service.yaml`), check the `kustomization.yaml` for patches, transformers, and overlays. Fields may be added dynamically via kustomize mechanisms rather than directly in base files. Run `kustomize build kubernetes/kustomizations/<app-name>` to verify final output.
