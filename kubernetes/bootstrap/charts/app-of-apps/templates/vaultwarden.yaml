@@ -16,7 +16,10 @@ spec:
     namespace: vaultwarden
   syncPolicy:
     automated:
+      prune: false
       selfHeal: true
+    retry:
+      limit: -1
     syncOptions:
       - PruneLast=true
 
