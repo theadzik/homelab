@@ -1,0 +1,7 @@
+---
+- name: "Ensure tools are updated with brew."
+  community.general.homebrew:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - node

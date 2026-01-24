@@ -18,9 +18,15 @@
       ansible.builtin.file:
         path: "{{ downloads_dir }}"
         state: directory
+    - name: Ensure brew is installed.
+      ansible.builtin.command: >
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      args:
+        creates: /home/linuxbrew/.linuxbrew/bin/brew
   roles:
     - role: wsl
     - role: oh-my-zsh
     - role: git
     - role: k8s-tools
     - role: docker
+    - role: node
