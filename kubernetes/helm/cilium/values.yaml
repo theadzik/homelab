@@ -1,6 +1,9 @@
 ipam:
   mode: kubernetes
 kubeProxyReplacement: true
+hostNetwork: true
+operator:
+  replicas: 1
 securityContext:
   capabilities:
     ciliumAgent:

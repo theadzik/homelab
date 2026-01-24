@@ -68,3 +68,8 @@ ports:
       trustedIPs: *trustedIPs
     proxyProtocol:
       trustedIPs: *trustedIPs
+
+service:
+  type: LoadBalancer
+  loadBalancerClass: io.cilium/l2-announcer
+  externalTrafficPolicy: Local
