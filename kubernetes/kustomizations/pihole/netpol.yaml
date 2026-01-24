@@ -21,7 +21,7 @@ spec:
             k8s:io.kubernetes.pod.namespace: traefik
         - matchLabels:
             k8s:io.kubernetes.pod.namespace: pihole
-            app.kubernetes.io/name: nebula-sync
+            app.kubernetes.io/component: sync
       toPorts:
         - ports:
             - port: "80"
