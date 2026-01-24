@@ -30,7 +30,6 @@ spec:
       limit: -1
     syncOptions:
       - CreateNamespace=true
-      - PruneLast=true
 
 ---
 
