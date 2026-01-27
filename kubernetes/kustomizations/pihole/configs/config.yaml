@@ -1,5 +1,4 @@
 TZ=Europe/Warsaw
-FTLCONF_webserver_domain=pihole.zmuda.pro
 FTLCONF_dns_listeningMode=all
 FTLCONF_dns_upstreams=1.1.1.1;8.8.8.8;9.9.9.9
 FTLCONF_webserver_interface_theme=default-darker
