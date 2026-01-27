@@ -51,6 +51,14 @@ spec:
               name: pihole
             - mountPath: /tmp
               name: tmp
+            - mountPath: /etc/pihole/tls.pem
+              name: pihole-tls
+              subPath: tls.crt
+              readOnly: true
+            - mountPath: /etc/pihole/tls.key
+              name: pihole-tls
+              subPath: tls.key
+              readOnly: true
       tolerations:
         - key: "node-role.kubernetes.io/control-plane"
           operator: "Exists"
@@ -65,6 +73,10 @@ spec:
       volumes:
         - name: tmp
           emptyDir: {}
+        - name: pihole-tls
+          secret:
+            secretName: pihole-tls
+            optional: false
   volumeClaimTemplates:
     - metadata:
         name: pihole
