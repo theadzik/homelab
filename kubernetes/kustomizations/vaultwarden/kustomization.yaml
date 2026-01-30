@@ -4,6 +4,7 @@ namespace: vaultwarden
 resources:
   - namespace.yaml
   - pvc.yaml
+  - backup-pvc.yaml
   - netpol.yaml
   - ingress.yaml
   - vaultwarden.yaml
