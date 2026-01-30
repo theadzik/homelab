@@ -35,7 +35,7 @@ if [ -d "$BACKUP_LOCAL_DIR" ] && [ "$(find "$BACKUP_LOCAL_DIR" -name 'vaultwarde
   log "Decrypting and extracting from local backup..."
   if openssl enc -d -aes256 -salt -pbkdf2 \
     -pass "env:BACKUP_ENCRYPTION_KEY" \
-    -in "$BACKUP_LOCAL_DIR/$backup_name" | tar xz --directory="$DATADIR" --strip-components=1 2>/dev/null; then
+    -in "$BACKUP_LOCAL_DIR/$backup_name" | tar xz --directory="$DATADIR" 2>/dev/null; then
 
     [ -f "$DATABASE" ] || { log "ERROR: Database not found after extraction"; exit 1; }
     log "Database restored successfully from local backup"

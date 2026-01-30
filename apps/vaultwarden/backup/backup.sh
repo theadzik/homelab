@@ -26,7 +26,7 @@ sqlite3 "$DATADIR/db.sqlite3" ".backup '$TEMP_DIR/db.sqlite3'"
 log "SQLite DB backup complete"
 
 log "Compressing and encrypting..."
-tar -czf - -C "$TEMP_DIR" db.sqlite3 --directory="$DATADIR" attachments 2>/dev/null \
+tar -czf - --directory="$TEMP_DIR" db.sqlite3 --directory="$DATADIR" attachments 2>/dev/null \
   | openssl enc -e -aes256 -salt -pbkdf2 \
   -pass "env:BACKUP_ENCRYPTION_KEY" \
   -out "$BACKUP_LOCAL_DIR/$BACKUP_FILE.tar.gz"
