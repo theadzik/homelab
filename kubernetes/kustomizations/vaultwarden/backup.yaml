@@ -31,11 +31,14 @@ spec:
               envFrom:
                 - secretRef:
                     name: backup-encryption-secret
+              env:
+                - name: BACKUP_LOCAL_DIR
+                  value: "/backup"
+                - name: BACKUP_REMOTE_DIR
+                  value: "gdrive:backup"
               securityContext:
                 readOnlyRootFilesystem: true
                 allowPrivilegeEscalation: false
-                runAsUser: 10001
-                runAsGroup: 20001
                 runAsNonRoot: true
                 capabilities:
                   drop:
@@ -48,9 +51,9 @@ spec:
                   memory: "1Gi"
                   cpu: "1"
           securityContext:
-            runAsUser: 10001
-            runAsGroup: 20001
-            fsGroup: 20001
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
             seccompProfile:
               type: RuntimeDefault
           volumes:
@@ -58,7 +61,8 @@ spec:
               persistentVolumeClaim:
                 claimName: vaultwarden
             - name: backup
-              emptyDir: {}
+              persistentVolumeClaim:
+                claimName: vaultwarden-backup
             - name: rclone-conf
               secret:
                 secretName: rclone-secret

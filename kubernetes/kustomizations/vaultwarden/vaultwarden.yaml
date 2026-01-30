@@ -5,6 +5,7 @@ metadata:
   labels:
     app: vaultwarden
 spec:
+  serviceName: "vaultwarden-http"
   replicas: 1
   selector:
     matchLabels:
@@ -28,6 +29,8 @@ spec:
               name: rclone-conf
             - mountPath: /data
               name: data
+            - mountPath: /backup
+              name: backup
             - mountPath: /tmp
               name: tmp
           envFrom:
@@ -37,8 +40,6 @@ spec:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
             runAsNonRoot: true
-            runAsUser: 10001
-            runAsGroup: 20001
             capabilities:
               drop:
                 - ALL
@@ -56,8 +57,6 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: true
-            runAsUser: 10001
-            runAsGroup: 20001
             capabilities:
               drop:
                 - ALL
@@ -81,15 +80,18 @@ spec:
             - mountPath: /data
               name: data
       securityContext:
-        runAsUser: 10001
-        runAsGroup: 20001
-        fsGroup: 20001
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         seccompProfile:
           type: RuntimeDefault
       volumes:
         - name: data
           persistentVolumeClaim:
             claimName: vaultwarden
+        - name: backup
+          persistentVolumeClaim:
+            claimName: vaultwarden-backup
         - name: rclone-conf
           secret:
             secretName: rclone-secret
