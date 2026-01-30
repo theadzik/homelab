@@ -1,7 +1,7 @@
 FROM alpine:3.23.3
 
-ARG USER_ID=10001
-ARG GROUP_ID=20001
+ARG USER_ID=1000
+ARG GROUP_ID=1000
 
 RUN apk add --no-cache --upgrade \
     openssl \

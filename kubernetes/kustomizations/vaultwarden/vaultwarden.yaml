@@ -37,8 +37,6 @@ spec:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
             runAsNonRoot: true
-            runAsUser: 10001
-            runAsGroup: 20001
             capabilities:
               drop:
                 - ALL
@@ -56,8 +54,6 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: true
-            runAsUser: 10001
-            runAsGroup: 20001
             capabilities:
               drop:
                 - ALL
@@ -81,9 +77,9 @@ spec:
             - mountPath: /data
               name: data
       securityContext:
-        runAsUser: 10001
-        runAsGroup: 20001
-        fsGroup: 20001
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         seccompProfile:
           type: RuntimeDefault
       volumes:
