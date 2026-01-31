@@ -5,6 +5,7 @@ resources:
   - backup-cronjob.yaml
   - backup-pvc.yaml
   - ingress.yaml
+  - namespace.yaml
   - netpol.yaml
   - pvc.yaml
   - service.yaml

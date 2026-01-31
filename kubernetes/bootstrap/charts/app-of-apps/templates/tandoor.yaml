@@ -24,7 +24,7 @@ spec:
     namespace: tandoor
   syncPolicy:
     automated:
-      prune: false
+      prune: true
       selfHeal: true
     retry:
       limit: -1

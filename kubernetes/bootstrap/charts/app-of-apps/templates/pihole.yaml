@@ -17,6 +17,7 @@ spec:
     namespace: pihole
   syncPolicy:
     automated:
+      prune: true
       selfHeal: true
     retry:
       limit: -1
