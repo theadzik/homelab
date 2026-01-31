@@ -4,5 +4,3 @@ metadata:
   name: synology-csi
   labels:
     pod-security.kubernetes.io/enforce: privileged
-  annotations:
-    argocd.argoproj.io/sync-options: Delete=false,Prune=false
