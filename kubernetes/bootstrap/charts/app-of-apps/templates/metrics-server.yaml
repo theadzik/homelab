@@ -10,9 +10,12 @@ spec:
   project: default
   sources:
     - repoURL: https://kubernetes-sigs.github.io/metrics-server
+      chart: metrics-server
       targetRevision: 3.*.*
-      valueFiles:
-        - $repo/kubernetes/helm/metrics-server/values.yaml
+      helm:
+        releaseName: metrics-server
+        valueFiles:
+          - $repo/kubernetes/helm/metrics-server/values.yaml
     - repoURL: {{ .Values.spec.sources.repoURL }}
       targetRevision: {{ .Values.spec.sources.targetRevision }}
       ref: repo
