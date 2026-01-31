@@ -5,6 +5,8 @@ on:
       - "main"
     paths:
       - 'kubernetes/bootstrap/charts/app-of-apps/templates/*'
+      - './github/scripts/sync-waves-inventory/**'
+      - '.github/workflows/sync-waves-inventory.yaml'
   workflow_dispatch:
 
 env:
@@ -13,12 +15,18 @@ env:
 
 jobs:
   update-sync-waves-inventory:
-    permissions:
-      contents: write
-      id-token: write
     runs-on: ubuntu-latest
     steps:
+      - name: Generate GitHub App token
+        id: generate-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.SYNC_WAVE_APP_ID }}
+          private-key: ${{ secrets.SYNC_WAVE_KEY }}
+
       - uses: actions/checkout@v6
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
       - uses: actions/setup-python@v6
         with:
           python-version: '3.13'
@@ -33,11 +41,10 @@ jobs:
       - name: Commit and push changes
         env:
           COMMIT_MESSAGE: Updating ArgoCD sync waves inventory
-          COMMIT_AUTHOR: "github-actions[bot]"
-          COMMIT_EMAIL: "41898282+github-actions[bot]@users.noreply.github.com"
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
         run: |
-          git config --global user.name "${{ env.COMMIT_AUTHOR }}"
-          git config --global user.email "${{ env.COMMIT_EMAIL }}"
+          git config --global user.name "update-sync-waves-inventory[bot]"
+          git config --global user.email "${{ secrets.SYNC_WAVE_APP_ID }}+update-sync-waves-inventory[bot]@users.noreply.github.com"
 
           manifest_path="$OUTPUT_PATH"
 
