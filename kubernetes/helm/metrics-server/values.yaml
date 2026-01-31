@@ -1,4 +1,4 @@
 apiService:
-  insecureSkipTLSVerify: null
+  insecureSkipTLSVerify: false
 tls:
   type: cert-manager
