@@ -15,11 +15,11 @@ spec:
     namespace: media
   syncPolicy:
     automated:
+      prune: true
       selfHeal: true
     retry:
       limit: -1
     syncOptions:
-      - CreateNamespace=true
       - PruneLast=true
 
 ---

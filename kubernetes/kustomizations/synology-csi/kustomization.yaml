@@ -6,6 +6,7 @@ resources:
   - controller.yml
   - csi-driver.yml
   - external-service.yaml
+  - namespace.yaml
   - node.yml
   - storage-class.yml
   - snapshotter/snapshotter.yml

@@ -6,6 +6,7 @@ transformers:
 resources:
   - deployment-nebula.yaml
   - ingress.yaml
+  - namespace.yaml
   - netpol.yaml
   - pdb.yaml
   - services.yaml

@@ -9,12 +9,16 @@ metadata:
 spec:
   project: default
   sources:
+    - repoURL: https://kubernetes-sigs.github.io/metrics-server
+      targetRevision: 3.*.*
+      valueFiles:
+        - $repo/kubernetes/helm/metrics-server/values.yaml
     - repoURL: {{ .Values.spec.sources.repoURL }}
       targetRevision: {{ .Values.spec.sources.targetRevision }}
-      path: kubernetes/kustomizations/metrics-server
+      ref: repo
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: kube-system
+    namespace: metrics-server
   syncPolicy:
     automated:
       prune: true
@@ -22,5 +26,6 @@ spec:
     syncOptions:
       - ServerSideApply=true
       - PruneLast=true
+      - CreateNamespace=true
     retry:
       limit: -1

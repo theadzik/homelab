@@ -24,12 +24,11 @@ spec:
     namespace: tandoor
   syncPolicy:
     automated:
-      prune: false
+      prune: true
       selfHeal: true
     retry:
       limit: -1
     syncOptions:
-      - CreateNamespace=true
 
 ---
 
