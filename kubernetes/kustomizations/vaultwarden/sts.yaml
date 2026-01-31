@@ -97,21 +97,3 @@ spec:
             secretName: rclone-secret
         - name: tmp
           emptyDir: {}
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: vaultwarden
-  name: vaultwarden-http
-spec:
-  ports:
-    - port: 80
-      protocol: TCP
-      targetPort: 80
-      name: http
-  selector:
-    app: vaultwarden
-  type: ClusterIP
