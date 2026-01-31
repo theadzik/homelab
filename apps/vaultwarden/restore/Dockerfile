@@ -6,7 +6,8 @@ ARG GROUP_ID=1000
 RUN apk add --no-cache \
     openssl \
     rclone \
-    tar
+    tar \
+    sqlite
 
 RUN addgroup --gid $GROUP_ID --system vaultwarden && \
     adduser --uid $USER_ID --system --ingroup vaultwarden --disabled-password --gecos "" vaultwarden
