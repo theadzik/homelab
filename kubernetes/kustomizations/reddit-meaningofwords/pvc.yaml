@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: database-bot
   annotations:
-    argocd.argoproj.io/sync-options: Delete=false
+    argocd.argoproj.io/sync-options: Delete=false,Prune=false
 spec:
   accessModes:
     - ReadWriteMany

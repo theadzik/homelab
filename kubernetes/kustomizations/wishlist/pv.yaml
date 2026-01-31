@@ -3,7 +3,7 @@ kind: PersistentVolume
 metadata:
   name: wishlist-pv
   annotations:
-    argocd.argoproj.io/sync-options: Delete=false
+    argocd.argoproj.io/sync-options: Delete=false,Prune=false
 spec:
   storageClassName: "synology-nfs-retain"
   volumeMode: Filesystem

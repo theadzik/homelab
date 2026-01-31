@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: static
   annotations:
-    argocd.argoproj.io/sync-options: Delete=false
+    argocd.argoproj.io/sync-options: Delete=false,Prune=false
 spec:
   accessModes:
     - ReadWriteMany
@@ -19,7 +19,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: media
   annotations:
-    argocd.argoproj.io/sync-options: Delete=false
+    argocd.argoproj.io/sync-options: Delete=false,Prune=false
 spec:
   accessModes:
     - ReadWriteMany

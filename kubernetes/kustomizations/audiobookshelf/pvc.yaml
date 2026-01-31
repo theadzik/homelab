@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: audiobooks
   annotations:
-    argocd.argoproj.io/sync-options: Delete=false
+    argocd.argoproj.io/sync-options: Delete=false,Prune=false
 spec:
   accessModes:
     - ReadWriteMany
@@ -19,7 +19,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: podcasts
   annotations:
-    argocd.argoproj.io/sync-options: Delete=false
+    argocd.argoproj.io/sync-options: Delete=false,Prune=false
 spec:
   accessModes:
     - ReadWriteMany
@@ -35,7 +35,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: config
   annotations:
-    argocd.argoproj.io/sync-options: Delete=false
+    argocd.argoproj.io/sync-options: Delete=false,Prune=false
 spec:
   accessModes:
     - ReadWriteOnce
@@ -51,7 +51,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: metadata
   annotations:
-    argocd.argoproj.io/sync-options: Delete=false
+    argocd.argoproj.io/sync-options: Delete=false,Prune=false
 spec:
   accessModes:
     - ReadWriteOnce

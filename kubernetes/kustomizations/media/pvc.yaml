@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: downloads
   annotations:
-    argocd.argoproj.io/sync-options: Delete=false
+    argocd.argoproj.io/sync-options: Delete=false,Prune=false
 spec:
   accessModes:
     - ReadWriteMany
@@ -19,7 +19,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: jellyfin-config-ssd
   annotations:
-    argocd.argoproj.io/sync-options: Delete=false
+    argocd.argoproj.io/sync-options: Delete=false,Prune=false
 spec:
   accessModes:
     - ReadWriteOnce
@@ -35,7 +35,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: sonarr-config-ssd
   annotations:
-    argocd.argoproj.io/sync-options: Delete=false
+    argocd.argoproj.io/sync-options: Delete=false,Prune=false
 spec:
   accessModes:
     - ReadWriteOnce
@@ -51,7 +51,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: radarr-config-ssd
   annotations:
-    argocd.argoproj.io/sync-options: Delete=false
+    argocd.argoproj.io/sync-options: Delete=false,Prune=false
 spec:
   accessModes:
     - ReadWriteOnce
@@ -67,7 +67,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: nzbget-config-ssd
   annotations:
-    argocd.argoproj.io/sync-options: Delete=false
+    argocd.argoproj.io/sync-options: Delete=false,Prune=false
 spec:
   accessModes:
     - ReadWriteOnce
@@ -83,7 +83,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: nzbget-intermediate
   annotations:
-    argocd.argoproj.io/sync-options: Delete=false
+    argocd.argoproj.io/sync-options: Delete=false,Prune=false
 spec:
   accessModes:
     - ReadWriteOnce
@@ -99,7 +99,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: bazarr-config-ssd
   annotations:
-    argocd.argoproj.io/sync-options: Delete=false
+    argocd.argoproj.io/sync-options: Delete=false,Prune=false
 spec:
   accessModes:
     - ReadWriteOnce
