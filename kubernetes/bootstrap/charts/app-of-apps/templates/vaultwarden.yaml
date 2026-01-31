@@ -20,6 +20,8 @@ spec:
       selfHeal: true
     retry:
       limit: -1
+    syncOptions:
+      - CreateNamespace=true
 
 ---
 
@@ -34,7 +36,7 @@ spec:
       writeBackConfig:
         method: "git"
       images:
-        - alias: "vaultvarden"
+        - alias: "vaultwarden"
           imageName: "vaultwarden/server:~1"
           commonUpdateSettings:
             updateStrategy: "semver"

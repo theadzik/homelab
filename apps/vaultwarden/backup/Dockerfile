@@ -1,16 +1,18 @@
 FROM alpine:3.23.3
 
-ARG USER_ID=10001
-ARG GROUP_ID=20001
+ARG USER_ID=1000
+ARG GROUP_ID=1000
 
-RUN apk add --no-cache --upgrade \
-    sqlite \
+RUN apk add --no-cache \
     openssl \
-    rclone
+    rclone \
+    tar \
+    sqlite
 
 RUN addgroup --gid $GROUP_ID --system vaultwarden && \
     adduser --uid $USER_ID --system --ingroup vaultwarden --disabled-password --gecos "" vaultwarden
 
-COPY --chown=vaultwarden:vaultwarden --chmod=774 backup.sh /backup.sh
-USER $USER_ID:$GROUP_ID
+COPY --chown=vaultwarden:vaultwarden --chmod=755 backup.sh /backup.sh
+USER vaultwarden:vaultwarden
+
 ENTRYPOINT ["/backup.sh"]
