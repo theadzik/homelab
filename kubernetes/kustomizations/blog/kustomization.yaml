@@ -5,6 +5,7 @@ resources:
   - deployment.yaml
   - ingress.yaml
   - middleware-redirect-https.yaml
+  - namespace.yaml
   - netpol.yaml
   - service.yaml
   - vpa.yaml
