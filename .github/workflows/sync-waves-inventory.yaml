@@ -1,4 +1,6 @@
 name: update-sync-waves-inventory
+permissions: {}
+
 on:
   push:
     branches:
