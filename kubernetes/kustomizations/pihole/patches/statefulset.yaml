@@ -10,11 +10,19 @@ spec:
         - name: pihole
           image: pihole/pihole:2025.11.1
           imagePullPolicy: IfNotPresent
+          startupProbe:
+            exec:
+              command:
+                - "/bin/sh"
+                - "-c"
+                - "dig @127.0.0.1 localhost.internal"
+            timeoutSeconds: 1
+            failureThreshold: 30
+            periodSeconds: 5
           readinessProbe:
             tcpSocket:
               port: 53
             timeoutSeconds: 1
-            initialDelaySeconds: 20
             periodSeconds: 10
           livenessProbe:
             exec:
@@ -24,7 +32,6 @@ spec:
                 - "dig @127.0.0.1 localhost.internal"
             timeoutSeconds: 1
             failureThreshold: 2
-            initialDelaySeconds: 150
             periodSeconds: 10
           resources:
             requests:
