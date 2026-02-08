@@ -15,3 +15,4 @@
     - kustomize
     - gcc
     - siderolabs/tap/talosctl
+    - velero
