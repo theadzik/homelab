@@ -11,4 +11,4 @@ extraArgs:
   pihole-api-version: "6"
 labelFilter: dns-type in (internal)
 registry: noop
-policy: sync
+policy: upsert-only
