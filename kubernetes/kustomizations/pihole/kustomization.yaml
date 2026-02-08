@@ -4,7 +4,6 @@ namespace: pihole
 transformers:
   - transformer-labels.yaml
 resources:
-  - deployment-nebula.yaml
   - namespace.yaml
   - netpol.yaml
   - pdb.yaml
