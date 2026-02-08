@@ -14,8 +14,8 @@ machine:
     image: factory.talos.dev/installer/87286864e94c7d661c926a524c8e57f84d608488f0cd654a92b1e5f37d48b868:v1.12.2
   network:
     nameservers:
-      - 1.1.1.1
-      - 9.9.9.9
+      - 192.168.0.6
+      - 192.168.0.7
 cluster:
   network:
     cni:
