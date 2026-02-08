@@ -5,7 +5,6 @@ transformers:
   - transformer-labels.yaml
 resources:
   - deployment-nebula.yaml
-  - ingress.yaml
   - namespace.yaml
   - netpol.yaml
   - pdb.yaml
