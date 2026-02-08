@@ -7,5 +7,9 @@ common_packages:
   - git
   # eor brew
   - dnsutils
+  - nmap
+  - traceroute
+  # for mounting nfs shares
+  - nfs-common
 downloads_dir: "/home/{{ ansible_user }}/.downloads"
 pipx_executable: "/home/linuxbrew/.linuxbrew/bin/pipx"
