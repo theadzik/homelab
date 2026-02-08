@@ -9,7 +9,7 @@ spec:
   sources:
     - chart: external-dns
       repoURL: https://kubernetes-sigs.github.io/external-dns/
-      targetRevision: 1.20.*
+      targetRevision: 1.*
       helm:
         releaseName: pihole
         valueFiles:
@@ -17,7 +17,7 @@ spec:
           - $repo/kubernetes/helm/external-dns/values-pihole.yaml
     - chart: external-dns
       repoURL: https://kubernetes-sigs.github.io/external-dns/
-      targetRevision: 1.20.*
+      targetRevision: 1.*
       helm:
         releaseName: cloudflare
         valueFiles:

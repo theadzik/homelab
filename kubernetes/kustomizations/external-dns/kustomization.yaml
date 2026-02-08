@@ -3,5 +3,12 @@ kind: Kustomization
 namespace: external-dns
 resources:
   - namespace.yaml
-  - secret.yaml
-  - ../pihole-password
+secretGenerator:
+  - name: pihole-secret
+    envs:
+      - secret.pihole.env
+  - name: cloudflare-secret
+    envs:
+      - secret.cloudflare.env
+generatorOptions:
+  disableNameSuffixHash: true
