@@ -13,7 +13,6 @@ spec:
   type: ClusterIP
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -33,3 +32,16 @@ spec:
       protocol: TCP
       targetPort: 53
       name: dns-tcp
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pihole-ext
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: "pihole.zmuda.pro"
+  labels:
+    dns-type: internal
+spec:
+  type: ExternalName
+  externalName: 192.168.0.6

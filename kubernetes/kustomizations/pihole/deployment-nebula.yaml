@@ -29,7 +29,7 @@ spec:
             - name: PRIMARY
               value: http://pihole-primary-0.pihole-dns|$(WEBPASSWORD)
             - name: REPLICAS
-              value: http://pihole-secondary-0.pihole-dns|$(WEBPASSWORD),http://pihole-secondary-1.pihole-dns|$(WEBPASSWORD)
+              value: http://pihole-secondary-0.pihole-dns|$(WEBPASSWORD),http://pihole-secondary-1.pihole-dns|$(WEBPASSWORD),http://192.168.0.6:8080|$(WEBPASSWORD)
             - name: FULL_SYNC
               value: "true"
             - name: RUN_GRAVITY
