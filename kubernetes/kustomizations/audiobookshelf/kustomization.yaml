@@ -4,7 +4,7 @@ namespace: audiobookshelf
 resources:
   - ingress.yaml
   - namespace.yaml
-  - nwp.yaml
+  - netpol.yaml
   - pvc.yaml
   - service.yaml
   - statefulset.yaml

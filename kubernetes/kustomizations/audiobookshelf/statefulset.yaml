@@ -35,6 +35,15 @@ spec:
               name: metadata
             - mountPath: /podcasts
               name: podcasts
+          securityContext:
+            capabilities:
+              drop: ["ALL"]
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            seccompProfile:
+              type: RuntimeDefault
       volumes:
         - name: audiobooks
           persistentVolumeClaim:
