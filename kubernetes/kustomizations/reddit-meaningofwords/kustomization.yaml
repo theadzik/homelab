@@ -4,7 +4,7 @@ namespace: reddit-meaningofwords
 resources:
   - deployment.yaml
   - namespace.yaml
-  - nwp.yaml
+  - netpol.yaml
   - pvc.yaml
   - service.yaml
   - ../image-pull-secret

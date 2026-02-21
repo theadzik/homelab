@@ -1,14 +1,11 @@
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
 metadata:
   name: zmuda-pro-blog-netpol
 spec:
-  podSelector: {}
-  policyTypes:
-    - Ingress
-    - Egress
+  endpointSelector: {}
   ingress:
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: traefik
+    - fromEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: traefik
+  egress: []

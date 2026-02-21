@@ -1,0 +1,22 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: default-deny-ingress-nwp
+spec:
+  endpointSelector: {}
+  ingress: []
+
+---
+
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-ingress-bullying-detector-nwp
+spec:
+  endpointSelector:
+    matchLabels:
+      app: bullying-detector
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: reddit-meaningofwords
