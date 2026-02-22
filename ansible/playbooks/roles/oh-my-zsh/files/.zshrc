@@ -68,5 +68,15 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
 # Don't save commands starting with a space to history
 export HISTCONTROL=ignoreboth
 
-eval "$(ssh-agent -s)" > /dev/null
-ssh-add ~/.ssh/id_ed25519
+if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+  # Disable RPROMPT in VS Code (causes detection issues)
+  unset RPROMPT
+  unset RPS1
+
+  # Load VS Code shell integration
+  [[ -f "$(code --locate-shell-integration-path zsh)" ]] && \
+      . "$(code --locate-shell-integration-path zsh)"
+else
+  eval "$(ssh-agent -s)" > /dev/null
+  ssh-add ~/.ssh/id_ed25519
+fi
