@@ -17,6 +17,13 @@ Dockerfiles and scripts used to build images.
 * `/apps/vaultwarden` - Backup and restore scripts made for Vaultwarden. Designed to be
   running as initContainer (restore) and a CronJob (backup).
 
+## `/charts`
+
+Public Helm charts that can be released independently of the homelab configuration.
+
+* `/charts/media-stack` - Comprehensive media automation stack (Jellyfin, Radarr, Sonarr, Bazarr, NZBGet).
+  See [charts/README.md](charts/README.md) for details.
+
 ## `/kubernetes`
 
 Kubernetes manifests, helm values, and bootstrap configurations for my homelab cluster.
@@ -25,6 +32,7 @@ Kubernetes manifests, helm values, and bootstrap configurations for my homelab c
   including ArgoCD helm version, bootstrap app-of-apps chart,
   and sync wave inventory. Custom ArgoCD image is built using AppVersion from selected chart.
 * `/kubernetes/helm` - Helm values for applications deployed in my cluster.
+  Chart definitions may be in `/charts` (for public charts) or inline.
 * `/kubernetes/kustomziations` - Kustomizations
   (and sometimes just plain manifests with a `kustomization.yaml` file to look fancy)
   for applications that don't have helm charts, or I don't want to use them for some reason.

@@ -1,0 +1,22 @@
+{{- if .Values.vpa.enabled }}
+{{- range $svcName, $svc := .Values.services }}
+{{- if $svc.enabled }}
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: {{ $svcName }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: {{ $svcName }}
+  updatePolicy:
+    {{- if ne $.Values.vpa.minReplicas nil }}
+    minReplicas: {{ $.Values.vpa.minReplicas }}
+    {{- end }}
+    updateMode: Initial
+---
+{{- end }}
+{{- end }}
+{{- end }}

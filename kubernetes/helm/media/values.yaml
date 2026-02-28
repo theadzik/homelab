@@ -1,0 +1,273 @@
+# Media Stack - Homelab Values
+# Chart location: /charts/media-stack/
+# These values override the defaults in the chart for homelab-specific configuration
+
+# Namespace annotations
+namespaceAnnotations:
+  argocd.argoproj.io/sync-options: Delete=false,Prune=false
+
+# Default image repository (can be overridden per-service)
+imageRepository: lscr.io/linuxserver
+
+# Network Policy
+networkPolicy:
+  enabled: false
+  # Ingress rules - allow from pods in namespace + traefik
+  ingress:
+    - from:
+        - podSelector: {}
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: traefik
+  # Egress rules - allow everywhere (default if not specified)
+
+# Global ingress annotations (applied to all ingresses)
+ingressClassName: traefik
+ingressAnnotations:
+  cert-manager.io/cluster-issuer: lets-encrypt-prod
+
+# Common settings
+common:
+  timezone: Europe/Warsaw
+  puid: 1000
+  pgid: 1000
+  imagePullPolicy: IfNotPresent
+
+# Priority class (added via patch)
+priorityClassName: high-priority
+
+# PersistentVolumeClaims
+persistentVolumeClaims:
+  downloads:
+    enabled: true
+    accessModes:
+      - ReadWriteMany
+    storage: 7Ti
+    storageClassName: synology-nfs-retain
+    annotations:
+      argocd.argoproj.io/sync-options: Delete=false,Prune=false
+
+# VPA configuration
+vpa:
+  enabled: true
+  minReplicas: null
+
+# Resource claim template (for GPU)
+resourceClaimTemplate:
+  enabled: true
+  name: i915
+  spec:
+    devices:
+      requests:
+        - name: i915
+          exactly:
+            deviceClassName: gpu.intel.com
+            allocationMode: ExactCount
+            count: 1
+
+# Individual services configuration
+services:
+  jellyfin:
+    enabled: true
+    tag: "10.11.6"
+    replicas: 1
+    port: 8096
+    priorityClassName: high-priority
+    resources:
+      requests:
+        cpu: 1000m
+        memory: 2Gi
+    env:
+      HOSTNAME: jellyfin.zmuda.pro
+    pvc:
+      config:
+        name: jellyfin-config-ssd
+        storage: 10Gi
+        storageClassName: synology-iscsi-retain-ssd
+        accessModes:
+          - ReadWriteOnce
+        annotations:
+          argocd.argoproj.io/sync-options: Delete=false,Prune=false
+    livenessProbe:
+      enabled: true
+      type: httpGet
+      path: /system/ping
+      port: web
+      initialDelaySeconds: 30
+      periodSeconds: 30
+    useGPU: true
+    ingress:
+      enabled: true
+      host: jellyfin.zmuda.pro
+      usePortName: true
+      tls:
+        enabled: true
+        secretName: jellyfin-tls
+      path: /
+      pathType: Prefix
+
+  radarr:
+    enabled: true
+    tag: "6.0.4"
+    replicas: 1
+    port: 7878
+    resources:
+      requests:
+        cpu: 250m
+        memory: 1Gi
+    securityContext:
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      runAsGroup: 1000
+      runAsUser: 1000
+    pvc:
+      config:
+        name: radarr-config-ssd
+        storage: 2Gi
+        storageClassName: synology-iscsi-retain-ssd
+        accessModes:
+          - ReadWriteOnce
+        annotations:
+          argocd.argoproj.io/sync-options: Delete=false,Prune=false
+    livenessProbe:
+      enabled: true
+      type: httpGet
+      path: /ping
+      port: web
+      initialDelaySeconds: 30
+      periodSeconds: 30
+    ingress:
+      enabled: true
+      host: radarr.zmuda.pro
+      tls:
+        enabled: true
+        secretName: radarr-tls
+      path: /
+      pathType: Prefix
+
+  sonarr:
+    enabled: true
+    tag: "4.0.16"
+    replicas: 1
+    port: 8989
+    resources:
+      requests:
+        cpu: 250m
+        memory: 1Gi
+    securityContext:
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      runAsGroup: 1000
+      runAsUser: 1000
+    pvc:
+      config:
+        name: sonarr-config-ssd
+        storage: 2Gi
+        storageClassName: synology-iscsi-retain-ssd
+        accessModes:
+          - ReadWriteOnce
+        annotations:
+          argocd.argoproj.io/sync-options: Delete=false,Prune=false
+    livenessProbe:
+      enabled: true
+      type: httpGet
+      path: /ping
+      port: web
+      initialDelaySeconds: 30
+      periodSeconds: 30
+    ingress:
+      enabled: true
+      host: sonarr.zmuda.pro
+      tls:
+        enabled: true
+        secretName: sonarr-tls
+      path: /
+      pathType: Prefix
+
+  bazarr:
+    enabled: true
+    tag: "1.5.6"
+    replicas: 1
+    port: 6767
+    resources:
+      requests:
+        cpu: 250m
+        memory: 1Gi
+    securityContext:
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      runAsGroup: 1000
+      runAsUser: 1000
+    pvc:
+      config:
+        name: bazarr-config-ssd
+        storage: 2Gi
+        storageClassName: synology-iscsi-retain-ssd
+        accessModes:
+          - ReadWriteOnce
+        annotations:
+          argocd.argoproj.io/sync-options: Delete=false,Prune=false
+    livenessProbe:
+      enabled: true
+      type: httpGet
+      path: /api/system/ping
+      port: web
+      initialDelaySeconds: 30
+      periodSeconds: 30
+    ingress:
+      enabled: true
+      host: bazarr.zmuda.pro
+      tls:
+        enabled: true
+        secretName: bazarr-tls
+      path: /
+      pathType: Prefix
+
+  nzbget:
+    enabled: true
+    tag: "25.4.20260130"
+    replicas: 1
+    port: 6789
+    resources:
+      requests:
+        cpu: 1000m
+        memory: 2Gi
+    securityContext: null
+    podSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+      fsGroupChangePolicy: OnRootMismatch
+    pvc:
+      config:
+        name: nzbget-config-ssd
+        storage: 5Gi
+        storageClassName: synology-iscsi-retain-ssd
+        accessModes:
+          - ReadWriteOnce
+        annotations:
+          argocd.argoproj.io/sync-options: Delete=false,Prune=false
+      intermediate:
+        name: nzbget-intermediate
+        storage: 128Gi
+        storageClassName: synology-iscsi-delete-ssd
+        accessModes:
+          - ReadWriteOnce
+        annotations:
+          argocd.argoproj.io/sync-options: Delete=false,Prune=false
+    existingSecretName: nzbget-secret
+    livenessProbe:
+      enabled: true
+      type: tcpSocket
+      port: web
+      initialDelaySeconds: 30
+      periodSeconds: 30
+    ingress:
+      enabled: true
+      host: nzbget.zmuda.pro
+      tls:
+        enabled: true
+        secretName: nzbget-tls
+      path: /
+      pathType: Prefix

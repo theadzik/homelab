@@ -1,0 +1,33 @@
+{{- if .Values.networkPolicy.enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "media-stack.labels" . | nindent 4 }}
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+  {{- if hasKey .Values.networkPolicy "ingress" }}
+  ingress:
+    {{- toYaml .Values.networkPolicy.ingress | nindent 4 }}
+  {{- else }}
+  # Default: allow ingress from pods in the same namespace
+  ingress:
+    - from:
+        - podSelector: {}
+  {{- end }}
+  {{- if hasKey .Values.networkPolicy "egress" }}
+  egress:
+    {{- toYaml .Values.networkPolicy.egress | nindent 4 }}
+  {{- else }}
+  # Default: allow egress everywhere (pods contact open internet)
+  egress:
+    - to:
+        - namespaceSelector: {}
+  {{- end }}
+{{- end }}

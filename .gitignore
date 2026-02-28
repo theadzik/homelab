@@ -180,3 +180,5 @@ vendor
 controlplane.yaml
 worker.yaml
 talosconfig
+
+.tmp/

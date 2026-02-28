@@ -1,0 +1,61 @@
+name: Publish Helm Chart to GHCR
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      chart_version:
+        description: 'Chart version to publish (from charts/media-stack/Chart.yaml)'
+        required: true
+        type: string
+
+env:
+  REGISTRY: ghcr.io
+  CHART_PATH: charts/media-stack
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: 'latest'
+
+      - name: Log in to GitHub Container Registry
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ${{ env.REGISTRY }} \
+            -u ${{ github.actor }} \
+            --password-stdin
+
+      - name: Get chart version
+        id: chart
+        run: |
+          VERSION=$(grep '^version:' ${{ env.CHART_PATH }}/Chart.yaml | awk '{print $2}')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Chart version: $VERSION"
+
+      - name: Validate chart
+        run: |
+          helm lint ${{ env.CHART_PATH }}
+
+      - name: Push chart to GHCR
+        run: |
+          helm push ${{ env.CHART_PATH }} oci://${{ env.REGISTRY }}/${{ github.repository_owner }}/media-stack \
+            --version ${{ steps.chart.outputs.version }}
+
+      - name: Chart published
+        run: |
+          echo "✅ Chart published successfully!"
+          echo "Registry: ${{ env.REGISTRY }}/${{ github.repository_owner }}/media-stack"
+          echo "Version: ${{ steps.chart.outputs.version }}"
+          echo ""
+          echo "Install with:"
+          echo "helm install media-stack oci://${{ env.REGISTRY }}/${{ github.repository_owner }}/media-stack --version ${{ steps.chart.outputs.version }}"
