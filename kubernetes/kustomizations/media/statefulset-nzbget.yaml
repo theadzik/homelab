@@ -55,16 +55,9 @@ spec:
               value: "1000"
             - name: "PGID"
               value: "1000"
-            - name: "NZBGET_USER"
-              valueFrom:
-                secretKeyRef:
-                  name: nzbget-secret
-                  key: username
-            - name: "NZBGET_PASS"
-              valueFrom:
-                secretKeyRef:
-                  name: nzbget-secret
-                  key: password
+          envFrom:
+            - secretRef:
+                name: nzbget-secret
       volumes:
         - name: downloads
           persistentVolumeClaim:
