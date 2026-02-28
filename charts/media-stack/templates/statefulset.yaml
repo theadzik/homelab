@@ -1,0 +1,145 @@
+{{- range $svcName, $svc := .Values.services }}
+{{- if $svc.enabled }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ $svcName }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    {{- include "media-stack.componentLabels" (dict "component" $svcName "context" $) | nindent 4 }}
+spec:
+  serviceName: {{ $svcName }}
+  replicas: {{ $svc.replicas | default 1 }}
+  selector:
+    matchLabels:
+      {{- include "media-stack.selectorLabels" (dict "component" $svcName "context" $) | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "media-stack.componentLabels" (dict "component" $svcName "context" $) | nindent 8 }}
+    spec:
+      {{- if or $svc.priorityClassName $.Values.priorityClassName }}
+      priorityClassName: {{ default $.Values.priorityClassName $svc.priorityClassName }}
+      {{- end }}
+      {{- with $svc.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if $svc.useGPU }}
+      resourceClaims:
+        - name: i915
+          resourceClaimTemplateName: i915
+      {{- end }}
+      containers:
+        - name: {{ $svcName }}
+          image: {{ default $.Values.imageRepository $svc.repository }}/{{ $svcName }}:{{ $svc.tag }}
+          imagePullPolicy: {{ $.Values.common.imagePullPolicy }}
+          {{- with $svc.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          ports:
+            - containerPort: {{ $svc.port }}
+              protocol: TCP
+              name: web
+          {{- if $svc.livenessProbe.enabled }}
+          livenessProbe:
+            {{- if eq $svc.livenessProbe.type "httpGet" }}
+            httpGet:
+              path: {{ $svc.livenessProbe.path }}
+              port: web
+            {{- else if eq $svc.livenessProbe.type "tcpSocket" }}
+            tcpSocket:
+              port: web
+            {{- end }}
+            initialDelaySeconds: {{ $svc.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ $svc.livenessProbe.periodSeconds }}
+          {{- end }}
+          resources:
+            {{- toYaml $svc.resources | nindent 12 }}
+          {{- if $svc.useGPU }}
+            claims:
+              - name: i915
+          {{- end }}
+          env:
+            - name: TZ
+              value: {{ $.Values.common.timezone }}
+            - name: PUID
+              value: "{{ $.Values.common.puid }}"
+            - name: PGID
+              value: "{{ $.Values.common.pgid }}"
+            {{- with $svc.env }}
+            {{- range $key, $value := . }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- end }}
+          {{- if and (eq $svcName "nzbget") (or $svc.secrets $svc.existingSecretName) }}
+          envFrom:
+            - secretRef:
+                name: {{ default "nzbget-secret" $svc.existingSecretName }}
+          {{- end }}
+          volumeMounts:
+            {{- if eq $svcName "jellyfin" }}
+            - name: tmp
+              mountPath: /tmp
+            - name: cache
+              mountPath: /cache
+            {{- if and $svc.pvc (hasKey $svc.pvc "config") }}
+            - name: config
+              mountPath: /config
+            {{- end }}
+            - name: downloads
+              mountPath: /downloads
+            {{- else }}
+            {{- if and $svc.pvc (hasKey $svc.pvc "config") }}
+            - name: config
+              mountPath: /config
+            {{- end }}
+            - name: downloads
+              mountPath: /downloads
+            {{- if and $svc.pvc (hasKey $svc.pvc "intermediate") }}
+            - name: intermediate
+              mountPath: /intermediate
+            {{- end }}
+            {{- if and (ne $svcName "jellyfin") (ne $svcName "nzbget") }}
+            - name: run
+              mountPath: /run
+            {{- end }}
+            {{- if eq $svcName "bazarr" }}
+            - name: tmp
+              mountPath: /tmp
+            {{- else if eq $svcName "nzbget" }}
+            - name: tmp
+              mountPath: /temp
+            {{- end }}
+            {{- end }}
+      volumes:
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: downloads
+        {{- if and $svc.pvc (hasKey $svc.pvc "config") }}
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ $svc.pvc.config.name }}
+        {{- end }}
+        {{- if and $svc.pvc (hasKey $svc.pvc "intermediate") }}
+        - name: intermediate
+          persistentVolumeClaim:
+            claimName: {{ $svc.pvc.intermediate.name }}
+        {{- end }}
+        {{- if and (ne $svcName "jellyfin") (ne $svcName "nzbget") }}
+        - name: run
+          emptyDir: {}
+        {{- end }}
+        {{- if or (eq $svcName "jellyfin") (eq $svcName "bazarr") (eq $svcName "nzbget") }}
+        - name: tmp
+          emptyDir: {}
+        {{- end }}
+        {{- if eq $svcName "jellyfin" }}
+        - name: cache
+          emptyDir: {}
+        {{- end }}
+---
+{{- end }}
+{{- end }}

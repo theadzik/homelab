@@ -1,0 +1,310 @@
+# Default values for media-stack
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Namespace annotations
+namespaceAnnotations: {}
+  # argocd.argoproj.io/sync-options: Delete=false,Prune=false
+
+# Network Policy
+networkPolicy:
+  enabled: false
+  # Ingress rules - customize based on your setup
+  # By default (if not specified), allows ingress from pods in the same namespace
+  # Uncomment to override defaults:
+  # ingress:
+  #   # Example: Allow ingress from ingress controller (e.g., traefik)
+  #   - from:
+  #       - namespaceSelector:
+  #           matchLabels:
+  #             kubernetes.io/metadata.name: traefik
+  #     ports:
+  #       - protocol: TCP
+  #   # Example: Allow ingress from pods in same namespace
+  #   - from:
+  #       - podSelector: {}
+  #
+  # Egress rules - customize based on your setup
+  # By default (if not specified), allows egress everywhere
+  # Uncomment to override defaults:
+  # egress:
+  #   # Allow DNS resolution (kube-system namespace)
+  #   - to:
+  #       - namespaceSelector:
+  #           matchLabels:
+  #             kubernetes.io/metadata.name: kube-system
+  #     ports:
+  #       - protocol: UDP
+  #         port: 53
+  #   # Allow communication with pods in the same namespace
+  #   - to:
+  #       - podSelector: {}
+  #   # Allow all external traffic
+  #   - to:
+  #       - namespaceSelector: {}
+
+# Global ingress annotations (applied to all ingresses)
+ingressAnnotations: {}
+  # cert-manager.io/cluster-issuer: letsencrypt-prod
+  # traefik.ingress.kubernetes.io/router.entrypoints: websecure
+
+# Default image repository (can be overridden per-service)
+imageRepository: lscr.io/linuxserver
+
+# Common settings
+common:
+  timezone: UTC
+  puid: 1000
+  pgid: 1000
+  imagePullPolicy: IfNotPresent
+
+# Priority class (optional)
+priorityClassName: ""
+
+# PersistentVolumeClaims
+# Shared downloads PVC for all services
+persistentVolumeClaims:
+  downloads:
+    enabled: true
+    accessModes:
+      - ReadWriteMany
+    storage: 1Ti
+    storageClassName: ""
+    annotations: {}
+
+# VPA (Vertical Pod Autoscaler)
+vpa:
+  enabled: false
+  minReplicas: 1
+
+# Resource claim template (for GPU support, e.g., Intel iGPU for transcoding)
+resourceClaimTemplate:
+  enabled: false
+  name: i915
+  spec:
+    devices:
+      requests:
+        - name: i915
+          exactly:
+            deviceClassName: gpu.intel.com
+            allocationMode: ExactCount
+            count: 1
+
+# Individual services configuration
+services:
+  jellyfin:
+    enabled: true
+    tag: latest
+    replicas: 1
+    port: 8096
+    # priorityClassName: high-priority
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1Gi
+      # limits:
+      #   cpu: 2000m
+      #   memory: 4Gi
+    env: {}
+      # HOSTNAME: jellyfin.example.com
+    pvc:
+      config:
+        name: jellyfin-config
+        storage: 10Gi
+        storageClassName: ""
+        accessModes:
+          - ReadWriteOnce
+        annotations: {}
+    livenessProbe:
+      enabled: true
+      type: httpGet
+      path: /system/ping
+      port: web
+      initialDelaySeconds: 30
+      periodSeconds: 30
+    # Enable GPU support (requires resourceClaimTemplate.enabled: true)
+    useGPU: false
+    ingress:
+      enabled: false
+      host: jellyfin.example.com
+      annotations: {}
+      tls:
+        enabled: false
+        secretName: jellyfin-tls
+      path: /
+      pathType: Prefix
+
+  radarr:
+    enabled: true
+    tag: latest
+    replicas: 1
+    port: 7878
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      # limits:
+      #   cpu: 1000m
+      #   memory: 2Gi
+    securityContext:
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      runAsGroup: 1000
+      runAsUser: 1000
+    pvc:
+      config:
+        name: radarr-config
+        storage: 1Gi
+        storageClassName: ""
+        accessModes:
+          - ReadWriteOnce
+        annotations: {}
+    livenessProbe:
+      enabled: true
+      type: httpGet
+      path: /ping
+      port: web
+      initialDelaySeconds: 30
+      periodSeconds: 30
+    ingress:
+      enabled: false
+      host: radarr.example.com
+      annotations: {}
+      tls:
+        enabled: false
+        secretName: radarr-tls
+      path: /
+      pathType: Prefix
+
+  sonarr:
+    enabled: true
+    tag: latest
+    replicas: 1
+    port: 8989
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      # limits:
+      #   cpu: 1000m
+      #   memory: 2Gi
+    securityContext:
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      runAsGroup: 1000
+      runAsUser: 1000
+    pvc:
+      config:
+        name: sonarr-config
+        storage: 1Gi
+        storageClassName: ""
+        accessModes:
+          - ReadWriteOnce
+        annotations: {}
+    livenessProbe:
+      enabled: true
+      type: httpGet
+      path: /ping
+      port: web
+      initialDelaySeconds: 30
+      periodSeconds: 30
+    ingress:
+      enabled: false
+      host: sonarr.example.com
+      annotations: {}
+      tls:
+        enabled: false
+        secretName: sonarr-tls
+      path: /
+      pathType: Prefix
+
+  bazarr:
+    enabled: true
+    tag: latest
+    replicas: 1
+    port: 6767
+    resources:
+      requests:
+        cpu: 100m
+        memory: 512Mi
+      # limits:
+      #   cpu: 1000m
+      #   memory: 2Gi
+    securityContext:
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      runAsGroup: 1000
+      runAsUser: 1000
+    pvc:
+      config:
+        name: bazarr-config
+        storage: 1Gi
+        storageClassName: ""
+        accessModes:
+          - ReadWriteOnce
+        annotations: {}
+    livenessProbe:
+      enabled: true
+      type: httpGet
+      path: /api/system/ping
+      port: web
+      initialDelaySeconds: 30
+      periodSeconds: 30
+    ingress:
+      enabled: false
+      host: bazarr.example.com
+      annotations: {}
+      tls:
+        enabled: false
+        secretName: bazarr-tls
+      path: /
+      pathType: Prefix
+
+  nzbget:
+    enabled: true
+    tag: latest
+    replicas: 1
+    port: 6789
+    resources:
+      requests:
+        cpu: 500m
+        memory: 1Gi
+      # limits:
+      #   cpu: 2000m
+      #   memory: 4Gi
+    securityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+      fsGroupChangePolicy: OnRootMismatch
+    pvc:
+      config:
+        name: nzbget-config
+        storage: 5Gi
+        storageClassName: ""
+        accessModes:
+          - ReadWriteOnce
+        annotations: {}
+      # Optional intermediate storage for incomplete downloads
+      # intermediate:
+      #   name: nzbget-intermediate
+      #   storage: 100Gi
+      #   storageClassName: ""
+      #   accessModes:
+      #     - ReadWriteOnce
+      #   annotations: {}
+    livenessProbe:
+      enabled: true
+      type: tcpSocket
+      port: web
+      initialDelaySeconds: 30
+      periodSeconds: 30
+    ingress:
+      enabled: false
+      host: nzbget.example.com
+      annotations: {}
+      tls:
+        enabled: false
+        secretName: nzbget-tls
+      path: /
+      pathType: Prefix

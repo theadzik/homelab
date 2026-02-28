@@ -1,0 +1,47 @@
+{{- /* Shared PVCs */ -}}
+{{- range $name, $pvc := .Values.persistentVolumeClaims }}
+{{- if $pvc.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $name }}
+  namespace: {{ $.Release.Namespace }}
+  {{- with $pvc.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  accessModes:
+    {{- toYaml $pvc.accessModes | nindent 4 }}
+  resources:
+    requests:
+      storage: {{ $pvc.storage }}
+  storageClassName: {{ $pvc.storageClassName }}
+---
+{{- end }}
+{{- end }}
+
+{{- /* Service-specific PVCs */ -}}
+{{- range $svcName, $svc := .Values.services }}
+{{- if and $svc.enabled $svc.pvc }}
+{{- range $pvcName, $pvc := $svc.pvc }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $pvc.name }}
+  namespace: {{ $.Release.Namespace }}
+  {{- with $pvc.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  accessModes:
+    {{- toYaml $pvc.accessModes | nindent 4 }}
+  resources:
+    requests:
+      storage: {{ $pvc.storage }}
+  storageClassName: {{ $pvc.storageClassName }}
+---
+{{- end }}
+{{- end }}
+{{- end }}

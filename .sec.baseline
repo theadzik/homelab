@@ -179,6 +179,16 @@
         "is_secret": false
       }
     ],
+    "kubernetes/helm/media/values.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "kubernetes/helm/media/values.yaml",
+        "hashed_secret": "4089b84d6310d62f3ce67a23fcb79a7dffd870ce",
+        "is_verified": false,
+        "line_number": 259,
+        "is_secret": false
+      }
+    ],
     "kubernetes/helm/velero/values.yaml": [
       {
         "type": "Secret Keyword",
@@ -190,5 +200,5 @@
       }
     ]
   },
-  "generated_at": "2026-01-17T20:26:37Z"
+  "generated_at": "2026-02-28T17:06:15Z"
 }
