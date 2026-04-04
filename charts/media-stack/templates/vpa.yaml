@@ -16,6 +16,16 @@ spec:
     minReplicas: {{ $.Values.vpa.minReplicas }}
     {{- end }}
     updateMode: Initial
+  resourcePolicy:
+    containerPolicies:
+    - containerName: "*"
+      minAllowed:
+        cpu: 100m
+        memory: 128Mi
+      controlledResources:
+        - cpu
+        - memory
+      controlledValues: RequestsOnly
 ---
 {{- end }}
 {{- end }}
