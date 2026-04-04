@@ -12,10 +12,8 @@ spec:
     kind: StatefulSet
     name: {{ $svcName }}
   updatePolicy:
-    {{- if ne $.Values.vpa.minReplicas nil }}
-    minReplicas: {{ $.Values.vpa.minReplicas }}
-    {{- end }}
-    updateMode: Initial
+    minReplicas: 1
+    updateMode: {{ dig "vpa" "updateMode" $.Values.vpa.updateMode $svc }}
   resourcePolicy:
     containerPolicies:
     - containerName: "*"

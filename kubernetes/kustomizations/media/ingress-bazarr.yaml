@@ -17,4 +17,4 @@ spec:
               service:
                 name: bazarr
                 port:
-                  number: 6767
+                  name: web

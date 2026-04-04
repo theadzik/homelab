@@ -75,7 +75,7 @@ persistentVolumeClaims:
 # VPA (Vertical Pod Autoscaler)
 vpa:
   enabled: false
-  minReplicas: 1
+  updateMode: Initial
 
 # Resource claim template (for GPU support, e.g., Intel iGPU for transcoding)
 resourceClaimTemplate:
@@ -95,7 +95,6 @@ services:
   jellyfin:
     enabled: true
     tag: latest
-    replicas: 1
     port: 8096
     # priorityClassName: high-priority
     resources:
@@ -137,7 +136,6 @@ services:
   radarr:
     enabled: true
     tag: latest
-    replicas: 1
     port: 7878
     resources:
       requests:
@@ -179,7 +177,6 @@ services:
   sonarr:
     enabled: true
     tag: latest
-    replicas: 1
     port: 8989
     resources:
       requests:
@@ -221,7 +218,6 @@ services:
   bazarr:
     enabled: true
     tag: latest
-    replicas: 1
     port: 6767
     resources:
       requests:
@@ -263,7 +259,6 @@ services:
   nzbget:
     enabled: true
     tag: latest
-    replicas: 1
     port: 6789
     resources:
       requests:
