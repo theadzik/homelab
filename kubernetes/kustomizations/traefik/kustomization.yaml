@@ -5,4 +5,3 @@ resources:
   - cloudflare-middleware.yaml
   - crowdsec-middleware-secret.yaml
   - namespace.yaml
-  - redirect-https-middleware.yaml
