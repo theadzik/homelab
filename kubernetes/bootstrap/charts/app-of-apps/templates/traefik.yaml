@@ -1,34 +1,6 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: traefik-crds
-  annotations:
-    argocd.argoproj.io/sync-wave: "-30"
-spec:
-  project: default
-  sources:
-    - path: .
-      repoURL: oci://ghcr.io/traefik/helm/traefik-crds
-      targetRevision: 1.*.*
-      helm:
-        releaseName: traefik-crds
-  destination:
-    server: "https://kubernetes.default.svc"
-    namespace: traefik
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - PruneLast=true
-    retry:
-      limit: -1
-
----
-
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
   name: traefik
   annotations:
     argocd.argoproj.io/sync-wave: "-25"
@@ -39,10 +11,10 @@ spec:
   sources:
     - path: .
       repoURL: oci://ghcr.io/traefik/helm/traefik
-      targetRevision: 37.*.*
+      targetRevision: 39.*.*
       helm:
         releaseName: traefik
-        skipCrds: true
+        skipCrds: false
         valueFiles:
           - $repo/kubernetes/helm/traefik/values.yaml
     - repoURL: {{ .Values.spec.sources.repoURL }}

@@ -58,11 +58,12 @@ ports:
         - 131.0.72.0/22
     proxyProtocol:
       trustedIPs: *trustedIPs
-    redirections:
-      entryPoint:
-        to: websecure
-        scheme: https
-        permanent: true
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+          permanent: true
   websecure:
     forwardedHeaders:
       trustedIPs: *trustedIPs
