@@ -14,7 +14,7 @@ spec:
       targetRevision: 39.*.*
       helm:
         releaseName: traefik
-        skipCrds: true
+        skipCrds: false
         valueFiles:
           - $repo/kubernetes/helm/traefik/values.yaml
     - repoURL: {{ .Values.spec.sources.repoURL }}
