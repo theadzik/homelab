@@ -33,7 +33,7 @@ spec:
     kind: StatefulSet
     name: jellyfin
   updatePolicy:
-    updateMode: "InPlaceOrRecreate"
+    updateMode: "Initial"
     minReplicas: 1
   resourcePolicy:
     containerPolicies:
