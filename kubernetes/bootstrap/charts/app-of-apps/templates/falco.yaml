@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: falco
+  annotations:
+    argocd.argoproj.io/sync-wave: "-50"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - chart: falco
+      repoURL: https://falcosecurity.github.io/charts
+      targetRevision: 8.*.*
+      helm:
+        releaseName: falco
+        valueFiles:
+          - $repo/kubernetes/helm/falco/values.yaml
+    - path: kubernetes/kustomizations/falco
+      repoURL: {{ .Values.spec.sources.repoURL }}
+      targetRevision: {{ .Values.spec.sources.targetRevision }}
+      ref: repo
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: falco
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ServerSideApply=true
+      - CreateNamespace=true
+      - PruneLast=true
+    managedNamespaceMetadata:
+      labels:
+        pod-security.kubernetes.io/enforce: privileged
+        pod-security.kubernetes.io/audit: privileged
+        pod-security.kubernetes.io/warn: privileged
+    retry:
+      limit: -1

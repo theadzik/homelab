@@ -1,0 +1,25 @@
+falcosidekick:
+  enabled: true
+  webui:
+    enabled: true
+    replicaCount: 1
+    customLabels:
+      dns-type: internal
+    ingress:
+      enabled: true
+      ingressClassName: "traefik"
+      annotations:
+        cert-manager.io/cluster-issuer: lets-encrypt-prod
+      hosts:
+        - host: falcosidekick.zmuda.pro
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: falcosidekick-tls
+          hosts:
+            - falcosidekick.zmuda.pro
+  config:
+    existingSecret: falcosidekick-config
+    smtp:
+      minimumpriority: "debug"

@@ -179,6 +179,16 @@
         "is_secret": false
       }
     ],
+    "kubernetes/helm/falco/values.yaml": [
+      {
+        "type": "Secret Keyword",
+        "filename": "kubernetes/helm/falco/values.yaml",
+        "hashed_secret": "be399c4ecc5ee3e35874b8cf97cc8e7cdfa9bf98",
+        "is_verified": false,
+        "line_number": 23,
+        "is_secret": false
+      }
+    ],
     "kubernetes/helm/media/values.yaml": [
       {
         "type": "Secret Keyword",
@@ -200,5 +210,5 @@
       }
     ]
   },
-  "generated_at": "2026-04-04T14:25:02Z"
+  "generated_at": "2026-04-07T19:36:16Z"
 }
