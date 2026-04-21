@@ -32,7 +32,7 @@ spec:
       {{- end }}
       containers:
         - name: {{ $svcName }}
-          image: {{ $svc.image }}:{{ $svc.tag }}
+          image: {{ required (printf "services.%s.image must be set when enabled=true" $svcName) $svc.image }}:{{ $svc.tag }}
           imagePullPolicy: {{ $.Values.common.imagePullPolicy }}
           {{- with $svc.securityContext }}
           securityContext:
