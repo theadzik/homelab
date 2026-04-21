@@ -161,6 +161,9 @@ Configure global annotations applied to all ingresses:
 ingressAnnotations:
   cert-manager.io/cluster-issuer: letsencrypt-prod
   traefik.ingress.kubernetes.io/router.entrypoints: websecure
+
+ingressLabels:
+  dns-type: internal
 ```
 
 Or set per-service annotations:
@@ -171,6 +174,8 @@ services:
     ingress:
       enabled: true
       host: jellyfin.example.com
+      labels:
+        dns-type: internal
       annotations:
         traefik.ingress.kubernetes.io/router.middlewares: default-crowdsec@kubernetescrd
       tls:
@@ -179,6 +184,7 @@ services:
 ```
 
 Service-specific annotations are merged with global annotations. Service annotations take precedence if there are conflicts.
+Service-specific labels are rendered after global labels. If the same key is set in both, the service label value takes precedence.
 
 ### Service-Specific Options
 

@@ -26,6 +26,8 @@ networkPolicy:
 ingressClassName: traefik
 ingressAnnotations:
   cert-manager.io/cluster-issuer: lets-encrypt-prod
+ingressLabels:
+  dns-type: internal
 
 # Common settings
 common:
@@ -71,7 +73,7 @@ resourceClaimTemplate:
 services:
   jellyfin:
     enabled: true
-    tag: "10.11.6"
+    tag: "10.11.8"
     port: 8096
     priorityClassName: high-priority
     resources:
@@ -111,7 +113,7 @@ services:
 
   radarr:
     enabled: true
-    tag: "6.0.4"
+    tag: "6.1.1"
     port: 7878
     resources:
       requests:
@@ -149,7 +151,7 @@ services:
 
   sonarr:
     enabled: true
-    tag: "4.0.16"
+    tag: "4.0.17"
     port: 8989
     resources:
       requests:
