@@ -52,5 +52,9 @@ repos:
     rev: v1.5.0
     hooks:
       - id: detect-secrets
-        args: ['--baseline', '.sec.baseline', '--exclude-lines', 'secretName:']
-        exclude: ".*secret.*"
+        args:
+          - '--baseline'
+          - '.sec.baseline'
+          - '--exclude-lines'
+          - 'secretName:|existingSecret:|existingSecretName:|pullsecret:|SHA256'
+        exclude: ".*secret.*" # files with "secret" in the name are encrypted with git-crypt, therefore we ignore them entirely

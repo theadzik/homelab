@@ -134,7 +134,7 @@
     {
       "path": "detect_secrets.filters.regex.should_exclude_line",
       "pattern": [
-        "secretName:"
+        "secretName:|existingSecret:|existingSecretName:|pullsecret:|SHA256"
       ]
     }
   ],
@@ -158,47 +158,7 @@
         "line_number": 28,
         "is_secret": false
       }
-    ],
-    "apps/custom-argocd/Dockerfile": [
-      {
-        "type": "Hex High Entropy String",
-        "filename": "apps/custom-argocd/Dockerfile",
-        "hashed_secret": "c9fd8369ec16b25a72979082f10f3f8f697aab34",
-        "is_verified": false,
-        "line_number": 4,
-        "is_secret": false
-      }
-    ],
-    "kubernetes/helm/argocd-image-updater/values.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "kubernetes/helm/argocd-image-updater/values.yaml",
-        "hashed_secret": "3b10339de9724ce87c5bb01f693f8d6f11b4e9ac",
-        "is_verified": false,
-        "line_number": 8,
-        "is_secret": false
-      }
-    ],
-    "kubernetes/helm/media/values.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "kubernetes/helm/media/values.yaml",
-        "hashed_secret": "4089b84d6310d62f3ce67a23fcb79a7dffd870ce",
-        "is_verified": false,
-        "line_number": 257,
-        "is_secret": false
-      }
-    ],
-    "kubernetes/helm/velero/values.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "kubernetes/helm/velero/values.yaml",
-        "hashed_secret": "2f7c7f277713d283f6e23d276750ebcdd2993000",
-        "is_verified": false,
-        "line_number": 48,
-        "is_secret": false
-      }
     ]
   },
-  "generated_at": "2026-04-04T14:25:02Z"
+  "generated_at": "2026-04-21T13:53:57Z"
 }
