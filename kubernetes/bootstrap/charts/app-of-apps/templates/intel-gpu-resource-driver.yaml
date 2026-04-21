@@ -11,7 +11,7 @@ spec:
   sources:
     - repoURL: oci://ghcr.io/intel/intel-resource-drivers-for-kubernetes/intel-gpu-resource-driver-chart
       path: .
-      targetRevision: 0.9.*
+      targetRevision: 0.10.*
       helm:
         releaseName: intel-gpu-resource-driver
         valueFiles:
