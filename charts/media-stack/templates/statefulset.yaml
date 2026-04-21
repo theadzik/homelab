@@ -32,7 +32,7 @@ spec:
       {{- end }}
       containers:
         - name: {{ $svcName }}
-          image: {{ default $.Values.imageRepository $svc.repository }}/{{ $svcName }}:{{ $svc.tag }}
+          image: {{ $svc.image }}:{{ $svc.tag }}
           imagePullPolicy: {{ $.Values.common.imagePullPolicy }}
           {{- with $svc.securityContext }}
           securityContext:
