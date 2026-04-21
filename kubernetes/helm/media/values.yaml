@@ -6,9 +6,6 @@
 namespaceAnnotations:
   argocd.argoproj.io/sync-options: Delete=false,Prune=false
 
-# Default image repository (can be overridden per-service)
-imageRepository: lscr.io/linuxserver
-
 # Network Policy
 networkPolicy:
   enabled: false
@@ -73,6 +70,7 @@ resourceClaimTemplate:
 services:
   jellyfin:
     enabled: true
+    image: lscr.io/linuxserver/jellyfin
     tag: "10.11.8"
     port: 8096
     priorityClassName: high-priority
@@ -113,6 +111,7 @@ services:
 
   radarr:
     enabled: true
+    image: lscr.io/linuxserver/radarr
     tag: "6.1.1"
     port: 7878
     resources:
@@ -151,6 +150,7 @@ services:
 
   sonarr:
     enabled: true
+    image: lscr.io/linuxserver/sonarr
     tag: "4.0.17"
     port: 8989
     resources:
@@ -189,6 +189,7 @@ services:
 
   bazarr:
     enabled: true
+    image: lscr.io/linuxserver/bazarr
     tag: "1.5.6"
     port: 6767
     resources:
@@ -227,6 +228,7 @@ services:
 
   nzbget:
     enabled: true
+    image: lscr.io/linuxserver/nzbget
     tag: "25.4.20260130"
     port: 6789
     resources:

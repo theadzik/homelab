@@ -50,6 +50,7 @@ spec:
           imageName: "lscr.io/linuxserver/jellyfin:~10"
           manifestTargets:
             helm:
+              name: "services.jellyfin.image"
               tag: "services.jellyfin.tag"
           commonUpdateSettings:
             updateStrategy: "semver"
@@ -57,6 +58,7 @@ spec:
           imageName: "lscr.io/linuxserver/bazarr:~1"
           manifestTargets:
             helm:
+              name: "services.bazarr.image"
               tag: "services.bazarr.tag"
           commonUpdateSettings:
             updateStrategy: "semver"
@@ -64,6 +66,7 @@ spec:
           imageName: "lscr.io/linuxserver/radarr:~6"
           manifestTargets:
             helm:
+              name: "services.radarr.image"
               tag: "services.radarr.tag"
           commonUpdateSettings:
             updateStrategy: "semver"
@@ -72,6 +75,7 @@ spec:
           imageName: "lscr.io/linuxserver/sonarr:~4"
           manifestTargets:
             helm:
+              name: "services.sonarr.image"
               tag: "services.sonarr.tag"
           commonUpdateSettings:
             updateStrategy: "semver"
@@ -80,6 +84,7 @@ spec:
           imageName: "lscr.io/linuxserver/nzbget:~26"
           manifestTargets:
             helm:
+              name: "services.nzbget.image"
               tag: "services.nzbget.tag"
           commonUpdateSettings:
             updateStrategy: "semver"

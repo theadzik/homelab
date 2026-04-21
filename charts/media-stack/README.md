@@ -127,7 +127,8 @@ Each service can be individually configured:
 services:
   jellyfin:
     enabled: true
-    tag: "latest"          # Image tag (repository is global)
+    image: lscr.io/linuxserver/jellyfin
+    tag: "latest"
     replicas: 1
     port: 8096
     resources:
@@ -244,15 +245,16 @@ Override the image tag for a service:
 ```yaml
 services:
   radarr:
-    tag: "5.0.4"  # Uses global imageRepository by default
+    image: lscr.io/linuxserver/radarr
+    tag: "5.0.4"
 ```
 
-Or override both repository and tag:
+Or override both image and tag:
 
 ```yaml
 services:
   radarr:
-    repository: my-registry.com/radarr  # Optional per-service override
+    image: my-registry.com/radarr
     tag: "5.0.4"
 ```
 

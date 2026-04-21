@@ -52,9 +52,6 @@ ingressAnnotations: {}
 ingressLabels: {}
   # dns-type: internal
 
-# Default image repository (can be overridden per-service)
-imageRepository: lscr.io/linuxserver
-
 # Common settings
 common:
   timezone: UTC
@@ -98,6 +95,7 @@ resourceClaimTemplate:
 services:
   jellyfin:
     enabled: true
+    image: lscr.io/linuxserver/jellyfin
     tag: latest
     port: 8096
     # priorityClassName: high-priority
@@ -140,6 +138,7 @@ services:
 
   radarr:
     enabled: true
+    image: lscr.io/linuxserver/radarr
     tag: latest
     port: 7878
     resources:
@@ -182,6 +181,7 @@ services:
 
   sonarr:
     enabled: true
+    image: lscr.io/linuxserver/sonarr
     tag: latest
     port: 8989
     resources:
@@ -224,6 +224,7 @@ services:
 
   bazarr:
     enabled: true
+    image: lscr.io/linuxserver/bazarr
     tag: latest
     port: 6767
     resources:
@@ -266,6 +267,7 @@ services:
 
   nzbget:
     enabled: true
+    image: lscr.io/linuxserver/nzbget
     tag: latest
     port: 6789
     resources:
