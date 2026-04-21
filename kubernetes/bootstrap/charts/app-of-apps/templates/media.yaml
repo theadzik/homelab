@@ -76,7 +76,7 @@ spec:
             updateStrategy: "semver"
             allowTags: "regexp:^[0-9]+\\.[0-9]+\\.[0-9]+$"
         - alias: "nzbget"
-          imageName: "lscr.io/linuxserver/nzbget:~25"
+          imageName: "lscr.io/linuxserver/nzbget:~26"
           manifestTargets:
             helm:
               tag: "services.nzbget.tag"
