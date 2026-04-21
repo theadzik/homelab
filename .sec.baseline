@@ -91,6 +91,10 @@
       "path": "detect_secrets.filters.allowlist.is_line_allowlisted"
     },
     {
+      "path": "detect_secrets.filters.common.is_baseline_file",
+      "filename": ".sec.baseline"
+    },
+    {
       "path": "detect_secrets.filters.common.is_ignored_due_to_verification_policies",
       "min_level": 2
     },
@@ -122,9 +126,15 @@
       "path": "detect_secrets.filters.heuristic.is_templated_secret"
     },
     {
+      "path": "detect_secrets.filters.regex.should_exclude_file",
+      "pattern": [
+        ".*secret.*"
+      ]
+    },
+    {
       "path": "detect_secrets.filters.regex.should_exclude_line",
       "pattern": [
-        "secretName:|existingSecret:|existingSecretName:|pullsecret:|credentials: pullsecret:|SHA256|SHA265|secrets: inherit"
+        "secretName:|existingSecret:|existingSecretName:|pullsecret:|SHA256"
       ]
     }
   ],
@@ -135,7 +145,8 @@
         "filename": ".github/workflows/backup-build.yaml",
         "hashed_secret": "3e26d6750975d678acb8fa35a0f69237881576b0",
         "is_verified": false,
-        "line_number": 28
+        "line_number": 28,
+        "is_secret": false
       }
     ],
     ".github/workflows/restore-build.yaml": [
@@ -144,170 +155,10 @@
         "filename": ".github/workflows/restore-build.yaml",
         "hashed_secret": "3e26d6750975d678acb8fa35a0f69237881576b0",
         "is_verified": false,
-        "line_number": 28
-      }
-    ],
-    "kubernetes/bootstrap/argocd-gitcrypt-secret.yaml": [
-      {
-        "type": "Base64 High Entropy String",
-        "filename": "kubernetes/bootstrap/argocd-gitcrypt-secret.yaml",
-        "hashed_secret": "1161801559757fe87969e02c42e1b0d330247fe7",
-        "is_verified": false,
-        "line_number": 3
-      }
-    ],
-    "kubernetes/bootstrap/argocd-helm-values-secret.yaml": [
-      {
-        "type": "Private Key",
-        "filename": "kubernetes/bootstrap/argocd-helm-values-secret.yaml",
-        "hashed_secret": "be4fc4886bd949b369d5e092eb87494f12e57e5b",
-        "is_verified": false,
-        "line_number": 75
-      }
-    ],
-    "kubernetes/kustomizations/cloudflared/credentials-secret.yaml": [
-      {
-        "type": "Base64 High Entropy String",
-        "filename": "kubernetes/kustomizations/cloudflared/credentials-secret.yaml",
-        "hashed_secret": "af344156b12a2749a16e8d1f0b3bebf5fec967d1",
-        "is_verified": false,
-        "line_number": 6
-      }
-    ],
-    "kubernetes/kustomizations/crowdsec/traefik-apikey-secret.yaml": [
-      {
-        "type": "Base64 High Entropy String",
-        "filename": "kubernetes/kustomizations/crowdsec/traefik-apikey-secret.yaml",
-        "hashed_secret": "6289b309e71b8277902ce1210421111ff2bc2ecc",
-        "is_verified": false,
-        "line_number": 6
-      }
-    ],
-    "kubernetes/kustomizations/external-dns/secret.cloudflare.env": [
-      {
-        "type": "Base64 High Entropy String",
-        "filename": "kubernetes/kustomizations/external-dns/secret.cloudflare.env",
-        "hashed_secret": "157d6ba1c64a6dae7e3ee709769265980a50f820",
-        "is_verified": false,
-        "line_number": 1
-      }
-    ],
-    "kubernetes/kustomizations/external-dns/secret.pihole.env": [
-      {
-        "type": "Secret Keyword",
-        "filename": "kubernetes/kustomizations/external-dns/secret.pihole.env",
-        "hashed_secret": "bf10092f3a7a0696a3289679be2d1830c7bbe2fa",
-        "is_verified": false,
-        "line_number": 1
-      }
-    ],
-    "kubernetes/kustomizations/falco/falcosidekick-secret.yaml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "kubernetes/kustomizations/falco/falcosidekick-secret.yaml",
-        "hashed_secret": "8e6df6857d323d1a202909fe6c8c1156e5f56c0e",
-        "is_verified": false,
-        "line_number": 9
-      }
-    ],
-    "kubernetes/kustomizations/image-pull-secret/image-pull-secret.yaml": [
-      {
-        "type": "Base64 High Entropy String",
-        "filename": "kubernetes/kustomizations/image-pull-secret/image-pull-secret.yaml",
-        "hashed_secret": "32b1a780cdafc9d8dee863541add8f8793102e5c",
-        "is_verified": false,
-        "line_number": 7
-      },
-      {
-        "type": "Base64 High Entropy String",
-        "filename": "kubernetes/kustomizations/image-pull-secret/image-pull-secret.yaml",
-        "hashed_secret": "a8812978da0c71d9078bd7ca3fa8e454e0f60d1b",
-        "is_verified": false,
-        "line_number": 7
-      }
-    ],
-    "kubernetes/kustomizations/reddit-meaningofwords/configs/bot-secret.env": [
-      {
-        "type": "Base64 High Entropy String",
-        "filename": "kubernetes/kustomizations/reddit-meaningofwords/configs/bot-secret.env",
-        "hashed_secret": "99bb3f7ba663b69114273e1973b9c2872f70554e",
-        "is_verified": false,
-        "line_number": 2
-      },
-      {
-        "type": "Secret Keyword",
-        "filename": "kubernetes/kustomizations/reddit-meaningofwords/configs/bot-secret.env",
-        "hashed_secret": "99bb3f7ba663b69114273e1973b9c2872f70554e",
-        "is_verified": false,
-        "line_number": 2
-      },
-      {
-        "type": "Base64 High Entropy String",
-        "filename": "kubernetes/kustomizations/reddit-meaningofwords/configs/bot-secret.env",
-        "hashed_secret": "c5cfb2043127b7925b9cde019b640e7c4fbc47e2",
-        "is_verified": false,
-        "line_number": 5
-      },
-      {
-        "type": "Secret Keyword",
-        "filename": "kubernetes/kustomizations/reddit-meaningofwords/configs/bot-secret.env",
-        "hashed_secret": "c5cfb2043127b7925b9cde019b640e7c4fbc47e2",
-        "is_verified": false,
-        "line_number": 5
-      }
-    ],
-    "kubernetes/kustomizations/synology-csi/configs/client-info-secret.yml": [
-      {
-        "type": "Secret Keyword",
-        "filename": "kubernetes/kustomizations/synology-csi/configs/client-info-secret.yml",
-        "hashed_secret": "86a57ea4c26009006188ca956211c54d74025c8d",
-        "is_verified": false,
-        "line_number": 6
-      }
-    ],
-    "kubernetes/kustomizations/tandoor/secret.yaml": [
-      {
-        "type": "Base64 High Entropy String",
-        "filename": "kubernetes/kustomizations/tandoor/secret.yaml",
-        "hashed_secret": "6b267aaa07607567892023eafa5df31285ef5397",
-        "is_verified": false,
-        "line_number": 7
-      }
-    ],
-    "kubernetes/kustomizations/traefik/crowdsec-middleware-secret.yaml": [
-      {
-        "type": "Base64 High Entropy String",
-        "filename": "kubernetes/kustomizations/traefik/crowdsec-middleware-secret.yaml",
-        "hashed_secret": "6289b309e71b8277902ce1210421111ff2bc2ecc",
-        "is_verified": false,
-        "line_number": 18
-      },
-      {
-        "type": "Secret Keyword",
-        "filename": "kubernetes/kustomizations/traefik/crowdsec-middleware-secret.yaml",
-        "hashed_secret": "6289b309e71b8277902ce1210421111ff2bc2ecc",
-        "is_verified": false,
-        "line_number": 18
-      }
-    ],
-    "kubernetes/kustomizations/vaultwarden/configs/rclone-secret.conf": [
-      {
-        "type": "Base64 High Entropy String",
-        "filename": "kubernetes/kustomizations/vaultwarden/configs/rclone-secret.conf",
-        "hashed_secret": "aea96dcb1849a0f1dcd5cc62f17c95a5d28d53da",
-        "is_verified": false,
-        "line_number": 4
-      }
-    ],
-    "kubernetes/kustomizations/vaultwarden/configs/vw-config-secret.env": [
-      {
-        "type": "Secret Keyword",
-        "filename": "kubernetes/kustomizations/vaultwarden/configs/vw-config-secret.env",
-        "hashed_secret": "f68dbe616692ef1e7001a8bd3e72a0b3260c36fe",
-        "is_verified": false,
-        "line_number": 6
+        "line_number": 28,
+        "is_secret": false
       }
     ]
   },
-  "generated_at": "2026-04-21T13:12:02Z"
+  "generated_at": "2026-04-21T13:53:57Z"
 }
