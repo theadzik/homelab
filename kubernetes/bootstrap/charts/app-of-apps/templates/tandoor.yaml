@@ -43,6 +43,10 @@ spec:
     - namePattern: "tandoor"
       writeBackConfig:
         method: "git"
+        gitConfig:
+          repository: {{ .Values.spec.sources.repoURL }}
+          branch: {{ .Values.spec.sources.targetRevision }}
+          writeBackTarget: "kustomization:/kubernetes/kustomizations/tandoor"
       images:
         - alias: "nginx"
           imageName: "nginx"
