@@ -48,6 +48,10 @@ ingressAnnotations: {}
   # cert-manager.io/cluster-issuer: letsencrypt-prod
   # traefik.ingress.kubernetes.io/router.entrypoints: websecure
 
+# Global ingress labels (applied to all ingresses)
+ingressLabels: {}
+  # dns-type: internal
+
 # Default image repository (can be overridden per-service)
 imageRepository: lscr.io/linuxserver
 
@@ -126,6 +130,7 @@ services:
     ingress:
       enabled: false
       host: jellyfin.example.com
+      labels: {}
       annotations: {}
       tls:
         enabled: false
@@ -167,6 +172,7 @@ services:
     ingress:
       enabled: false
       host: radarr.example.com
+      labels: {}
       annotations: {}
       tls:
         enabled: false
@@ -208,6 +214,7 @@ services:
     ingress:
       enabled: false
       host: sonarr.example.com
+      labels: {}
       annotations: {}
       tls:
         enabled: false
@@ -249,6 +256,7 @@ services:
     ingress:
       enabled: false
       host: bazarr.example.com
+      labels: {}
       annotations: {}
       tls:
         enabled: false
@@ -297,6 +305,7 @@ services:
     ingress:
       enabled: false
       host: nzbget.example.com
+      labels: {}
       annotations: {}
       tls:
         enabled: false

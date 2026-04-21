@@ -7,6 +7,12 @@ metadata:
   namespace: {{ $.Release.Namespace }}
   labels:
     {{- include "media-stack.componentLabels" (dict "component" $svcName "context" $) | nindent 4 }}
+    {{- with $.Values.ingressLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with $svc.ingress.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   {{- if or $.Values.ingressAnnotations $svc.ingress.annotations }}
   annotations:
     {{- with $.Values.ingressAnnotations }}
