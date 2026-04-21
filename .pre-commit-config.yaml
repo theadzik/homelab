@@ -52,5 +52,9 @@ repos:
     rev: v1.5.0
     hooks:
       - id: detect-secrets
-        args: ['--baseline', '.sec.baseline', '--exclude-lines', 'secretName:']
+        args:
+          - '--baseline'
+          - '.sec.baseline'
+          - '--exclude-lines'
+          - 'secretName:|existingSecret:|existingSecretName:|pullsecret:|credentials: pullsecret:|SHA256|SHA265|secrets: inherit'
         exclude: ".*secret.*"
