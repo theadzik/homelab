@@ -10,7 +10,7 @@ spec:
   sources:
     - chart: cluster
       repoURL: https://cloudnative-pg.github.io/charts
-      targetRevision: 0.3.*
+      targetRevision: 0.6.*
       helm:
         releaseName: database
         valueFiles:
