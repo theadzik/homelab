@@ -16,7 +16,7 @@ networkPolicy:
     - namespaceSelector:
         matchLabels:
           kubernetes.io/metadata.name: traefik
-  # Egress rules - allow everywhere (default if not specified)
+          # Egress rules - allow everywhere (default if not specified)
 # Global ingress annotations (applied to all ingresses)
 ingressClassName: traefik
 ingressAnnotations:
