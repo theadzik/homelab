@@ -24,6 +24,7 @@
       args:
         creates: /home/linuxbrew/.linuxbrew/bin/brew
   roles:
+    - role: general
     - role: wsl
     - role: oh-my-zsh
     - role: git
