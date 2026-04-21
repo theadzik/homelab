@@ -23,6 +23,7 @@ spec:
     namespace: media
   syncPolicy:
     automated:
+      enabled: true
       prune: true
       selfHeal: true
     retry:

@@ -16,6 +16,7 @@ spec:
     namespace: vaultwarden
   syncPolicy:
     automated:
+      enabled: true
       prune: true
       selfHeal: true
     retry:

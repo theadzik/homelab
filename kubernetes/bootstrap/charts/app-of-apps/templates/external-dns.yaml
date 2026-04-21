@@ -34,6 +34,7 @@ spec:
     namespace: external-dns
   syncPolicy:
     automated:
+      enabled: true
       prune: true
       selfHeal: true
     syncOptions:
