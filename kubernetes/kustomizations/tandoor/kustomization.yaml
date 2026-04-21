@@ -10,3 +10,8 @@ resources:
   - secret.yaml
   - service.yaml
   - serviceaccount.yaml
+images:
+  - name: nginx
+    newTag: 1.30.0-alpine
+  - name: vabene1111/recipes
+    newTag: 2.6.9
