@@ -6,10 +6,18 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  source:
-    path: kubernetes/kustomizations/media
-    repoURL: {{ .Values.spec.sources.repoURL }}
-    targetRevision: {{ .Values.spec.sources.targetRevision }}
+  sources:
+    - path: charts/media-stack
+      repoURL: {{ .Values.spec.sources.repoURL }}
+      targetRevision: {{ .Values.spec.sources.targetRevision }}
+      helm:
+        releaseName: media
+        valueFiles:
+          - $repo/kubernetes/helm/media/values.yaml
+    - path: kubernetes/kustomizations/media-secrets
+      repoURL: {{ .Values.spec.sources.repoURL }}
+      targetRevision: {{ .Values.spec.sources.targetRevision }}
+      ref: repo
   destination:
     server: https://kubernetes.default.svc
     namespace: media
