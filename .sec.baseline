@@ -183,9 +183,17 @@
       {
         "type": "Secret Keyword",
         "filename": "kubernetes/helm/falco/values.yaml",
-        "hashed_secret": "be399c4ecc5ee3e35874b8cf97cc8e7cdfa9bf98",
+        "hashed_secret": "4496987c6a3ccba71b4683c598fafc370e7cadb4",
         "is_verified": false,
         "line_number": 23,
+        "is_secret": false
+      },
+      {
+        "type": "Secret Keyword",
+        "filename": "kubernetes/helm/falco/values.yaml",
+        "hashed_secret": "be399c4ecc5ee3e35874b8cf97cc8e7cdfa9bf98",
+        "is_verified": false,
+        "line_number": 25,
         "is_secret": false
       }
     ],
@@ -210,5 +218,5 @@
       }
     ]
   },
-  "generated_at": "2026-04-07T19:36:16Z"
+  "generated_at": "2026-04-21T13:02:35Z"
 }

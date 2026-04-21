@@ -1,3 +1,4 @@
+tty: true
 falcosidekick:
   enabled: true
   webui:
@@ -19,7 +20,30 @@ falcosidekick:
         - secretName: falcosidekick-tls
           hosts:
             - falcosidekick.zmuda.pro
+    existingSecret: falcosidekick-ui-config
   config:
     existingSecret: falcosidekick-config
     smtp:
-      minimumpriority: "debug"
+      minimumpriority: "error"
+
+customRules:
+  rules-cilium-exceptions.yaml: |-
+    - rule: Drop and execute new binary in container
+      exceptions:
+        - name: cilium_cni_exec
+          fields: [proc.exepath, proc.name]
+          comps: [=, =]
+          values:
+            - [/opt/cni/bin/cilium-cni, cilium-cni]
+      override:
+        exceptions: append
+
+    - rule: Packet socket created in container
+      exceptions:
+        - name: cilium_agent_packet_socket
+          fields: [k8s.ns.name, container.image.repository, proc.name]
+          comps: [=, =, =]
+          values:
+            - [kube-system, quay.io/cilium/cilium, cilium-agent]
+      override:
+        exceptions: append
