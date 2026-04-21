@@ -24,6 +24,7 @@ spec:
     namespace: intel-gpu-resource-driver
   syncPolicy:
     automated:
+      enabled: true
       prune: true
       selfHeal: true
     syncOptions:

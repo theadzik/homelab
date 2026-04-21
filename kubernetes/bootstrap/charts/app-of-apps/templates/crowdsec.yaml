@@ -36,6 +36,7 @@ spec:
         - /spec/template/metadata/annotations/checksum~1lapi-secret  # ~1 = /
   syncPolicy:
     automated:
+      enabled: true
       prune: true
       selfHeal: true
     syncOptions:
