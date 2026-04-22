@@ -34,18 +34,30 @@ configuration:
       default: true
       accessMode: ReadWrite
       credential:
-        name: minio-credentials
-        key: cloud
+        name: s3-credentials
+        key: minio
       config:
         region: minio
         s3ForcePathStyle: true
         s3Url: http://192.168.0.6:9000
         insecureSkipTLSVerify: true
-
+    - name: garage
+      provider: aws
+      bucket: velero
+      default: false
+      accessMode: ReadWrite
+      credential:
+        name: s3-credentials
+        key: garage
+      config:
+        region: garage
+        s3ForcePathStyle: true
+        s3Url: http://192.168.0.6:3900
+        insecureSkipTLSVerify: true
 
 credentials:
   useSecret: true
-  existingSecret: minio-credentials
+  existingSecret: s3-credentials
 
 backupsEnabled: true
 snapshotsEnabled: false
@@ -60,3 +72,12 @@ schedules:
     template:
       ttl: "720h"
       storageLocation: minio
+  cluster-full:
+    disabled: false
+    schedule: "0 0 * * *"
+    useOwnerReferencesInBackup: false
+    paused: false
+    skipImmediately: false
+    template:
+      ttl: "720h"
+      storageLocation: garage
