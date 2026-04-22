@@ -28,19 +28,6 @@ initContainers:
 
 configuration:
   backupStorageLocation:
-    - name: minio
-      provider: aws
-      bucket: velero
-      default: true
-      accessMode: ReadWrite
-      credential:
-        name: s3-credentials
-        key: minio
-      config:
-        region: minio
-        s3ForcePathStyle: true
-        s3Url: http://192.168.0.6:9000
-        insecureSkipTLSVerify: true
     - name: garage
       provider: aws
       bucket: velero
@@ -63,15 +50,6 @@ backupsEnabled: true
 snapshotsEnabled: false
 
 schedules:
-  talos-full:
-    disabled: false
-    schedule: "0 0 * * *"
-    useOwnerReferencesInBackup: false
-    paused: false
-    skipImmediately: false
-    template:
-      ttl: "720h"
-      storageLocation: minio
   cluster-full:
     disabled: false
     schedule: "0 0 * * *"
