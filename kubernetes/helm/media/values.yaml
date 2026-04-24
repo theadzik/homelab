@@ -217,7 +217,7 @@ services:
   nzbget:
     enabled: true
     image: lscr.io/linuxserver/nzbget
-    tag: "26.1.20260417"
+    tag: "26.1.20260424"
     port: 6789
     resources:
       requests:
