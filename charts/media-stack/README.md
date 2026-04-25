@@ -177,8 +177,6 @@ services:
       host: jellyfin.example.com
       labels:
         dns-type: internal
-      annotations:
-        traefik.ingress.kubernetes.io/router.middlewares: default-crowdsec@kubernetescrd
       tls:
         enabled: true
         secretName: jellyfin-tls
