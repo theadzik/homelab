@@ -2,6 +2,24 @@ ipam:
   mode: kubernetes
 kubeProxyReplacement: true
 hostNetwork: true
+hubble:
+  relay:
+    enabled: true
+  ui:
+    enabled: true
+    ingress:
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: lets-encrypt-prod
+      className: "traefik"
+      hosts:
+        - hubble.zmuda.pro
+      labels:
+        dns-type: internal
+      tls:
+        - secretName: hubble-tls
+          hosts:
+            - hubble.zmuda.pro
 operator:
   replicas: 1
 securityContext:

@@ -35,6 +35,7 @@ customRules:
           comps: [=, =]
           values:
             - [/opt/cni/bin/cilium-cni, cilium-cni]
+            - [/opt/cni/bin/cilium-sysctlfix, cilium-sysctlfi]
       override:
         exceptions: append
 
