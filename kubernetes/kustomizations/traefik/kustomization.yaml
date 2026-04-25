@@ -3,5 +3,4 @@ kind: Kustomization
 namespace: traefik
 resources:
   - cloudflare-middleware.yaml
-  - crowdsec-middleware-secret.yaml
   - namespace.yaml
