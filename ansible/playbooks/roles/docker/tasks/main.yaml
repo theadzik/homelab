@@ -9,20 +9,25 @@
   ansible.builtin.file:
     path: /etc/apt/keyrings
     state: directory
+    owner: root
+    group: root
     mode: '0755'
+  become: true
 
-- name: Ensure Docker's official GPG key is added.
-  ansible.builtin.apt_key:
+- name: Ensure Docker's official GPG key is present.
+  ansible.builtin.get_url:
     url: https://download.docker.com/linux/{{ distribution }}/gpg
-    keyring: /etc/apt/keyrings/docker.gpg
-    state: present
+    dest: /etc/apt/keyrings/docker.asc
+    owner: root
+    group: root
+    mode: '0644'
   become: true
 
 - name: Ensure Docker repository is added to apt.
   ansible.builtin.apt_repository:
     repo: >-
       deb [arch={{ arch_mapping[ansible_facts["architecture"]] | default(ansible_facts["architecture"]) }}
-      signed-by=/etc/apt/keyrings/docker.gpg]
+      signed-by=/etc/apt/keyrings/docker.asc]
       https://download.docker.com/linux/{{ distribution }} {{ ansible_facts["lsb"].codename }} stable
     filename: docker
     state: present
@@ -58,6 +63,9 @@
   ansible.builtin.copy:
     src: "docker-daemon.json"
     dest: "/etc/docker/daemon.json"
+    owner: root
+    group: root
+    mode: '0644'
   register: daemon
   become: true
 

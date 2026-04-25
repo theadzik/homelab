@@ -17,33 +17,29 @@ repos:
     rev: v1.38.0
     hooks:
       - id: yamllint
-        exclude: '^(.*\.argocd-source-.*\.yaml)'
   - repo: https://github.com/PyCQA/isort
-    rev: 7.0.0
+    rev: 9.0.0a3
     hooks:
       - id: isort
   - repo: https://github.com/psf/black
-    rev: 26.1.0
+    rev: 26.3.1
     hooks:
       - id: black
   - repo: https://github.com/pycqa/flake8
     rev: 7.3.0
     hooks:
       - id: flake8
-  - repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.5.6
-    hooks:
-      - id: remove-crlf
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.11.0.1
     hooks:
       - id: shellcheck
         exclude: ".zshrc"
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.47.0
+    rev: v0.48.0
     hooks:
       - id: markdownlint
         args: ["--fix"]
+        exclude: '^\.github/.*\.md$'
   - repo: https://github.com/hadolint/hadolint
     rev: v2.14.0
     hooks:
@@ -56,5 +52,5 @@ repos:
           - '--baseline'
           - '.sec.baseline'
           - '--exclude-lines'
-          - 'secretName:|existingSecret:|existingSecretName:|pullsecret:|SHA256'
+          - 'secretName:|existingSecret:|existingSecretName:|pullsecret:|(SHA|sha)256'
         exclude: ".*secret.*" # files with "secret" in the name are encrypted with git-crypt, therefore we ignore them entirely

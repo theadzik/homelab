@@ -6,17 +6,24 @@
   loop: "{{ zsh_packages }}"
   become: true
 
+- name: Check if oh-my-zsh is installed.
+  ansible.builtin.stat:
+    path: "/home/{{ ansible_user }}/.oh-my-zsh"
+  register: ohmyzsh_dir
+
 - name: Fetch ohmyzsh install script.
   ansible.builtin.uri:
     url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
     return_content: true
   register: ohmyzsh_installer
+  when: not ohmyzsh_dir.stat.exists
 
 - name: Run ohmyzsh install script.
   ansible.builtin.shell:
     cmd: sh -s --
     stdin: "{{ ohmyzsh_installer.content }}"
     creates: "/home/{{ ansible_user }}/.oh-my-zsh"
+  when: not ohmyzsh_dir.stat.exists
 
 - name: Clone zsh-syntax-highlighting.
   ansible.builtin.git:
@@ -37,11 +44,10 @@
   ansible.builtin.copy:
     src: ".zshrc"
     dest: "/home/{{ ansible_user }}/.zshrc"
+    mode: "0644"
 
 - name: Change default shell for {{ ansible_user }}.
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    shell: "{{ zsh_shell_path }}"
   become: true
-  ansible.builtin.lineinfile:
-    path: /etc/passwd
-    regexp: '^({{ ansible_user }}.*bin/)(bash)'
-    line: \g<1>zsh
-    backrefs: true

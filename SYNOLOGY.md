@@ -9,7 +9,11 @@ either through DMS webportal, or by SSH.
 
 ### PiHole
 
-### Minio
+PiHole runs as a container on Synology. <https://pihole.zmuda.pro:8443/admin/>
+
+### Garage
+
+S3 compatible storage. <https://garagehq.deuxfleurs.fr/documentation/quick-start/>
 
 ### acme.sh
 
