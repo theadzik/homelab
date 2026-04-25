@@ -1,118 +1,66 @@
 # Homelab Copilot Instructions
 
-## Architecture Overview
+## Scope
 
-This is a **GitOps-driven Kubernetes homelab** with three primary components:
+This repository defines:
 
-1. **Kubernetes Cluster** (Talos Linux on bare metal) - Managed via ArgoCD with git-crypt encrypted secrets
-2. **Local Development Setup** (Ansible playbooks) - Configures WSL/Linux dev environment with Docker, K8s tools
-3. **Custom Applications** (Dockerfiles + Helm/Kustomize manifests) - ArgoCD-deployed apps with sync-wave ordering
+1. GitOps-managed Kubernetes workloads for a homelab cluster.
+2. Local developer machine bootstrap via Ansible roles/playbooks.
+3. Supporting app images/scripts (for example custom ArgoCD with git-crypt).
 
-**Key Principle**: Everything declarative, version-controlled, and automatically synced via ArgoCD. No manual kubectl applies.
+Use declarative changes in git. Avoid one-off manual cluster changes.
 
-## Critical Workflows
+## Canonical Docs
 
-### Deploying Applications to Kubernetes
+Prefer linking to and following these files instead of duplicating guidance:
 
-1. **Chart-based apps** → Add values file to `kubernetes/helm/<app-name>/values.yaml`
-2. **Non-chart apps** → Create Kustomization in `kubernetes/kustomizations/<app-name>/`
-   - Must include `kustomization.yaml` with resources list
-   - Reference shared overlays like `image-pull-secret` via `../image-pull-secret`
-3. **Register in App-of-Apps** → Bootstrap chart auto-discovers from `kubernetes/kustomizations/` and `kubernetes/helm/`
-4. **Check sync-wave ordering** → Review `sync-waves-inventory.md` (auto-generated); sync-waves prevent dependency failures
+- [Repository overview](../README.md)
+- [Sync-wave inventory (auto-generated)](../sync-waves-inventory.md)
+- [Synology/storage notes](../SYNOLOGY.md)
+- [Helm charts notes](../charts/README.md)
+- [Ansible bootstrap helper docs](../ansible/install-scripts/README.md)
 
-Example: Blog app uses Kustomization with `deployment.yaml`, `ingress.yaml`, `netpol.yaml`, `service.yaml`, `vpa.yaml`.
+## Core Rules For Agents
 
-### Secrets Management
+1. Do not manually edit `sync-waves-inventory.md`; update app-of-apps templates under `kubernetes/bootstrap/charts/app-of-apps/templates/` instead.
+2. Never commit plaintext secrets. Secret manifests should include `secret` in filename and remain git-crypt compatible.
+3. For kustomize-based apps, inspect `kustomization.yaml` for patches/transformers/images before editing base manifests.
+4. Keep new app resources declarative and organized under either `kubernetes/helm/` or `kubernetes/kustomizations/`.
+5. Place temporary files only under `.tmp/` at repository root.
 
-- **Encrypted with git-crypt** - Never commit plaintext secrets
-- Custom ArgoCD image (`apps/custom-argocd/`) includes git-crypt binary to decrypt during sync
-- Bootstrap configuration in `kubernetes/bootstrap/argocd-bootstrap.yaml` handles ArgoCD setup
+## Kubernetes Change Workflow
 
-### Local Development Changes
+1. Choose deployment style:
 
-- Modify Ansible playbooks in `ansible/playbooks/local-setup.yaml` and role tasks
-- Roles directory: `ansible/playbooks/roles/{wsl,oh-my-zsh,git,k8s-tools,docker}`
-- Run: `ansible-playbook ansible/playbooks/local-setup.yaml` (uses `ansible.cfg` with `inventory.yaml`)
+- Helm-based app: add/update `kubernetes/helm/<app>/values.yaml`.
+- Kustomize-based app: add/update `kubernetes/kustomizations/<app>/` resources plus `kustomization.yaml`.
 
-## Project-Specific Patterns
+1. Ensure app registration and sync wave in app-of-apps templates.
+2. Validate before finishing:
 
-### Kustomization Structure
+- `kustomize build kubernetes/kustomizations/<app>`
+- `helm template <chart> -f kubernetes/helm/<app>/values.yaml`
 
-Each app follows this pattern:
+1. If ordering/dependencies are involved (for example cert-manager before dependents), verify sync-wave placement.
 
-```text
-kubernetes/kustomizations/<app-name>/
-├── kustomization.yaml (declares resources)
-├── namespace.yaml
-├── deployment.yaml / statefulset.yaml
-├── service.yaml
-├── ingress.yaml
-├── vpa.yaml (Vertical Pod Autoscaler - common pattern)
-├── netpol.yaml (Network Policy - security pattern)
-└── pvc.yaml (if needed)
-```
+## Local Dev (Ansible) Workflow
 
-### Helm Values Organization
+1. Primary playbook: `ansible/playbooks/local-setup.yaml`.
+2. Roles live in `ansible/playbooks/roles/` (general, wsl, oh-my-zsh, git, k8s-tools, docker, node).
+3. Shared variables are in `ansible/playbooks/vars/local-common.yaml`.
+4. Typical run command:
 
-- Shared values in `values-shared.yaml` (e.g., external-dns, crowdsec)
-- Provider-specific overrides in `values-pihole.yaml`, `values-cloudflare.yaml`
-- Database values separate in `database-values.yaml` (e.g., tandoor)
+- `ansible-playbook ansible/playbooks/local-setup.yaml`
 
-### High-Availability Patterns (Traefik Example)
+## Validation And Quality Gates
 
-```yaml
-deployment:
-  replicas: 2  # Minimum HA
-podDisruptionBudget:
-  minAvailable: 1  # Cluster can handle one pod disruption
-priorityClassName: "system-cluster-critical"
-topologySpreadConstraints:  # Spread across nodes
-  whenUnsatisfiable: DoNotSchedule
-```
+Follow repo linting and checks before finalizing changes:
 
-## Code Organization
+- YAML: `.yamllint.yaml`
+- Markdown: `.markdownlint.yaml`
+- Dockerfiles: `.hadolint.yaml`
+- Python style/imports: `setup.cfg`
+- Security baseline: `.sec.baseline`
+- Pre-commit hooks: `.pre-commit-config.yaml`
 
-| Directory | Purpose |
-| --------- | ------- |
-| `kubernetes/bootstrap/` | ArgoCD bootstrap, app-of-apps chart, sync-wave inventory |
-| `kubernetes/helm/` | Helm values for chart-based deployments |
-| `kubernetes/kustomizations/` | Kustomizations for non-chart apps |
-| `ansible/playbooks/` | Local dev environment setup via roles |
-| `apps/custom-argocd/` | Custom ArgoCD image with git-crypt support |
-| `apps/vaultwarden/` | Backup/restore scripts (initContainer + CronJob pattern) |
-| `talos/` | Talos Linux OS schematic and patches |
-
-## Integration Points
-
-- **ArgoCD Sync Waves**: Defined by `argocd.argoproj.io/sync-wave` annotation; negative values run first
-- **External-DNS**: Updates DNS (Pihole/Cloudflare) automatically based on Ingress resources
-- **Traefik Plugins**: CrowdSec bouncer and Cloudflare integration via experimental plugins
-- **Synology CSI**: Storage provisioning via Synology NAS
-- **git-crypt**: Handles secret decryption during ArgoCD sync
-
-## Common Commands
-
-- **ArgoCD App Status**: `argocd app list` / `argocd app get <app-name>`
-- **Validate Kustomization**: `kustomize build kubernetes/kustomizations/<app-name>`
-- **Validate YAML**: Use yamllint (config: `.yamllint.yaml`)
-- **Check Helm Values**: `helm template <chart> -f kubernetes/helm/<app>/values.yaml`
-
-## Linting & Quality Standards
-
-- **YAML**: `.yamllint.yaml` (strict formatting)
-- **Markdown**: `.markdownlint.yaml`
-- **Docker**: `.hadolint.yaml` (Hadolint rules)
-- **Python**: `setup.cfg` (flake8 max 120 chars, isort single-line)
-- **Security**: `.sec.baseline` (baseline for security scans)
-- **Pre-commit**: `.pre-commit-config.yaml` (runs automated checks)
-
-## When Modifying This Codebase
-
-1. **Adding an app**: Create `kubernetes/kustomizations/<app-name>/` or `kubernetes/helm/<app-name>/values.yaml`
-2. **Fixing deployment issues**: Check sync-waves first (order matters), then validate with kustomize/helm template
-3. **Updating secrets**: Use git-crypt; never commit unencrypted; secrets should always include "secret" in the file name
-4. **Talos changes**: Edit `talos/schematic.yaml` or `talos/patch-all.yaml`, regenerate config
-5. **Local dev changes**: Update Ansible roles and playbooks, commit to git
-6. **Modifying Kubernetes resources**: Before adding fields to base resources (e.g., `deployment.yaml`, `service.yaml`), check the `kustomization.yaml` for patches, transformers, and overlays. Fields may be added dynamically via kustomize mechanisms rather than directly in base files. Run `kustomize build kubernetes/kustomizations/<app-name>` to verify final output.
-7. **Temporary files**: If temporary files are needed, write them under `.tmp/` in the project root (do not use `/tmp`).
+When changing Helm chart sources in `charts/`, also run `helm lint` for impacted charts.
