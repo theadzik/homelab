@@ -4,6 +4,8 @@ kind: ResourceClaimTemplate
 metadata:
   name: {{ .Values.resourceClaimTemplate.name }}
   namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "media-stack.labels" . | nindent 4 }}
 spec:
   spec:
 {{ toYaml .Values.resourceClaimTemplate.spec | indent 4 }}
