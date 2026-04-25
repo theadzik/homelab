@@ -23,6 +23,8 @@ Apply these rules for changes in ansible playbooks and roles.
 - Use loops for package/tool lists instead of duplicated tasks.
 - Put privilege escalation only where needed (`become: true` on the task/block requiring it).
 - For OS- or environment-specific steps, use explicit conditions or blocks.
+- Avoid editing `/etc/passwd` directly; use `ansible.builtin.user` for shell/account updates.
+- Prefer modern apt keyring flow (`get_url` + `signed-by=`) over `apt_key`.
 
 ## Idempotency Rules
 
@@ -31,6 +33,8 @@ Apply these rules for changes in ansible playbooks and roles.
 - Avoid non-deterministic writes; do not replace files when content is unchanged.
 - Prefer declarative end-state modules over imperative command sequences.
 - Keep tasks re-runnable without side effects on repeated execution.
+- For network download/install tasks, do not resolve "latest" dynamically. Prefer package-manager installs or pinned artifact URLs with explicit version and expected SHA256.
+- For security-sensitive binaries, require fail-fast checksum verification (`assert`) so the playbook stops on mismatch.
 
 ## Variable Placement
 
@@ -38,6 +42,7 @@ Apply these rules for changes in ansible playbooks and roles.
 - Put role-owned defaults in `roles/<role>/defaults/main.yaml`.
 - Do not hardcode user-specific paths if `ansible_user`-based paths are already used in the role.
 - Keep computed values in defaults/vars and reference them from tasks rather than duplicating expressions.
+- For files written to system paths, set explicit `owner`, `group`, and `mode` unless defaults are intentionally required.
 
 ## Package State Conventions
 
