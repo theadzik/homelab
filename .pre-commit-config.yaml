@@ -52,5 +52,5 @@ repos:
           - '--baseline'
           - '.sec.baseline'
           - '--exclude-lines'
-          - 'secretName:|existingSecret:|existingSecretName:|pullsecret:|SHA256'
+          - 'secretName:|existingSecret:|existingSecretName:|pullsecret:|(SHA|sha)256'
         exclude: ".*secret.*" # files with "secret" in the name are encrypted with git-crypt, therefore we ignore them entirely

@@ -1,24 +1,14 @@
-- name: Check latest git-crypt.
-  uri:
-    url: https://api.github.com/repos/AGWA/git-crypt/releases/latest
-    return_content: true
-  register: gitcrypt_latest
-
 - name: Create git-crypt version file.
   ansible.builtin.copy:
     content: ""
-    dest: "{{ downloads_dir }}/git-crypt-{{ gitcrypt_latest.json.name }}"
+    dest: "{{ downloads_dir }}/git-crypt-{{ gitcrypt_version }}"
     force: false
   register: gitcrypt_version
 
 - name: Download git-crypt.
-  loop: "{{ gitcrypt_latest.json.assets }}"
-  loop_control:
-    label: "{{ item.name }}"
-    break_when: "'linux-x86_64' in item.name"
-  when: "gitcrypt_version.changed and 'linux-x86_64' in item.name"
+  when: gitcrypt_version.changed
   ansible.builtin.get_url:
-    url: "{{ item.browser_download_url }}"
+    url: "{{ gitcrypt_download_url }}"
     dest: "{{ downloads_dir }}/git-crypt"
     mode: "755"
   become: true
@@ -34,7 +24,7 @@
 - name: Downloaded git-crypt matches saved sha256
   when: "gitcrypt_version.changed"
   ansible.builtin.assert:
-    that: "'522683f89693ad2da1f3fa7e1076f5e8934619a55ff2e1246866eeb2ad587b0c' == gitcrypt_file.stat.checksum"  # pragma: allowlist secret
+    that: "gitcrypt_sha256 == gitcrypt_file.stat.checksum"  # pragma: allowlist secret
 
 - name: Move git-crypt to install location
   when: "gitcrypt_version.changed"

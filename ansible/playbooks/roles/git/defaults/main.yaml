@@ -1,0 +1,4 @@
+gitcrypt_version: "0.8.0"
+gitcrypt_sha256: "522683f89693ad2da1f3fa7e1076f5e8934619a55ff2e1246866eeb2ad587b0c"
+gitcrypt_asset_suffix: "linux-x86_64"
+gitcrypt_download_url: "https://github.com/AGWA/git-crypt/releases/download/{{ gitcrypt_version }}/git-crypt-{{ gitcrypt_version }}-{{ gitcrypt_asset_suffix }}"
