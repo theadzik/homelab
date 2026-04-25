@@ -6,6 +6,8 @@ kind: VerticalPodAutoscaler
 metadata:
   name: {{ $svcName }}
   namespace: {{ $.Release.Namespace }}
+  labels:
+    {{- include "media-stack.componentLabels" (dict "component" $svcName "context" $) | nindent 4 }}
 spec:
   targetRef:
     apiVersion: apps/v1

@@ -34,8 +34,6 @@ Usage: include "media-stack.labels" .
 */}}
 {{- define "media-stack.labels" -}}
 helm.sh/chart: {{ include "media-stack.chart" . }}
-app.kubernetes.io/name: {{ include "media-stack.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 app.kubernetes.io/part-of: {{ include "media-stack.name" . }}
@@ -46,9 +44,9 @@ Selector labels for a service component
 Usage: include "media-stack.selectorLabels" (dict "component" "jellyfin" "context" $)
 */}}
 {{- define "media-stack.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "media-stack.name" .context }}
+app.kubernetes.io/name: {{ .component }}
 app.kubernetes.io/instance: {{ .context.Release.Name }}
-app.kubernetes.io/component: {{ .component }}
+app.kubernetes.io/part-of: {{ include "media-stack.name" .context }}
 {{- end }}
 
 {{/*
@@ -57,5 +55,6 @@ Usage: include "media-stack.componentLabels" (dict "component" "jellyfin" "conte
 */}}
 {{- define "media-stack.componentLabels" -}}
 {{ include "media-stack.labels" .context }}
-app.kubernetes.io/component: {{ .component }}
+app.kubernetes.io/name: {{ .component }}
+app.kubernetes.io/instance: {{ .context.Release.Name }}
 {{- end }}
