@@ -1,5 +1,9 @@
 kubeletPlugin:
   tolerations: [] # Don't need gpu driver on master nodes
+  healthcheckPort: -1
+  privileged: true
+  healthMonitoring:
+    enabled: false
 cdi:
   staticPath: /var/cdi/static
   dynamicPath: /var/cdi/dynamic
