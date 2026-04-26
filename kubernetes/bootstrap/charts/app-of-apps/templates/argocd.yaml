@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-99"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - chart: argocd
+      repoURL: https://argoproj.github.io/argo-helm
+      targetRevision: 9.*.*
+      helm:
+        releaseName: argocd
+        valueFiles:
+          - $repo/kubernetes/helm/argocd/values.yaml
+          - $repo/kubernetes/helm/argocd/values-secret.yaml
+    - path: kubernetes/kustomizations/argocd
+      repoURL: {{ .Values.spec.sources.repoURL }}
+      targetRevision: {{ .Values.spec.sources.targetRevision }}
+      ref: repo
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: argocd
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ServerSideApply=true
+      - CreateNamespace=true
+      - PruneLast=true
+    retry:
+      limit: -1
