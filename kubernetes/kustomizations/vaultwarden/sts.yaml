@@ -23,6 +23,7 @@ spec:
       initContainers:
         - name: chown-data
           image: alpine:3.23
+          imagePullPolicy: Always
           command:
             - chown
             - -R
@@ -31,17 +32,20 @@ spec:
           securityContext:
             runAsUser: 0
             runAsGroup: 0
+            runAsNonRoot: false
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities:
               drop:
                 - ALL
+              add:
+                - CHOWN
           volumeMounts:
             - mountPath: /data
               name: data
         - name: restore
           image: theadzik/vw-restore:2026.2.1
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           volumeMounts:
             - mountPath: /home/vaultwarden
               name: rclone-conf
