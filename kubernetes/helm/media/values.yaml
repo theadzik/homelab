@@ -103,7 +103,7 @@ services:
   radarr:
     enabled: true
     image: lscr.io/linuxserver/radarr
-    tag: "6.1.1"
+    tag: "~6"
     port: 7878
     resources:
       requests:
@@ -141,7 +141,7 @@ services:
   sonarr:
     enabled: true
     image: lscr.io/linuxserver/sonarr
-    tag: "4.0.17"
+    tag: "~4"
     port: 8989
     resources:
       requests:
