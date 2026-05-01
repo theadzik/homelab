@@ -10,13 +10,3 @@ spec:
     - fromEndpoints:
         - matchLabels:
             k8s:io.kubernetes.pod.namespace: traefik
-
----
-
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: default-deny-ingress-netpol
-spec:
-  endpointSelector: {}
-  ingress: []
