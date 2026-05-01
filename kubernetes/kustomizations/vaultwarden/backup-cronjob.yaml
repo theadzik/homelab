@@ -61,7 +61,7 @@ spec:
           volumes:
             - name: data
               persistentVolumeClaim:
-                claimName: vaultwarden
+                claimName: vaultwarden-data
             - name: backup
               persistentVolumeClaim:
                 claimName: vaultwarden-backup
