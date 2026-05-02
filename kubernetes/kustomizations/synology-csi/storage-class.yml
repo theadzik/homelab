@@ -26,20 +26,6 @@ allowVolumeExpansion: true
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: synology-iscsi-delete-pvcname
-provisioner: csi.san.synology.com
-parameters:
-  fsType: 'btrfs'
-  formatOptions: '--nodiscard'
-  volumeNamingSource: 'pvc-namespace-name'
-reclaimPolicy: Delete
-allowVolumeExpansion: true
-
----
-
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
   name: synology-nfs-retain
 provisioner: csi.san.synology.com
 parameters:
