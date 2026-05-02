@@ -31,7 +31,7 @@ provisioner: csi.san.synology.com
 parameters:
   fsType: 'btrfs'
   formatOptions: '--nodiscard'
-  volumeNamingSource: 'pvc-namespace-name'
+  volumeNamingSource: 'pvcName'
 reclaimPolicy: Delete
 allowVolumeExpansion: true
 
