@@ -1,5 +1,5 @@
 kustomize:
   images:
-  - vaultwarden/server:1.35.7-alpine
+  - vaultwarden/server:1.36.0-alpine
   - theadzik/vw-restore:2026.5.1
   - theadzik/vw-backup:2026.2.1
