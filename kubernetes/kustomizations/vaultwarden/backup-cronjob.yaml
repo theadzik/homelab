@@ -36,6 +36,12 @@ spec:
                   value: "/backup"
                 - name: BACKUP_REMOTE_DIR
                   value: "gdrive:backup"
+                - name: RCLONE_TEMP_DIR
+                  value: "/tmp"
+                - name: RCLONE_CONFIG_DIR
+                  value: "/tmp"
+                - name: XDG_CONFIG_HOME
+                  value: "/tmp"
               securityContext:
                 runAsUser: 1000
                 runAsGroup: 1000
