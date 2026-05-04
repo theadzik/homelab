@@ -1,1 +1,1 @@
-schedule: "30 * * * *"
+schedule: "30 */6 * * *"
