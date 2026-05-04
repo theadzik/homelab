@@ -6,6 +6,8 @@ falcosidekick:
     replicaCount: 1
     customLabels:
       dns-type: internal
+    redis:
+      storageClass: synology-iscsi-delete-ssd
     ingress:
       enabled: true
       ingressClassName: "traefik"
