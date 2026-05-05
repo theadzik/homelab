@@ -10,14 +10,14 @@ networkPolicy:
   enabled: false
   # Ingress rules - allow from pods in namespace + traefik
   ingress:
-  - from:
-    - podSelector: {}
-  - from:
-    - namespaceSelector:
-        matchLabels:
-          kubernetes.io/metadata.name: traefik
-          # Egress rules - allow everywhere (default if not specified)
-          # Global ingress annotations (applied to all ingresses)
+    - from:
+        - podSelector: {}
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: traefik
+              # Egress rules - allow everywhere (default if not specified)
+              # Global ingress annotations (applied to all ingresses)
 ingressClassName: traefik
 ingressAnnotations:
   cert-manager.io/cluster-issuer: lets-encrypt-prod
@@ -36,7 +36,7 @@ persistentVolumeClaims:
   downloads:
     enabled: true
     accessModes:
-    - ReadWriteMany
+      - ReadWriteMany
     storage: 7Ti
     storageClassName: synology-nfs-retain
     annotations:
@@ -53,11 +53,11 @@ resourceClaimTemplate:
   spec:
     devices:
       requests:
-      - name: i915
-        exactly:
-          deviceClassName: gpu.intel.com
-          allocationMode: ExactCount
-          count: 1
+        - name: i915
+          exactly:
+            deviceClassName: gpu.intel.com
+            allocationMode: ExactCount
+            count: 1
 # Individual services configuration
 services:
   jellyfin:
@@ -78,7 +78,7 @@ services:
         storage: 10Gi
         storageClassName: synology-iscsi-retain-ssd
         accessModes:
-        - ReadWriteOnce
+          - ReadWriteOnce
         annotations:
           argocd.argoproj.io/sync-options: Delete=false,Prune=false
     livenessProbe:
@@ -120,7 +120,7 @@ services:
         storage: 2Gi
         storageClassName: synology-iscsi-retain-ssd
         accessModes:
-        - ReadWriteOnce
+          - ReadWriteOnce
         annotations:
           argocd.argoproj.io/sync-options: Delete=false,Prune=false
     livenessProbe:
@@ -158,7 +158,7 @@ services:
         storage: 2Gi
         storageClassName: synology-iscsi-retain-ssd
         accessModes:
-        - ReadWriteOnce
+          - ReadWriteOnce
         annotations:
           argocd.argoproj.io/sync-options: Delete=false,Prune=false
     livenessProbe:
@@ -177,7 +177,7 @@ services:
       path: /
       pathType: Prefix
   bazarr:
-    enabled: false
+    enabled: true
     image: lscr.io/linuxserver/bazarr
     tag: "~1"
     port: 6767
@@ -196,7 +196,7 @@ services:
         storage: 2Gi
         storageClassName: synology-iscsi-retain-ssd
         accessModes:
-        - ReadWriteOnce
+          - ReadWriteOnce
         annotations:
           argocd.argoproj.io/sync-options: Delete=false,Prune=false
     livenessProbe:
@@ -235,7 +235,7 @@ services:
         storage: 5Gi
         storageClassName: synology-iscsi-retain-ssd
         accessModes:
-        - ReadWriteOnce
+          - ReadWriteOnce
         annotations:
           argocd.argoproj.io/sync-options: Delete=false,Prune=false
       intermediate:
@@ -243,7 +243,7 @@ services:
         storage: 128Gi
         storageClassName: synology-iscsi-delete-ssd
         accessModes:
-        - ReadWriteOnce
+          - ReadWriteOnce
         annotations:
           argocd.argoproj.io/sync-options: Delete=false,Prune=false
     existingSecretName: nzbget-secret
