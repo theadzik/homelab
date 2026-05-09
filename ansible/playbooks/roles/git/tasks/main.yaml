@@ -10,7 +10,6 @@
   ansible.builtin.get_url:
     url: "{{ gitcrypt_download_url }}"
     dest: "{{ downloads_dir }}/git-crypt"
-    mode: "755"
   become: true
 
 - name: Check SHA256 sum
@@ -32,6 +31,7 @@
     remote_src: true
     src: "{{ downloads_dir }}/git-crypt"
     dest: "/usr/bin/git-crypt"
+    mode: "0755"
   become: true
 
 - name: Install pre-commit and hook dependencies using pipx.
