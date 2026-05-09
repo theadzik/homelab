@@ -29,6 +29,14 @@
   failed_when: gpg_dearmor.rc is defined and gpg_dearmor.rc != 0
   become: true
 
+- name: Ensure correct permissions on Microsoft keyring file.
+  ansible.builtin.file:
+    path: "{{ vscode_keyring_path }}"
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
+
 - name: Ensure armored GPG key file is removed.
   ansible.builtin.file:
     path: /tmp/microsoft.asc
