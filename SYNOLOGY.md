@@ -42,8 +42,28 @@ ExecStart=/var/packages/DhcpServer/target/dnsmasq-2.x-virtual-dhcpserver/usr/syn
 ```
 
 ```bash
-systemctl stop pkg-dhcpserver
-systemctl start pkg-dhcpserver
+systemctl restart pkg-dhcpserver
 ```
 
-> 🚧 **TODO:** Verify dnsmasq port change persists after reboot/update.
+#### Persistance
+
+To persist the above changes after system updates and reboots: **Control panel** -> **Task scheduler** -> **Create** -> **Triggered task**
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+SERVICE="pkg-dhcpserver"
+FILE="/usr/local/lib/systemd/system/$SERVICE.service"
+PORT="0"
+
+if grep -qP '^ExecStart=.*--port=' "$FILE"; then
+    sed -i -E "s/(ExecStart=.*)(--port=[^ ]*)(.*)/\1--port=${PORT}\3/" "$FILE"
+else
+    sed -i -E "s/(ExecStart=.*)/\1 --port=${PORT}/" "$FILE"
+fi
+
+systemctl daemon-reload
+systemctl restart "$SERVICE"
+exit 0
+```
