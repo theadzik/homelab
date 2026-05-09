@@ -12,7 +12,7 @@ ssh-keygen -t ed25519 -C "$email" -f "$key_path"
 eval "$(ssh-agent -s)"
 ssh-add "$key_path"
 
-sudo apt-get update && sudo apt-get install git -y
+sudo apt-get update && sudo apt-get install git curl -y
 
 git config --global user.name "$name"
 git config --global user.email "$email"

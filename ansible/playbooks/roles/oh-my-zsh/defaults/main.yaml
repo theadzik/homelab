@@ -2,5 +2,6 @@ zsh_packages:
   - git
   - zsh
   - fzf
+  - fonts-powerline
 
 zsh_shell_path: /usr/bin/zsh

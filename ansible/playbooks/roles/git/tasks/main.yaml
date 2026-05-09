@@ -3,10 +3,10 @@
     content: ""
     dest: "{{ downloads_dir }}/git-crypt-{{ gitcrypt_version }}"
     force: false
-  register: gitcrypt_version
+  register: gitcrypt_version_file
 
 - name: Download git-crypt.
-  when: gitcrypt_version.changed
+  when: gitcrypt_version_file.changed
   ansible.builtin.get_url:
     url: "{{ gitcrypt_download_url }}"
     dest: "{{ downloads_dir }}/git-crypt"
@@ -14,7 +14,7 @@
   become: true
 
 - name: Check SHA256 sum
-  when: "gitcrypt_version.changed"
+  when: "gitcrypt_version_file.changed"
   ansible.builtin.stat:
     checksum_algorithm: sha256
     path: "{{ downloads_dir }}/git-crypt"
@@ -22,12 +22,12 @@
 
   # This fails if a new version is released or someone tempers with the file
 - name: Downloaded git-crypt matches saved sha256
-  when: "gitcrypt_version.changed"
+  when: "gitcrypt_version_file.changed"
   ansible.builtin.assert:
     that: "gitcrypt_sha256 == gitcrypt_file.stat.checksum"  # pragma: allowlist secret
 
 - name: Move git-crypt to install location
-  when: "gitcrypt_version.changed"
+  when: "gitcrypt_version_file.changed"
   ansible.builtin.copy:
     remote_src: true
     src: "{{ downloads_dir }}/git-crypt"
