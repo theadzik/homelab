@@ -31,3 +31,5 @@
     - role: k8s-tools
     - role: docker
     - role: node
+    - role: vscode
+      tags: ubuntu

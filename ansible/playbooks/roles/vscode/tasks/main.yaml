@@ -1,0 +1,53 @@
+- name: Ensure prerequisites are installed.
+  ansible.builtin.apt:
+    name:
+      - gpg
+      - apt-transport-https
+    state: present
+  become: true
+
+- name: Ensure directory for Microsoft GPG key is present.
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  become: true
+
+- name: Ensure Microsoft GPG key is present (armored).
+  ansible.builtin.get_url:
+    url: "{{ vscode_gpg_url }}"
+    dest: /tmp/microsoft.asc
+    mode: '0644'
+
+- name: Ensure Microsoft GPG key is dearmored into keyring.
+  ansible.builtin.shell:
+    cmd: gpg --dearmor < /tmp/microsoft.asc > {{ vscode_keyring_path }}
+    creates: "{{ vscode_keyring_path }}"
+  register: gpg_dearmor
+  failed_when: gpg_dearmor.rc is defined and gpg_dearmor.rc != 0
+  become: true
+
+- name: Ensure armored GPG key file is removed.
+  ansible.builtin.file:
+    path: /tmp/microsoft.asc
+    state: absent
+
+- name: Ensure VS Code repository is added to apt.
+  ansible.builtin.apt_repository:
+    repo: >-
+      deb [arch={{ arch_mapping[ansible_facts["architecture"]] | default(ansible_facts["architecture"]) }}
+      signed-by={{ vscode_keyring_path }}]
+      https://packages.microsoft.com/repos/code stable main
+    filename: "{{ vscode_repo_file }}"
+    state: present
+  become: true
+
+- name: Ensure VS Code is installed.
+  ansible.builtin.apt:
+    name: code
+    state: latest
+    update_cache: true
+    cache_valid_time: 3600
+  become: true
