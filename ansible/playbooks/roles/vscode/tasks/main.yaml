@@ -15,15 +15,16 @@
     mode: '0755'
   become: true
 
-- name: Ensure Microsoft GPG key is present (armored).
-  ansible.builtin.get_url:
+- name: Fetch Microsoft GPG key into memory.
+  ansible.builtin.uri:
     url: "{{ vscode_gpg_url }}"
-    dest: /tmp/microsoft.asc
-    mode: '0644'
+    return_content: true
+  register: microsoft_gpg_key
 
 - name: Ensure Microsoft GPG key is dearmored into keyring.
   ansible.builtin.shell:
-    cmd: gpg --dearmor < /tmp/microsoft.asc > {{ vscode_keyring_path }}
+    cmd: gpg --dearmor -o {{ vscode_keyring_path }}
+    stdin: "{{ microsoft_gpg_key.content }}"
     creates: "{{ vscode_keyring_path }}"
   register: gpg_dearmor
   failed_when: gpg_dearmor.rc is defined and gpg_dearmor.rc != 0
@@ -36,11 +37,6 @@
     group: root
     mode: '0644'
   become: true
-
-- name: Ensure armored GPG key file is removed.
-  ansible.builtin.file:
-    path: /tmp/microsoft.asc
-    state: absent
 
 - name: Ensure VS Code repository is added to apt.
   ansible.builtin.apt_repository:
