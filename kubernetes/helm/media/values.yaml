@@ -1,14 +1,7 @@
-# Media Stack - Homelab Values
-# Chart location: /charts/media-stack/
-# These values override the defaults in the chart for homelab-specific configuration
-
-# Namespace annotations
 namespaceAnnotations:
   argocd.argoproj.io/sync-options: Delete=false,Prune=false
-# Network Policy
 networkPolicy:
   enabled: false
-  # Ingress rules - allow from pods in namespace + traefik
   ingress:
   - from:
     - podSelector: {}
@@ -16,22 +9,17 @@ networkPolicy:
     - namespaceSelector:
         matchLabels:
           kubernetes.io/metadata.name: traefik
-          # Egress rules - allow everywhere (default if not specified)
-          # Global ingress annotations (applied to all ingresses)
 ingressClassName: traefik
 ingressAnnotations:
   cert-manager.io/cluster-issuer: lets-encrypt-prod
 ingressLabels:
   dns-type: internal
-# Common settings
 common:
   timezone: Europe/Warsaw
   puid: 1000
   pgid: 1000
   imagePullPolicy: IfNotPresent
-# Priority class (added via patch)
 priorityClassName: high-priority
-# PersistentVolumeClaims
 persistentVolumeClaims:
   downloads:
     enabled: true
@@ -41,12 +29,10 @@ persistentVolumeClaims:
     storageClassName: synology-nfs-retain
     annotations:
       argocd.argoproj.io/sync-options: Delete=false,Prune=false
-# VPA configuration
 vpa:
   enabled: true
   updateMode: InPlaceOrRecreate
   minReplicas: 1
-# Resource claim template (for GPU)
 resourceClaimTemplate:
   enabled: true
   name: i915
@@ -58,7 +44,6 @@ resourceClaimTemplate:
           deviceClassName: gpu.intel.com
           allocationMode: ExactCount
           count: 1
-# Individual services configuration
 services:
   jellyfin:
     enabled: true
