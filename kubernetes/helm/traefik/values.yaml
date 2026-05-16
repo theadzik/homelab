@@ -11,7 +11,7 @@ priorityClassName: "system-cluster-critical"
 topologySpreadConstraints:
   - labelSelector:
       matchLabels:
-        app.kubernetes.io/name: '{{ template "traefik.name" . }}'
+        app.kubernetes.io/name: "{{ template \"traefik.name\" . }}"
     matchLabelKeys:
       - pod-template-hash
     maxSkew: 1

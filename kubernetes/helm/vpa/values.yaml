@@ -28,7 +28,7 @@ recommender:
       cpu: 10m
       memory: 64Mi
   extraArgs:
-    - --round-memory-bytes=1048576  # 1 MiB
+    - --round-memory-bytes=1048576 # 1 MiB
   affinity:
     nodeAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:

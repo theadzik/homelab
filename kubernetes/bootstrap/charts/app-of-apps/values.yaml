@@ -1,4 +1,4 @@
 spec:
   sources:
-    repoURL: 'https://github.com/theadzik/homelab'
+    repoURL: "https://github.com/theadzik/homelab"
     targetRevision: HEAD

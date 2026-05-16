@@ -7,10 +7,10 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  source:
-    path: kubernetes/kustomizations/vaultwarden
-    repoURL: {{ .Values.spec.sources.repoURL }}
-    targetRevision: {{ .Values.spec.sources.targetRevision }}
+  sources:
+    - path: kubernetes/kustomizations/vaultwarden
+      repoURL: "{{ .Values.spec.sources.repoURL }}"
+      targetRevision: "{{ .Values.spec.sources.targetRevision }}"
   destination:
     server: https://kubernetes.default.svc
     namespace: vaultwarden

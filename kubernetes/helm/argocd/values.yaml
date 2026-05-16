@@ -33,8 +33,8 @@ configs:
       p, role:authenticated, *, *, *, deny
       g, zmuda-pro:argocd-admins, role:admin
     policy.default: role:authenticated
-    scopes: '[groups, email]'
-    policy.matchMode: 'glob'
+    scopes: "[groups, email]"
+    policy.matchMode: "glob"
 
 server:
   ingress:

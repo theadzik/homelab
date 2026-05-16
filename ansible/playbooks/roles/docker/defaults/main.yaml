@@ -1,4 +1,4 @@
-arch_mapping:  # Map ansible architecture {{ ansible_facts["architecture"] }} names to Docker's architecture names
+arch_mapping: # Map ansible architecture {{ ansible_facts["architecture"] }} names to Docker's architecture names
   x86_64: amd64
 
 docker_package:

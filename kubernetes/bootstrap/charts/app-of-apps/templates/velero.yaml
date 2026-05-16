@@ -17,12 +17,12 @@ spec:
         valueFiles:
           - $velero/kubernetes/helm/velero/values.yaml
     - path: kubernetes/kustomizations/velero
-      repoURL: {{ .Values.spec.sources.repoURL }}
-      targetRevision: {{ .Values.spec.sources.targetRevision }}
+      repoURL: "{{ .Values.spec.sources.repoURL }}"
+      targetRevision: "{{ .Values.spec.sources.targetRevision }}"
       ref: velero
     - path: kubernetes/kustomizations/image-pull-secret
-      repoURL: {{ .Values.spec.sources.repoURL }}
-      targetRevision: {{ .Values.spec.sources.targetRevision }}
+      repoURL: "{{ .Values.spec.sources.repoURL }}"
+      targetRevision: "{{ .Values.spec.sources.targetRevision }}"
   destination:
     server: "https://kubernetes.default.svc"
     namespace: velero

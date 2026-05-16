@@ -1,4 +1,3 @@
----
 - block:
     - name: Copy wsl.conf.
       ansible.builtin.copy:

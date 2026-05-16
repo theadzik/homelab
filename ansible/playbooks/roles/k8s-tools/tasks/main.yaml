@@ -1,4 +1,3 @@
----
 - name: "Tap siderolabs brew"
   community.general.homebrew_tap:
     name: siderolabs/tap

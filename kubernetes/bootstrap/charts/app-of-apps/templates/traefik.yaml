@@ -17,8 +17,8 @@ spec:
         skipCrds: false
         valueFiles:
           - $repo/kubernetes/helm/traefik/values.yaml
-    - repoURL: {{ .Values.spec.sources.repoURL }}
-      targetRevision: {{ .Values.spec.sources.targetRevision }}
+    - repoURL: "{{ .Values.spec.sources.repoURL }}"
+      targetRevision: "{{ .Values.spec.sources.targetRevision }}"
       path: kubernetes/kustomizations/traefik
       ref: repo
   destination:

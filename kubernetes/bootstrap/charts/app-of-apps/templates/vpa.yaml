@@ -16,8 +16,8 @@ spec:
         releaseName: vertical-pod-autoscaler
         valueFiles:
           - $repo/kubernetes/helm/vpa/values.yaml
-    - repoURL: {{ .Values.spec.sources.repoURL }}
-      targetRevision: {{ .Values.spec.sources.targetRevision }}
+    - repoURL: "{{ .Values.spec.sources.repoURL }}"
+      targetRevision: "{{ .Values.spec.sources.targetRevision }}"
       ref: repo
   destination:
     server: "https://kubernetes.default.svc"

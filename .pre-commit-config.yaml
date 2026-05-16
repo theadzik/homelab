@@ -13,10 +13,13 @@ repos:
       - id: check-added-large-files
       - id: check-merge-conflict
       - id: mixed-line-ending
-  - repo: https://github.com/adrienverge/yamllint
-    rev: v1.38.0
+  - repo: https://github.com/google/yamlfmt
+    rev: v0.21.0
     hooks:
-      - id: yamllint
+      - id: yamlfmt
+        args:
+          - "--conf=.yamlfmt.yaml"
+        exclude: "\\.argocd-source-.*\\.yaml$|templates/.*$"
   - repo: https://github.com/PyCQA/isort
     rev: 9.0.0a3
     hooks:
@@ -39,7 +42,7 @@ repos:
     hooks:
       - id: markdownlint
         args: ["--fix"]
-        exclude: '^\.github/.*\.md$'
+        exclude: "^\\.github/.*\\.md$"
   - repo: https://github.com/hadolint/hadolint
     rev: v2.14.0
     hooks:
@@ -49,8 +52,8 @@ repos:
     hooks:
       - id: detect-secrets
         args:
-          - '--baseline'
-          - '.sec.baseline'
-          - '--exclude-lines'
-          - 'secretName:|existingSecret:|existingSecretName:|pullsecret:|(SHA|sha)256'
+          - "--baseline"
+          - ".sec.baseline"
+          - "--exclude-lines"
+          - "secretName:|existingSecret:|existingSecretName:|pullsecret:|(SHA|sha)256"
         exclude: ".*secret.*" # files with "secret" in the name are encrypted with git-crypt, therefore we ignore them entirely
