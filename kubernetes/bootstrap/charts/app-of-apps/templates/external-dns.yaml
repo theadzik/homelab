@@ -26,8 +26,8 @@ spec:
           - $repo/kubernetes/helm/external-dns/values-shared.yaml
           - $repo/kubernetes/helm/external-dns/values-cloudflare.yaml
     - path: "kubernetes/kustomizations/external-dns"
-      repoURL: {{ .Values.spec.sources.repoURL }}
-      targetRevision: {{ .Values.spec.sources.targetRevision }}
+      repoURL: "{{ .Values.spec.sources.repoURL }}"
+      targetRevision: "{{ .Values.spec.sources.targetRevision }}"
       ref: repo
   destination:
     server: "https://kubernetes.default.svc"

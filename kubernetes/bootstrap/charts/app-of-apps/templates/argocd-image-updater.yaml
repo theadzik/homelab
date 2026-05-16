@@ -16,8 +16,8 @@ spec:
         releaseName: argocd-image-updater
         valueFiles:
           - $repo/kubernetes/helm/argocd-image-updater/values.yaml
-    - repoURL: {{ .Values.spec.sources.repoURL }}
-      targetRevision: {{ .Values.spec.sources.targetRevision }}
+    - repoURL: "{{ .Values.spec.sources.repoURL }}"
+      targetRevision: "{{ .Values.spec.sources.targetRevision }}"
       path: kubernetes/kustomizations/image-pull-secret
       ref: repo
   destination:

@@ -8,10 +8,10 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
-  source:
-    path: kubernetes/kustomizations/cloudflared
-    repoURL: {{ .Values.spec.sources.repoURL }}
-    targetRevision: {{ .Values.spec.sources.targetRevision }}
+  sources:
+    - path: kubernetes/kustomizations/cloudflared
+      repoURL: "{{ .Values.spec.sources.repoURL }}"
+      targetRevision: "{{ .Values.spec.sources.targetRevision }}"
   destination:
     server: https://kubernetes.default.svc
     namespace: cloudflared

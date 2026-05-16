@@ -16,8 +16,8 @@ spec:
         releaseName: metrics-server
         valueFiles:
           - $repo/kubernetes/helm/metrics-server/values.yaml
-    - repoURL: {{ .Values.spec.sources.repoURL }}
-      targetRevision: {{ .Values.spec.sources.targetRevision }}
+    - repoURL: "{{ .Values.spec.sources.repoURL }}"
+      targetRevision: "{{ .Values.spec.sources.targetRevision }}"
       ref: repo
   destination:
     server: "https://kubernetes.default.svc"

@@ -18,8 +18,8 @@ spec:
           - $repo/kubernetes/helm/argocd/values.yaml
           - $repo/kubernetes/helm/argocd/values-secret.yaml
     - path: kubernetes/kustomizations/argocd
-      repoURL: {{ .Values.spec.sources.repoURL }}
-      targetRevision: {{ .Values.spec.sources.targetRevision }}
+      repoURL: "{{ .Values.spec.sources.repoURL }}"
+      targetRevision: "{{ .Values.spec.sources.targetRevision }}"
       ref: repo
   destination:
     server: "https://kubernetes.default.svc"
