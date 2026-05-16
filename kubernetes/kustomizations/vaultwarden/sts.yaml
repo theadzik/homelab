@@ -102,13 +102,13 @@ spec:
                 name: vw-secrets
           env:
             - name: DOMAIN
-              value: 'https://vault.zmuda.pro'
+              value: "https://vault.zmuda.pro"
             - name: SIGNUPS_ALLOWED
-              value: 'false'
+              value: "false"
             - name: SIGNUPS_VERIFY
-              value: 'true'
+              value: "true"
             - name: PUSH_ENABLED
-              value: 'true'
+              value: "true"
           volumeMounts:
             - mountPath: /data
               name: data

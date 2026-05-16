@@ -23,7 +23,7 @@
 - name: Downloaded git-crypt matches saved sha256
   when: "gitcrypt_version_file.changed"
   ansible.builtin.assert:
-    that: "gitcrypt_sha256 == gitcrypt_file.stat.checksum"  # pragma: allowlist secret
+    that: "gitcrypt_sha256 == gitcrypt_file.stat.checksum" # pragma: allowlist secret
 
 - name: Move git-crypt to install location
   when: "gitcrypt_version_file.changed"

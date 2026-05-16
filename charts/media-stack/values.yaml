@@ -1,56 +1,38 @@
-# Default values for media-stack
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-# Namespace annotations
 namespaceAnnotations: {}
-  # argocd.argoproj.io/sync-options: Delete=false,Prune=false
+# argocd.argoproj.io/sync-options: Delete=false,Prune=false
 
-# Network Policy
 networkPolicy:
   enabled: false
-  # Ingress rules - customize based on your setup
-  # By default (if not specified), allows ingress from pods in the same namespace
-  # Uncomment to override defaults:
-  # ingress:
-  #   # Example: Allow ingress from ingress controller (e.g., traefik)
-  #   - from:
-  #       - namespaceSelector:
-  #           matchLabels:
-  #             kubernetes.io/metadata.name: traefik
-  #     ports:
-  #       - protocol: TCP
-  #   # Example: Allow ingress from pods in same namespace
-  #   - from:
-  #       - podSelector: {}
-  #
-  # Egress rules - customize based on your setup
-  # By default (if not specified), allows egress everywhere
-  # Uncomment to override defaults:
-  # egress:
-  #   # Allow DNS resolution (kube-system namespace)
-  #   - to:
-  #       - namespaceSelector:
-  #           matchLabels:
-  #             kubernetes.io/metadata.name: kube-system
-  #     ports:
-  #       - protocol: UDP
-  #         port: 53
-  #   # Allow communication with pods in the same namespace
-  #   - to:
-  #       - podSelector: {}
-  #   # Allow all external traffic
-  #   - to:
-  #       - namespaceSelector: {}
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: traefik
+      ports:
+        - protocol: TCP
+    - from:
+        - podSelector: {}
+
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+      ports:
+        - protocol: UDP
+          port: 53
+    - to:
+        - podSelector: {}
+    - to:
+        - namespaceSelector: {}
 
 # Global ingress annotations (applied to all ingresses)
 ingressAnnotations: {}
-  # cert-manager.io/cluster-issuer: letsencrypt-prod
-  # traefik.ingress.kubernetes.io/router.entrypoints: websecure
+# cert-manager.io/cluster-issuer: letsencrypt-prod
 
 # Global ingress labels (applied to all ingresses)
 ingressLabels: {}
-  # dns-type: internal
+# dns-type: internal
 
 # Common settings
 common:
@@ -59,10 +41,8 @@ common:
   pgid: 1000
   imagePullPolicy: IfNotPresent
 
-# Priority class (optional)
 priorityClassName: ""
 
-# PersistentVolumeClaims
 # Shared downloads PVC for all services
 persistentVolumeClaims:
   downloads:
@@ -73,7 +53,6 @@ persistentVolumeClaims:
     storageClassName: ""
     annotations: {}
 
-# VPA (Vertical Pod Autoscaler)
 vpa:
   enabled: false
   updateMode: Initial
@@ -103,11 +82,11 @@ services:
       requests:
         cpu: 500m
         memory: 1Gi
-      # limits:
-      #   cpu: 2000m
-      #   memory: 4Gi
+    # limits:
+    #   cpu: 2000m
+    #   memory: 4Gi
     env: {}
-      # HOSTNAME: jellyfin.example.com
+    # HOSTNAME: jellyfin.example.com
     pvc:
       config:
         name: jellyfin-config
@@ -145,9 +124,9 @@ services:
       requests:
         cpu: 100m
         memory: 512Mi
-      # limits:
-      #   cpu: 1000m
-      #   memory: 2Gi
+    # limits:
+    #   cpu: 1000m
+    #   memory: 2Gi
     securityContext:
       readOnlyRootFilesystem: true
       runAsNonRoot: true
@@ -188,9 +167,9 @@ services:
       requests:
         cpu: 100m
         memory: 512Mi
-      # limits:
-      #   cpu: 1000m
-      #   memory: 2Gi
+    # limits:
+    #   cpu: 1000m
+    #   memory: 2Gi
     securityContext:
       readOnlyRootFilesystem: true
       runAsNonRoot: true
@@ -231,9 +210,9 @@ services:
       requests:
         cpu: 100m
         memory: 512Mi
-      # limits:
-      #   cpu: 1000m
-      #   memory: 2Gi
+    # limits:
+    #   cpu: 1000m
+    #   memory: 2Gi
     securityContext:
       readOnlyRootFilesystem: true
       runAsNonRoot: true
@@ -274,9 +253,9 @@ services:
       requests:
         cpu: 500m
         memory: 1Gi
-      # limits:
-      #   cpu: 2000m
-      #   memory: 4Gi
+    # limits:
+    #   cpu: 2000m
+    #   memory: 4Gi
     securityContext:
       runAsUser: 1000
       runAsGroup: 1000
@@ -290,14 +269,14 @@ services:
         accessModes:
           - ReadWriteOnce
         annotations: {}
-      # Optional intermediate storage for incomplete downloads
-      # intermediate:
-      #   name: nzbget-intermediate
-      #   storage: 100Gi
-      #   storageClassName: ""
-      #   accessModes:
-      #     - ReadWriteOnce
-      #   annotations: {}
+    # Optional intermediate storage for incomplete downloads
+    # intermediate:
+    #   name: nzbget-intermediate
+    #   storage: 100Gi
+    #   storageClassName: ""
+    #   accessModes:
+    #     - ReadWriteOnce
+    #   annotations: {}
     livenessProbe:
       enabled: true
       type: tcpSocket

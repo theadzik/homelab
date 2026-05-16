@@ -11,7 +11,7 @@
     state: directory
     owner: root
     group: root
-    mode: '0755'
+    mode: "0755"
   become: true
 
 - name: Ensure Docker's official GPG key is present.
@@ -20,7 +20,7 @@
     dest: /etc/apt/keyrings/docker.asc
     owner: root
     group: root
-    mode: '0644'
+    mode: "0644"
   become: true
 
 - name: Ensure Docker repository is added to apt.
@@ -65,7 +65,7 @@
     dest: "/etc/docker/daemon.json"
     owner: root
     group: root
-    mode: '0644'
+    mode: "0644"
   register: daemon
   become: true
 

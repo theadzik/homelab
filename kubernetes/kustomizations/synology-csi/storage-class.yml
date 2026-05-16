@@ -4,8 +4,8 @@ metadata:
   name: synology-iscsi-retain
 provisioner: csi.san.synology.com
 parameters:
-  fsType: 'btrfs'
-  formatOptions: '--nodiscard'
+  fsType: "btrfs"
+  formatOptions: "--nodiscard"
 reclaimPolicy: Retain
 allowVolumeExpansion: true
 
@@ -16,8 +16,8 @@ metadata:
   name: synology-iscsi-delete
 provisioner: csi.san.synology.com
 parameters:
-  fsType: 'btrfs'
-  formatOptions: '--nodiscard'
+  fsType: "btrfs"
+  formatOptions: "--nodiscard"
 reclaimPolicy: Delete
 allowVolumeExpansion: true
 
@@ -30,7 +30,7 @@ metadata:
 provisioner: csi.san.synology.com
 parameters:
   protocol: "nfs"
-  mountPermissions: '0755'
+  mountPermissions: "0755"
 mountOptions:
   - nfsvers=4.1
 reclaimPolicy: Retain
@@ -47,7 +47,7 @@ metadata:
 provisioner: csi.san.synology.com
 parameters:
   protocol: "nfs"
-  mountPermissions: '0755'
+  mountPermissions: "0755"
 mountOptions:
   - nfsvers=4.1
 reclaimPolicy: Delete
@@ -61,8 +61,8 @@ metadata:
   name: synology-iscsi-retain-ssd
 provisioner: csi.san.synology.com
 parameters:
-  fsType: 'btrfs'
-  formatOptions: '--nodiscard'
+  fsType: "btrfs"
+  formatOptions: "--nodiscard"
   location: "/volume2"
 reclaimPolicy: Retain
 allowVolumeExpansion: true
@@ -74,8 +74,8 @@ metadata:
   name: synology-iscsi-delete-ssd
 provisioner: csi.san.synology.com
 parameters:
-  fsType: 'btrfs'
-  formatOptions: '--nodiscard'
+  fsType: "btrfs"
+  formatOptions: "--nodiscard"
   location: "/volume2"
 reclaimPolicy: Delete
 allowVolumeExpansion: true
@@ -89,7 +89,7 @@ metadata:
 provisioner: csi.san.synology.com
 parameters:
   protocol: "nfs"
-  mountPermissions: '0755'
+  mountPermissions: "0755"
   location: "/volume2"
 mountOptions:
   - nfsvers=4.1
@@ -122,7 +122,7 @@ metadata:
 provisioner: csi.san.synology.com
 parameters:
   protocol: "nfs"
-  mountPermissions: '0755'
+  mountPermissions: "0755"
   location: "/volume2"
 mountOptions:
   - nfsvers=4.1
