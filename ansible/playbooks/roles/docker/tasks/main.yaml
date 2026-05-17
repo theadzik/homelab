@@ -43,6 +43,13 @@
   when: ansible_facts["distribution"] | lower == "ubuntu"
   become: true
 
+- name: Ensure Docker signing key is imported for rpm.
+  ansible.builtin.rpm_key:
+    key: https://download.docker.com/linux/fedora/gpg
+    state: present
+  when: ansible_facts["distribution"] | lower == "fedora"
+  become: true
+
 - name: Ensure Docker repository is added to dnf.
   ansible.builtin.yum_repository:
     name: docker-ce-stable

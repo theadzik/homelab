@@ -11,6 +11,7 @@ docker_apt_prerequisites:
 docker_dnf_prerequisites:
   - ca-certificates
   - curl
+  - gnupg2
 
 docker_engine_packages:
   - docker-ce

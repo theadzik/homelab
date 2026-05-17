@@ -1,11 +1,6 @@
 zsh_packages:
-  ubuntu:
-    - git
-    - zsh
-    - fzf
-  fedora:
-    - git
-    - zsh
-    - fzf
+  - git
+  - zsh
+  - fzf
 
 zsh_shell_path: /usr/bin/zsh

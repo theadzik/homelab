@@ -1,6 +1,6 @@
 - name: Ensure packages are present.
   ansible.builtin.package:
-    name: "{{ zsh_packages[ansible_facts['distribution'] | lower] }}"
+    name: "{{ zsh_packages }}"
     state: present
   become: true
 
