@@ -1,15 +1,36 @@
 common_packages:
-  # requirements brew
-  - build-essential
-  - procps
-  - curl
-  - file
-  - git
-  # eor brew
-  - dnsutils
-  - nmap
-  - traceroute
-  # for mounting nfs shares
-  - nfs-common
+  ubuntu:
+    # requirements brew
+    - build-essential
+    - procps
+    - curl
+    - file
+    - git
+    # for troubleshooting and networking
+    - dnsutils
+    - nmap
+    - traceroute
+    # for mounting nfs shares
+    - nfs-common
+  fedora:
+    # requirements brew
+    - gcc
+    - gcc-c++
+    - make
+    - procps-ng
+    - curl
+    - file
+    - git
+    # for troubleshooting and networking
+    - bind-utils
+    - nmap
+    - traceroute
+    # for mounting nfs shares
+    - nfs-utils
+
+powerline_font_package:
+  ubuntu: fonts-powerline
+  fedora: powerline-fonts
+
 downloads_dir: "/home/{{ ansible_user }}/.downloads"
 pipx_executable: "/home/linuxbrew/.linuxbrew/bin/pipx"

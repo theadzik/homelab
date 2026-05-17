@@ -3,28 +3,44 @@
   vars_files:
     - vars/local-common.yaml
   pre_tasks:
+    - name: Ensure supported Linux distribution.
+      ansible.builtin.assert:
+        that:
+          - ansible_facts["distribution"] | lower in ["ubuntu", "fedora"]
+        fail_msg: "This playbook supports Ubuntu and Fedora only."
+      tags:
+        - always
     - name: Upgrade system with apt.
       become: true
       ansible.builtin.apt:
         upgrade: true
         cache_valid_time: 3600
+      when: ansible_facts["distribution"] | lower == "ubuntu"
+      tags:
+        - always
+    - name: Upgrade system with dnf.
+      become: true
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+        update_only: true
+      when: ansible_facts["distribution"] | lower == "fedora"
       tags:
         - always
     - name: Ensure packages are updated.
-      ansible.builtin.apt:
-        name: "{{ item }}"
+      ansible.builtin.package:
+        name: "{{ common_packages[ansible_facts['distribution'] | lower] }}"
         state: latest
-      loop: "{{ common_packages }}"
       become: true
       tags:
         - always
     - name: Ensure fonts-powerline are updated.
-      ansible.builtin.apt:
-        name: fonts-powerline
+      ansible.builtin.package:
+        name: "{{ powerline_font_package[ansible_facts['distribution'] | lower] }}"
         state: latest
       become: true
       tags:
-        - ubuntu
+        - always
     - name: Ensure ansible download location.
       ansible.builtin.file:
         path: "{{ downloads_dir }}"
@@ -62,4 +78,4 @@
         - always
     - role: vscode
       tags:
-        - ubuntu
+        - always

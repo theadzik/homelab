@@ -1,8 +1,15 @@
-- name: Ensure a package is present.
+- name: Ensure Ubuntu Docker prerequisites are installed.
   ansible.builtin.apt:
-    name: "{{ item }}"
-    state: latest
-  loop: "{{ docker_package }}"
+    name: "{{ docker_apt_prerequisites }}"
+    state: present
+  when: ansible_facts["distribution"] | lower == "ubuntu"
+  become: true
+
+- name: Ensure Fedora Docker prerequisites are installed.
+  ansible.builtin.dnf:
+    name: "{{ docker_dnf_prerequisites }}"
+    state: present
+  when: ansible_facts["distribution"] | lower == "fedora"
   become: true
 
 - name: Ensure directory for Docker's GPG key is present.
@@ -12,15 +19,17 @@
     owner: root
     group: root
     mode: "0755"
+  when: ansible_facts["distribution"] | lower == "ubuntu"
   become: true
 
 - name: Ensure Docker's official GPG key is present.
   ansible.builtin.get_url:
-    url: https://download.docker.com/linux/{{ distribution }}/gpg
+    url: https://download.docker.com/linux/{{ ansible_facts["distribution"] | lower }}/gpg
     dest: /etc/apt/keyrings/docker.asc
     owner: root
     group: root
     mode: "0644"
+  when: ansible_facts["distribution"] | lower == "ubuntu"
   become: true
 
 - name: Ensure Docker repository is added to apt.
@@ -28,22 +37,44 @@
     repo: >-
       deb [arch={{ arch_mapping[ansible_facts["architecture"]] | default(ansible_facts["architecture"]) }}
       signed-by=/etc/apt/keyrings/docker.asc]
-      https://download.docker.com/linux/{{ distribution }} {{ ansible_facts["lsb"].codename }} stable
+      https://download.docker.com/linux/{{ ansible_facts["distribution"] | lower }} {{ ansible_facts["lsb"].codename }} stable
     filename: docker
     state: present
+  when: ansible_facts["distribution"] | lower == "ubuntu"
+  become: true
+
+- name: Ensure Docker signing key is imported for rpm.
+  ansible.builtin.rpm_key:
+    key: https://download.docker.com/linux/fedora/gpg
+    state: present
+  when: ansible_facts["distribution"] | lower == "fedora"
+  become: true
+
+- name: Ensure Docker repository is added to dnf.
+  ansible.builtin.yum_repository:
+    name: docker-ce-stable
+    description: Docker CE Stable - $basearch
+    baseurl: https://download.docker.com/linux/fedora/$releasever/$basearch/stable
+    gpgcheck: true
+    gpgkey: https://download.docker.com/linux/fedora/gpg
+    enabled: true
+  when: ansible_facts["distribution"] | lower == "fedora"
   become: true
 
 - name: Ensure Docker packages are installed.
   ansible.builtin.apt:
-    name: "{{ item }}"
+    name: "{{ docker_engine_packages }}"
     state: latest
     update_cache: true
-  loop:
-    - docker-ce
-    - docker-ce-cli
-    - containerd.io
-    - docker-buildx-plugin
-    - docker-compose-plugin
+  when: ansible_facts["distribution"] | lower == "ubuntu"
+  become: true
+
+- name: Ensure Docker packages are installed with dnf.
+  ansible.builtin.dnf:
+    name: "{{ docker_engine_packages }}"
+    state: latest
+    update_cache: true
+  when: ansible_facts["distribution"] | lower == "fedora"
   become: true
 
 - name: Ensure Docker group.

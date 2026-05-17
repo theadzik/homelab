@@ -3,6 +3,7 @@
     name:
       - apt-transport-https
     state: present
+  when: ansible_facts["distribution"] | lower == "ubuntu"
   become: true
 
 - name: Ensure directory for Microsoft GPG key is present.
@@ -12,6 +13,7 @@
     owner: root
     group: root
     mode: "0755"
+  when: ansible_facts["distribution"] | lower == "ubuntu"
   become: true
 
 - name: Ensure Microsoft GPG key is present.
@@ -21,6 +23,7 @@
     owner: root
     group: root
     mode: "0644"
+  when: ansible_facts["distribution"] | lower == "ubuntu"
   become: true
 
 - name: Ensure VS Code repository is added to apt.
@@ -31,12 +34,40 @@
       https://packages.microsoft.com/repos/code stable main
     filename: "{{ vscode_repo_file }}"
     state: present
+  when: ansible_facts["distribution"] | lower == "ubuntu"
   become: true
 
-- name: Ensure VS Code is installed.
+- name: Ensure VS Code is installed on Ubuntu.
   ansible.builtin.apt:
     name: code
     state: latest
     update_cache: true
     cache_valid_time: 3600
+  when: ansible_facts["distribution"] | lower == "ubuntu"
+  become: true
+
+- name: Ensure Microsoft signing key is imported for rpm.
+  ansible.builtin.rpm_key:
+    key: "{{ vscode_gpg_url }}"
+    state: present
+  when: ansible_facts["distribution"] | lower == "fedora"
+  become: true
+
+- name: Ensure VS Code repository is added to dnf.
+  ansible.builtin.yum_repository:
+    name: "{{ vscode_yum_repo_name }}"
+    description: Visual Studio Code
+    baseurl: https://packages.microsoft.com/yumrepos/vscode
+    enabled: true
+    gpgcheck: true
+    gpgkey: "{{ vscode_gpg_url }}"
+  when: ansible_facts["distribution"] | lower == "fedora"
+  become: true
+
+- name: Ensure VS Code is installed on Fedora.
+  ansible.builtin.dnf:
+    name: code
+    state: latest
+    update_cache: true
+  when: ansible_facts["distribution"] | lower == "fedora"
   become: true

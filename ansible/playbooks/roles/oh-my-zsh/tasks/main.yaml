@@ -1,8 +1,7 @@
 - name: Ensure packages are present.
-  ansible.builtin.apt:
-    name: "{{ item }}"
+  ansible.builtin.package:
+    name: "{{ zsh_packages }}"
     state: present
-  loop: "{{ zsh_packages }}"
   become: true
 
 - name: Check if oh-my-zsh is installed.

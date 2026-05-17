@@ -1,11 +1,21 @@
 arch_mapping: # Map ansible architecture {{ ansible_facts["architecture"] }} names to Docker's architecture names
   x86_64: amd64
 
-docker_package:
+docker_apt_prerequisites:
   - apt-transport-https
   - ca-certificates
   - curl
   - gnupg
   - software-properties-common
 
-distribution: "{{ ansible_facts['distribution'] | lower }}"
+docker_dnf_prerequisites:
+  - ca-certificates
+  - curl
+  - gnupg2
+
+docker_engine_packages:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+  - docker-buildx-plugin
+  - docker-compose-plugin
