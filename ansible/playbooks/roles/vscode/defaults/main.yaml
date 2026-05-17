@@ -1,0 +1,8 @@
+vscode_keyring_path: /etc/apt/keyrings/microsoft.asc
+vscode_gpg_url: https://packages.microsoft.com/keys/microsoft.asc
+vscode_repo_file: vscode
+
+vscode_arch_mapping:
+  x86_64: amd64
+  aarch64: arm64
+  armv7l: armhf
