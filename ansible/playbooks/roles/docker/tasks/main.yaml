@@ -1,14 +1,14 @@
-- name: Ensure a package is present.
+- name: Ensure Ubuntu Docker prerequisites are installed.
   ansible.builtin.apt:
     name: "{{ docker_apt_prerequisites }}"
-    state: latest
+    state: present
   when: ansible_facts["distribution"] | lower == "ubuntu"
   become: true
 
 - name: Ensure Fedora Docker prerequisites are installed.
   ansible.builtin.dnf:
     name: "{{ docker_dnf_prerequisites }}"
-    state: latest
+    state: present
   when: ansible_facts["distribution"] | lower == "fedora"
   become: true
 
