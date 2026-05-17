@@ -76,7 +76,4 @@ if [[ "$TERM_PROGRAM" == "vscode" ]]; then
   # Load VS Code shell integration
   [[ -f "$(code --locate-shell-integration-path zsh)" ]] && \
       . "$(code --locate-shell-integration-path zsh)"
-else
-  eval "$(ssh-agent -s)" > /dev/null
-  ssh-add ~/.ssh/id_ed25519
 fi
