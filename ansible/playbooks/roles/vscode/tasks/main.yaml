@@ -41,7 +41,7 @@
 - name: Ensure VS Code repository is added to apt.
   ansible.builtin.apt_repository:
     repo: >-
-      deb [arch={{ arch_mapping[ansible_facts["architecture"]] | default(ansible_facts["architecture"]) }}
+      deb [arch={{ arch_mapping.get(ansible_facts["architecture"], ansible_facts["architecture"]) }}
       signed-by={{ vscode_keyring_path }}]
       https://packages.microsoft.com/repos/code stable main
     filename: "{{ vscode_repo_file }}"
