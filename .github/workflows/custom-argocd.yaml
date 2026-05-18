@@ -4,12 +4,14 @@ on:
   pull_request:
     paths:
       - ".github/workflows/custom-argocd.yaml"
+      - "kubernetes/bootstrap/charts/app-of-apps/templates/argocd.yaml"
       - "apps/custom-argocd/**"
   push:
     branches:
       - main
     paths:
       - ".github/workflows/custom-argocd.yaml"
+      - "kubernetes/bootstrap/charts/app-of-apps/templates/argocd.yaml"
       - "apps/custom-argocd/**"
 jobs:
   get-version:
@@ -26,9 +28,9 @@ jobs:
         run: |
           set -e
 
-          repo_url=$(jq -r '.repoURL' "$ARGOCD_VERSION_FILE")
-          chart_name=$(jq -r '.chartName' "$ARGOCD_VERSION_FILE")
-          chart_version=$(jq -r '.chartVersion' "$ARGOCD_VERSION_FILE")
+          chart_name=$(yq -er '.spec.sources[] | select(has("chart")) | .chart' "$ARGOCD_TEMPLATE_FILE")
+          repo_url=$(yq -er '.spec.sources[] | select(has("chart")) | .repoURL' "$ARGOCD_TEMPLATE_FILE")
+          chart_version=$(yq -er '.spec.sources[] | select(has("chart")) | .targetRevision' "$ARGOCD_TEMPLATE_FILE")
 
           echo "Repository url: $repo_url"
           echo "Chart name: $chart_name"
@@ -40,7 +42,7 @@ jobs:
 
           echo "app_version=$app_version" >> $GITHUB_OUTPUT
         env:
-          ARGOCD_VERSION_FILE: "${{ github.workspace }}/apps/custom-argocd/argo-version.json"
+          ARGOCD_TEMPLATE_FILE: "${{ github.workspace }}/kubernetes/bootstrap/charts/app-of-apps/templates/argocd.yaml"
 
   build:
     needs: get-version
