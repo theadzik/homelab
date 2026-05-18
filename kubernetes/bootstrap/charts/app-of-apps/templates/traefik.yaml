@@ -11,7 +11,7 @@ spec:
   sources:
     - path: .
       repoURL: oci://ghcr.io/traefik/helm/traefik
-      targetRevision: 39.*.*
+      targetRevision: 40.*.*
       helm:
         releaseName: traefik
         skipCrds: false
