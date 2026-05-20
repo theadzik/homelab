@@ -4,12 +4,12 @@ namespace: vaultwarden
 resources:
   - backup-cronjob.yaml
   - backup-pvc.yaml
+  - deployment.yaml
   - ingress.yaml
   - namespace.yaml
   - netpol.yaml
   - pvc.yaml
   - service.yaml
-  - sts.yaml
   - ../image-pull-secret
 
 secretGenerator:

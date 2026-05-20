@@ -1,16 +1,17 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: vaultwarden
   labels:
     app: vaultwarden
 spec:
-  serviceName: "vaultwarden-http"
   replicas: 1
   selector:
     matchLabels:
       app: vaultwarden
       ingress: exposed
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -21,28 +22,6 @@ spec:
       imagePullSecrets:
         - name: dockerhub-image-pull-secret
       initContainers:
-        - name: chown-data
-          image: alpine:3.23
-          imagePullPolicy: Always
-          command:
-            - chown
-            - -R
-            - 1000:1000
-            - /data
-          securityContext:
-            runAsUser: 0
-            runAsGroup: 0
-            runAsNonRoot: false
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            capabilities:
-              drop:
-                - ALL
-              add:
-                - CHOWN
-          volumeMounts:
-            - mountPath: /data
-              name: data
         - name: restore
           image: theadzik/vw-restore:2026.2.1
           imagePullPolicy: Always
@@ -109,6 +88,10 @@ spec:
               value: "true"
             - name: PUSH_ENABLED
               value: "true"
+            - name: ICON_CACHE_TTL
+              value: "0"
+            - name: DISABLE_ICON_DOWNLOAD
+              value: "true"
           volumeMounts:
             - mountPath: /data
               name: data
@@ -116,6 +99,7 @@ spec:
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
         seccompProfile:
           type: RuntimeDefault
       volumes:
