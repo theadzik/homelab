@@ -21,13 +21,13 @@ global:
 
   networkPolicy:
     create: true
-    defaultDenyIngress: false
+    defaultDenyIngress: true
 
   priorityClassName: "system-cluster-critical"
 
 configs:
   params:
-    server.insecure: true
+    server.insecure: false
   rbac:
     policy.csv: |
       p, role:authenticated, *, *, *, deny
@@ -40,11 +40,18 @@ server:
   ingress:
     enabled: true
     annotations:
-      cert-manager.io/cluster-issuer: "lets-encrypt-prod"
+      traefik.ingress.kubernetes.io/service.serversscheme: https
     labels:
       dns-type: internal
     ingressClassName: "traefik"
     tls: true
+  certificate:
+    enabled: true
+    secretName: argocd-server-tls
+    issuer:
+      name: lets-encrypt-prod
+      kind: ClusterIssuer
+    domain: argocd.zmuda.pro
 
 repoServer:
   env:
