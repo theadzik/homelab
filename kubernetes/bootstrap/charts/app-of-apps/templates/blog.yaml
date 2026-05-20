@@ -30,7 +30,6 @@ kind: ImageUpdater
 metadata:
   name: blog
 spec:
-  namespace: argocd
   applicationRefs:
     - namePattern: "blog"
       writeBackConfig:

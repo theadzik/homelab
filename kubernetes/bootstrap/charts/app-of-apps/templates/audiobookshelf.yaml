@@ -30,7 +30,6 @@ kind: ImageUpdater
 metadata:
   name: audiobookshelf
 spec:
-  namespace: argocd
   applicationRefs:
     - namePattern: "audiobookshelf"
       writeBackConfig:

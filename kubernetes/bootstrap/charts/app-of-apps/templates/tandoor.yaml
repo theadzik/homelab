@@ -38,14 +38,13 @@ kind: ImageUpdater
 metadata:
   name: tandoor
 spec:
-  namespace: argocd
   applicationRefs:
     - namePattern: "tandoor"
       writeBackConfig:
         method: "git"
         gitConfig:
-          repoURL: "{{ .Values.spec.sources.repoURL }}"
-          targetRevision: "{{ .Values.spec.sources.targetRevision }}"
+          repository: "{{ .Values.spec.sources.repoURL }}"
+          branch: "{{ .Values.spec.sources.targetRevision }}"
           writeBackTarget: "kustomization:/kubernetes/kustomizations/tandoor"
       images:
         - alias: "nginx"

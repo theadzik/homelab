@@ -29,7 +29,6 @@ kind: ImageUpdater
 metadata:
   name: vaultwarden
 spec:
-  namespace: argocd
   applicationRefs:
     - namePattern: "vaultwarden"
       writeBackConfig:
