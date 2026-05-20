@@ -37,10 +37,12 @@ configs:
     policy.matchMode: "glob"
 
 server:
-  ingress:
-    enabled: true
+  service:
     annotations:
       traefik.ingress.kubernetes.io/service.serversscheme: https
+      traefik.ingress.kubernetes.io/service.serverstransport: argocd-argocd-server-transport@kubernetescrd
+  ingress:
+    enabled: true
     labels:
       dns-type: internal
     ingressClassName: "traefik"
