@@ -128,12 +128,18 @@ spec:
               path: /
               port: 8080
               scheme: HTTP
+              httpHeaders:
+                - name: Host
+                  value: tandoor.zmuda.pro
             periodSeconds: 30
           readinessProbe:
             httpGet:
               path: /
               port: 8080
               scheme: HTTP
+              httpHeaders:
+                - name: Host
+                  value: tandoor.zmuda.pro
             periodSeconds: 30
           resources:
             requests:
@@ -152,7 +158,9 @@ spec:
             - name: DEBUG
               value: "0"
             - name: ALLOWED_HOSTS
-              value: "*"
+              value: "tandoor.zmuda.pro"
+            - name: CSRF_TRUSTED_ORIGINS
+              value: "https://tandoor.zmuda.pro"
             - name: SECRET_KEY
               valueFrom:
                 secretKeyRef:

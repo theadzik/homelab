@@ -6,6 +6,7 @@ resources:
   - deployment.yaml
   - ingress.yaml
   - namespace.yaml
+  - poddisruptionbudget.yaml
   - pvc.yaml
   - secret.yaml
   - service.yaml
