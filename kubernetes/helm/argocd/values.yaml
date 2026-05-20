@@ -41,6 +41,7 @@ server:
     enabled: true
     annotations:
       traefik.ingress.kubernetes.io/service.serversscheme: https
+      traefik.ingress.kubernetes.io/service.serverstransport: argocd-argocd-server-transport@kubernetescrd
     labels:
       dns-type: internal
     ingressClassName: "traefik"

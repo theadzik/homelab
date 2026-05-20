@@ -5,3 +5,4 @@ resources:
   - argocd-namespace.yaml
   - argocd-bootstrap.yaml
   - argocd-gitcrypt-secret.yaml
+  - argocd-server-transport.yaml
