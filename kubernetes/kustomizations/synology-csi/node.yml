@@ -65,7 +65,11 @@ spec:
       containers:
         - name: csi-driver-registrar
           securityContext:
-            privileged: true
+            privileged: false
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           imagePullPolicy: IfNotPresent
           image: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.15.0
           args:

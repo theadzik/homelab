@@ -24,3 +24,46 @@ spec:
       - PruneLast=true
     retry:
       limit: -1
+
+---
+
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: synology-csi
+spec:
+  applicationRefs:
+    - namePattern: "synology-csi"
+      writeBackConfig:
+        method: "git"
+      images:
+        - alias: "synology-csi"
+          imageName: "synology/synology-csi:~1"
+          commonUpdateSettings:
+            updateStrategy: "semver"
+            allowTags: "regexp:^v?[0-9]+\\.[0-9]+\\.[0-9]+$"
+        - alias: "csi-node-driver-registrar"
+          imageName: "registry.k8s.io/sig-storage/csi-node-driver-registrar:~2"
+          commonUpdateSettings:
+            updateStrategy: "semver"
+            allowTags: "regexp:^v[0-9]+\\.[0-9]+\\.[0-9]+$"
+        - alias: "csi-provisioner"
+          imageName: "registry.k8s.io/sig-storage/csi-provisioner:~6"
+          commonUpdateSettings:
+            updateStrategy: "semver"
+            allowTags: "regexp:^v[0-9]+\\.[0-9]+\\.[0-9]+$"
+        - alias: "csi-attacher"
+          imageName: "registry.k8s.io/sig-storage/csi-attacher:~4"
+          commonUpdateSettings:
+            updateStrategy: "semver"
+            allowTags: "regexp:^v[0-9]+\\.[0-9]+\\.[0-9]+$"
+        - alias: "csi-resizer"
+          imageName: "registry.k8s.io/sig-storage/csi-resizer:~2"
+          commonUpdateSettings:
+            updateStrategy: "semver"
+            allowTags: "regexp:^v[0-9]+\\.[0-9]+\\.[0-9]+$"
+        - alias: "csi-snapshotter"
+          imageName: "registry.k8s.io/sig-storage/csi-snapshotter:~4"
+          commonUpdateSettings:
+            updateStrategy: "semver"
+            allowTags: "regexp:^v[0-9]+\\.[0-9]+\\.[0-9]+$"
