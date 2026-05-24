@@ -3,12 +3,12 @@ namespaceAnnotations:
 networkPolicy:
   enabled: false
   ingress:
-  - from:
-    - podSelector: {}
-  - from:
-    - namespaceSelector:
-        matchLabels:
-          kubernetes.io/metadata.name: traefik
+    - from:
+        - podSelector: {}
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: traefik
 ingressClassName: traefik
 ingressAnnotations:
   cert-manager.io/cluster-issuer: lets-encrypt-prod
@@ -24,11 +24,13 @@ persistentVolumeClaims:
   downloads:
     enabled: true
     accessModes:
-    - ReadWriteMany
+      - ReadWriteMany
     storage: 7Ti
     storageClassName: synology-nfs-retain
     annotations:
       argocd.argoproj.io/sync-options: Delete=false,Prune=false
+    labels:
+      backup.velero.io/csi-snapshot: "true"
 vpa:
   enabled: true
   updateMode: InPlaceOrRecreate
@@ -39,11 +41,11 @@ resourceClaimTemplate:
   spec:
     devices:
       requests:
-      - name: i915
-        exactly:
-          deviceClassName: gpu.intel.com
-          allocationMode: ExactCount
-          count: 1
+        - name: i915
+          exactly:
+            deviceClassName: gpu.intel.com
+            allocationMode: ExactCount
+            count: 1
 services:
   jellyfin:
     enabled: true
@@ -63,9 +65,11 @@ services:
         storage: 10Gi
         storageClassName: synology-iscsi-retain-ssd
         accessModes:
-        - ReadWriteOnce
+          - ReadWriteOnce
         annotations:
           argocd.argoproj.io/sync-options: Delete=false,Prune=false
+        labels:
+          backup.velero.io/csi-snapshot: "true"
     livenessProbe:
       enabled: true
       type: httpGet
@@ -105,9 +109,11 @@ services:
         storage: 2Gi
         storageClassName: synology-iscsi-retain-ssd
         accessModes:
-        - ReadWriteOnce
+          - ReadWriteOnce
         annotations:
           argocd.argoproj.io/sync-options: Delete=false,Prune=false
+        labels:
+          backup.velero.io/csi-snapshot: "true"
     livenessProbe:
       enabled: true
       type: httpGet
@@ -143,9 +149,11 @@ services:
         storage: 2Gi
         storageClassName: synology-iscsi-retain-ssd
         accessModes:
-        - ReadWriteOnce
+          - ReadWriteOnce
         annotations:
           argocd.argoproj.io/sync-options: Delete=false,Prune=false
+        labels:
+          backup.velero.io/csi-snapshot: "true"
     livenessProbe:
       enabled: true
       type: httpGet
@@ -181,9 +189,11 @@ services:
         storage: 2Gi
         storageClassName: synology-iscsi-retain-ssd
         accessModes:
-        - ReadWriteOnce
+          - ReadWriteOnce
         annotations:
           argocd.argoproj.io/sync-options: Delete=false,Prune=false
+        labels:
+          backup.velero.io/csi-snapshot: "true"
     livenessProbe:
       enabled: true
       type: httpGet
@@ -220,15 +230,17 @@ services:
         storage: 5Gi
         storageClassName: synology-iscsi-retain-ssd
         accessModes:
-        - ReadWriteOnce
+          - ReadWriteOnce
         annotations:
           argocd.argoproj.io/sync-options: Delete=false,Prune=false
+        labels:
+          backup.velero.io/csi-snapshot: "true"
       intermediate:
         name: nzbget-intermediate
         storage: 128Gi
         storageClassName: synology-iscsi-delete-ssd
         accessModes:
-        - ReadWriteOnce
+          - ReadWriteOnce
         annotations:
           argocd.argoproj.io/sync-options: Delete=false,Prune=false
     existingSecretName: nzbget-secret

@@ -4,6 +4,8 @@ metadata:
   name: vaultwarden-data
   annotations:
     argocd.argoproj.io/sync-options: Delete=false,Prune=false
+  labels:
+    backup.velero.io/csi-snapshot: "true"
 spec:
   accessModes:
     - ReadWriteMany

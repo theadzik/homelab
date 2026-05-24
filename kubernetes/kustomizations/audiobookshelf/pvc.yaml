@@ -4,6 +4,8 @@ metadata:
   name: audiobooks
   annotations:
     argocd.argoproj.io/sync-options: Delete=false,Prune=false
+  labels:
+    backup.velero.io/csi-snapshot: "true"
 spec:
   accessModes:
     - ReadWriteMany
@@ -20,6 +22,8 @@ metadata:
   name: podcasts
   annotations:
     argocd.argoproj.io/sync-options: Delete=false,Prune=false
+  labels:
+    backup.velero.io/csi-snapshot: "true"
 spec:
   accessModes:
     - ReadWriteMany
@@ -36,6 +40,8 @@ metadata:
   name: config
   annotations:
     argocd.argoproj.io/sync-options: Delete=false,Prune=false
+  labels:
+    backup.velero.io/csi-snapshot: "true"
 spec:
   accessModes:
     - ReadWriteOnce
@@ -52,6 +58,8 @@ metadata:
   name: metadata
   annotations:
     argocd.argoproj.io/sync-options: Delete=false,Prune=false
+  labels:
+    backup.velero.io/csi-snapshot: "true"
 spec:
   accessModes:
     - ReadWriteOnce

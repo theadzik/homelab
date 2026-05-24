@@ -12,6 +12,9 @@ metadata:
   {{- end }}
   labels:
     {{- include "media-stack.componentLabels" (dict "component" $name "context" $) | nindent 4 }}
+  {{- with $pvc.labels }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   accessModes:
     {{- toYaml $pvc.accessModes | nindent 4 }}
@@ -38,6 +41,9 @@ metadata:
   {{- end }}
   labels:
     {{- include "media-stack.componentLabels" (dict "component" $svcName "context" $) | nindent 4 }}
+  {{- with $pvc.labels }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   accessModes:
     {{- toYaml $pvc.accessModes | nindent 4 }}
