@@ -27,6 +27,7 @@ initContainers:
         name: plugins
 
 configuration:
+  features: EnableCSI
   backupStorageLocation:
     - name: garage
       provider: aws
@@ -41,13 +42,16 @@ configuration:
         s3ForcePathStyle: true
         s3Url: http://192.168.0.6:3900
         insecureSkipTLSVerify: true
+  volumeSnapshotLocation:
+    - name: default
+      provider: csi
 
 credentials:
   useSecret: true
   existingSecret: s3-credentials
 
 backupsEnabled: true
-snapshotsEnabled: false
+snapshotsEnabled: true
 
 schedules:
   cluster-full:
@@ -59,3 +63,22 @@ schedules:
     template:
       ttl: "720h"
       storageLocation: garage
+
+  csi-opt-in-pvc-snapshots:
+    disabled: false
+    schedule: "0 */12 * * *"
+    useOwnerReferencesInBackup: false
+    paused: false
+    skipImmediately: false
+    template:
+      ttl: "168h"
+      storageLocation: garage
+      snapshotVolumes: true
+      defaultVolumesToFsBackup: false
+      includedNamespaces:
+        - "*"
+      includedNamespaceScopedResources:
+        - persistentvolumeclaims
+      labelSelector:
+        matchLabels:
+          backup.velero.io/csi-snapshot: "true"
