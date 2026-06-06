@@ -50,7 +50,7 @@ services:
   jellyfin:
     enabled: true
     image: lscr.io/linuxserver/jellyfin
-    tag: "10.11.10"
+    tag: "10.11.11"
     port: 8096
     priorityClassName: high-priority
     resources:
