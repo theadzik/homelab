@@ -92,7 +92,7 @@ services:
   radarr:
     enabled: true
     image: lscr.io/linuxserver/radarr
-    tag: "6.1.1"
+    tag: "6.2.1"
     port: 7878
     resources:
       requests:
