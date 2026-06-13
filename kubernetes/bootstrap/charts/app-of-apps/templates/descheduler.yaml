@@ -37,4 +37,9 @@ spec:
         pod-security.kubernetes.io/audit: baseline
         pod-security.kubernetes.io/warn: baseline
     retry:
-      limit: -1
+      limit: 10
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m
+      refresh: true
