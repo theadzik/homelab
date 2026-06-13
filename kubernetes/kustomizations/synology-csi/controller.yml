@@ -166,20 +166,6 @@ spec:
             - name: client-info
               mountPath: /etc/synology
               readOnly: true
-      tolerations:
-        - key: "node-role.kubernetes.io/control-plane"
-          operator: "Exists"
-          effect: "NoSchedule"
-      affinity:
-        nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              preference:
-                matchExpressions:
-                  - key: "node-role.kubernetes.io/control-plane"
-                    operator: In
-                    values:
-                      - "true"
       volumes:
         - name: socket-dir
           emptyDir: {}

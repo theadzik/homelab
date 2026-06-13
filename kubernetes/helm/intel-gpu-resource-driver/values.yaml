@@ -1,5 +1,5 @@
 kubeletPlugin:
-  tolerations: [] # Don't need gpu driver on master nodes
+  tolerations: [] # Don't need gpu driver on control-plane
   healthcheckPort: -1
   privileged: true
   healthMonitoring:
