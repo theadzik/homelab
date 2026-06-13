@@ -1,91 +1,40 @@
 admissionController:
+  registerWebhook: false
+  certGen:
+    enabled: false
+  certManager:
+    enabled: true
+    issuerRef:
+      name: "lets-encrypt-prod"
   resources:
     requests:
       cpu: 10m
       memory: 64Mi
-  extraArgs:
-    - --feature-gates=InPlaceOrRecreate=true
-  affinity:
-    nodeAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-        - weight: 1
-          preference:
-            matchExpressions:
-              - key: "node-role.kubernetes.io/control-plane"
-                operator: In
-                values:
-                  - "true"
-  tolerations:
-    - key: "node-role.kubernetes.io/control-plane"
-      operator: "Equal"
-      value: "true"
-      effect: "NoSchedule"
+  image:
+    tag: 1.7.0
 
 recommender:
   replicas: 1
+  podDisruptionBudget:
+    enabled: false
   resources:
     requests:
       cpu: 10m
       memory: 64Mi
   extraArgs:
     - --round-memory-bytes=1048576 # 1 MiB
-  affinity:
-    nodeAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-        - weight: 1
-          preference:
-            matchExpressions:
-              - key: "node-role.kubernetes.io/control-plane"
-                operator: In
-                values:
-                  - "true"
-  tolerations:
-    - key: "node-role.kubernetes.io/control-plane"
-      operator: "Equal"
-      value: "true"
-      effect: "NoSchedule"
+  image:
+    tag: 1.7.0
 
 updater:
   replicas: 1
+  podDisruptionBudget:
+    enabled: false
   resources:
     requests:
       cpu: 10m
       memory: 64Mi
   extraArgs:
-    - --feature-gates=InPlaceOrRecreate=true
-  affinity:
-    nodeAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-        - weight: 1
-          preference:
-            matchExpressions:
-              - key: "node-role.kubernetes.io/control-plane"
-                operator: In
-                values:
-                  - "true"
-  tolerations:
-    - key: "node-role.kubernetes.io/control-plane"
-      operator: "Equal"
-      value: "true"
-      effect: "NoSchedule"
-
-certGen:
-  resources:
-    requests:
-      cpu: 10m
-      memory: 64Mi
-  affinity:
-    nodeAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-        - weight: 1
-          preference:
-            matchExpressions:
-              - key: "node-role.kubernetes.io/control-plane"
-                operator: In
-                values:
-                  - "true"
-  tolerations:
-    - key: "node-role.kubernetes.io/control-plane"
-      operator: "Equal"
-      value: "true"
-      effect: "NoSchedule"
+    - --in-place-skip-disruption-budget=true
+  image:
+    tag: 1.7.0
