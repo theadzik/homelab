@@ -8,4 +8,8 @@ resources:
   - netpol.yaml
   - service.yaml
   - vpa.yaml
-  - ../image-pull-secret
+  - ../../image-pull-secret
+labels:
+  - includeSelectors: true
+    pairs:
+      app.kubernetes.io/name: zmuda-pro-blog

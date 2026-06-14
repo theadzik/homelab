@@ -1,0 +1,28 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: blog-dev
+resources:
+  - ../../base
+patches:
+  - path: ingress-metadata.yaml
+    target:
+      group: networking.k8s.io
+      kind: Ingress
+      name: zmuda-pro-blog
+      version: v1
+  - path: ingress-host-patch.yaml
+    target:
+      group: networking.k8s.io
+      kind: Ingress
+      name: zmuda-pro-blog
+      version: v1
+  - path: deployment-replicas-patch.yaml
+    target:
+      group: apps
+      kind: Deployment
+      name: zmuda-pro-blog
+      version: v1
+labels:
+  - includeSelectors: true
+    pairs:
+      app.kubernetes.io/instance: dev

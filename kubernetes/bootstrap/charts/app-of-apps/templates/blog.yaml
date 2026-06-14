@@ -1,32 +1,39 @@
 apiVersion: argoproj.io/v1alpha1
-kind: Application
+kind: ApplicationSet
 metadata:
   name: blog
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
-  project: default
-  sources:
-    - path: kubernetes/kustomizations/blog
-      repoURL: "{{ .Values.spec.sources.repoURL }}"
-      targetRevision: "{{ .Values.spec.sources.targetRevision }}"
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: blog
-  syncPolicy:
-    automated:
-      enabled: true
-      prune: true
-      selfHeal: true
-    retry:
-      limit: 10
-      backoff:
-        duration: 10s
-        factor: 2
-        maxDuration: 3m
-      refresh: true
-    syncOptions:
-      - PruneLast=true
+  generators:
+    - list:
+        elements:
+          - env: prod
+          - env: dev
+  template:
+    metadata:
+      name: "blog-{{.env}}"
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: default
+      sources:
+        - path: "kubernetes/kustomizations/blog/overlays/{{.env}}"
+          repoURL: "{{ .Values.spec.sources.repoURL }}"
+          targetRevision: "{{ .Values.spec.sources.targetRevision }}"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "blog-{{.env}}"
+      syncPolicy:
+        automated:
+          enabled: true
+          prune: true
+          selfHeal: true
+        retry:
+          limit: 10
+          backoff:
+            duration: 10s
+            factor: 2
+            maxDuration: 3m
+          refresh: true
 
 ---
 
@@ -36,7 +43,16 @@ metadata:
   name: blog
 spec:
   applicationRefs:
-    - namePattern: "blog"
+    - namePattern: "blog-dev"
+      writeBackConfig:
+        method: "git"
+      images:
+        - alias: "zmuda-pro-blog"
+          imageName: "theadzik/zmuda-pro-blog"
+          commonUpdateSettings:
+            updateStrategy: "newest-build"
+            allowTags: "regexp:^pr-[0-9]+$"
+    - namePattern: "blog-prod"
       writeBackConfig:
         method: "git"
       images:
@@ -44,4 +60,4 @@ spec:
           imageName: "theadzik/zmuda-pro-blog"
           commonUpdateSettings:
             updateStrategy: "semver"
-            allowTags: "regexp:^[0-9]{4}\\.[0-9]{1,2}\\.[0-9]{1,2}\\.?[0-9]*$"
+            allowTags: "regexp:^[0-9]{4}\\.[0-9]{1,2}\\.[0-9]{1,2}$"
