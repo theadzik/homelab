@@ -1,13 +1,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: blog
+  name: blog-prod
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   sources:
-    - path: kubernetes/kustomizations/blog
+    - path: kubernetes/kustomizations/blog/overlays/prod
       repoURL: "{{ .Values.spec.sources.repoURL }}"
       targetRevision: "{{ .Values.spec.sources.targetRevision }}"
   destination:
@@ -33,10 +33,10 @@ spec:
 apiVersion: argocd-image-updater.argoproj.io/v1alpha1
 kind: ImageUpdater
 metadata:
-  name: blog
+  name: blog-prod
 spec:
   applicationRefs:
-    - namePattern: "blog"
+    - namePattern: "blog-prod"
       writeBackConfig:
         method: "git"
       images:
@@ -45,3 +45,53 @@ spec:
           commonUpdateSettings:
             updateStrategy: "semver"
             allowTags: "regexp:^[0-9]{4}\\.[0-9]{1,2}\\.[0-9]{1,2}\\.?[0-9]*$"
+
+---
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: blog-dev
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - path: kubernetes/kustomizations/blog/overlays/dev
+      repoURL: "{{ .Values.spec.sources.repoURL }}"
+      targetRevision: "{{ .Values.spec.sources.targetRevision }}"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: blog
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    retry:
+      limit: 10
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m
+      refresh: true
+    syncOptions:
+      - PruneLast=true
+
+---
+
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: blog-dev
+spec:
+  applicationRefs:
+    - namePattern: "blog-dev"
+      writeBackConfig:
+        method: "git"
+      images:
+        - alias: "zmuda-pro-blog"
+          imageName: "theadzik/zmuda-pro-blog"
+          commonUpdateSettings:
+            updateStrategy: "semver"
+            allowTags: "regexp:^pr-[0-9]+$"
