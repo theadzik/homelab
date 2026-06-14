@@ -18,8 +18,12 @@ spec:
             - containerPort: 8080
               protocol: "TCP"
           securityContext:
+            runAsNonRoot: true
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           volumeMounts:
             - mountPath: /var/cache/nginx
               name: cache
@@ -30,9 +34,12 @@ spec:
               cpu: 10m
               memory: 32Mi
       securityContext:
+        runAsNonRoot: true
         runAsUser: 10003
         runAsGroup: 20003
         fsGroup: 20003
+        seccompProfile:
+          type: RuntimeDefault
       volumes:
         - name: cache
           emptyDir: {}
