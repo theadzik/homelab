@@ -42,25 +42,7 @@ spec:
 apiVersion: argocd-image-updater.argoproj.io/v1alpha1
 kind: ImageUpdater
 metadata:
-  name: blog-prod
-spec:
-  applicationRefs:
-    - namePattern: "blog-prod"
-      writeBackConfig:
-        method: "git"
-      images:
-        - alias: "zmuda-pro-blog"
-          imageName: "theadzik/zmuda-pro-blog"
-          commonUpdateSettings:
-            updateStrategy: "semver"
-            allowTags: "regexp:^[0-9]{4}\\.[0-9]{1,2}\\.[0-9]{1,2}\\.?[0-9]*$"
-
----
-
-apiVersion: argocd-image-updater.argoproj.io/v1alpha1
-kind: ImageUpdater
-metadata:
-  name: blog-dev
+  name: blog
 spec:
   applicationRefs:
     - namePattern: "blog-dev"
@@ -70,5 +52,14 @@ spec:
         - alias: "zmuda-pro-blog"
           imageName: "theadzik/zmuda-pro-blog"
           commonUpdateSettings:
-            updateStrategy: "semver"
+            updateStrategy: "newest-build"
             allowTags: "regexp:^pr-[0-9]+$"
+    - namePattern: "blog-prod"
+      writeBackConfig:
+        method: "git"
+      images:
+        - alias: "zmuda-pro-blog"
+          imageName: "theadzik/zmuda-pro-blog"
+          commonUpdateSettings:
+            updateStrategy: "semver"
+            allowTags: "regexp:^[0-9]{4}\\.[0-9]{1,2}\\.[0-9]{1,2}$"
