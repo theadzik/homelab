@@ -9,8 +9,10 @@ patches:
   - path: deployment-replicas-patch.yaml
     target:
       group: networking.k8s.io
-      version: v1
       kind: Ingress
       name: zmuda-pro-blog
-commonLabels:
-  app.kubernetes.io/instance: prod
+      version: v1
+labels:
+  - includeSelectors: true
+    pairs:
+      app.kubernetes.io/instance: prod

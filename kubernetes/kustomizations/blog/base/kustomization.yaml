@@ -9,5 +9,7 @@ resources:
   - service.yaml
   - vpa.yaml
   - ../../image-pull-secret
-commonLabels:
-  app.kubernetes.io/name: zmuda-pro-blog
+labels:
+  - includeSelectors: true
+    pairs:
+      app.kubernetes.io/name: zmuda-pro-blog
