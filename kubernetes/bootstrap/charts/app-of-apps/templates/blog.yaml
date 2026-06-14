@@ -10,18 +10,18 @@ spec:
           - env: dev
   template:
     metadata:
-      name: "blog-{{.env}}"
+      name: "{{`blog-{{env}}`}}" # Escape placeholders so Helm outputs them literally and ArgoCD evaluates them later.
       finalizers:
         - resources-finalizer.argocd.argoproj.io
     spec:
       project: default
       sources:
-        - path: "kubernetes/kustomizations/blog/overlays/{{.env}}"
+        - path: "{{`kubernetes/kustomizations/blog/overlays/{{env}}`}}" # Escape placeholders so Helm outputs them literally and ArgoCD evaluates them later.
           repoURL: "{{ .Values.spec.sources.repoURL }}"
           targetRevision: "{{ .Values.spec.sources.targetRevision }}"
       destination:
         server: https://kubernetes.default.svc
-        namespace: "blog-{{.env}}"
+        namespace: "{{`blog-{{env}}`}}" # Escape placeholders so Helm outputs them literally and ArgoCD evaluates them later.
       syncPolicy:
         automated:
           enabled: true
