@@ -5,11 +5,19 @@ resources:
   - ../../base
 patches:
   - path: ingress-metadata.yaml
+    target:
+      kind: Ingress
+      name: zmuda-pro-blog
   - path: ingress-host-patch.yaml
-  - path: deployment-replicas-patch.yaml
     target:
       group: networking.k8s.io
       kind: Ingress
+      name: zmuda-pro-blog
+      version: v1
+  - path: deployment-replicas-patch.yaml
+    target:
+      group: apps
+      kind: Deployment
       name: zmuda-pro-blog
       version: v1
 labels:
