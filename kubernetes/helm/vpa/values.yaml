@@ -4,8 +4,8 @@ admissionController:
     enabled: false
   certManager:
     enabled: true
-    issuerRef:
-      name: "lets-encrypt-prod"
+    createSelfSignedIssuer:
+      enabled: true
   resources:
     requests:
       cpu: 10m
