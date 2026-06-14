@@ -4,14 +4,12 @@ admissionController:
     enabled: false
   certManager:
     enabled: true
-    issuerRef:
-      name: "lets-encrypt-prod"
+    createSelfSignedIssuer:
+      enabled: true
   resources:
     requests:
       cpu: 10m
       memory: 64Mi
-  image:
-    tag: 1.7.0
 
 recommender:
   replicas: 1
@@ -23,8 +21,6 @@ recommender:
       memory: 64Mi
   extraArgs:
     - --round-memory-bytes=1048576 # 1 MiB
-  image:
-    tag: 1.7.0
 
 updater:
   replicas: 1
@@ -36,5 +32,3 @@ updater:
       memory: 64Mi
   extraArgs:
     - --in-place-skip-disruption-budget=true
-  image:
-    tag: 1.7.0
