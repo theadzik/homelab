@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: trivy-operator
+  annotations:
+    argocd.argoproj.io/sync-wave: "-25"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - path: .
+      repoURL: oci://ghcr.io/aquasecurity/helm-charts/trivy-operator
+      targetRevision: "*"
+      helm:
+        releaseName: trivy-operator
+        valueFiles:
+          - $repo/kubernetes/helm/trivy-operator/values.yaml
+    - repoURL: "{{ .Values.spec.sources.repoURL }}"
+      targetRevision: "{{ .Values.spec.sources.targetRevision }}"
+      ref: repo
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: trivy-operator
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - PruneLast=true
+      - CreateNamespace=true
+    retry:
+      limit: 10
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m
+      refresh: true
