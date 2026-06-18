@@ -3,12 +3,19 @@ kind: ImageValidatingPolicy
 metadata:
   name: check-images
 spec:
+  evaluation:
+    background:
+      enabled: false
+  validationActions:
+    - Warn
   matchConstraints:
     resourceRules:
       - apiGroups: [""]
         apiVersions: ["v1"]
         operations: ["CREATE"]
         resources: ["pods"]
+  matchImageReferences:
+    - glob: "theadzik/*"
   attestors:
     - name: cosign
       cosign:
@@ -18,8 +25,8 @@ spec:
               subjectRegExp: "https://github\\.com/theadzik/.*/\\.github/workflows/.*"
               issuerRegExp: "https://token\\.actions\\.githubusercontent\\.com"
         source:
-          repository: "docker.io/theadzik/*"
-          pullSecrets:
+          repository: "theadzik/*"
+          PullSecrets:
             - name: dockerhub-image-pull-secret
   attestations:
     - name: sbom
