@@ -22,7 +22,7 @@ jobs:
       app_version: ${{ steps.get_version.outputs.app_version }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Get App Version
         id: get_version
         run: |
