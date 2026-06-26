@@ -132,7 +132,7 @@ services:
   sonarr:
     enabled: true
     image: lscr.io/linuxserver/sonarr
-    tag: "4.0.18"
+    tag: "4.0.19"
     port: 8989
     resources:
       requests:
