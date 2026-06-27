@@ -9,13 +9,28 @@ updates:
   - package-ecosystem: "docker"
     directories:
       - "/apps/custom-argocd"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+    cooldown:
+      default-days: 2
+  - package-ecosystem: "docker"
+    directories:
       - "/apps/vaultwarden/backup"
       - "/apps/vaultwarden/restore"
     schedule:
       interval: "weekly"
       day: "friday"
+    cooldown:
+      default-days: 2
+    groups:
+      vaultwarden-dockerfiles:
+        patterns:
+          - "*"
   - package-ecosystem: "github-actions"
     directories:
       - "/"
     schedule:
       interval: "weekly"
+    cooldown:
+      default-days: 2
