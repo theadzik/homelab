@@ -22,6 +22,12 @@ patches:
       kind: Deployment
       name: zmuda-pro-blog
       version: v1
+  - path: deployment-pull-policy-patch.yaml
+    target:
+      group: apps
+      kind: Deployment
+      name: zmuda-pro-blog
+      version: v1
 labels:
   - includeSelectors: true
     pairs:
