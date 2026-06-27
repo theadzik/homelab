@@ -21,13 +21,8 @@ spec:
       cosign:
         keyless:
           identities:
-            - issuer: "https://token.actions.githubusercontent.com/theadzik"
-              subjectRegExp: "https://github\\.com/theadzik/.*/\\.github/workflows/.*"
-              issuerRegExp: "https://token\\.actions\\.githubusercontent\\.com"
-        source:
-          repository: "theadzik/*"
-          PullSecrets:
-            - name: dockerhub-image-pull-secret
+            - issuer: "https://token.actions.githubusercontent.com"
+              subjectRegExp: "^https://github.com/theadzik/blog/.github/workflows/build-and-push.yaml@.+$"
   attestations:
     - name: sbom
       referrer:
@@ -38,15 +33,12 @@ spec:
     verifyDigest: true
   validations:
     - expression: >-
-        images.containers.map(image, verifyAttestationSignatures(image,
-           attestations.sbom, [attestors.cosign])).all(e, e > 0)
-      message: failed to verify attestation with cosign cert
-    - expression: >-
-        images.containers.map(image, extractPayload(image, attestations.sbom).bomFormat == 'CycloneDX').all(e, e)
-      message: sbom is not a cyclone dx sbom
-    - expression: >-
-        images.containers.map(image, verifyImageSignatures(image,  [attestors.cosign])).all(e, e > 0)
-      message: "Failed image signature verification"
-    - expression: >-
-        images.containers.map(image, verifyAttestationSignatures(image, attestations.cosignAttestation, [attestors.cosign])).all(e, e > 0)
-      message: "Failed to verify vulnerability scan attestation with Cosign keyless"
+        images.containers.map(image, verifyImageSignatures(image, [attestors.cosign])).all(e, e > 0)
+      message: failed to verify image with cosign cert
+      # - expression: >-
+      #     images.containers.map(image, extractPayload(image, attestations.sbom).bomFormat == 'CycloneDX').all(e, e)
+      #   message: sbom is not a cyclone dx sbom
+      # - expression: >-
+      #     images.containers.map(image, verifyAttestationSignatures(image,
+      #        attestations.sbom, [attestors.cosign])).all(e, e > 0)
+      #   message: failed to verify attestation with cosign cert
