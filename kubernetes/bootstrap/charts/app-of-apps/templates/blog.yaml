@@ -46,6 +46,10 @@ spec:
     - namePattern: "blog-dev"
       writeBackConfig:
         method: "git"
+        gitConfig:
+          repository: "{{ .Values.spec.sources.repoURL }}"
+          branch: "{{ .Values.spec.sources.targetRevision }}"
+          writeBackTarget: "kustomization:/kubernetes/kustomizations/blog/overlays/dev"
       images:
         - alias: "zmuda-pro-blog"
           imageName: "theadzik/zmuda-pro-blog"
@@ -55,6 +59,10 @@ spec:
     - namePattern: "blog-prod"
       writeBackConfig:
         method: "git"
+        gitConfig:
+          repository: "{{ .Values.spec.sources.repoURL }}"
+          branch: "{{ .Values.spec.sources.targetRevision }}"
+          writeBackTarget: "kustomization:/kubernetes/kustomizations/blog/overlays/prod"
       images:
         - alias: "zmuda-pro-blog"
           imageName: "theadzik/zmuda-pro-blog"
