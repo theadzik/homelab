@@ -52,7 +52,7 @@ spec:
                 secretKeyRef:
                   name: database-cluster-app
                   key: password
-          image: vabene1111/recipes
+          image: vabene1111/recipes:2.3.6
           imagePullPolicy: Always
           resources:
             requests:
