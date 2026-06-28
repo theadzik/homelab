@@ -55,7 +55,6 @@ spec:
           imageName: "theadzik/zmuda-pro-blog"
           commonUpdateSettings:
             updateStrategy: "newest-build"
-            allowTags: "regexp:^pr-[0-9]+$"
     - namePattern: "blog-prod"
       writeBackConfig:
         method: "git"
