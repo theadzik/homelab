@@ -13,7 +13,7 @@ spec:
       containers:
         - name: nginx
           image: theadzik/zmuda-pro-blog:2026.5.1
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
               protocol: "TCP"
