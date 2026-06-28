@@ -23,10 +23,15 @@ spec:
           identities:
             - issuer: "https://token.actions.githubusercontent.com"
               subjectRegExp: "^https://github.com/theadzik/blog/.github/workflows/build-and-push.yaml@.+$"
+        ctlog:
+          url: https://rekor.sigstore.dev
   attestations:
     - name: sbom
       referrer:
-        type: sbom/cyclone-dx
+        type: "application/spdx+json"
+    - name: provenance
+      intoto:
+        type: https://slsa.dev/provenance/v1
   validationConfigurations:
     mutateDigest: true
     required: true
@@ -35,10 +40,18 @@ spec:
     - expression: >-
         images.containers.map(image, verifyImageSignatures(image, [attestors.cosign])).all(e, e > 0)
       message: failed to verify image with cosign cert
-      # - expression: >-
-      #     images.containers.map(image, extractPayload(image, attestations.sbom).bomFormat == 'CycloneDX').all(e, e)
-      #   message: sbom is not a cyclone dx sbom
-      # - expression: >-
-      #     images.containers.map(image, verifyAttestationSignatures(image,
-      #        attestations.sbom, [attestors.cosign])).all(e, e > 0)
-      #   message: failed to verify attestation with cosign cert
+    - expression: >-
+        images.containers.map(image,
+          verifyAttestationSignatures(image, attestations.sbom, [attestors.cosign])
+        ).all(e, e > 0)
+      message: "SBOM attestation signature verification failed"
+    - expression: >-
+        images.containers.map(image,
+          verifyAttestationSignatures(image, attestations.provenance, [attestors.cosign])
+        ).all(e, e > 0)
+      message: "Provenance attestation signature verification failed"
+    - expression: >-
+        images.containers.map(image,
+          extractPayload(image, attestations.sbom).spdxVersion.startsWith('SPDX-')
+        ).all(e, e)
+      message: "SBOM is not a valid SPDX document"
