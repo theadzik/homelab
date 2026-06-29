@@ -1,0 +1,6 @@
+global:
+  imagePullSecrets:
+    - name: dockerhub-image-pull-secret
+
+existingImagePullSecrets:
+  - dockerhub-image-pull-secret
