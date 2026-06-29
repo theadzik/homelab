@@ -30,7 +30,7 @@ spec:
   attestations:
     - name: sbom
       intoto:
-        type: "https://spdx.dev/Document"
+        type: "https://spdx.dev/Document/v2.3"
     - name: provenance
       intoto:
         type: "https://slsa.dev/provenance/v1"
