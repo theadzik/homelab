@@ -38,6 +38,10 @@ spec:
     - namePattern: "vaultwarden"
       writeBackConfig:
         method: "git"
+        gitConfig:
+          repository: "{{ .Values.spec.sources.repoURL }}"
+          branch: "{{ .Values.spec.sources.targetRevision }}"
+          writeBackTarget: "kustomization:/kubernetes/kustomizations/vaultwarden"
       images:
         - alias: "vaultwarden"
           imageName: "vaultwarden/server"

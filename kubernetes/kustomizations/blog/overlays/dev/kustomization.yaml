@@ -32,3 +32,6 @@ labels:
   - includeSelectors: true
     pairs:
       app.kubernetes.io/instance: dev
+images:
+  - name: theadzik/zmuda-pro-blog
+    newTag: 2026.6.3

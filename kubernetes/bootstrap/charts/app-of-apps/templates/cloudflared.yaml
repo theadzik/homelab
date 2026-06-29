@@ -41,6 +41,10 @@ spec:
     - namePattern: "cloudflared"
       writeBackConfig:
         method: "git"
+        gitConfig:
+          repository: "{{ .Values.spec.sources.repoURL }}"
+          branch: "{{ .Values.spec.sources.targetRevision }}"
+          writeBackTarget: "kustomization:/kubernetes/kustomizations/cloudflared"
       images:
         - alias: "cloudflared"
           imageName: "cloudflare/cloudflared"
