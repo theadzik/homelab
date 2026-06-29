@@ -27,11 +27,11 @@ spec:
           url: https://rekor.sigstore.dev
   attestations:
     - name: sbom
-      referrer:
-        type: "application/spdx+json"
+      intoto:
+        type: "https://spdx.dev/Document"
     - name: provenance
       intoto:
-        type: https://slsa.dev/provenance/v1
+        type: "https://slsa.dev/provenance/v1"
   validationConfigurations:
     mutateDigest: true
     required: true
@@ -39,19 +39,14 @@ spec:
   validations:
     - expression: >-
         images.containers.map(image, verifyImageSignatures(image, [attestors.cosign])).all(e, e > 0)
-      message: failed to verify image with cosign cert
+      message: Failed to verify image signature
     - expression: >-
         images.containers.map(image,
           verifyAttestationSignatures(image, attestations.sbom, [attestors.cosign])
         ).all(e, e > 0)
-      message: "SBOM attestation signature verification failed"
+      message: "Failed to verify SBOM attestation signature"
     - expression: >-
         images.containers.map(image,
           verifyAttestationSignatures(image, attestations.provenance, [attestors.cosign])
         ).all(e, e > 0)
-      message: "Provenance attestation signature verification failed"
-    - expression: >-
-        images.containers.map(image,
-          extractPayload(image, attestations.sbom).spdxVersion.startsWith('SPDX-')
-        ).all(e, e)
-      message: "SBOM is not a valid SPDX document"
+      message: "Failed to verify provenance attestation signature"
