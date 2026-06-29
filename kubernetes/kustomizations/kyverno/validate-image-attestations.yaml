@@ -3,6 +3,8 @@ kind: ImageValidatingPolicy
 metadata:
   name: validate-image-attestations
 spec:
+  webhookConfiguration:
+    timeoutSeconds: 30
   evaluation:
     background:
       enabled: false
