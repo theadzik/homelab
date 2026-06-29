@@ -1,7 +1,7 @@
 apiVersion: policies.kyverno.io/v1
 kind: ImageValidatingPolicy
 metadata:
-  name: check-images
+  name: validate-image-attestations
 spec:
   evaluation:
     background:
