@@ -14,6 +14,8 @@ spec:
       targetRevision: 3.*
       helm:
         releaseName: kyverno
+        valueFiles:
+          - $repo/kubernetes/helm/kyverno/values.yaml
     - path: kubernetes/kustomizations/kyverno
       repoURL: "{{ .Values.spec.sources.repoURL }}"
       targetRevision: "{{ .Values.spec.sources.targetRevision }}"
