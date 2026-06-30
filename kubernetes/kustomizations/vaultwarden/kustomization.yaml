@@ -11,7 +11,6 @@ resources:
   - pvc.yaml
   - service.yaml
   - ../image-pull-secret
-
 secretGenerator:
   - name: vw-secrets
     envs:
@@ -25,3 +24,10 @@ secretGenerator:
     files:
       - .rclone.conf=configs/rclone-secret.conf
     type: Opaque
+images:
+  - name: vaultwarden/server
+    newTag: 1.36.0-alpine
+  - name: theadzik/vw-restore
+    newTag: 2026.6.1
+  - name: theadzik/vw-backup
+    newTag: 2026.6.1
