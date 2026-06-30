@@ -44,35 +44,19 @@ jobs:
         env:
           ARGOCD_TEMPLATE_FILE: "${{ github.workspace }}/kubernetes/bootstrap/charts/app-of-apps/templates/argocd.yaml"
 
-  build:
+  build-push:
     needs: get-version
     permissions:
       contents: read
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4.1.0
-      - name: Login to Docker Hub
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4.2.0
-        with:
-          username: ${{ vars.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build
-        if: github.event_name == 'pull_request'
-        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7.2.0
-        with:
-          platforms: "linux/amd64"
-          context: "{{defaultContext}}:apps/custom-argocd"
-          push: false
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/custom-argocd:${{ needs.get-version.outputs.app_version }}
-          build-args: TAG=${{ needs.get-version.outputs.app_version }}
-      - name: Build and push
-        if: github.event_name != 'pull_request'
-        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7.2.0
-        with:
-          platforms: "linux/amd64"
-          context: "{{defaultContext}}:apps/custom-argocd"
-          push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/custom-argocd:${{ needs.get-version.outputs.app_version }}
-          build-args: TAG=${{ needs.get-version.outputs.app_version }}
+      id-token: write
+      attestations: write
+      artifact-metadata: write
+    uses: ./.github/workflows/build-and-push.yaml
+    with:
+      git-ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+      docker-tag: ${{ needs.get-version.outputs.app_version }}
+      build-args: |
+        TAG=${{ needs.get-version.outputs.app_version }}
+      image-name: "custom-argocd"
+      context-path: "apps/custom-argocd"
+    secrets: inherit

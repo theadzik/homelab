@@ -13,16 +13,20 @@ permissions:
 
 jobs:
   get-tag:
-    uses: theadzik/homelab/.github/workflows/get-tag.yaml@main
+    uses: ./.github/workflows/get-tag.yaml
     with:
       tag-prefix: "vw-backup-"
-  build-push:
-    uses: theadzik/homelab/.github/workflows/build-push.yaml@main
+  backup-build-push:
+    uses: ./.github/workflows/build-and-push.yaml
     needs: get-tag
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+      artifact-metadata: write
     with:
-      source-tag: ${{ needs.get-tag.outputs.git_tag }}
+      git-ref: ${{ needs.get-tag.outputs.git_tag }}
       docker-tag: ${{ needs.get-tag.outputs.docker_tag }}
-      docker-repo: vw-backup
-      context-path: apps/vaultwarden/backup
-      docker-push: true
+      image-name: "vw-backup"
+      context-path: "apps/vaultwarden/backup"
     secrets: inherit
