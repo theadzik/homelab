@@ -59,3 +59,4 @@ jobs:
         TAG=${{ needs.get-version.outputs.app_version }}
       image-name: "custom-argocd"
       context-path: "apps/custom-argocd"
+    secrets: inherit
