@@ -24,7 +24,7 @@ spec:
         keyless:
           identities:
             - issuer: "https://token.actions.githubusercontent.com"
-              subjectRegExp: "^https://github.com/theadzik/blog/.github/workflows/build-and-push.yaml@.+$"
+              subjectRegExp: "^https://github.com/theadzik/.+/\\.github/workflows/.+$"
         ctlog:
           url: https://rekor.sigstore.dev
   attestations:
