@@ -1,7 +1,4 @@
-FROM alpine:3.24.1
-
-ARG USER_ID=1000
-ARG GROUP_ID=1000
+FROM dhi.io/alpine-base:3.24-dev AS build
 
 RUN apk add --no-cache \
     openssl \
@@ -9,10 +6,14 @@ RUN apk add --no-cache \
     tar \
     sqlite
 
-RUN addgroup --gid $GROUP_ID --system vaultwarden && \
-    adduser --uid $USER_ID --system --ingroup vaultwarden --disabled-password --gecos "" vaultwarden
+FROM dhi.io/alpine-base:3.24
 
-COPY --chown=vaultwarden:vaultwarden --chmod=755 restore.sh /restore.sh
-USER vaultwarden:vaultwarden
+COPY --from=build /usr/lib/ /usr/lib/
+COPY --from=build /usr/bin/openssl /usr/bin/openssl
+COPY --from=build /usr/bin/rclone /usr/bin/rclone
+COPY --from=build /usr/bin/tar /usr/bin/tar
+COPY --from=build /usr/bin/sqlite3 /usr/bin/sqlite3
 
+COPY --chown=nonroot:nonroot --chmod=755 restore.sh /restore.sh
+USER nonroot
 ENTRYPOINT ["/restore.sh"]
