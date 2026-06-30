@@ -24,7 +24,7 @@ env:
   IMAGE_NAME: ${{ inputs.image-name }}
 
 jobs:
-  backup-build:
+  build-push-sign:
     permissions:
       contents: read
       id-token: write
