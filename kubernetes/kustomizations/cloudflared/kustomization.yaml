@@ -12,3 +12,6 @@ configMapGenerator:
   - name: cloudflared-config
     files:
       - configs/config.yaml
+images:
+  - name: cloudflare/cloudflared
+    newTag: 2026.7.0
