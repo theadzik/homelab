@@ -10,6 +10,7 @@ spec:
       enabled: false
   validationActions:
     - Warn
+    - Audit
   matchConstraints:
     resourceRules:
       - apiGroups: [""]
@@ -24,7 +25,7 @@ spec:
         keyless:
           identities:
             - issuer: "https://token.actions.githubusercontent.com"
-              subjectRegExp: "^https://github.com/theadzik/.+/\\.github/workflows/.+$"
+              subject: "https://github.com/theadzik/homelab/.github/workflows/build-and-push.yaml@refs/heads/main"
         ctlog:
           url: https://rekor.sigstore.dev
   attestations:
