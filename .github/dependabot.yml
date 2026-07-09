@@ -1,4 +1,10 @@
 version: 2
+registries:
+  dhi-io:
+    type: docker-registry
+    url: https://dhi.io
+    username: ${{ secrets.DHI_IO_USERNAME }}
+    password: ${{ secrets.DHI_IO_PASSWORD }}
 updates:
   - package-ecosystem: "pip"
     directories:
@@ -23,6 +29,8 @@ updates:
       day: "friday"
     cooldown:
       default-days: 2
+    registries:
+      - dhi-io
     groups:
       vaultwarden-dockerfiles:
         patterns:
