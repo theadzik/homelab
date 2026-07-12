@@ -34,4 +34,4 @@ labels:
       app.kubernetes.io/instance: dev
 images:
   - name: theadzik/zmuda-pro-blog
-    newTag: pr-95
+    newTag: pr-96
