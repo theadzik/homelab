@@ -1,4 +1,0 @@
-kustomize:
-  images:
-  - theadzik/meaningofwords:2025.7.4
-  - theadzik/bullying-detector:2025.6.3

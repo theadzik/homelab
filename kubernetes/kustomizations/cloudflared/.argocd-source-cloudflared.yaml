@@ -1,3 +1,0 @@
-kustomize:
-  images:
-  - cloudflare/cloudflared:2026.6.1
