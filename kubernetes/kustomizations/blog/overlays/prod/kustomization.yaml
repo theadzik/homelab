@@ -28,4 +28,4 @@ labels:
       app.kubernetes.io/instance: prod
 images:
   - name: theadzik/zmuda-pro-blog
-    newTag: 2026.7.4
+    newTag: 2026.7.5
