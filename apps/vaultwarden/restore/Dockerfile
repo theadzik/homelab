@@ -1,4 +1,4 @@
-FROM rclone/rclone:1.74.3 AS rclone
+FROM rclone/rclone:1.74.4 AS rclone
 
 FROM dhi.io/alpine-base:3.24-dev AS build
 
