@@ -28,6 +28,6 @@ images:
   - name: vaultwarden/server
     newTag: 1.36.0-alpine
   - name: theadzik/vw-restore
-    newTag: 2026.6.1
+    newTag: 2026.7.1
   - name: theadzik/vw-backup
-    newTag: 2026.6.1
+    newTag: 2026.7.1
