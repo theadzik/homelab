@@ -26,7 +26,7 @@ secretGenerator:
     type: Opaque
 images:
   - name: vaultwarden/server
-    newTag: 1.36.0-alpine
+    newTag: 1.37.0-alpine
   - name: theadzik/vw-restore
     newTag: 2026.7.1
   - name: theadzik/vw-backup
