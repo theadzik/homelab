@@ -64,6 +64,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
+export HOMEBREW_AUTO_UPDATE_SECS=86400
 
 # Don't save commands starting with a space to history
 export HISTCONTROL=ignoreboth
@@ -72,6 +73,7 @@ if [[ "$TERM_PROGRAM" == "vscode" ]]; then
   # Disable RPROMPT in VS Code (causes detection issues)
   unset RPROMPT
   unset RPS1
+  export PROMPT='%~ %'
 
   # Load VS Code shell integration
   [[ -f "$(code --locate-shell-integration-path zsh)" ]] && \
