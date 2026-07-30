@@ -59,4 +59,6 @@ jobs:
         TAG=${{ needs.get-version.outputs.app_version }}
       image-name: "custom-argocd"
       context-path: "apps/custom-argocd"
+      # Pull requests validate the build only; publishing happens on push to main.
+      push: ${{ github.event_name != 'pull_request' }}
     secrets: inherit

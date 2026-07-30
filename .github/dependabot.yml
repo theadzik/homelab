@@ -3,8 +3,8 @@ registries:
   dhi-io:
     type: docker-registry
     url: https://dhi.io
-    username: ${{ secrets.DHI_IO_USERNAME }}
-    password: ${{ secrets.DHI_IO_PASSWORD }}
+    username: ${{ secrets.DOCKERHUB_USERNAME }}
+    password: ${{ secrets.DOCKERHUB_TOKEN }}
 updates:
   - package-ecosystem: "pip"
     directories:
