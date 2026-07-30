@@ -7,7 +7,14 @@ spec:
   # the site goes down for the length of a reschedule. Deliberately prod-only:
   # dev runs a single replica, where minAvailable: 1 would block drains entirely.
   minAvailable: 1
+  # Must match the labels kustomize puts on the *pod template*, not the ones on
+  # the Deployment's own metadata. base/deployment.yaml carries `app:
+  # zmuda-pro-blog` only at the top level; the pod labels come entirely from the
+  # `labels:` blocks with includeSelectors: true - `app.kubernetes.io/name` in
+  # base, `app.kubernetes.io/instance` in this overlay. Selecting on `app:` here
+  # matched zero pods, so the PDB existed but protected nothing
+  # (expectedPods=0, disruptionsAllowed=0).
   selector:
     matchLabels:
-      app: zmuda-pro-blog
+      app.kubernetes.io/name: zmuda-pro-blog
       app.kubernetes.io/instance: prod
