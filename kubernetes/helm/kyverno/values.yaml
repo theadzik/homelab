@@ -4,3 +4,23 @@ global:
 
 existingImagePullSecrets:
   - dockerhub-image-pull-secret
+
+features:
+  backgroundScan:
+    # Docker Hub allows this account 200 requests per hour (measured, not
+    # documented - the live header reads `ratelimit-limit: 200;w=3600` while the
+    # docs describe a 6h window). That single budget is shared by node image
+    # pulls, admission-time verification and background re-verification.
+    #
+    # Enabling background evaluation made Kyverno re-verify every pod matching
+    # theadzik/* once an hour, and each verification costs several manifest GETs
+    # - image, cosign signature, SBOM and provenance attestations - which Docker
+    # Hub counts as pulls (GET counts, HEAD does not). Run in bursts by two
+    # workers, that reliably produced `429 Too Many Requests` and left the policy
+    # unable to evaluate 13 pods.
+    #
+    # Daily is ample for the two things background scanning buys here: keeping
+    # PolicyReports honest, and noticing a signature that stops verifying after
+    # admission. Admission-time checks are unaffected and still run on every pod
+    # creation, which is the actual gate.
+    backgroundScanInterval: 24h
