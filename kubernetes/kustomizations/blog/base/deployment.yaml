@@ -5,6 +5,14 @@ metadata:
   labels:
     app: zmuda-pro-blog
 spec:
+  # With probes in place, a rollout of a broken image should stall rather than
+  # replace healthy pods. maxUnavailable: 0 keeps the running version serving
+  # until the replacement reports ready.
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   template:
     spec:
       priorityClassName: high-priority
@@ -12,7 +20,11 @@ spec:
         - name: dockerhub-image-pull-secret
       containers:
         - name: nginx
-          image: theadzik/zmuda-pro-blog:2026.5.1
+          # Always replaced by each overlay's `images:` newTag - dev tracks sha-
+          # builds of main, prod tracks CalVer releases. Kept as `main` so that an
+          # overlay which forgot to override would still land on reviewed code
+          # rather than a stale pin (this previously read 2026.5.1, months old).
+          image: theadzik/zmuda-pro-blog:main
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -29,10 +41,42 @@ spec:
               name: cache
             - mountPath: /var/run
               name: run
+          # Without a readinessProbe the pod is Ready as soon as nginx starts, so
+          # an image that boots but serves nothing (an empty document root from a
+          # builder stage that produced no output) rolls out as healthy. ArgoCD
+          # auto-sync plus Image Updater means that happens unattended, so this is
+          # the only thing standing between a bad build and live traffic.
+          startupProbe:
+            httpGet:
+              path: /
+              port: 8080
+            periodSeconds: 2
+            failureThreshold: 15 # 30s to serve a first response
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            periodSeconds: 20
+            timeoutSeconds: 3
+            failureThreshold: 3
           resources:
             requests:
               cpu: 10m
               memory: 32Mi
+            limits:
+              # Memory only. It is non-compressible, so a leak without a ceiling
+              # pressures the whole node; requests plus priorityClassName already
+              # handle CPU contention, and a CPU limit would just add throttling.
+              # VPA (InPlaceOrRecreate) scales this with requests, preserving the
+              # ratio.
+              memory: 128Mi
       securityContext:
         runAsNonRoot: true
         runAsUser: 10003

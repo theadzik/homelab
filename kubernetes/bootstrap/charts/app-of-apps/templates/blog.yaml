@@ -55,6 +55,10 @@ spec:
           imageName: "theadzik/zmuda-pro-blog"
           commonUpdateSettings:
             updateStrategy: "newest-build"
+            # Immutable per-commit builds of main only. With no filter this
+            # accepted any tag, including pr-<n> images from open pull requests,
+            # so dev was running unmerged and unreviewed code.
+            allowTags: "regexp:^sha-[0-9a-f]{7}$"
     - namePattern: "blog-prod"
       writeBackConfig:
         method: "git"

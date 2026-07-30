@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: blog-prod
 resources:
   - ../../base
+  - pdb.yaml
 patches:
   - path: ingress-metadata.yaml
     target:

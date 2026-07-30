@@ -7,7 +7,28 @@ spec:
     timeoutSeconds: 30
   evaluation:
     background:
-      enabled: false
+      # Re-evaluate already-running pods, not just admission. Catches an image
+      # whose signature stops verifying after it was admitted (revocation, or a
+      # tag repointed under a running workload).
+      enabled: true
+  # Still Warn, deliberately. Enforcement is phase 2 and must not ship with the
+  # background change above, because the current PolicyReports cannot yet be
+  # trusted to say what Deny would block: with background evaluation disabled,
+  # every verdict is frozen at the moment its pod was admitted and never
+  # re-checked. Seven pods currently read "fail" - all five ArgoCD control-plane
+  # pods and both blog-prod pods - yet all three images verify correctly against
+  # this exact identity today:
+  #   cosign verify --certificate-identity-regexp \
+  #     '^https://github.com/theadzik/.+/.github/workflows/build-and-push.yaml@.+$' \
+  #     --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+  #     theadzik/zmuda-pro-blog:2026.7.5   -> OK
+  # Those pods were admitted within five minutes of their image being pushed,
+  # before actions/attest had finished uploading attestations. The verdict is a
+  # stale race, not a real failure.
+  #
+  # Enabling background evaluation is what makes the reports self-correct, so
+  # ship it alone, let the reports refresh, confirm zero genuine failures, and
+  # only then switch to Deny.
   validationActions:
     - Warn
     - Audit
