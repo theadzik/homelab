@@ -70,14 +70,19 @@ jobs:
           tags: |
             type=raw,value=${{ inputs.docker-tag }}
 
-      - name: Build and Push
+      # When publishing, push by digest with no tags: ArgoCD Image Updater finds
+      # images by listing tags, so a tag published here - before the attestations
+      # below exist - lets a deployment race its own attestation upload. The
+      # Kyverno policy now denies rather than warns, so that race would reject
+      # the pod. Tags are applied in the final step instead. When not publishing
+      # (Dependabot PRs) this is a build-only validation.
+      - name: Build and push by digest
         id: build-push
         uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
         with:
           context: "${{ inputs.context-path }}"
           platforms: "linux/amd64"
-          push: ${{ inputs.push }}
-          tags: ${{ steps.meta.outputs.tags }}
+          outputs: ${{ inputs.push && format('type=image,name={0}/{1}/{2},push-by-digest=true,name-canonical=true,push=true', env.REGISTRY, env.REPOSITORY, env.IMAGE_NAME) || 'type=cacheonly' }}
           labels: ${{ steps.meta.outputs.labels }}
           annotations: ${{ steps.meta.outputs.annotations }}
           cache-from: type=gha
@@ -112,3 +117,28 @@ jobs:
           subject-name: ${{ env.REGISTRY }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}
           subject-digest: ${{ steps.build-push.outputs.digest }}
           push-to-registry: true
+
+      # Only now does the image become discoverable, with its attestations
+      # already in place. `imagetools create` re-pushes the same manifest under
+      # each tag rather than wrapping it in a new index, so the digest is
+      # unchanged and the attestations - attached to that digest - stay findable.
+      # Verified against a scratch registry before relying on it.
+      - name: Publish tags
+        if: inputs.push
+        env:
+          METADATA_JSON: ${{ steps.meta.outputs.json }}
+          IMAGE_REF: ${{ env.REGISTRY }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}
+          DIGEST: ${{ steps.build-push.outputs.digest }}
+        run: |-
+          set -euo pipefail
+          args=()
+          while IFS= read -r tag; do
+            args+=(--tag "$tag")
+          done < <(jq -r '.tags[]' <<< "$METADATA_JSON")
+
+          if [[ ${#args[@]} -eq 0 ]]; then
+            echo "::error title=Publish tags::docker/metadata-action produced no tags"
+            exit 1
+          fi
+
+          docker buildx imagetools create "${args[@]}" "${IMAGE_REF}@${DIGEST}"
