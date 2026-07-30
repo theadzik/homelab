@@ -1,0 +1,13 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: zmuda-pro-blog
+spec:
+  # Prod runs 2 replicas; without this a node drain can evict both at once and
+  # the site goes down for the length of a reschedule. Deliberately prod-only:
+  # dev runs a single replica, where minAvailable: 1 would block drains entirely.
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: zmuda-pro-blog
+      app.kubernetes.io/instance: prod
