@@ -4,6 +4,11 @@ on:
   push:
     tags:
       - "vw-backup-*"
+  pull_request:
+    paths:
+      - "apps/vaultwarden/backup/**"
+      - ".github/workflows/backup-build.yaml"
+      - ".github/workflows/build-and-push.yaml"
   schedule:
     - cron: "37 10 * * 6"
   workflow_dispatch:
@@ -25,8 +30,11 @@ jobs:
       attestations: write
       artifact-metadata: write
     with:
-      git-ref: ${{ needs.get-tag.outputs.git_tag }}
+      # A pull request must build its own head, not the last released tag,
+      # or the Dockerfile change under review is never actually exercised.
+      git-ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || needs.get-tag.outputs.git_tag }}
       docker-tag: ${{ needs.get-tag.outputs.docker_tag }}
       image-name: "vw-backup"
       context-path: "apps/vaultwarden/backup"
+      push: ${{ github.event_name != 'pull_request' }}
     secrets: inherit
