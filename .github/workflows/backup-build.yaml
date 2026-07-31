@@ -35,5 +35,11 @@ jobs:
       tags: "type=raw,value=${{ needs.get-tag.outputs.docker_tag }}"
       image-name: "vw-backup"
       context-path: "apps/vaultwarden/backup"
+      # The shared workflow scans by default. Every finding here is inside the
+      # rclone binary copied from rclone/rclone, in rclone's own Go
+      # dependencies (CVE-2026-56852 in x/text, GHSA-hrxh-6v49-42gf in grpc).
+      # Nothing in this Dockerfile can action them - only an upstream rclone
+      # rebuild can - so the gate would block the weekly rebuild indefinitely.
+      scan: false
       push: ${{ github.event_name != 'pull_request' }}
     secrets: inherit

@@ -35,5 +35,8 @@ jobs:
       tags: "type=raw,value=${{ needs.get-tag.outputs.docker_tag }}"
       image-name: "vw-restore"
       context-path: "apps/vaultwarden/restore"
+      # Same as backup-build.yaml: the only findings are inside the rclone
+      # binary copied from rclone/rclone, in rclone's own Go dependencies.
+      scan: false
       push: ${{ github.event_name != 'pull_request' }}
     secrets: inherit
