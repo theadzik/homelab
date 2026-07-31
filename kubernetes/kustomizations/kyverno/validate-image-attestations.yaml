@@ -3,52 +3,15 @@ kind: ImageValidatingPolicy
 metadata:
   name: validate-image-attestations
 spec:
-  # Without this the cosign verifier talks to Docker Hub anonymously and gets
-  # rate limited, even though every controller already runs with
-  # --imagePullSecrets=dockerhub-image-pull-secret. That flag configures
-  # Kyverno's own registry client; the ImageValidatingPolicy cosign path takes
-  # its credentials from here instead, and silently falls back to anonymous when
-  # this is unset.
-  #
-  # Measured: Kyverno logged 429 for zmuda-pro-blog:2026.7.5 at 2026-07-31
-  # 04:02:10Z, while the theadzik account bucket read 199/200 remaining minutes
-  # later. Its requests were never being billed to the account at all - they
-  # were hitting the anonymous per-IP bucket, which is half the size (100/hour
-  # vs 200/hour) and shared with every other anonymous pull leaving the cluster.
-  #
-  # The secret must live in the Kyverno namespace, which this one already does.
   credentials:
     secrets:
       - dockerhub-image-pull-secret
   webhookConfiguration:
     timeoutSeconds: 30
-  # Fail open when the policy cannot be *evaluated*, fail closed when an image
-  # actually fails verification. These are separate concerns and separate fields:
-  # failurePolicy covers CEL/runtime errors - which in practice means Docker Hub
-  # returning 429 against this account's 200-request/hour budget - while
-  # validationActions below covers an image that genuinely does not verify.
-  # With Fail, a registry hiccup would stop every theadzik/* pod from starting,
-  # including ArgoCD's own, which is what would be needed to undo it.
   failurePolicy: Ignore
   evaluation:
     background:
-      # Re-evaluate already-running pods, not just admission. Catches an image
-      # whose signature stops verifying after it was admitted (revocation, or a
-      # tag repointed under a running workload).
       enabled: true
-  # Enforcing. Everything needed was already in place - keyless cosign identity
-  # bound to the build workflow, SBOM and provenance attestations, Rekor - and
-  # Warn meant an unsigned or tampered image was admitted with a message nobody
-  # reads.
-  #
-  # Safe to turn on now because the reports were re-checked once background
-  # evaluation landed: 73 pass, 0 fail. The seven earlier "failures" were stale
-  # verdicts frozen at admission time, from pods that raced their own
-  # attestation upload; all of those images verify correctly today.
-  #
-  # Audit rather than Warn alongside Deny: the two are mutually exclusive per the
-  # API ("Deny and Warn may not be used together"). Audit keeps PolicyReports
-  # recording every decision.
   validationActions:
     - Deny
     - Audit
