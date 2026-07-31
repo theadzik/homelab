@@ -8,7 +8,6 @@ on:
     paths:
       - "apps/vaultwarden/backup/**"
       - ".github/workflows/backup-build.yaml"
-      - ".github/workflows/build-and-push.yaml"
   schedule:
     - cron: "37 10 * * 6"
   workflow_dispatch:
@@ -22,7 +21,7 @@ jobs:
     with:
       tag-prefix: "vw-backup-"
   backup-build-push:
-    uses: ./.github/workflows/build-and-push.yaml
+    uses: theadzik/github-workflows/.github/workflows/build-and-push.yaml@a75831dcde77fb4ad7caa180497a48fd0be072c4 # v1.0.0
     needs: get-tag
     permissions:
       contents: read
@@ -33,8 +32,14 @@ jobs:
       # A pull request must build its own head, not the last released tag,
       # or the Dockerfile change under review is never actually exercised.
       git-ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || needs.get-tag.outputs.git_tag }}
-      docker-tag: ${{ needs.get-tag.outputs.docker_tag }}
+      tags: "type=raw,value=${{ needs.get-tag.outputs.docker_tag }}"
       image-name: "vw-backup"
       context-path: "apps/vaultwarden/backup"
+      # The shared workflow scans by default. Every finding here is inside the
+      # rclone binary copied from rclone/rclone, in rclone's own Go
+      # dependencies (CVE-2026-56852 in x/text, GHSA-hrxh-6v49-42gf in grpc).
+      # Nothing in this Dockerfile can action them - only an upstream rclone
+      # rebuild can - so the gate would block the weekly rebuild indefinitely.
+      scan: false
       push: ${{ github.event_name != 'pull_request' }}
     secrets: inherit

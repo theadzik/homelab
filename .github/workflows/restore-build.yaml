@@ -8,7 +8,6 @@ on:
     paths:
       - "apps/vaultwarden/restore/**"
       - ".github/workflows/restore-build.yaml"
-      - ".github/workflows/build-and-push.yaml"
   schedule:
     - cron: "22 12 * * 6"
   workflow_dispatch:
@@ -22,7 +21,7 @@ jobs:
     with:
       tag-prefix: "vw-restore-"
   restore-build-push:
-    uses: ./.github/workflows/build-and-push.yaml
+    uses: theadzik/github-workflows/.github/workflows/build-and-push.yaml@a75831dcde77fb4ad7caa180497a48fd0be072c4 # v1.0.0
     needs: get-tag
     permissions:
       contents: read
@@ -33,8 +32,11 @@ jobs:
       # A pull request must build its own head, not the last released tag,
       # or the Dockerfile change under review is never actually exercised.
       git-ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || needs.get-tag.outputs.git_tag }}
-      docker-tag: ${{ needs.get-tag.outputs.docker_tag }}
+      tags: "type=raw,value=${{ needs.get-tag.outputs.docker_tag }}"
       image-name: "vw-restore"
       context-path: "apps/vaultwarden/restore"
+      # Same as backup-build.yaml: the only findings are inside the rclone
+      # binary copied from rclone/rclone, in rclone's own Go dependencies.
+      scan: false
       push: ${{ github.event_name != 'pull_request' }}
     secrets: inherit

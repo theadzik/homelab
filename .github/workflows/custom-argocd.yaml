@@ -51,14 +51,19 @@ jobs:
       id-token: write
       attestations: write
       artifact-metadata: write
-    uses: ./.github/workflows/build-and-push.yaml
+    uses: theadzik/github-workflows/.github/workflows/build-and-push.yaml@a75831dcde77fb4ad7caa180497a48fd0be072c4 # v1.0.0
     with:
       git-ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
-      docker-tag: ${{ needs.get-version.outputs.app_version }}
+      tags: "type=raw,value=${{ needs.get-version.outputs.app_version }}"
       build-args: |
         TAG=${{ needs.get-version.outputs.app_version }}
       image-name: "custom-argocd"
       context-path: "apps/custom-argocd"
+      # The shared workflow scans by default. All 32 fixable HIGH findings are
+      # in the argocd binary's own Go dependencies (go-git, x/crypto/ssh,
+      # x/net), which move only when the upstream chart's app version does -
+      # and that version is what this workflow builds against.
+      scan: false
       # Pull requests validate the build only; publishing happens on push to main.
       push: ${{ github.event_name != 'pull_request' }}
     secrets: inherit
