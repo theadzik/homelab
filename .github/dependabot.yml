@@ -24,6 +24,12 @@ updates:
       day: "friday"
     cooldown:
       default-days: 7
+      # Majors carry the largest diff and get the least useful review, and
+      # upstream's follow-up patch usually lands inside two weeks. The 7 days
+      # above are what covers the supply-chain case, for every bump type.
+      # Only pip and npm honour this key; the docker, github-actions and
+      # pre-commit entries below take default-days alone.
+      semver-major-days: 14
     # pip is one of the ecosystems where resolving a manifest can run code from
     # the package being resolved. Nothing here needs that, and denying it keeps
     # a compromised release away from Dependabot's registry credentials.
