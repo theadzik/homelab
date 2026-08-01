@@ -5,6 +5,16 @@ registries:
     url: https://dhi.io
     username: ${{ secrets.DOCKERHUB_USERNAME }}
     password: ${{ secrets.DOCKERHUB_TOKEN }}
+  # ubuntu and rclone/rclone carry no registry host, so Dependabot resolves them
+  # against Docker Hub anonymously and shares one rate limit with every other
+  # unauthenticated caller on its runners. replaces-base points that default
+  # lookup here instead; images naming dhi.io explicitly still go to dhi-io.
+  docker-hub:
+    type: docker-registry
+    url: https://registry.hub.docker.com
+    username: ${{ secrets.DOCKERHUB_USERNAME }}
+    password: ${{ secrets.DOCKERHUB_TOKEN }}
+    replaces-base: true
 updates:
   - package-ecosystem: "pip"
     directories:
@@ -26,6 +36,8 @@ updates:
       day: "friday"
     cooldown:
       default-days: 7
+    registries:
+      - docker-hub
   - package-ecosystem: "docker"
     directories:
       - "/apps/vaultwarden/backup"
@@ -37,6 +49,7 @@ updates:
       default-days: 7
     registries:
       - dhi-io
+      - docker-hub
     groups:
       vaultwarden-dockerfiles:
         patterns:
