@@ -38,7 +38,7 @@ jobs:
       image-name: "${{ github.repository_owner }}/vw-backup"
       registry-username: ${{ github.actor }}
       extra-registry: dhi.io
-      extra-registry-username: ${{ vars.DOCKERHUB_USERNAME }}
+      extra-registry-username: ${{ secrets.DOCKERHUB_USERNAME }}
       context-path: "apps/vaultwarden/backup"
       # The shared workflow scans by default. Every finding here is inside the
       # rclone binary copied from rclone/rclone, in rclone's own Go

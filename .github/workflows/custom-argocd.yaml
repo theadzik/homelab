@@ -62,7 +62,7 @@ jobs:
       image-name: "${{ github.repository_owner }}/custom-argocd"
       registry-username: ${{ github.actor }}
       extra-registry: dhi.io
-      extra-registry-username: ${{ vars.DOCKERHUB_USERNAME }}
+      extra-registry-username: ${{ secrets.DOCKERHUB_USERNAME }}
       context-path: "apps/custom-argocd"
       # The shared workflow scans by default. All 32 fixable HIGH findings are
       # in the argocd binary's own Go dependencies (go-git, x/crypto/ssh,
