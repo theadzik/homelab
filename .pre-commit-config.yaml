@@ -21,11 +21,11 @@ repos:
           - "--conf=.yamlfmt.yaml"
         exclude: "\\.argocd-source-.*\\.yaml$|templates/.*$"
   - repo: https://github.com/PyCQA/isort
-    rev: 9.0.0a3
+    rev: 9.0.0b1
     hooks:
       - id: isort
   - repo: https://github.com/psf/black
-    rev: 26.3.1
+    rev: 26.5.1
     hooks:
       - id: black
   - repo: https://github.com/pycqa/flake8
@@ -38,7 +38,7 @@ repos:
       - id: shellcheck
         exclude: ".zshrc"
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.48.0
+    rev: v0.49.1
     hooks:
       - id: markdownlint
         args: ["--fix"]
