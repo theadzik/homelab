@@ -9,10 +9,8 @@ registries:
     limit: 10
     default: true
 
-  # Our own images. Public packages, so tag listing needs no credentials - GHCR
-  # hands out an anonymous pull token to any client that asks. It also applies no
-  # pull rate limit, which is the whole reason these images moved here, so the
-  # concurrency limit is set well above Docker Hub's.
+  # Public packages, so no credentials. GHCR applies no pull rate limit, hence
+  # the higher concurrency than Docker Hub above.
   - name: GitHub Container Registry
     prefix: ghcr.io
     api_url: https://ghcr.io
