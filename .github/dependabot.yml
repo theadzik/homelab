@@ -12,6 +12,12 @@ updates:
     schedule:
       interval: "weekly"
       day: "friday"
+    cooldown:
+      default-days: 2
+    # pip is one of the ecosystems where resolving a manifest can run code from
+    # the package being resolved. Nothing here needs that, and denying it keeps
+    # a compromised release away from Dependabot's registry credentials.
+    insecure-external-code-execution: deny
   - package-ecosystem: "docker"
     directories:
       - "/apps/custom-argocd"
@@ -44,5 +50,19 @@ updates:
       default-days: 2
     groups:
       github-actions:
+        patterns:
+          - "*"
+  # Hook revs are pinned in .pre-commit-config.yaml and are the only copy of
+  # those versions; hadolint, shellcheck and detect-secrets stop gaining rules
+  # as soon as the pins go stale.
+  - package-ecosystem: "pre-commit"
+    directories:
+      - "/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 2
+    groups:
+      pre-commit:
         patterns:
           - "*"
