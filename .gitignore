@@ -171,9 +171,6 @@ _site
 vendor
 .DS_Store
 
-# vagrant
-.vagrant
-
 # ansible
 .ansible
 
