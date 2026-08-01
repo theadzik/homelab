@@ -187,6 +187,35 @@ Stated plainly, because a security page that lists only controls is marketing:
 - **There is no centralised audit log.** Falco alerts and ArgoCD history cover most of what
   would be wanted, but they are not correlated anywhere.
 
+## Reporting a vulnerability
+
+Please report privately, **not** as a public issue or pull request:
+[GitHub private vulnerability reporting](https://github.com/theadzik/homelab/security/advisories/new)
+notifies the maintainer directly and keeps the report confidential until there is a fix.
+
+Expect an acknowledgement within 7 days. This is a homelab maintained in spare time, so
+treat that as best effort rather than a commitment.
+
+**In scope:**
+
+- The manifests, Helm values and charts in this repository — anything that would run in a
+  cluster built from them
+- The container images published from here: `vw-backup`, `vw-restore`, `custom-argocd`
+- The GitHub Actions workflows under `.github/workflows/`
+- The admission policy and the secret-handling arrangement, including cases where the
+  git-crypt pattern can be made to miss a file
+
+**Out of scope:**
+
+- The cluster itself, its hostnames and its network. It is a private homelab, not a service
+  offered to anyone
+- Anything requiring an already-compromised maintainer account
+- The gaps listed above, which are known and documented
+
+Reports about the shared build workflow belong in
+[theadzik/github-workflows](https://github.com/theadzik/github-workflows), since fixing them
+there fixes every image at once.
+
 ## See also
 
 - [Supply chain](supply-chain.md) — everything that happens to an image before it is allowed
