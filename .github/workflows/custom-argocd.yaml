@@ -51,13 +51,18 @@ jobs:
       id-token: write
       attestations: write
       artifact-metadata: write
-    uses: theadzik/github-workflows/.github/workflows/build-and-push.yaml@a75831dcde77fb4ad7caa180497a48fd0be072c4 # v1.0.0
+      packages: write
+    uses: theadzik/github-workflows/.github/workflows/build-and-push.yaml@1d7be13ba716c8f074a22d26eb8cfa7b032d00e8 # v2.1.0
     with:
       git-ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
       tags: "type=raw,value=${{ needs.get-version.outputs.app_version }}"
       build-args: |
         TAG=${{ needs.get-version.outputs.app_version }}
-      image-name: "custom-argocd"
+      registry: ghcr.io
+      image-name: "${{ github.repository_owner }}/custom-argocd"
+      registry-username: ${{ github.actor }}
+      extra-registry: dhi.io
+      extra-registry-username: ${{ vars.DOCKERHUB_USERNAME }}
       context-path: "apps/custom-argocd"
       # The shared workflow scans by default. All 32 fixable HIGH findings are
       # in the argocd binary's own Go dependencies (go-git, x/crypto/ssh,
@@ -66,4 +71,6 @@ jobs:
       scan: false
       # Pull requests validate the build only; publishing happens on push to main.
       push: ${{ github.event_name != 'pull_request' }}
-    secrets: inherit
+    secrets:
+      REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+      EXTRA_REGISTRY_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
