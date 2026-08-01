@@ -1,143 +1,85 @@
-# Vaultwarden Backup & Restore
+# Vaultwarden backup and restore
 
-This directory contains automated backup and restore scripts for Vaultwarden with AES-256 encryption, supporting both local Synology NFS storage and remote Google Drive backup.
+Two small images that give Vaultwarden an encrypted, off-site backup and an unattended
+restore. The Kubernetes manifests that use them are in
+[`kubernetes/kustomizations/vaultwarden/`](../../kubernetes/kustomizations/vaultwarden/);
+the wider backup story is in
+[Storage and backups](../../docs/storage-and-backups.md#application-level-backup-vaultwarden).
 
-## Architecture
+| Image | Runs as | Entry point |
+| --- | --- | --- |
+| `ghcr.io/theadzik/vw-backup` | CronJob, every 12 hours | [`backup/backup.sh`](backup/backup.sh) |
+| `ghcr.io/theadzik/vw-restore` | initContainer on every pod start | [`restore/restore.sh`](restore/restore.sh) |
 
-- **Backup**: CronJob runs `backup.sh` to encrypt database + attachments, stores on Synology NFS, optionally syncs to Google Drive
-- **Restore**: InitContainer (`restore.sh`) automatically restores database on pod startup if missing, tries Synology first, then Google Drive
-- **Encryption**: AES-256 with PBKDF2, password passed securely via environment variable
-- **Storage**: Synology NFS (primary) + Google Drive (remote backup)
-
-## Files
-
-- `backup/backup.sh` - Backs up SQLite DB + attachments, encrypts, stores on Synology, optionally syncs to Google Drive
-- `restore/restore.sh` - Tries local Synology restore first, falls back to Google Drive
-- `backup/Dockerfile` - Alpine image with sqlite3, openssl, rclone
-- `restore/Dockerfile` - Alpine image with openssl, rclone
-
-## Kubernetes Deployment
-
-### StatefulSet (vaultwarden.yaml)
-
-Mounts both data and backup PVCs:
-
-```yaml
-initContainers:
-  - name: restore
-    image: ghcr.io/theadzik/vw-restore:main
-    volumeMounts:
-      - mountPath: /data           # Main data volume
-        name: data
-      - mountPath: /backup         # Backup volume (Synology NFS)
-        name: backup
-      - mountPath: /home/vaultwarden
-        name: rclone-conf
-```
-
-### CronJob Backup (backup.yaml)
-
-Runs every 12 hours:
-
-```yaml
-volumes:
-  - name: backup
-    persistentVolumeClaim:
-      claimName: vaultwarden-backup  # Synology NFS PVC
-  - name: data
-    persistentVolumeClaim:
-      claimName: vaultwarden         # Main data PVC
-```
-
-Configures backup with:
-
-```yaml
-env:
-  - name: BACKUP_LOCAL_DIR
-    value: "/backup"                 # Synology mount
-  - name: BACKUP_REMOTE_DIR
-    value: "gdrive:backup"           # Google Drive (optional)
-```
-
-### Persistent Volume Claims
-
-- `vaultwarden`: Main data (10GB iSCSI)
-- `vaultwarden-backup`: Backup storage (10GB NFS)
-
-Both use Synology storage with `retain` reclaim policy.
-
-## Restore Behavior
-
-**Automatic restore on pod startup:**
-
-1. Checks if `/data/db.sqlite3` exists
-2. If exists → Pod starts normally
-3. If missing:
-   - Looks for backups in `/backup` (Synology NFS)
-   - If found → Restores from local backup
-   - If not found → Downloads from `gdrive:backup` (Google Drive)
-   - If both fail → Pod fails to start (prevents data loss)
-
-**Priority order:**
-
-1. Local Synology backup (fast, direct)
-2. Remote Google Drive backup (fallback, slower)
-
-## Secrets Required
-
-1. **backup-encryption-secret** - Contains `BACKUP_ENCRYPTION_KEY` (AES-256 password)
-2. **rclone-secret** - Contains rclone config for Google Drive access (optional for remote sync)
-
-### rclone.conf Format (for Google Drive)
+## Backup
 
 ```text
-[gdrive]
-type = drive
-scope = drive.file
-token = {...}
-team_drive =
-
+sqlite3 .backup  →  tar -czf (db + attachments)  →  openssl aes256, PBKDF2  →  /backup
+                                                                            →  rclone copy → gdrive:backup
 ```
 
-## Backup Storage Locations
+`sqlite3 .backup` rather than copying the file: a live SQLite database copied byte-for-byte
+can be mid-transaction, and the backup API produces a consistent snapshot without stopping
+Vaultwarden.
 
-**Local Synology NFS** (`/backup`):
+The archive is encrypted before it is written anywhere, so neither the NAS nor Google Drive
+ever holds plaintext. The key arrives as `BACKUP_ENCRYPTION_KEY` from a git-crypt encrypted
+secret, passed to OpenSSL as `-pass env:` so it never appears in a process argument list.
 
-- Primary backup location
-- Mounted via `vaultwarden-backup` PVC
-- Fast, reliable, local network access
-- Retains all backups (no automatic cleanup)
+A failed upload to the remote is a warning, not a failure: the local copy already exists,
+and failing the job would mean a red CronJob for a condition that has not lost anything.
+Every other step is fatal, and `backoffLimit: 0` means a failed run is visible rather than
+retried into a loop.
 
-**Remote Google Drive** (`gdrive:backup`):
+## Restore
 
-- Optional secondary location
-- Synced via rclone after local backup
-- Provides off-site redundancy
-- Backup continues locally even if remote sync fails
+The init container decides on its own, and the order encodes what is cheapest and most
+trustworthy:
 
-## Environment Variables
+1. `/data/db.sqlite3` exists → do nothing, let Vaultwarden start.
+2. Newest archive on the NAS → decrypt and extract.
+3. Newest archive on Google Drive → download, decrypt and extract.
+4. Nothing found, or extraction produced no database → **exit non-zero, so the pod does not
+   start.**
 
-### backup.sh
+Step 4 is the whole point. A Vaultwarden that starts on an empty volume looks healthy,
+serves an empty vault, and lets the first client sync overwrite the only remaining copy of
+the data. Refusing to start is the correct failure, and it is why the restore verifies that
+the database exists after extraction rather than trusting the exit code of `tar`.
 
-- `DATADIR` - Source data directory (default: `/data`)
-- `BACKUP_LOCAL_DIR` - Local staging directory (default: `/backup`)
-- `BACKUP_REMOTE_DIR` - Remote storage path (default: `gdrive:backup`)
-- `TEMP_DIR` - Temporary working directory (default: `/tmp/vaultwarden-backup`)
-- `BACKUP_ENCRYPTION_KEY` - **Required** AES-256 password
+## Configuration
 
-### restore.sh
+Both scripts read the same environment:
 
-- `DATADIR` - Restore destination (default: `/data`)
-- `BACKUP_LOCAL_DIR` - Local backup directory (default: `/backup`)
-- `BACKUP_REMOTE_DIR` - Remote backup location (default: `gdrive:backup`)
-- `TEMP_DIR` - Temporary download directory (default: `/tmp/vaultwarden-restore`)
-- `BACKUP_ENCRYPTION_KEY` - **Required** AES-256 password
+| Variable | Default | |
+| --- | --- | --- |
+| `BACKUP_ENCRYPTION_KEY` | *required* | AES-256 passphrase |
+| `DATADIR` | `/data` | Vaultwarden's data directory |
+| `BACKUP_LOCAL_DIR` | `/backup` | NFS-backed PVC on the NAS |
+| `BACKUP_REMOTE_DIR` | `gdrive:backup` | Any rclone remote; skipped if it equals the local directory |
 
-## Security
+Two secrets are mounted: `backup-encryption-secret` for the key, and `rclone-secret`
+carrying an `rclone.conf` for the remote. Both are git-crypt encrypted in this repository.
 
-- Scripts run as unprivileged user (UID 1000)
-- Read-only root filesystem in containers
-- Password passed via environment variable (not command line)
-- AES-256-CBC with PBKDF2 key derivation
-- All backups encrypted before storage or upload
-- Network policies restrict traffic
+## The images
+
+Both build `FROM dhi.io/alpine-base` — [Docker Hardened
+Images](https://www.docker.com/products/hardened-images/) — with a `-dev` stage that has a
+package manager and a final stage that does not. `openssl`, `tar`, `sqlite3` and `rclone`
+are copied in; nothing that installed them is kept.
+
+That leaves a scanner blind spot which is documented in the
+[Dockerfile](backup/Dockerfile) itself: binaries that arrive by `COPY` have no package
+record, and neither `sqlite3` nor `tar` has a syft classifier, so they appear in no SBOM and
+no scan. It is an accepted gap with the alternatives that were tried and rejected written
+next to it — see [Supply chain](../../docs/supply-chain.md#base-images).
+
+Runtime posture is the same for both: `USER nonroot`, read-only root filesystem, all
+capabilities dropped, `RuntimeDefault` seccomp, and `/tmp` as the only writable path.
+
+## Releasing
+
+Both images are tagged from git tags — `vw-backup-<CalVer>` and `vw-restore-<CalVer>` — and
+built by the [shared workflow](https://github.com/theadzik/github-workflows), which scans
+before pushing, signs the digest and attaches an SBOM and provenance attestation. They also
+rebuild weekly, so base image fixes land without a source change.

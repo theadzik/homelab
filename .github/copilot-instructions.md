@@ -17,11 +17,20 @@ Use declarative changes in git. Avoid one-off manual cluster changes.
 
 ## Canonical Docs
 
-Prefer linking to and following these files instead of duplicating guidance:
+Prefer linking to and following these files instead of duplicating guidance.
+When a change makes one of them wrong, update it in the same pull request.
 
 - [Repository overview](../README.md)
+- [Architecture](../docs/architecture.md) — cluster topology, Talos config, sync-wave layering
+- [GitOps](../docs/gitops.md) — app-of-apps, multi-source pattern, image updates, git-crypt
+- [Networking](../docs/networking.md) — Cilium, Traefik, split-horizon DNS, certificates
+- [Storage and backups](../docs/storage-and-backups.md) — storage classes, Velero, recovery
+- [Supply chain](../docs/supply-chain.md) — image builds, signing, Kyverno admission
+- [Security](../docs/security.md) — posture, controls, known gaps
+- [Operations](../docs/operations.md) — bootstrap, adding an app, day-2 runbook
+- [Conventions](../docs/conventions.md) — layout, quality gates, the rules no linter catches
+- [Synology notes](../docs/synology.md) — the manually configured NAS
 - [Sync-wave inventory (auto-generated)](../sync-waves-inventory.md)
-- [Synology/storage notes](../SYNOLOGY.md)
 - [Helm charts notes](../charts/README.md)
 - [Talos config](../talos/) — `schematic.yaml` and `patch-all.yaml` generate Talos machine config/patches.
 
