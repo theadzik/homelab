@@ -103,4 +103,4 @@ storage](https://zmuda.pro/synology-nas-setup), and [what this replaced](https:/
 
 ## Licence
 
-[MIT](LICENSE).
+[Unlicense](LICENSE).
