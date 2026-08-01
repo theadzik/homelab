@@ -1,0 +1,200 @@
+name: Scan published images
+
+# Post-build detection. The build gate only ever runs once, on the day an image
+# is built, and it is switched off entirely for the three images whose findings
+# live in an upstream binary this repo cannot rebuild. So nothing notices a CVE
+# published the day after a build, and nothing notices the more useful event:
+# an upstream release that makes a known finding actionable at last.
+#
+# This reports, it never gates. Every finding it can see today is already known
+# and accepted, so failing the run would train everyone to ignore it.
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    name: Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: read
+      issues: write
+    steps:
+      # Trivy is not preinstalled on ubuntu-latest. Installing it explicitly,
+      # and pinning it, for the same reason grype and syft are pinned: a scanner
+      # arriving by installer default is a silent variable.
+      - name: Install Trivy
+        uses: aquasecurity/setup-trivy@81e514348e19b6112ce2a7e3ecbafe19c1e1f567 # v0.3.1
+        with:
+          version: v0.72.0
+
+      - name: Install Grype
+        uses: anchore/scan-action/download-grype@e1165082ffb1fe366ebaf02d8526e7c4989ea9d2 # v7.4.0
+        id: grype
+        with:
+          # Pinned for the same reason syft is pinned in build-and-push.yaml: a
+          # scanner version arriving by installer default is a silent variable.
+          grype-version: v0.116.1
+
+      # Both scanners, deliberately. Measured on one of these images against the
+      # same SBOM, Trivy reported 4 findings and Grype 9 - the extra five all Go
+      # advisories, which is exactly where these images carry their risk. Two
+      # vulnerability databases disagree, and the union is the honest answer.
+      - name: Scan every published image
+        env:
+          GRYPE: ${{ steps.grype.outputs.cmd }}
+          OWNER: ${{ github.repository_owner }}
+        run: |-
+          set -euo pipefail
+
+          # image:tag-selector. The selector picks the tag that matters for that
+          # image, so this scans what is deployable rather than every stale tag.
+          declare -A SELECT=(
+            [vw-backup]='^[0-9]{4}\.[0-9]+\.[0-9]+$'
+            [vw-restore]='^[0-9]{4}\.[0-9]+\.[0-9]+$'
+            [custom-argocd]='^v[0-9]+\.[0-9]+\.[0-9]+$'
+            [zmuda-pro-blog]='^[0-9]{4}\.[0-9]+\.[0-9]+$'
+          )
+
+          echo "# Published image scan" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Image | Tag | Trivy fixable H/C | Grype fixable H/C |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| --- | --- | --- | --- |" >> "$GITHUB_STEP_SUMMARY"
+
+          : > findings.md
+          total=0
+          failed=0
+
+          for image in "${!SELECT[@]}"; do
+            token=$(curl -sSf "https://ghcr.io/token?scope=repository:${OWNER}/${image}:pull&service=ghcr.io" | jq -r .token)
+            tag=$(curl -sSf -H "Authorization: Bearer ${token}" \
+                    "https://ghcr.io/v2/${OWNER}/${image}/tags/list" \
+                  | jq -r '.tags[]' | grep -E "${SELECT[$image]}" | sort -V | tail -1 || true)
+
+            if [[ -z "${tag}" ]]; then
+              echo "| \`${image}\` | none matched | - | - |" >> "$GITHUB_STEP_SUMMARY"
+              continue
+            fi
+
+            ref="ghcr.io/${OWNER}/${image}:${tag}"
+            echo "::group::${ref}"
+
+            # Scanning by digest, so the report names the exact artifact even if
+            # the tag moves between resolution and scan.
+            digest=$(curl -sSf -H "Authorization: Bearer ${token}" \
+                       -H "Accept: application/vnd.oci.image.index.v1+json" \
+                       -H "Accept: application/vnd.oci.image.manifest.v1+json" \
+                       -D - -o /dev/null "https://ghcr.io/v2/${OWNER}/${image}/manifests/${tag}" \
+                     | tr -d '\r' | awk -F': ' 'tolower($1)=="docker-content-digest"{print $2}')
+            byd="ghcr.io/${OWNER}/${image}@${digest}"
+
+            # A scanner that cannot run must say so. Swallowing its exit code
+            # would report zero findings, which is indistinguishable from a
+            # clean image and is the exact failure this workflow exists to end.
+            if trivy image --quiet --scanners vuln --ignore-unfixed \
+                 --severity HIGH,CRITICAL --format json -o "trivy-${image}.json" "${byd}"; then
+              t=$(jq '[.Results[]?.Vulnerabilities[]?] | length' "trivy-${image}.json")
+            else
+              t="ERROR"; failed=1
+              echo "::warning title=Trivy::scan failed for ${ref}"
+            fi
+
+            if "${GRYPE}" "${byd}" -o json --only-fixed > "grype-${image}.json"; then
+              g=$(jq '[.matches[]? | select(.vulnerability.severity=="High" or .vulnerability.severity=="Critical")] | length' \
+                    "grype-${image}.json")
+            else
+              g="ERROR"; failed=1
+              echo "::warning title=Grype::scan failed for ${ref}"
+            fi
+
+            echo "| \`${image}\` | \`${tag}\` | ${t} | ${g} |" >> "$GITHUB_STEP_SUMMARY"
+            [[ "${t}" == "ERROR" ]] || total=$(( total + t ))
+            [[ "${g}" == "ERROR" ]] || total=$(( total + g ))
+
+            if [[ "${t}" != "ERROR" && "${g}" != "ERROR" ]] && (( t > 0 || g > 0 )); then
+              {
+                echo "### \`${image}:${tag}\`"
+                echo ""
+                echo "\`${digest}\`"
+                echo ""
+                echo "| Scanner | Severity | ID | Package | Installed | Fixed |"
+                echo "| --- | --- | --- | --- | --- | --- |"
+                jq -r '.Results[]?.Vulnerabilities[]? | "| Trivy | \(.Severity) | \(.VulnerabilityID) | \(.PkgName) | \(.InstalledVersion) | \(.FixedVersion) |"' \
+                  "trivy-${image}.json" 2>/dev/null | sort -u
+                jq -r '.matches[]? | select(.vulnerability.severity=="High" or .vulnerability.severity=="Critical") | "| Grype | \(.vulnerability.severity) | \(.vulnerability.id) | \(.artifact.name) | \(.artifact.version) | \(.vulnerability.fix.versions | join(", ")) |"' \
+                  "grype-${image}.json" 2>/dev/null | sort -u
+                echo ""
+              } >> findings.md
+            fi
+            echo "::endgroup::"
+          done
+
+          echo "TOTAL=${total}" >> "$GITHUB_ENV"
+
+          # Reporting findings is not a failure; being unable to look is.
+          if (( failed )); then
+            echo "::error title=Scan::at least one scanner failed to run; the counts above are incomplete"
+            exit 1
+          fi
+
+      - name: Upload scan output
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: scan-results
+          path: |
+            trivy-*.json
+            grype-*.json
+          retention-days: 14
+
+      # One issue, reopened and rewritten rather than a new one per run: a daily
+      # scan that files a daily issue is a daily notification nobody reads.
+      - name: Report
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # No checkout in this job, so there is no git remote for gh to infer
+          # the repository from.
+          GH_REPO: ${{ github.repository }}
+          TITLE: "Fixable HIGH/CRITICAL findings in published images"
+        run: |-
+          set -euo pipefail
+          existing=$(gh issue list --state all --search "\"${TITLE}\" in:title" \
+                       --json number,state --jq '.[0] | "\(.number) \(.state)"' || true)
+          num=${existing%% *}
+          state=${existing##* }
+
+          if [[ "${TOTAL:-0}" -eq 0 ]]; then
+            echo "No fixable HIGH/CRITICAL findings."
+            if [[ -n "${num}" && "${state}" == "OPEN" ]]; then
+              gh issue comment "${num}" --body "Clear as of $(date -u +%Y-%m-%d). Closing."
+              gh issue close "${num}"
+            fi
+            exit 0
+          fi
+
+          {
+            echo "Found by the daily scan of published images. Run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+            echo ""
+            echo "Findings here are **fixable** - a fixed version exists upstream. Many will still"
+            echo "not be actionable from this repository, because they live inside a binary copied"
+            echo "from a pinned upstream image. The value of this list is noticing the day that"
+            echo "changes."
+            echo ""
+            cat findings.md
+          } > body.md
+
+          if [[ -n "${num}" ]]; then
+            gh issue edit "${num}" --body-file body.md
+            [[ "${state}" == "CLOSED" ]] && gh issue reopen "${num}" || true
+          else
+            gh issue create --title "${TITLE}" --body-file body.md
+          fi
