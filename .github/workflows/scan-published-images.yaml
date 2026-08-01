@@ -66,10 +66,11 @@ jobs:
             [zmuda-pro-blog]='^[0-9]{4}\.[0-9]+\.[0-9]+$'
           )
 
-          echo "# Published image scan" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "| Image | Tag | Trivy fixable H/C | Grype fixable H/C |" >> "$GITHUB_STEP_SUMMARY"
-          echo "| --- | --- | --- | --- |" >> "$GITHUB_STEP_SUMMARY"
+          : > summary.md
+          {
+            echo "| Image | Tag | Trivy fixable H/C | Grype fixable H/C |"
+            echo "| --- | --- | --- | --- |"
+          } >> summary.md
 
           : > findings.md
           total=0
@@ -82,7 +83,7 @@ jobs:
                   | jq -r '.tags[]' | grep -E "${SELECT[$image]}" | sort -V | tail -1 || true)
 
             if [[ -z "${tag}" ]]; then
-              echo "| \`${image}\` | none matched | - | - |" >> "$GITHUB_STEP_SUMMARY"
+              echo "| \`${image}\` | none matched | - | - |" >> summary.md
               continue
             fi
 
@@ -117,13 +118,13 @@ jobs:
               echo "::warning title=Grype::scan failed for ${ref}"
             fi
 
-            echo "| \`${image}\` | \`${tag}\` | ${t} | ${g} |" >> "$GITHUB_STEP_SUMMARY"
+            echo "| \`${image}\` | \`${tag}\` | ${t} | ${g} |" >> summary.md
             [[ "${t}" == "ERROR" ]] || total=$(( total + t ))
             [[ "${g}" == "ERROR" ]] || total=$(( total + g ))
 
             if [[ "${t}" != "ERROR" && "${g}" != "ERROR" ]] && (( t > 0 || g > 0 )); then
               {
-                echo "### \`${image}:${tag}\`"
+                echo "<details><summary><code>${image}:${tag}</code> - ${t} Trivy, ${g} Grype</summary>"
                 echo ""
                 echo "\`${digest}\`"
                 echo ""
@@ -134,10 +135,18 @@ jobs:
                 jq -r '.matches[]? | select(.vulnerability.severity=="High" or .vulnerability.severity=="Critical") | "| Grype | \(.vulnerability.severity) | \(.vulnerability.id) | \(.artifact.name) | \(.artifact.version) | \(.vulnerability.fix.versions | join(", ")) |"' \
                   "grype-${image}.json" 2>/dev/null | sort -u
                 echo ""
+                echo "</details>"
+                echo ""
               } >> findings.md
             fi
             echo "::endgroup::"
           done
+
+          {
+            echo "# Published image scan"
+            echo ""
+            cat summary.md
+          } >> "$GITHUB_STEP_SUMMARY"
 
           echo "TOTAL=${total}" >> "$GITHUB_ENV"
 
@@ -167,8 +176,12 @@ jobs:
           TITLE: "Fixable HIGH/CRITICAL findings in published images"
         run: |-
           set -euo pipefail
+          # `.[0]` on an empty list is null, and interpolating it yields the
+          # string "null null" - which reads as a found issue and then fails on
+          # `gh issue edit null`.
           existing=$(gh issue list --state all --search "\"${TITLE}\" in:title" \
-                       --json number,state --jq '.[0] | "\(.number) \(.state)"' || true)
+                       --json number,state \
+                       --jq 'if length > 0 then "\(.[0].number) \(.[0].state)" else "" end' || true)
           num=${existing%% *}
           state=${existing##* }
 
@@ -183,6 +196,8 @@ jobs:
 
           {
             echo "Found by the daily scan of published images. Run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+            echo ""
+            cat summary.md
             echo ""
             echo "Findings here are **fixable** - a fixed version exists upstream. Many will still"
             echo "not be actionable from this repository, because they live inside a binary copied"
