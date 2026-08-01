@@ -13,7 +13,7 @@ updates:
       interval: "weekly"
       day: "friday"
     cooldown:
-      default-days: 2
+      default-days: 7
     # pip is one of the ecosystems where resolving a manifest can run code from
     # the package being resolved. Nothing here needs that, and denying it keeps
     # a compromised release away from Dependabot's registry credentials.
@@ -25,7 +25,7 @@ updates:
       interval: "weekly"
       day: "friday"
     cooldown:
-      default-days: 2
+      default-days: 7
   - package-ecosystem: "docker"
     directories:
       - "/apps/vaultwarden/backup"
@@ -34,7 +34,7 @@ updates:
       interval: "weekly"
       day: "friday"
     cooldown:
-      default-days: 2
+      default-days: 7
     registries:
       - dhi-io
     groups:
@@ -47,7 +47,7 @@ updates:
     schedule:
       interval: "weekly"
     cooldown:
-      default-days: 2
+      default-days: 7
     groups:
       github-actions:
         patterns:
@@ -61,7 +61,7 @@ updates:
     schedule:
       interval: "weekly"
     cooldown:
-      default-days: 2
+      default-days: 7
     groups:
       pre-commit:
         patterns:
