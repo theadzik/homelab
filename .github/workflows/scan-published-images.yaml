@@ -30,7 +30,15 @@ jobs:
       packages: read
       issues: write
     steps:
-      - name: Install scanners
+      # Trivy is not preinstalled on ubuntu-latest. Installing it explicitly,
+      # and pinning it, for the same reason grype and syft are pinned: a scanner
+      # arriving by installer default is a silent variable.
+      - name: Install Trivy
+        uses: aquasecurity/setup-trivy@81e514348e19b6112ce2a7e3ecbafe19c1e1f567 # v0.3.1
+        with:
+          version: v0.72.0
+
+      - name: Install Grype
         uses: anchore/scan-action/download-grype@e1165082ffb1fe366ebaf02d8526e7c4989ea9d2 # v7.4.0
         id: grype
         with:
@@ -45,6 +53,7 @@ jobs:
       - name: Scan every published image
         env:
           GRYPE: ${{ steps.grype.outputs.cmd }}
+          OWNER: ${{ github.repository_owner }}
         run: |-
           set -euo pipefail
 
@@ -64,11 +73,12 @@ jobs:
 
           : > findings.md
           total=0
+          failed=0
 
           for image in "${!SELECT[@]}"; do
-            token=$(curl -sSf "https://ghcr.io/token?scope=repository:theadzik/${image}:pull&service=ghcr.io" | jq -r .token)
+            token=$(curl -sSf "https://ghcr.io/token?scope=repository:${OWNER}/${image}:pull&service=ghcr.io" | jq -r .token)
             tag=$(curl -sSf -H "Authorization: Bearer ${token}" \
-                    "https://ghcr.io/v2/theadzik/${image}/tags/list" \
+                    "https://ghcr.io/v2/${OWNER}/${image}/tags/list" \
                   | jq -r '.tags[]' | grep -E "${SELECT[$image]}" | sort -V | tail -1 || true)
 
             if [[ -z "${tag}" ]]; then
@@ -76,7 +86,7 @@ jobs:
               continue
             fi
 
-            ref="ghcr.io/theadzik/${image}:${tag}"
+            ref="ghcr.io/${OWNER}/${image}:${tag}"
             echo "::group::${ref}"
 
             # Scanning by digest, so the report names the exact artifact even if
@@ -84,22 +94,34 @@ jobs:
             digest=$(curl -sSf -H "Authorization: Bearer ${token}" \
                        -H "Accept: application/vnd.oci.image.index.v1+json" \
                        -H "Accept: application/vnd.oci.image.manifest.v1+json" \
-                       -D - -o /dev/null "https://ghcr.io/v2/theadzik/${image}/manifests/${tag}" \
+                       -D - -o /dev/null "https://ghcr.io/v2/${OWNER}/${image}/manifests/${tag}" \
                      | tr -d '\r' | awk -F': ' 'tolower($1)=="docker-content-digest"{print $2}')
-            byd="ghcr.io/theadzik/${image}@${digest}"
+            byd="ghcr.io/${OWNER}/${image}@${digest}"
 
-            trivy image --quiet --scanners vuln --ignore-unfixed \
-              --severity HIGH,CRITICAL --format json -o "trivy-${image}.json" "${byd}" || true
-            t=$(jq '[.Results[]?.Vulnerabilities[]?] | length' "trivy-${image}.json" 2>/dev/null || echo 0)
+            # A scanner that cannot run must say so. Swallowing its exit code
+            # would report zero findings, which is indistinguishable from a
+            # clean image and is the exact failure this workflow exists to end.
+            if trivy image --quiet --scanners vuln --ignore-unfixed \
+                 --severity HIGH,CRITICAL --format json -o "trivy-${image}.json" "${byd}"; then
+              t=$(jq '[.Results[]?.Vulnerabilities[]?] | length' "trivy-${image}.json")
+            else
+              t="ERROR"; failed=1
+              echo "::warning title=Trivy::scan failed for ${ref}"
+            fi
 
-            "${GRYPE}" "${byd}" -o json --only-fixed 2>/dev/null > "grype-${image}.json" || true
-            g=$(jq '[.matches[]? | select(.vulnerability.severity=="High" or .vulnerability.severity=="Critical")] | length' \
-                  "grype-${image}.json" 2>/dev/null || echo 0)
+            if "${GRYPE}" "${byd}" -o json --only-fixed > "grype-${image}.json"; then
+              g=$(jq '[.matches[]? | select(.vulnerability.severity=="High" or .vulnerability.severity=="Critical")] | length' \
+                    "grype-${image}.json")
+            else
+              g="ERROR"; failed=1
+              echo "::warning title=Grype::scan failed for ${ref}"
+            fi
 
             echo "| \`${image}\` | \`${tag}\` | ${t} | ${g} |" >> "$GITHUB_STEP_SUMMARY"
-            total=$(( total + t + g ))
+            [[ "${t}" == "ERROR" ]] || total=$(( total + t ))
+            [[ "${g}" == "ERROR" ]] || total=$(( total + g ))
 
-            if (( t > 0 || g > 0 )); then
+            if [[ "${t}" != "ERROR" && "${g}" != "ERROR" ]] && (( t > 0 || g > 0 )); then
               {
                 echo "### \`${image}:${tag}\`"
                 echo ""
@@ -118,6 +140,12 @@ jobs:
           done
 
           echo "TOTAL=${total}" >> "$GITHUB_ENV"
+
+          # Reporting findings is not a failure; being unable to look is.
+          if (( failed )); then
+            echo "::error title=Scan::at least one scanner failed to run; the counts above are incomplete"
+            exit 1
+          fi
 
       - name: Upload scan output
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
