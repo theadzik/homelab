@@ -177,7 +177,7 @@ Every secret in this repository is committed, encrypted with
 ```
 
 Filename is the contract. Anything with `secret` in its name is encrypted on commit and
-unreadable on GitHub. The naming rule is enforced in review, and the same pattern excludes those
+opaque on GitHub. The naming rule is enforced in review, and the same pattern excludes those
 files from [detect-secrets](../.pre-commit-config.yaml), because a git-crypt blob would
 otherwise be flagged as high-entropy on every run.
 
