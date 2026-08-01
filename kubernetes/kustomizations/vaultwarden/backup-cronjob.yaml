@@ -12,8 +12,6 @@ spec:
       backoffLimit: 0
       template:
         spec:
-          imagePullSecrets:
-            - name: dockerhub-image-pull-secret
           containers:
             - name: backup
               image: ghcr.io/theadzik/vw-backup:main
