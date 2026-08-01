@@ -33,7 +33,5 @@ labels:
     pairs:
       app.kubernetes.io/instance: dev
 images:
-  - name: theadzik/zmuda-pro-blog
-    newTag: sha-110aece
   - name: ghcr.io/theadzik/zmuda-pro-blog
     newTag: sha-9742a89
