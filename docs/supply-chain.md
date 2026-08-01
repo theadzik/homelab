@@ -1,0 +1,191 @@
+# Supply chain
+
+Four container images are built for this cluster, and every one of them is scanned before
+it is pushed, signed at its digest, described by an SBOM, and checked again by the cluster
+at admission. This page is the homelab half of that chain; the workflow that implements the
+build half lives in [theadzik/github-workflows](https://github.com/theadzik/github-workflows)
+so that three repositories can share one implementation.
+
+```mermaid
+flowchart LR
+    subgraph build["GitHub Actions (shared workflow)"]
+        b[build to OCI layout] --> s[Trivy scan]
+        s --> p[push by digest]
+        p --> sig[cosign sign]
+        sig --> att["attest SBOM<br/>+ provenance"]
+        att --> v[verify signature]
+        v --> t[publish tags]
+    end
+
+    t --> reg[(ghcr.io/theadzik)]
+    reg --> iu[Image Updater]
+    iu --> git[(git)]
+    git --> argo[ArgoCD]
+    argo --> adm{Kyverno admission}
+    adm --> pod[pod runs]
+    reg -.->|daily rescan| issue["GitHub issue<br/>reopened, never duplicated"]
+```
+
+## What is built here
+
+| Image | Source | Tagging |
+| --- | --- | --- |
+| `vw-backup` | [apps/vaultwarden/backup](../apps/vaultwarden/backup/) | Git tag `vw-backup-<CalVer>` |
+| `vw-restore` | [apps/vaultwarden/restore](../apps/vaultwarden/restore/) | Git tag `vw-restore-<CalVer>` |
+| `custom-argocd` | [apps/custom-argocd](../apps/custom-argocd/) | The ArgoCD app version it patches |
+| `zmuda-pro-blog` | [theadzik/blog](https://github.com/theadzik/blog) | CalVer for releases, `sha-<commit>` for `main` |
+
+`custom-argocd` derives its own tag rather than being given one. The
+[workflow](../.github/workflows/custom-argocd.yaml) reads the chart version out of the
+[ArgoCD Application](../kubernetes/bootstrap/charts/app-of-apps/templates/argocd.yaml),
+resolves that chart's `appVersion` with `helm search`, and builds `FROM
+quay.io/argoproj/argocd:<that version>`. The patched image therefore cannot drift from the
+version the cluster is actually running — changing the chart version in git is the only way
+to move it.
+
+The two Vaultwarden images also rebuild weekly on a schedule. Base images gain fixes
+between releases, and an image that is only rebuilt when its source changes gets steadily
+older than its own base.
+
+## Order matters at both ends
+
+The shared workflow builds to an **OCI layout on disk**, scans it there, and only then
+pushes. Nothing unscanned ever reaches the registry, and the digest that was scanned is the
+digest that gets signed, pushed and deployed — not a rebuild that happens to have the same
+inputs.
+
+At the far end, **tags are published last**, after the signature and both attestations
+exist. That ordering is specific to how this cluster works: ArgoCD Image Updater discovers
+images by listing tags, so a tag that appeared before the signature would advertise an
+image the cluster is about to refuse.
+
+Signing is keyless, and the identity in the certificate is the *called* workflow, which is
+why the Kyverno policy below names `github-workflows` rather than this repository.
+
+## Base images
+
+Every stage of the Vaultwarden images builds `FROM dhi.io/*` — [Docker Hardened
+Images](https://www.docker.com/products/hardened-images/) — which are minimal and
+non-root by default. The final stage copies binaries from a `-dev` stage that has a package
+manager, and keeps nothing that installed them.
+
+That produces a known blind spot, and it is [written down in the
+Dockerfile](../apps/vaultwarden/backup/Dockerfile) rather than left to be rediscovered:
+binaries that arrive by `COPY` leave no package-manager record, and `syft` has no classifier
+for `sqlite3` or `tar`, so neither appears in the SBOM or in a scan. A CVE in either would
+be invisible to every gate here.
+
+Three fixes were tried and rejected — the non-dev base ships no `apk`, copying the build
+stage's package database would claim the whole dev toolchain is present, and BuildKit's SBOM
+scanning no longer applies now that syft generates the SBOM from the layout. So it is an
+accepted gap with a note attached: *if you add another copied binary, add it here.*
+
+An honest gap that is documented is worth more than a clean report that is wrong.
+
+## Admission: the cluster checks the work
+
+[`validate-image-attestations.yaml`](../kubernetes/kustomizations/kyverno/validate-image-attestations.yaml)
+is a Kyverno `ImageValidatingPolicy` that verifies, for every `ghcr.io/theadzik/*` image:
+
+1. A cosign signature from the expected keyless identity.
+2. A signed CycloneDX SBOM attestation.
+3. A signed SLSA provenance attestation.
+
+The identity is one regular expression, and every dot in it is escaped:
+
+```text
+^https://github\.com/theadzik/github-workflows/\.github/workflows/build-and-push\.yaml@.+$
+```
+
+An unescaped `.` matches any character, which would let a lookalike host satisfy the
+pattern. Only the ref after `@` is open, because each caller pins a different commit of the
+shared workflow.
+
+Two details in that policy are the kind that only show up in production:
+
+- **`matchConditions` restricts the webhook to pods that actually reference one of our
+  images.** Without it the webhook is consulted for every pod in the cluster and records a
+  vacuous pass for each, because a CEL `.all()` over an empty list is `true`. A policy that
+  reports success for pods it never examined is worse than no policy.
+- **The SBOM check accepts CycloneDX *or* SPDX**, with a comment naming the exact images
+  that still carry the old format and the condition for deleting the fallback. CEL `||`
+  short-circuits, so current images pay for one attestation fetch and only the stragglers
+  pay for two.
+
+### Currently Audit, not Deny
+
+`validationActions: [Audit]` and `failurePolicy: Ignore`. The policy reports violations; it
+does not block them.
+
+That is a deliberate intermediate state, not an oversight. Verification means fetching
+attestations and querying Rekor for every container in a matched pod, and the cost sits
+close enough to the webhook timeout that flipping to `Deny` today would trade a supply-chain
+risk for an availability risk — a slow transparency log would stop unrelated deployments.
+The path to `Deny` is to make verification cheaper per admission, and until then a
+background scan re-verifies every matched pod on a 6-hour interval, so drift is visible even
+though it is not blocked.
+
+## Detection after the build
+
+A build gate fires once, on the day the image is built. It cannot see a CVE published the
+day after, and — more useful — it cannot see the day an upstream release finally makes a
+known finding fixable.
+
+[`scan-published-images.yaml`](../.github/workflows/scan-published-images.yaml) closes that
+gap. Daily, it resolves the current tag of each published image, pins it to a digest, and
+scans it with **both Trivy and Grype**.
+
+Two scanners is not belt and braces. Measured on one of these images against the same SBOM,
+Trivy reported 4 findings and Grype 9, and the extra five were Go advisories — precisely
+where these images carry their risk. Two vulnerability databases disagree, and the union is
+the honest answer.
+
+Its reporting rules are worth copying:
+
+- **It reports, it never gates.** Every finding it can currently see is already known and
+  accepted; failing the run daily would train everyone to ignore it.
+- **It fails only when a scanner could not run.** A swallowed scanner error reports zero
+  findings, which is indistinguishable from a clean image — the exact failure the workflow
+  exists to prevent.
+- **One issue, reopened and rewritten.** A daily scan that files a daily issue is a daily
+  notification nobody reads. When the findings clear, it comments and closes.
+
+Three images have the *build* gate switched off (`scan: false`), each with the reason in the
+workflow: every finding is inside a binary copied from an upstream image — rclone's Go
+dependencies, ArgoCD's own — which nothing in this repository can rebuild. A gate that can
+only ever block the weekly rebuild is not a gate. The daily scan is what covers them
+instead, and it is where an actionable upstream fix will first appear.
+
+## Why GHCR
+
+Everything publishes to `ghcr.io/theadzik/*`, public. The move off Docker Hub was forced
+rather than chosen: Image Updater reconciles roughly twenty images every few minutes and
+Kyverno re-verifies on top of that, which consumed the anonymous pull quota as fast as it
+refilled. Signing started failing and policy evaluation returned `429`. GHCR applies no pull
+rate limit to public images, which removes the ceiling instead of buying headroom under it.
+
+Docker Hub is still used for *pulling* third-party images, so a pull secret survives exactly
+where something genuinely needs it.
+
+## Dependencies
+
+[Dependabot](../.github/dependabot.yml) covers every ecosystem in the repository — pip,
+Docker, GitHub Actions and pre-commit — with the same reasoning throughout:
+
+| Choice | Reason |
+| --- | --- |
+| `cooldown: default-days: 7` | A compromised release is usually yanked within days. Waiting a week costs nothing and skips that window. |
+| `semver-major-days: 14` | Majors carry the largest diff and get the least useful review; upstream's follow-up patch usually lands inside two weeks. |
+| `insecure-external-code-execution: deny` on pip | Resolving a Python manifest can execute code from the package being resolved. Nothing here needs that, and denying it keeps a compromised release away from Dependabot's registry credentials. |
+| `replaces-base: true` on the Docker Hub registry | Images with no registry host resolve to Docker Hub anonymously, sharing one rate limit with every other caller on the runners. |
+| `pre-commit` ecosystem | Hook revisions are pinned in `.pre-commit-config.yaml` and are the only copy of those versions — hadolint and shellcheck stop gaining rules the moment those pins go stale. |
+
+Third-party GitHub Actions are pinned by commit SHA with the version in a trailing comment,
+including the shared workflow itself. Dependabot updates the SHA and the comment together.
+
+## See also
+
+- [github-workflows](https://github.com/theadzik/github-workflows) — the shared build
+  workflow, its inputs and the reasoning behind each tool choice
+- [Security](security.md) — what happens after admission
+- [GitOps](gitops.md#image-updates-that-leave-a-trail) — how a new tag becomes a running pod
