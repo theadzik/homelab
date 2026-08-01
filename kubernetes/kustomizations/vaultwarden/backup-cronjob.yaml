@@ -16,7 +16,7 @@ spec:
             - name: dockerhub-image-pull-secret
           containers:
             - name: backup
-              image: theadzik/vw-backup:2026.2.1
+              image: ghcr.io/theadzik/vw-backup:main
               imagePullPolicy: Always
               volumeMounts:
                 - mountPath: /backup
