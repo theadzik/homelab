@@ -195,9 +195,25 @@ exit $ec
 ```
 
 Every `git fetch` the repo-server performs is followed by an unlock, so decryption happens
-exactly where and when it is needed, with no operator in the loop. The key itself is a
-Kubernetes Secret mounted into the repo-server — the one secret that cannot live in the
-repository, and the only thing needed to rebuild the cluster's access to everything else.
+exactly where and when it is needed, with no operator in the loop.
+
+The key reaches the repo-server as a Kubernetes Secret, and that Secret is
+[in this repository](../kubernetes/kustomizations/argocd/argocd-gitcrypt-secret.yaml) like
+everything else — its filename matches `*secret*`, so git-crypt encrypts it with the very
+key it contains. That sounds circular, and it is, harmlessly: the file is only readable by
+something that can already read the repository, so committing it gives an attacker nothing
+while letting the cluster's access be declared rather than injected by hand.
+
+What breaks the circle is an out-of-band copy, and git-crypt supports two:
+
+| Path | Used for |
+| --- | --- |
+| `git-crypt unlock <keyfile>` | An exported symmetric key, kept outside the repository and outside the cluster |
+| `git-crypt unlock` with a registered GPG key | The collaborator key under [`.git-crypt/keys/`](../.git-crypt/), which holds the same symmetric key encrypted to a GPG public key |
+
+Either one unlocks a fresh clone, and from there `kubectl apply -k` hands the cluster the
+Secret it needs. Losing **both** is the unrecoverable case — see
+[Storage and backups](storage-and-backups.md#what-is-actually-recoverable).
 
 The image is built and published from this repository, tagged with the ArgoCD app version
 resolved from the chart the cluster is running, so it can never drift from the version it

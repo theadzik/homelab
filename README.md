@@ -49,7 +49,7 @@ Documentation for each, with the reasoning:
   PiHole or Cloudflare. Same manifest, two zones.
 - **[Secrets committed to a public repository](docs/gitops.md#secrets-in-a-public-repository)** —
   git-crypt selected by filename, and a patched ArgoCD that unlocks after every fetch, so
-  decryption needs no operator.
+  decryption needs no operator. The key ships in the repository too, encrypted with itself.
 - **[A password vault that repairs itself](docs/storage-and-backups.md#application-level-backup-vaultwarden)** —
   encrypted backups to the NAS and off-site, restored by an init container, and a pod that
   refuses to start empty rather than presenting an empty vault to its clients.

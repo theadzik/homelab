@@ -146,9 +146,11 @@ Two controls sit around it:
   [release reviewer](../.github/agents/homelab-release-reviewer.agent.md) checks it as a
   policy violation on every release-affecting change.
 
-The git-crypt key itself is the one secret that cannot live here. It is held outside the
-cluster and outside the repository, and it is the single item without which a rebuild
-cannot proceed.
+The git-crypt key is here too, as the Secret ArgoCD mounts, encrypted with itself. It is
+readable only by someone who can already read the repository, so it adds no exposure — but
+it also cannot unlock anything. Bootstrapping needs a copy the repository does not hold: the
+exported key file, or the GPG key registered under `.git-crypt/keys/`. Those two are the
+material an attacker would actually need, and the only thing whose loss is unrecoverable.
 
 ## Repository controls
 

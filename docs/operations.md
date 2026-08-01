@@ -34,13 +34,18 @@ The full PXE and DHCP setup is written up in
 
 ### 2. Unlock the repository
 
+Either path works — an exported key file, or the GPG key registered as a git-crypt
+collaborator:
+
 ```bash
-git-crypt unlock /path/to/homelab-git-crypt.key
+git-crypt unlock /path/to/homelab-git-crypt.key   # symmetric key held elsewhere
+git-crypt unlock                                  # GPG key already in the local keyring
 ```
 
-Without this, the ArgoCD values and the git-crypt secret in the next step are ciphertext.
-This key is the one piece of state that lives nowhere in this repository — see
-[Security](security.md#secrets).
+Without one of them, the ArgoCD values and the git-crypt Secret applied in step 4 are
+ciphertext. The Secret is in this repository but encrypted with the key it carries, so it
+cannot bootstrap itself — see
+[GitOps](gitops.md#secrets-in-a-public-repository).
 
 ### 3. Install ArgoCD by hand, once
 

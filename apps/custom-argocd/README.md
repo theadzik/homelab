@@ -22,8 +22,11 @@ where it is needed, on every refresh, with nobody in the loop. The wrapper is de
 inert for every other git subcommand, and the unlock's failure is swallowed so that a
 repository with nothing encrypted still works.
 
-`GITCRYPT_KEY_PATH` and the mounted key come from
-[the ArgoCD values](../../kubernetes/helm/argocd/values.yaml).
+`GITCRYPT_KEY_PATH` and the volume behind it are set in
+[the ArgoCD values](../../kubernetes/helm/argocd/values.yaml). The Secret itself is
+[committed](../../kubernetes/kustomizations/argocd/argocd-gitcrypt-secret.yaml), encrypted
+by git-crypt with the key it contains — harmless, since reading it already requires being
+able to read the repository, and it keeps the cluster's access declarative.
 
 ## Versioning
 

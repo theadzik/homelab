@@ -140,9 +140,13 @@ same NAS as the volumes it backs up, so it protects against deletion and corrupt
 against hardware loss. Fixing it means an off-site S3 target, which is a cost decision
 rather than a technical one.
 
-The git-crypt key is the other single point of failure. It lives outside the cluster and
-outside this repository, and without it a rebuilt ArgoCD can read none of the secrets it
-would need. See [Operations](operations.md#bootstrapping-from-nothing).
+The other unrecoverable case is losing every way to unlock the repository. The git-crypt key
+is committed here as the Secret ArgoCD mounts, encrypted with itself, so it is no use for
+bootstrapping — that needs either the exported key file kept elsewhere or the GPG key
+registered under [`.git-crypt/keys/`](../.git-crypt/). Two independent paths, and both are
+held outside this repository. Lose both and nothing here decrypts, including the backups of
+things that were encrypted with what it protects. See
+[GitOps](gitops.md#secrets-in-a-public-repository).
 
 ## See also
 
