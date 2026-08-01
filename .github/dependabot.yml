@@ -5,6 +5,16 @@ registries:
     url: https://dhi.io
     username: ${{ secrets.DOCKERHUB_USERNAME }}
     password: ${{ secrets.DOCKERHUB_TOKEN }}
+  # ubuntu and rclone/rclone carry no registry host, so Dependabot resolves them
+  # against Docker Hub anonymously and shares one rate limit with every other
+  # unauthenticated caller on its runners. replaces-base points that default
+  # lookup here instead; images naming dhi.io explicitly still go to dhi-io.
+  docker-hub:
+    type: docker-registry
+    url: https://registry.hub.docker.com
+    username: ${{ secrets.DOCKERHUB_USERNAME }}
+    password: ${{ secrets.DOCKERHUB_TOKEN }}
+    replaces-base: true
 updates:
   - package-ecosystem: "pip"
     directories:
@@ -12,6 +22,18 @@ updates:
     schedule:
       interval: "weekly"
       day: "friday"
+    cooldown:
+      default-days: 7
+      # Majors carry the largest diff and get the least useful review, and
+      # upstream's follow-up patch usually lands inside two weeks. The 7 days
+      # above are what covers the supply-chain case, for every bump type.
+      # Only pip and npm honour this key; the docker, github-actions and
+      # pre-commit entries below take default-days alone.
+      semver-major-days: 14
+    # pip is one of the ecosystems where resolving a manifest can run code from
+    # the package being resolved. Nothing here needs that, and denying it keeps
+    # a compromised release away from Dependabot's registry credentials.
+    insecure-external-code-execution: deny
   - package-ecosystem: "docker"
     directories:
       - "/apps/custom-argocd"
@@ -19,7 +41,9 @@ updates:
       interval: "weekly"
       day: "friday"
     cooldown:
-      default-days: 2
+      default-days: 7
+    registries:
+      - docker-hub
   - package-ecosystem: "docker"
     directories:
       - "/apps/vaultwarden/backup"
@@ -28,9 +52,10 @@ updates:
       interval: "weekly"
       day: "friday"
     cooldown:
-      default-days: 2
+      default-days: 7
     registries:
       - dhi-io
+      - docker-hub
     groups:
       vaultwarden-dockerfiles:
         patterns:
@@ -41,8 +66,22 @@ updates:
     schedule:
       interval: "weekly"
     cooldown:
-      default-days: 2
+      default-days: 7
     groups:
       github-actions:
+        patterns:
+          - "*"
+  # Hook revs are pinned in .pre-commit-config.yaml and are the only copy of
+  # those versions; hadolint, shellcheck and detect-secrets stop gaining rules
+  # as soon as the pins go stale.
+  - package-ecosystem: "pre-commit"
+    directories:
+      - "/"
+    schedule:
+      interval: "weekly"
+    cooldown:
+      default-days: 7
+    groups:
+      pre-commit:
         patterns:
           - "*"
