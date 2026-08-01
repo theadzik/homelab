@@ -21,7 +21,7 @@ jobs:
     with:
       tag-prefix: "vw-restore-"
   restore-build-push:
-    uses: theadzik/github-workflows/.github/workflows/build-and-push.yaml@1d7be13ba716c8f074a22d26eb8cfa7b032d00e8 # v2.1.0
+    uses: theadzik/github-workflows/.github/workflows/build-and-push.yaml@59202524db1536b7e91d4c8a9e16e9de15f1ab24 # v2.2.0
     needs: get-tag
     permissions:
       contents: read
