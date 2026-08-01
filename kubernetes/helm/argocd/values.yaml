@@ -1,11 +1,8 @@
 global:
   domain: argocd.zmuda.pro
   image:
-    repository: theadzik/custom-argocd
+    repository: ghcr.io/theadzik/custom-argocd
     tag: ""
-
-  imagePullSecrets:
-    - name: dockerhub-image-pull-secret
 
   networkPolicy:
     create: true

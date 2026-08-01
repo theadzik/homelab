@@ -16,15 +16,13 @@ spec:
   template:
     spec:
       priorityClassName: high-priority
-      imagePullSecrets:
-        - name: dockerhub-image-pull-secret
       containers:
         - name: nginx
           # Always replaced by each overlay's `images:` newTag - dev tracks sha-
           # builds of main, prod tracks CalVer releases. Kept as `main` so that an
           # overlay which forgot to override would still land on reviewed code
           # rather than a stale pin (this previously read 2026.5.1, months old).
-          image: theadzik/zmuda-pro-blog:main
+          image: ghcr.io/theadzik/zmuda-pro-blog:main
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
