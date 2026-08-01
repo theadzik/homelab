@@ -52,7 +52,7 @@ spec:
           writeBackTarget: "kustomization:/kubernetes/kustomizations/blog/overlays/dev"
       images:
         - alias: "zmuda-pro-blog"
-          imageName: "theadzik/zmuda-pro-blog"
+          imageName: "ghcr.io/theadzik/zmuda-pro-blog"
           commonUpdateSettings:
             updateStrategy: "newest-build"
             # Immutable per-commit builds of main only. With no filter this
@@ -68,7 +68,7 @@ spec:
           writeBackTarget: "kustomization:/kubernetes/kustomizations/blog/overlays/prod"
       images:
         - alias: "zmuda-pro-blog"
-          imageName: "theadzik/zmuda-pro-blog"
+          imageName: "ghcr.io/theadzik/zmuda-pro-blog"
           commonUpdateSettings:
             updateStrategy: "semver"
             allowTags: "regexp:^[0-9]{4}\\.[0-9]{1,2}\\.[0-9]{1,2}$"
