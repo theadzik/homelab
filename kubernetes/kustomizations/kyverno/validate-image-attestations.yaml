@@ -40,7 +40,15 @@ spec:
         ctlog:
           url: https://rekor.sigstore.dev
   attestations:
-    - name: sbom
+    - name: sbom_cyclonedx
+      intoto:
+        type: "https://cyclonedx.org/bom"
+    # Transitional. Images published before github-workflows v2.2.0 carry an
+    # SPDX SBOM instead. Drop this entry and the `||` branch below once no
+    # running image predates it - as of this change that is blog prod
+    # (2026.8.1) and blog dev (sha-9742a89), both of which move to CycloneDX at
+    # their next build. The vaultwarden and argocd images are already there.
+    - name: sbom_spdx
       intoto:
         type: "https://spdx.dev/Document/v2.3"
     - name: provenance
@@ -56,10 +64,13 @@ spec:
           verifyImageSignatures(image, [attestors.cosign])
         ).all(e, e > 0)
       message: Failed to verify image signature
+    # CEL `||` short-circuits, so an image carrying the current format costs one
+    # attestation fetch; only a pre-v2.2.0 image pays for the second.
     - expression: >-
-        (images.containers + images.initContainers + images.ephemeralContainers).map(image,
-          verifyAttestationSignatures(image, attestations.sbom, [attestors.cosign])
-        ).all(e, e > 0)
+        (images.containers + images.initContainers + images.ephemeralContainers).all(image,
+          verifyAttestationSignatures(image, attestations.sbom_cyclonedx, [attestors.cosign]) > 0
+          || verifyAttestationSignatures(image, attestations.sbom_spdx, [attestors.cosign]) > 0
+        )
       message: "Failed to verify SBOM attestation signature"
     - expression: >-
         (images.containers + images.initContainers + images.ephemeralContainers).map(image,
