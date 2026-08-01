@@ -70,17 +70,16 @@ non-root by default. The final stage copies binaries from a `-dev` stage that ha
 manager, and keeps nothing that installed them.
 
 That produces a known blind spot, and it is [written down in the
-Dockerfile](../apps/vaultwarden/backup/Dockerfile) rather than left to be rediscovered:
+Dockerfile](../apps/vaultwarden/backup/Dockerfile) so nobody has to rediscover it:
 binaries that arrive by `COPY` leave no package-manager record, and `syft` has no classifier
 for `sqlite3` or `tar`, so neither appears in the SBOM or in a scan. A CVE in either would
 be invisible to every gate here.
 
-Three fixes were tried and rejected — the non-dev base ships no `apk`, copying the build
-stage's package database would claim the whole dev toolchain is present, and BuildKit's SBOM
-scanning no longer applies now that syft generates the SBOM from the layout. So it is an
-accepted gap with a note attached: *if you add another copied binary, add it here.*
-
-An honest gap that is documented is worth more than a clean report that is wrong.
+The obvious fixes do not work. The non-dev base ships no `apk`, so nothing can be installed
+in the final stage. Copying the build stage's package database would then claim the whole
+dev toolchain is present. And `BUILDKIT_SBOM_SCAN_STAGE` stopped applying once syft took
+over SBOM generation from BuildKit. The gap therefore stands, with a note in the Dockerfile:
+*if you add another copied binary, add it here.*
 
 ## Admission: the cluster checks the work
 
@@ -101,12 +100,12 @@ An unescaped `.` matches any character, which would let a lookalike host satisfy
 pattern. Only the ref after `@` is open, because each caller pins a different commit of the
 shared workflow.
 
-Two details in that policy are the kind that only show up in production:
+Two details in the policy only surfaced once it was running against real pods:
 
-- **`matchConditions` restricts the webhook to pods that actually reference one of our
-  images.** Without it the webhook is consulted for every pod in the cluster and records a
-  vacuous pass for each, because a CEL `.all()` over an empty list is `true`. A policy that
-  reports success for pods it never examined is worse than no policy.
+- **`matchConditions` restricts the webhook to pods that reference one of our images.**
+  Without it the webhook is consulted for every pod in the cluster and records a vacuous
+  pass for each, because a CEL `.all()` over an empty list is `true`. The policy was
+  reporting success for pods it had never examined.
 - **The SBOM check accepts CycloneDX *or* SPDX**, with a comment naming the exact images
   that still carry the old format and the condition for deleting the fallback. CEL `||`
   short-circuits, so current images pay for one attestation fetch and only the stragglers
@@ -117,7 +116,7 @@ Two details in that policy are the kind that only show up in production:
 `validationActions: [Audit]` and `failurePolicy: Ignore`. The policy reports violations; it
 does not block them.
 
-That is a deliberate intermediate state, not an oversight. Verification means fetching
+This is a staging post, not an oversight. Verification means fetching
 attestations and querying Rekor for every container in a matched pod, and the cost sits
 close enough to the webhook timeout that flipping to `Deny` today would trade a supply-chain
 risk for an availability risk — a slow transparency log would stop unrelated deployments.
@@ -135,12 +134,12 @@ known finding fixable.
 gap. Daily, it resolves the current tag of each published image, pins it to a digest, and
 scans it with **both Trivy and Grype**.
 
-Two scanners is not belt and braces. Measured on one of these images against the same SBOM,
+The second scanner earns its place. Measured on one of these images against the same SBOM,
 Trivy reported 4 findings and Grype 9, and the extra five were Go advisories — precisely
-where these images carry their risk. Two vulnerability databases disagree, and the union is
-the honest answer.
+where these images carry their risk. The two vulnerability databases disagree often enough
+that taking the union is cheaper than picking a winner.
 
-Its reporting rules are worth copying:
+How it reports:
 
 - **It reports, it never gates.** Every finding it can currently see is already known and
   accepted; failing the run daily would train everyone to ignore it.
@@ -152,20 +151,20 @@ Its reporting rules are worth copying:
 
 Three images have the *build* gate switched off (`scan: false`), each with the reason in the
 workflow: every finding is inside a binary copied from an upstream image — rclone's Go
-dependencies, ArgoCD's own — which nothing in this repository can rebuild. A gate that can
-only ever block the weekly rebuild is not a gate. The daily scan is what covers them
-instead, and it is where an actionable upstream fix will first appear.
+dependencies, ArgoCD's own — which nothing in this repository can rebuild. Left on, the gate
+would block the weekly rebuild indefinitely and never once produce an actionable finding.
+The daily scan covers those images instead, and is where an upstream fix will first show up.
 
 ## Why GHCR
 
-Everything publishes to `ghcr.io/theadzik/*`, public. The move off Docker Hub was forced
-rather than chosen: Image Updater reconciles roughly twenty images every few minutes and
-Kyverno re-verifies on top of that, which consumed the anonymous pull quota as fast as it
-refilled. Signing started failing and policy evaluation returned `429`. GHCR applies no pull
-rate limit to public images, which removes the ceiling instead of buying headroom under it.
+Everything publishes to `ghcr.io/theadzik/*`, public. Docker Hub had to go: Image Updater
+reconciles roughly twenty images every few minutes and Kyverno re-verifies on top of that,
+which consumed the anonymous pull quota as fast as it refilled. Signing started failing and
+policy evaluation returned `429`. GHCR applies no pull rate limit to public images, so the
+ceiling disappears instead of being raised.
 
-Docker Hub is still used for *pulling* third-party images, so a pull secret survives exactly
-where something genuinely needs it.
+Docker Hub is still used for *pulling* third-party images, so a pull secret survives where
+something still needs it.
 
 ## Dependencies
 

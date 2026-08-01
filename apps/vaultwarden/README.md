@@ -42,10 +42,10 @@ trustworthy:
 4. Nothing found, or extraction produced no database → **exit non-zero, so the pod does not
    start.**
 
-Step 4 is the whole point. A Vaultwarden that starts on an empty volume looks healthy,
-serves an empty vault, and lets the first client sync overwrite the only remaining copy of
-the data. Refusing to start is the correct failure, and it is why the restore verifies that
-the database exists after extraction rather than trusting the exit code of `tar`.
+Step 4 is why the script exists in this shape. A Vaultwarden that starts on an empty volume
+looks healthy, serves an empty vault, and lets the first client to sync overwrite the only
+remaining copy of the data. That is also why the restore checks for the database after
+extraction instead of trusting the exit code of `tar`.
 
 ## Configuration
 

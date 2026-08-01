@@ -39,25 +39,25 @@ with no shell, no SSH and no package manager. The whole node configuration is tw
 [talos/](../talos/) — a Factory schematic naming the system extensions, and a machine
 config patch applied to every node.
 
-That trade is deliberate. The previous generation of this homelab was Debian preseed plus
-Ansible roles ([part 1](https://zmuda.pro/os-ansible-argocd-part-1),
-[part 2](https://zmuda.pro/os-ansible-argocd-part-2)), which worked but meant owning
-an OS build pipeline. Talos replaces it with a declarative config and a PXE boot, and the
+That trade was made knowingly. The previous generation of this homelab was Debian preseed
+plus Ansible roles ([part 1](https://zmuda.pro/os-ansible-argocd-part-1),
+[part 2](https://zmuda.pro/os-ansible-argocd-part-2)), which worked but meant owning an OS
+build pipeline. Talos replaces it with a declarative config and a PXE boot, and the
 migration is written up in
 [PXE Booting Talos Linux from Synology NAS](https://zmuda.pro/talos-linux-using-pxe).
 
-Four things in the machine config are worth lifting:
+Four settings in that patch shape everything above them:
 
 | Setting | Why |
 | --- | --- |
 | `cluster.network.cni.name: none` | Cilium is installed by ArgoCD instead, so the CNI is versioned in git like everything else. |
-| `cluster.proxy.disabled: true` | Cilium replaces kube-proxy entirely. One less component, and eBPF service handling rather than iptables. |
-| `rotate-server-certificates: true` | Kubelet serving certs are signed rather than self-signed, which is what lets metrics-server run without `insecureSkipTLSVerify`. |
+| `cluster.proxy.disabled: true` | Cilium replaces kube-proxy entirely. One less component, and eBPF service handling instead of iptables. |
+| `rotate-server-certificates: true` | Kubelet serving certs get signed by the cluster CA, which is what lets metrics-server run without `insecureSkipTLSVerify`. |
 | `cdi_spec_dirs` in containerd | Points CDI at writable paths so the Intel GPU driver can publish device specs at runtime. |
 
-The system extensions are equally load-bearing: `i915` for the Intel GPU that transcodes
-media, `iscsi-tools` for Synology block storage, `nut-client` so the whole cluster powers
-down cleanly when the UPS says the mains are gone.
+The system extensions matter just as much: `i915` for the Intel GPU that transcodes media,
+`iscsi-tools` for Synology block storage, `nut-client` so the whole cluster powers down
+cleanly when the UPS says the mains are gone.
 
 ## Layers
 

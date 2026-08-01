@@ -58,8 +58,8 @@ pre-commit run --all-files
 
 ### Kubernetes rendering
 
-A manifest that lints is not a manifest that renders. Before committing anything under
-`kubernetes/` or `charts/`:
+Passing the linters above says nothing about whether a manifest still renders. Before
+committing anything under `kubernetes/` or `charts/`:
 
 ```bash
 kustomize build kubernetes/kustomizations/<app>
@@ -96,9 +96,10 @@ what the linters enforce.
 | [`homelab-release-reviewer`](../.github/agents/homelab-release-reviewer.agent.md) | Review | A reviewer persona that audits sync-wave ordering, secret filenames and app-of-apps registration, and reports rather than edits |
 | [`validate-k8s-change`](../.github/skills/validate-k8s-change/SKILL.md) | Pre-commit | The rendering procedure above, as an executable skill |
 
-The symlink is the load-bearing detail. Two files drift; one file with two names cannot. The
-same reasoning applies to the checklists: anything an agent is told to check is something a
-human reviewer should check too, so there is one list rather than two.
+The symlink is what keeps this maintainable. Two separate instruction files would drift
+within a month; one file under two names cannot. The checklists follow the same reasoning —
+anything an agent is told to check is something a human reviewer should check too, so both
+read the same list.
 
 ## Comments
 
@@ -112,9 +113,9 @@ matchConditions:
   - name: only-our-images
 ```
 
-That is worth keeping. `# timeout in seconds` above `timeoutSeconds` is not, and neither is
-a narration of which approach was tried first — that belongs in the commit message, or in
-these pages.
+Keep that one. Delete `# timeout in seconds` above `timeoutSeconds`, and delete narration of
+which approach was tried first; that belongs in the commit message, or on one of these
+pages.
 
 Findings and measurements age badly in a manifest. `# takes 20-30s` is stale as soon as
 anything changes; `# verification is slow enough to matter near the webhook timeout` stays

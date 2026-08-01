@@ -1,9 +1,9 @@
 # Synology DS923+
 
-The NAS is not part of the GitOps loop, and it is the only thing here that is not. These
-notes exist so that the manual configuration is at least written down: DSM has no
-declarative interface worth automating against, and the machine that would run the
-automation boots from this one.
+Everything else in this repository is reconciled by ArgoCD. The NAS is the exception: DSM
+has no declarative interface worth automating against, and the cluster that would run the
+automation PXE boots from this machine anyway. These notes exist so the manual configuration
+is at least written down.
 
 Everything below is applied through the DSM web interface or over SSH.
 

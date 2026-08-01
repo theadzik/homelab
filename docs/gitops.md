@@ -110,9 +110,9 @@ syncPolicy:
     backoff: { duration: 10s, factor: 2, maxDuration: 3m }
 ```
 
-`selfHeal` means a manual `kubectl edit` is reverted, which is the point: the cluster is
-what git says. `prune` means deleting a manifest deletes the object, and `PruneLast` means
-that happens after the replacements are healthy rather than during.
+`selfHeal` reverts a manual `kubectl edit`, so the cluster stays at what git says. `prune`
+means deleting a manifest deletes the object, and `PruneLast` delays that until the
+replacements are healthy.
 
 Exceptions are per-resource and explicit:
 
@@ -155,7 +155,7 @@ Write-back targets match how the app is deployed: `kustomization:` for kustomize
 `helmvalues:` for Helm ones, pointed at a specific values path such as
 `services.jellyfin.tag`.
 
-The interesting part is the tag filters, which are the actual policy:
+The tag filters are where the real policy sits:
 
 | App | Strategy | Filter | Why |
 | --- | --- | --- | --- |
@@ -164,8 +164,8 @@ The interesting part is the tag filters, which are the actual policy:
 | radarr, sonarr | `semver` | `^\d+\.\d+\.\d+$` | Upstream publishes non-release tags on the same repository. |
 | jellyfin, bazarr, nzbget | `semver` on `~10`, `~1`, `~26` | | Major pinned at the image reference, minors flow. |
 
-A regex here is not decoration. `newest-build` with no filter takes whatever was pushed
-most recently, and registries contain more than releases.
+Skipping the regex is how dev ended up running pull request builds: `newest-build` takes
+whatever was pushed most recently, and a registry holds a great deal more than releases.
 
 ## Secrets in a public repository
 
@@ -221,11 +221,11 @@ patches. See [Supply chain](supply-chain.md).
 
 ## What this buys
 
-- **The cluster has no undocumented state.** Anything that is running is in a file here.
-- **Rollback is `git revert`.** Including image versions, because updates land as commits.
-- **A branch can hold an entire cluster's worth of change**, through the inherited
-  `targetRevision`.
-- **Nothing is applied by hand**, so nothing is lost when the person who applied it forgets.
+Anything running in the cluster is in a file here, so there is no undocumented state to
+reconstruct from memory. Rollback is `git revert`, image versions included, because updates
+arrive as commits. A branch can hold an entire cluster's worth of change through the
+inherited `targetRevision`. And because nothing is applied by hand, nothing is lost when the
+person who applied it forgets they did.
 
 ## See also
 

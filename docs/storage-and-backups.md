@@ -8,7 +8,7 @@ anyone is careful with.
 
 The [Synology CSI driver](../kubernetes/kustomizations/synology-csi/) provisions both iSCSI
 LUNs and NFS shares from the NAS. Nine storage classes exist, and their names are a grammar
-rather than a list to memorise:
+more than a list to memorise:
 
 ```text
 synology-<protocol>-<reclaim>[-<tier>][-<purpose>]
@@ -23,15 +23,16 @@ synology-<protocol>-<reclaim>[-<tier>][-<purpose>]
 `synology-nfs-delete` is the cluster default: the safe thing to get by accident is a volume
 that goes away with its claim, not one that quietly accumulates on the NAS forever.
 
-Two parameter choices are worth stealing:
+Two of the parameters took some working out:
 
 - **iSCSI volumes are btrfs, formatted `--nodiscard`.** Discard during format on a
   thin-provisioned LUN issues a very large number of UNMAPs to the NAS for no benefit,
   because the LUN is empty by definition.
-- **The PostgreSQL class is its own thing** — `synology-nfs-retain-ssd-postgres`, mounted
-  `hard` with `0750` permissions. A soft NFS mount returns I/O errors on interruption, and a
-  database that receives an I/O error instead of a pause is a database that corrupts. This
-  is the one workload where the mount option is not a detail.
+- **PostgreSQL gets a class of its own**, `synology-nfs-retain-ssd-postgres`, mounted `hard`
+  with `0750` permissions. A soft NFS mount returns I/O errors on interruption, and a
+  database that receives an I/O error where it expected a pause can corrupt its data files.
+  Everywhere else the mount options are a preference; here they are a correctness
+  requirement.
 
 All classes allow volume expansion, so growing a volume is an edit to a PVC.
 
@@ -51,12 +52,13 @@ anything that asks — most importantly Velero.
 | `cluster-full` | daily | 30 days | Every Kubernetes object |
 | `csi-opt-in-pvc-snapshots` | every 12 hours | 7 days | Only PVCs labelled `backup.velero.io/csi-snapshot: "true"` |
 
-The split is the point. Cluster objects are cheap to store and the whole set is worth
-keeping; volume snapshots are neither, and a 7 TiB media library does not belong in a
-backup rotation when it is reconstructible and its contents are already on the NAS.
+They are split because the two things cost wildly different amounts. Every Kubernetes object
+in the cluster fits in a few megabytes, so there is no reason to be selective. Volume
+snapshots are the opposite, and a 7 TiB media library has no business in a backup rotation
+when it is reconstructible and its contents already sit on the NAS.
 
-So volume backup is **opt-in by label**, and each PVC that carries the label carries it for
-a reason:
+Volume backup is therefore **opt-in by label**, and each PVC that carries the label carries
+it for a reason:
 
 ```yaml
 labels:
@@ -73,9 +75,9 @@ declared: generated secrets, CRD state, whatever ArgoCD would recreate but not r
 
 ## Application-level backup: Vaultwarden
 
-A password manager gets a third layer, because "restore the cluster" is not an acceptable
-answer for the thing that holds every credential. The
-[backup and restore images](../apps/vaultwarden/) built in this repository do it:
+A password manager gets a third layer, because the recovery story for everything else —
+rebuild the cluster from git — is far too slow for the thing that holds every credential.
+The [backup and restore images](../apps/vaultwarden/) built in this repository do it:
 
 ```mermaid
 flowchart TD
@@ -92,15 +94,15 @@ flowchart TD
     tryr -->|no| fail["init fails, pod does not start"]
 ```
 
-Three properties are doing the work:
+What makes it hold up:
 
-- **The restore is an init container, not a runbook.** An empty data volume is repaired
-  before Vaultwarden ever opens it.
-- **Failing to restore fails the pod.** Starting empty would present a working, empty vault
-  and let the first sync overwrite the clients' copies. Refusing to start is the safe
-  failure, and it is chosen explicitly.
-- **The remote copy is genuinely off-site.** Encrypted before it leaves the cluster, with a
-  key the remote never sees.
+- **The restore runs as an init container.** Nobody has to notice that a volume came up
+  empty and go looking for a runbook; it is repaired before Vaultwarden opens it.
+- **Failing to restore fails the pod.** Starting empty would present a working but empty
+  vault, and the first client to sync would overwrite its own copy with nothing. Refusing to
+  start is the safer failure, and it was chosen on purpose.
+- **The remote copy is off-site and encrypted before it leaves the cluster**, with a key
+  Google Drive never sees.
 
 Both images run as UID 1000, non-root, read-only root filesystem, all capabilities dropped,
 and they are built from [Docker Hardened Images](supply-chain.md#base-images) and signed
@@ -125,7 +127,7 @@ down its workloads and leaves its data on the NAS.
 
 ## What is actually recoverable
 
-Being honest about this is more useful than a claim of full coverage:
+Coverage is uneven, so it is worth setting out case by case:
 
 | Loss | Recovery | Time to restore |
 | --- | --- | --- |
@@ -135,10 +137,10 @@ Being honest about this is more useful than a claim of full coverage:
 | Vaultwarden data | Local backup, then Google Drive, automatically | Up to 12 hours, and the only path that survives losing the NAS |
 | The NAS | Vaultwarden restores from Drive. Everything else was on it. | Media is re-acquirable; other volumes are not |
 
-That last row is the standing gap, and it is a deliberate one: Velero's bucket lives on the
-same NAS as the volumes it backs up, so it protects against deletion and corruption but not
-against hardware loss. Fixing it means an off-site S3 target, which is a cost decision
-rather than a technical one.
+That last row is the standing gap, and it is a known one: Velero's bucket lives on the same
+NAS as the volumes it backs up, so it protects against deletion and corruption but not
+against hardware loss. Fixing it means paying for an off-site S3 target, which is the only
+thing stopping it.
 
 The other unrecoverable case is losing every way to unlock the repository. The git-crypt key
 is committed here as the Secret ArgoCD mounts, encrypted with itself, so it is no use for

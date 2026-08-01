@@ -2,15 +2,15 @@
 
 A homelab is a strange security context: the blast radius is small, but the repository is
 public, the blog is on the internet, and one of the workloads is a password vault. This
-page describes the layers, and is deliberately explicit about where they stop.
+page describes the layers, and is explicit about where they stop.
 
 ## Assumptions
 
 - **This repository is readable by anyone.** Everything in it is written on that basis,
-  including the secrets, which are encrypted rather than absent.
+  including the secrets, which are encrypted here rather than kept somewhere else.
 - **The published images are public**, and so are their SBOMs and provenance attestations.
 - **The LAN is not a trust boundary.** Nothing is protected by being "inside", and network
-  policy is written between namespaces rather than at the perimeter.
+  policy is written between namespaces, not at the perimeter.
 - **The maintainer's GitHub account is in scope** for repository controls, but a
   compromise of it is out of scope for the cluster's controls. If an attacker can merge to
   `main`, ArgoCD will deploy it.
@@ -27,12 +27,12 @@ page describes the layers, and is deliberately explicit about where they stop.
 | Network | Default-deny CiliumNetworkPolicy per namespace | [Networking](networking.md#network-policy) |
 | Runtime | Falco syscall detection with alert routing | Below |
 | Build | Scan before push, sign, attest, daily rescan | [Supply chain](supply-chain.md) |
-| Repository | Encrypted secrets, pinned actions, signed commits | Below |
+| Repository | Encrypted secrets, pinned actions, protected `main` | Below |
 
-None of these is load-bearing alone, which is the point. The tunnel means an attacker
-cannot reach the cluster from outside; the network policies mean reaching one pod does not
-mean reaching the next; the hardening means a compromised process has nothing to escalate
-with; Falco means the attempt is visible either way.
+Each layer assumes the one in front of it has already failed. The tunnel keeps an attacker
+off the cluster from outside; the network policies stop a foothold in one pod becoming a
+foothold in the next; the hardening leaves a compromised process nothing to escalate with;
+Falco makes the attempt visible whether or not any of that held.
 
 ## Access to the cluster
 
@@ -60,7 +60,7 @@ configured for an HTTPS backend), and its chart creates a network policy with
 
 Namespaces are labelled with a Pod Security Standard, and ArgoCD applies the labels itself
 through `managedNamespaceMetadata`, so the enforcement level is part of the application
-definition rather than a step someone remembers:
+definition instead of a step someone has to remember:
 
 | Level | Namespaces | Why |
 | --- | --- | --- |
@@ -70,9 +70,9 @@ definition rather than a step someone remembers:
 
 It is **not** applied to every namespace. The media stack's LinuxServer.io images start as
 root to apply `PUID`/`PGID` before dropping privileges, which `restricted` forbids
-outright. Labelling those namespaces `privileged` to make the label present everywhere
-would be worse than the honest gap, so the gap stands and is listed at the bottom of this
-page.
+outright. Labelling those namespaces `privileged` would make the label present everywhere
+while granting more than they need, so they carry no label at all and the omission is listed
+under the gaps below.
 
 ## Workload hardening
 
@@ -106,11 +106,11 @@ minimal base, no shell to inherit. See [Supply chain](supply-chain.md#base-image
 [Falco](../kubernetes/helm/falco/values.yaml) watches syscalls on every node and is
 deployed at sync wave -50, ahead of everything it might need to observe. Alerts go through
 falcosidekick to a web UI and to email above `error` priority, so a detection has somewhere
-to arrive rather than sitting in a pod log.
+to arrive instead of sitting in a pod log.
 
-The tuning is the interesting part. Cilium legitimately does things that Falco's default
+Most of the effort went into tuning. Cilium legitimately does things that Falco's default
 rules consider hostile — executing a freshly written binary in a container, creating a
-packet socket — and the fix is *not* to disable the rules:
+packet socket — and disabling those rules would have been the easy way out:
 
 ```yaml
 - rule: Drop and execute new binary in container
@@ -124,9 +124,9 @@ packet socket — and the fix is *not* to disable the rules:
     exceptions: append
 ```
 
-The exception names the exact binary at the exact path, and appends rather than replaces.
-The rule keeps firing for every other process in every other container — which is what a
-tuned rule should do, and what a disabled rule cannot.
+The exception names the exact binary at the exact path, and appends to the rule instead of
+replacing it. Everything else that drops and executes a binary in a container still trips
+the alarm, which is the whole reason for tuning an alert rather than switching it off.
 
 ## Secrets
 
@@ -134,7 +134,7 @@ Secrets live in this repository, encrypted with git-crypt and selected by a file
 pattern, and are decrypted by a patched ArgoCD at fetch time. The mechanism is described in
 [GitOps](gitops.md#secrets-in-a-public-repository).
 
-Two controls sit around it:
+Two controls sit around that arrangement:
 
 - **[detect-secrets](../.pre-commit-config.yaml) runs on every commit** against a
   [baseline](../.sec.baseline), so a credential pasted into a file that is *not* covered by
@@ -175,9 +175,9 @@ scoped to one app instead of a PAT.
 
 ## Known gaps
 
-Stated plainly, because a security page that lists only controls is marketing:
+Anyone copying something from here should know where it stops:
 
-- **Kyverno audits rather than denies.** Signature and attestation failures are recorded and
+- **Kyverno audits, it does not deny.** Signature and attestation failures are recorded and
   re-checked every six hours, but an unsigned image would still run. The reason and the
   path out are in [Supply chain](supply-chain.md#currently-audit-not-deny).
 - **Pod Security Admission is not on every namespace**, because some upstream images cannot

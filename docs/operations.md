@@ -168,9 +168,9 @@ playbook asserts a supported distribution (Ubuntu or Fedora) before it changes a
 `k8s-tools` installs the toolchain these docs assume: `kubectl`, `helm`, `kustomize`, `k9s`,
 `kubectx`, `talosctl`, `velero`, `argocd`.
 
-The `git` role is worth a look as a pattern: it downloads `git-crypt`, asserts its SHA256
-against a pinned value, and fails the play on a mismatch rather than installing whatever
-arrived. Conventions for anything under `ansible/` are in
+The `git` role downloads `git-crypt`, asserts its SHA256 against a pinned value, and fails
+the play on a mismatch instead of installing whatever arrived. Conventions for anything
+under `ansible/` are in
 [ansible-playbook-conventions](../.github/instructions/ansible-playbook-conventions.instructions.md).
 
 ## See also

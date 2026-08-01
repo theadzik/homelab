@@ -28,9 +28,9 @@ request to a `cloudflared` pod over a connection that pod opened outbound. Nothi
 on the router; there is no NAT rule to get wrong.
 
 **Internally**, hostnames like `argocd.zmuda.pro` resolve — via PiHole on the NAS — to an
-address from the Cilium load-balancer pool, announced on the LAN by ARP. Internal services
-are unreachable from the internet not because a rule blocks them, but because no path
-exists.
+address from the Cilium load-balancer pool, announced on the LAN by ARP. Those addresses are
+RFC 1918 and the tunnel only forwards to Traefik, so there is no route from the internet to
+them at all; no rule has to deny one.
 
 Both paths terminate at the same Traefik service, so an application is configured once and
 its exposure is decided entirely by which DNS record points at it.
@@ -75,9 +75,9 @@ externalIPs: true
 loadBalancerIPs: true
 ```
 
-A Service gets an address from the pool, and a node answers ARP for it. Traefik opts in
-with `loadBalancerClass: io.cilium/l2-announcer`, which keeps the mechanism explicit rather
-than implicit in whatever happens to be installed.
+A Service gets an address from the pool, and a node answers ARP for it. Traefik names
+`loadBalancerClass: io.cilium/l2-announcer` explicitly, so the Service says which
+implementation it expects instead of taking whatever controller happens to be watching.
 
 Failover is a lease. The values shorten it deliberately:
 
@@ -104,7 +104,8 @@ reasons nobody can reconstruct.
 Traefik is the only ingress controller, deployed from the upstream OCI chart with
 [local values](../kubernetes/helm/traefik/values.yaml).
 
-It is treated as infrastructure rather than as a workload:
+Since everything else in the cluster is reachable only through it, its values look more like
+a control-plane component's than an application's:
 
 | Setting | Effect |
 | --- | --- |
@@ -218,8 +219,9 @@ genuinely needed it is enumerated, at the narrowest form Cilium supports —
 SMTP host by FQDN, and one IP and port for backups. Nothing else, including the rest of the
 LAN.
 
-That is the payoff of an identity-aware CNI: the policy names `smtp.protonmail.ch` and the
-`traefik` namespace, not a CIDR that stops meaning what it meant when the pod moved.
+Writing those rules against `smtp.protonmail.ch` and the `traefik` namespace, instead of
+against IP ranges, is what makes them readable a year later. A CIDR stops meaning what it
+meant as soon as the pod behind it moves.
 
 ## See also
 
