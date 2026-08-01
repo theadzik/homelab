@@ -7,8 +7,8 @@ anyone has to be careful with.
 ## Storage classes
 
 The [Synology CSI driver](../kubernetes/kustomizations/synology-csi/) provisions both iSCSI
-LUNs and NFS shares from the NAS. Nine storage classes exist, and their names are a grammar
-more than a list to memorise:
+LUNs and NFS shares from the NAS. Nine storage classes exist, and their names follow a
+pattern instead of being a list to memorise:
 
 ```text
 synology-<protocol>-<reclaim>[-<tier>][-<purpose>]
@@ -55,7 +55,7 @@ anything that asks for one, Velero above all.
 They are split because the two things cost wildly different amounts. Every Kubernetes object
 in the cluster fits in a few megabytes, so there is no reason to be selective. Volume
 snapshots are the opposite, and a 7 TiB media library has no business in a backup rotation
-when it is reconstructible and its contents already sit on the NAS.
+when it can be downloaded again and its contents already sit on the NAS.
 
 Volume backup is therefore **opt-in by label**, and each PVC that carries the label carries
 it for a reason:

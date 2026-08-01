@@ -95,8 +95,8 @@ securityContext:
 ```
 
 `readOnlyRootFilesystem` is the one that takes work. Everything the process needs to write
-becomes an explicit `emptyDir`, so the writable surface ends up enumerated in the manifest.
-For the blog that is nginx's cache and run directories, and nothing else.
+becomes an explicit `emptyDir`, so every writable path is listed in the manifest. For the
+blog that is nginx's cache and run directories, and nothing else.
 
 Container images built here follow the same rule from the other side. They are non-root by
 default, minimal, and carry no shell to inherit. See

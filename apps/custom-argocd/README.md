@@ -18,9 +18,9 @@ exit $ec
 ```
 
 Every `git fetch` the repo-server performs is followed by an unlock. Decryption happens
-where it is needed, on every refresh, with nobody in the loop. The wrapper is deliberately
-inert for every other git subcommand, and the unlock's failure is swallowed so that a
-repository with nothing encrypted still works.
+where it is needed, on every refresh, with nobody in the loop. For every other git
+subcommand the wrapper does nothing, and a failed unlock is swallowed so that a repository
+with nothing encrypted still works.
 
 `GITCRYPT_KEY_PATH` and the volume behind it are set in
 [the ArgoCD values](../../kubernetes/helm/argocd/values.yaml). The Secret itself is

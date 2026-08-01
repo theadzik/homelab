@@ -86,7 +86,7 @@ resulting order is published in [sync-waves-inventory.md](../sync-waves-inventor
 That file is generated, not written. A [GitHub Actions
 workflow](../.github/workflows/sync-waves-inventory.yaml) reads the app-of-apps templates
 on every push to `main` and commits the result back, authenticating as a GitHub App so the
-commit is attributable and the push does not require a personal token. Editing it by hand
+commit has a clear author and the push does not require a personal token. Editing it by hand
 is a repository policy violation, checked in [review](../.github/agents/homelab-release-reviewer.agent.md):
 the wave lives on the Application, and the document follows.
 
@@ -177,7 +177,7 @@ Every secret in this repository is committed, encrypted with
 ```
 
 Filename is the contract. Anything with `secret` in its name is encrypted on commit and
-opaque on GitHub. The naming rule is enforced in review, and the same pattern excludes those
+unreadable on GitHub. The naming rule is enforced in review, and the same pattern excludes those
 files from [detect-secrets](../.pre-commit-config.yaml), because a git-crypt blob would
 otherwise be flagged as high-entropy on every run.
 
@@ -199,7 +199,7 @@ exactly where and when it is needed, with no operator in the loop.
 The key reaches the repo-server as a Kubernetes Secret, and that Secret is
 [in this repository](../kubernetes/kustomizations/argocd/argocd-gitcrypt-secret.yaml) like
 everything else. Its filename matches `*secret*`, so git-crypt encrypts it with the very key
-it contains. That is circular, and harmlessly so. The file is only readable by something
+it contains. That is circular, and it does no harm. The file is only readable by something
 that can already read the repository, so committing it gives an attacker nothing, and the
 cluster's access ends up declared instead of injected by hand.
 

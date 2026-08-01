@@ -36,8 +36,8 @@ Documentation for each, with the reasoning:
 
 - **[Images are verified by the cluster that runs them](docs/supply-chain.md).** Built to an
   OCI layout, scanned before push, signed at their digest, and checked at admission by a
-  Kyverno policy whose match conditions avoid the vacuous-pass trap. Plus a daily rescan that
-  reports instead of gating, and two scanners because their databases disagree.
+  Kyverno policy that will not quietly pass a pod it never looked at. Plus a daily rescan
+  that reports instead of gating, and two scanners because their databases disagree.
 - **[One bootstrap Application creates the whole cluster](docs/gitops.md)** and passes its
   own git revision to every child, so pointing it at a branch moves the entire cluster to
   that branch.

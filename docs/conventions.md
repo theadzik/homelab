@@ -108,7 +108,7 @@ a comment earns its place by saying something the manifest cannot.
 
 ```yaml
 # Without this the webhook is consulted for every pod in the cluster and
-# records a vacuous pass for each, since .all() over no images is true.
+# passes each one without checking anything, since .all() over no images is true.
 matchConditions:
   - name: only-our-images
 ```

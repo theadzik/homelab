@@ -117,8 +117,8 @@ harmful.
 
 ## Where the state lives
 
-Nothing important lives on a node. A Talos machine is cattle. Reinstall it by PXE and it
-rejoins.
+Nothing important lives on a node. Any of them can be wiped, PXE booted again, and it
+rejoins the cluster.
 
 - **Block and file storage**: the DS923+ over iSCSI and NFS, split into HDD and SSD tiers by
   a `location: /volume2` parameter on the storage class.

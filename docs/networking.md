@@ -48,8 +48,8 @@ k8sServicePort: 7445
 ```
 
 `localhost:7445` is [KubePrism](https://docs.siderolabs.com/talos/latest/kubernetes-guides/configuration/kubeprism),
-Talos's node-local API server proxy. Pointing Cilium at it removes the bootstrap paradox:
-the agent needs the API server, and reaching the API server through a Service needs the
+Talos's node-local API server proxy. Pointing Cilium at it solves a chicken-and-egg problem.
+The agent needs the API server, and reaching the API server through a Service needs the
 agent. It also survives a control-plane restart without the agents noticing.
 
 The `cgroup` and `securityContext.capabilities` blocks in
@@ -89,8 +89,8 @@ l2announcements:
 ```
 
 The defaults are measured in tens of seconds, which is a long outage for a node reboot on a
-three-node cluster where reboots are routine. The cost is more API server chatter, which
-this cluster has capacity for.
+three-node cluster where reboots are routine. The cost is more traffic to the API server,
+which this cluster has room for.
 
 ### Observability
 
@@ -127,8 +127,8 @@ mechanisms restore the original, and both are needed:
   the pod network, which is where `cloudflared` sits.
 
 Ingresses that are exposed externally opt into the middleware by annotation. Trusting a
-forwarded header unconditionally is how access logs, rate limits and IP-based rules all
-become fiction at once, so the trust boundary is written down in both places.
+forwarded header from anywhere is how access logs, rate limits and IP-based rules all stop
+meaning anything at once, so the trust boundary is written down in both places.
 
 HTTP is redirected to HTTPS permanently at the entry point, and access logs are JSON with
 `User-Agent` retained.

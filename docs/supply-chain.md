@@ -103,12 +103,12 @@ shared workflow.
 Two details in the policy only surfaced once it was running against real pods:
 
 - **`matchConditions` restricts the webhook to pods that reference one of our images.**
-  Without it the webhook is consulted for every pod in the cluster and records a vacuous
-  pass for each, because a CEL `.all()` over an empty list is `true`. The policy was
-  reporting success for pods it had never examined.
+  Without it the webhook is consulted for every pod in the cluster and passes each one
+  without checking anything, because a CEL `.all()` over an empty list is `true`. The policy
+  was reporting success for pods it had never looked at.
 - **The SBOM check accepts CycloneDX *or* SPDX**, with a comment naming the exact images
   that still carry the old format and the condition for deleting the fallback. CEL `||`
-  short-circuits, so current images pay for one attestation fetch and only the stragglers
+  short-circuits, so current images pay for one attestation fetch and only the older ones
   pay for two.
 
 ### Currently Audit, not Deny
