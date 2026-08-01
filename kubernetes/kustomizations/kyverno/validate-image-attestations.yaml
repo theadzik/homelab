@@ -3,18 +3,40 @@ kind: ImageValidatingPolicy
 metadata:
   name: validate-image-attestations
 spec:
-  credentials:
-    secrets:
-      - dockerhub-image-pull-secret
+  # No credentials block: every image this policy matches is a public GHCR
+  # package, and GHCR hands an anonymous pull token to any client that asks.
+  # The Docker Hub secret was only ever needed while we published there.
   webhookConfiguration:
     timeoutSeconds: 30
   failurePolicy: Ignore
   evaluation:
     background:
       enabled: true
+  # Audit only, deliberately, as the first step back to real enforcement.
+  #
+  # Since the images moved to ghcr.io this policy has verified *nothing*: the
+  # glob below used to read `theadzik/*`, which does not match
+  # `ghcr.io/theadzik/*`, so no image was ever extracted and every
+  # `.all()` over the empty list passed vacuously - including the Deny path.
+  # Auditing genuinely verifies and reports, which is already strictly more
+  # than was happening before.
+  #
+  # Deny goes back on once admission latency has been watched on real traffic.
+  # Verification is not cached between admissions (three consecutive checks of
+  # one image took 35s, 34s, 34s) and the webhook is capped at 30s by
+  # Kubernetes, so blocking before measuring risks stalling deployments.
   validationActions:
-    - Deny
     - Audit
+  # Skip pods that have nothing to do with us instead of admitting them on a
+  # vacuous pass. Without this the policy is consulted for all 74 pods in the
+  # cluster and writes a meaningless `pass` for each; with it, 10 are scanned -
+  # exactly those running one of our images.
+  matchConditions:
+    - name: only-our-images
+      expression: >-
+        object.spec.containers.exists(c, c.image.startsWith("ghcr.io/theadzik/"))
+        || (has(object.spec.initContainers)
+        && object.spec.initContainers.exists(c, c.image.startsWith("ghcr.io/theadzik/")))
   matchConstraints:
     resourceRules:
       - apiGroups: [""]
@@ -22,14 +44,18 @@ spec:
         operations: ["CREATE"]
         resources: ["pods"]
   matchImageReferences:
-    - glob: "theadzik/*"
+    - glob: "ghcr.io/theadzik/*"
   attestors:
     - name: cosign
       cosign:
         keyless:
           identities:
+            # One signer, not a repository full of them. The previous pattern
+            # accepted a signature from any repo of ours, and its unescaped
+            # dots also matched a lookalike host. This is the same identity the
+            # shared workflow verifies against immediately after signing.
             - issuer: "https://token.actions.githubusercontent.com"
-              subjectRegExp: "^https://github.com/theadzik/.+/.github/workflows/build-and-push.yaml@.+$"
+              subjectRegExp: "^https://github\\.com/theadzik/github-workflows/\\.github/workflows/build-and-push\\.yaml@.+$"
         ctlog:
           url: https://rekor.sigstore.dev
   attestations:
@@ -43,17 +69,25 @@ spec:
     mutateDigest: true
     required: true
     verifyDigest: true
+  # Every container, not just the main ones. `images.containers` covers only
+  # spec.containers, so init containers were never checked - vw-restore runs
+  # as one, and so does the argocd binary inside argocd-dex-server, meaning
+  # both shipped unverified. Confirmed by running these expressions against a
+  # deliberately wrong signer identity: vaultwarden flipped from pass to fail
+  # only once initContainers were included.
   validations:
     - expression: >-
-        images.containers.map(image, verifyImageSignatures(image, [attestors.cosign])).all(e, e > 0)
+        (images.containers + images.initContainers + images.ephemeralContainers).map(image,
+          verifyImageSignatures(image, [attestors.cosign])
+        ).all(e, e > 0)
       message: Failed to verify image signature
     - expression: >-
-        images.containers.map(image,
+        (images.containers + images.initContainers + images.ephemeralContainers).map(image,
           verifyAttestationSignatures(image, attestations.sbom, [attestors.cosign])
         ).all(e, e > 0)
       message: "Failed to verify SBOM attestation signature"
     - expression: >-
-        images.containers.map(image,
+        (images.containers + images.initContainers + images.ephemeralContainers).map(image,
           verifyAttestationSignatures(image, attestations.provenance, [attestors.cosign])
         ).all(e, e > 0)
       message: "Failed to verify provenance attestation signature"
