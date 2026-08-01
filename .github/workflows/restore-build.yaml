@@ -38,7 +38,7 @@ jobs:
       image-name: "${{ github.repository_owner }}/vw-restore"
       registry-username: ${{ github.actor }}
       extra-registry: dhi.io
-      extra-registry-username: ${{ secrets.DOCKERHUB_USERNAME }}
+      extra-registry-username: ${{ vars.DOCKERHUB_USERNAME }}
       context-path: "apps/vaultwarden/restore"
       # Same as backup-build.yaml: the only findings are inside the rclone
       # binary copied from rclone/rclone, in rclone's own Go dependencies.
