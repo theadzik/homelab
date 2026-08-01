@@ -15,7 +15,7 @@ flowchart TB
         cf[Cloudflare]
     end
 
-    subgraph lan[LAN 192.168.0.0/24]
+    subgraph lan["LAN 192.168.0.0/24"]
         subgraph k8s[Talos cluster]
             cp["control-plane-1<br/>etcd, API server"]
             w1[worker-1]
