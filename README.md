@@ -2,7 +2,7 @@
 
 A three-node Kubernetes cluster on [Talos Linux](https://www.talos.dev/), managed entirely
 by GitOps. Every workload, every piece of platform configuration and every secret is in
-this repository — ArgoCD reconciles the rest.
+this repository, and ArgoCD reconciles the rest.
 
 It runs real things: a public website, a password vault, a media stack with GPU
 transcoding, a recipe manager with its own PostgreSQL cluster. It is also where I try ideas
@@ -34,29 +34,29 @@ flowchart LR
 
 Documentation for each, with the reasoning:
 
-- **[Images are verified by the cluster that runs them](docs/supply-chain.md)** — built to an
+- **[Images are verified by the cluster that runs them](docs/supply-chain.md).** Built to an
   OCI layout, scanned before push, signed at their digest, and checked at admission by a
   Kyverno policy whose match conditions avoid the vacuous-pass trap. Plus a daily rescan that
   reports instead of gating, and two scanners because their databases disagree.
-- **[One bootstrap Application creates the whole cluster](docs/gitops.md)** — and passes its
+- **[One bootstrap Application creates the whole cluster](docs/gitops.md)** and passes its
   own git revision to every child, so pointing it at a branch moves the entire cluster to
   that branch.
-- **[Image updates arrive as commits, not as cluster changes](docs/gitops.md#image-updates-that-leave-a-trail)** —
-  with per-environment tag filters, because `newest-build` with no filter will happily
-  deploy an open pull request's image.
-- **[Split-horizon DNS from a single label](docs/networking.md#dns-one-cluster-two-providers)** —
+- **[Image updates arrive as commits, not as cluster changes](docs/gitops.md#image-updates-that-leave-a-trail)**,
+  with per-environment tag filters, because `newest-build` and no filter will happily deploy
+  an open pull request's image.
+- **[Split-horizon DNS from a single label](docs/networking.md#dns-one-cluster-two-providers).**
   `dns-type: internal` or `external` on an Ingress decides whether the record is created in
   PiHole or Cloudflare. Same manifest, two zones.
-- **[Secrets committed to a public repository](docs/gitops.md#secrets-in-a-public-repository)** —
+- **[Secrets committed to a public repository](docs/gitops.md#secrets-in-a-public-repository).**
   git-crypt selected by filename, and a patched ArgoCD that unlocks after every fetch, so
   decryption needs no operator. The key ships in the repository too, encrypted with itself.
-- **[A password vault that repairs itself](docs/storage-and-backups.md#application-level-backup-vaultwarden)** —
-  encrypted backups to the NAS and off-site, restored by an init container, and a pod that
-  refuses to start empty rather than presenting an empty vault to its clients.
-- **[Agent instructions as reviewed repository artifacts](docs/conventions.md#instructions-as-repository-artifacts)** —
-  one file, symlinked so Claude Code and Copilot cannot drift apart, plus a review checklist
+- **[A password vault that repairs itself](docs/storage-and-backups.md#application-level-backup-vaultwarden).**
+  Encrypted backups to the NAS and off-site, restored by an init container, and a pod that
+  refuses to start empty instead of showing its clients an empty vault.
+- **[Agent instructions as reviewed repository artifacts](docs/conventions.md#instructions-as-repository-artifacts).**
+  One file, symlinked so Claude Code and Copilot cannot drift apart, plus a review checklist
   and a validation skill that any human can run.
-- **[The gaps, written down](docs/security.md#known-gaps)** — where the controls stop, and
+- **[The gaps, written down](docs/security.md#known-gaps).** Where the controls stop, and
   what it would take to close each one.
 
 ## Documentation
@@ -97,7 +97,7 @@ templates on every push to `main`.
 | [blog](https://github.com/theadzik/blog) | [zmuda.pro](https://zmuda.pro), deployed to this cluster from `ghcr.io` in two environments |
 | [workout](https://github.com/theadzik/workout) | Unrelated to the cluster: a Python CLI that advances Garmin workout targets by double progression |
 
-Several decisions here are written up at length on the blog — [PXE booting Talos from a
+Several decisions here are written up at length on the blog: [PXE booting Talos from a
 Synology NAS](https://zmuda.pro/talos-linux-using-pxe), [the NAS as Kubernetes
 storage](https://zmuda.pro/synology-nas-setup), and [what this replaced](https://zmuda.pro/os-ansible-argocd-part-2).
 

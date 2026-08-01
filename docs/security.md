@@ -7,7 +7,7 @@ page describes the layers, and is explicit about where they stop.
 ## Assumptions
 
 - **This repository is readable by anyone.** Everything in it is written on that basis,
-  including the secrets, which are encrypted here rather than kept somewhere else.
+  including the secrets, which are encrypted here instead of kept somewhere else.
 - **The published images are public**, and so are their SBOMs and provenance attestations.
 - **The LAN is not a trust boundary.** Nothing is protected by being "inside", and network
   policy is written between namespaces, not at the perimeter.
@@ -19,7 +19,7 @@ page describes the layers, and is explicit about where they stop.
 
 | Layer | Control | Where |
 | --- | --- | --- |
-| Perimeter | No inbound ports; outbound-only Cloudflare Tunnel | [Networking](networking.md#the-two-paths) |
+| Perimeter | No inbound ports, outbound-only Cloudflare Tunnel | [Networking](networking.md#the-two-paths) |
 | Identity | OIDC groups, deny-by-default ArgoCD RBAC | Below |
 | Admission | Pod Security Admission per namespace | Below |
 | Admission | Kyverno signature and attestation verification | [Supply chain](supply-chain.md#admission-the-cluster-checks-the-work) |
@@ -30,9 +30,9 @@ page describes the layers, and is explicit about where they stop.
 | Repository | Encrypted secrets, pinned actions, protected `main` | Below |
 
 Each layer assumes the one in front of it has already failed. The tunnel keeps an attacker
-off the cluster from outside; the network policies stop a foothold in one pod becoming a
-foothold in the next; the hardening leaves a compromised process nothing to escalate with;
-Falco makes the attempt visible whether or not any of that held.
+off the cluster from outside. The network policies stop a foothold in one pod becoming a
+foothold in the next. The hardening leaves a compromised process nothing to escalate with.
+And Falco makes the attempt visible whether or not any of that held.
 
 ## Access to the cluster
 
@@ -47,7 +47,7 @@ rbac:
   policy.default: role:authenticated
 ```
 
-Being authenticated grants nothing at all — the default role is explicitly denied every
+Being authenticated grants nothing at all. The default role is explicitly denied every
 action, and access comes from group membership in the identity provider. Adding a person is
 an IdP change, and removing them takes effect immediately, without touching this
 repository.
@@ -59,8 +59,8 @@ configured for an HTTPS backend), and its chart creates a network policy with
 ## Pod Security Admission
 
 Namespaces are labelled with a Pod Security Standard, and ArgoCD applies the labels itself
-through `managedNamespaceMetadata`, so the enforcement level is part of the application
-definition instead of a step someone has to remember:
+through `managedNamespaceMetadata`. The enforcement level is part of the application
+definition, not a step someone has to remember:
 
 | Level | Namespaces | Why |
 | --- | --- | --- |
@@ -94,12 +94,13 @@ securityContext:
     drop: [ALL]
 ```
 
-`readOnlyRootFilesystem` is the one that takes work: everything the process needs to write
-becomes an explicit `emptyDir`, which means the writable surface is enumerated in the
-manifest. For the blog that is nginx's cache and run directories, and nothing else.
+`readOnlyRootFilesystem` is the one that takes work. Everything the process needs to write
+becomes an explicit `emptyDir`, so the writable surface ends up enumerated in the manifest.
+For the blog that is nginx's cache and run directories, and nothing else.
 
-Container images built here follow the same rule from the other side — non-root by default,
-minimal base, no shell to inherit. See [Supply chain](supply-chain.md#base-images).
+Container images built here follow the same rule from the other side. They are non-root by
+default, minimal, and carry no shell to inherit. See
+[Supply chain](supply-chain.md#base-images).
 
 ## Runtime detection
 
@@ -109,8 +110,8 @@ falcosidekick to a web UI and to email above `error` priority, so a detection ha
 to arrive instead of sitting in a pod log.
 
 Most of the effort went into tuning. Cilium legitimately does things that Falco's default
-rules consider hostile — executing a freshly written binary in a container, creating a
-packet socket — and disabling those rules would have been the easy way out:
+rules consider hostile, like executing a freshly written binary in a container or creating a
+packet socket. Disabling those rules would have been the easy way out:
 
 ```yaml
 - rule: Drop and execute new binary in container
@@ -126,7 +127,7 @@ packet socket — and disabling those rules would have been the easy way out:
 
 The exception names the exact binary at the exact path, and appends to the rule instead of
 replacing it. Everything else that drops and executes a binary in a container still trips
-the alarm, which is the whole reason for tuning an alert rather than switching it off.
+the alarm, which is the whole reason to tune an alert instead of switching it off.
 
 ## Secrets
 
@@ -142,13 +143,13 @@ Two controls sit around that arrangement:
   excluded from the scan itself, because a git-crypt blob is high-entropy by construction
   and would otherwise produce a permanent false positive.
 - **The naming rule is reviewed, not just linted.** A secret in a file without `secret` in
-  its name is committed in plaintext, silently — so the
+  its name is committed in plaintext, silently. The
   [release reviewer](../.github/agents/homelab-release-reviewer.agent.md) checks it as a
   policy violation on every release-affecting change.
 
-The git-crypt key is here too, as the Secret ArgoCD mounts, encrypted with itself. It is
-readable only by someone who can already read the repository, so it adds no exposure — but
-it also cannot unlock anything. Bootstrapping needs a copy the repository does not hold: the
+The git-crypt key is here too, as the Secret ArgoCD mounts, encrypted with itself. Only
+someone who can already read the repository can read it, so it adds no exposure, and it
+cannot unlock anything either. Bootstrapping needs a copy the repository does not hold: the
 exported key file, or the GPG key registered under `.git-crypt/keys/`. Those two are the
 material an attacker would actually need, and the only thing whose loss is unrecoverable.
 
@@ -170,7 +171,7 @@ Around that:
 | GitHub App token for the inventory bot | A long-lived personal token with broad scope living in repository secrets |
 
 The last two are easy to skip and hard to retrofit. The inventory workflow needs to push to
-`main`, which is exactly the permission an attacker would want; it gets a short-lived token
+`main`, which is exactly the permission an attacker would want. It gets a short-lived token
 scoped to one app instead of a PAT.
 
 ## Known gaps
@@ -196,12 +197,12 @@ Please report privately, **not** as a public issue or pull request:
 notifies the maintainer directly and keeps the report confidential until there is a fix.
 
 Expect an acknowledgement within 7 days. This is a homelab maintained in spare time, so
-treat that as best effort rather than a commitment.
+treat that as best effort and not a commitment.
 
 **In scope:**
 
-- The manifests, Helm values and charts in this repository — anything that would run in a
-  cluster built from them
+- The manifests, Helm values and charts in this repository, meaning anything that would run
+  in a cluster built from them
 - The container images published from here: `vw-backup`, `vw-restore`, `custom-argocd`
 - The GitHub Actions workflows under `.github/workflows/`
 - The admission policy and the secret-handling arrangement, including cases where the
@@ -220,8 +221,8 @@ there fixes every image at once.
 
 ## See also
 
-- [Supply chain](supply-chain.md) — everything that happens to an image before it is allowed
+- [Supply chain](supply-chain.md): everything that happens to an image before it is allowed
   to run
-- [Networking](networking.md#network-policy) — the policies that decide what a compromised
+- [Networking](networking.md#network-policy): the policies that decide what a compromised
   pod could reach
-- [Conventions](conventions.md) — the checks a change passes before it can be merged
+- [Conventions](conventions.md): the checks a change passes before it can be merged

@@ -21,7 +21,7 @@ flowchart LR
 [`argocd-bootstrap.yaml`](../kubernetes/kustomizations/argocd/argocd-bootstrap.yaml) points
 ArgoCD at [`kubernetes/bootstrap/charts/app-of-apps`](../kubernetes/bootstrap/charts/app-of-apps/),
 a Helm chart whose templates are the `Application` and `ApplicationSet` definitions for
-everything else. Adding an app to the cluster means adding one template there; there is no
+everything else. Adding an app to the cluster means adding one template there. There is no
 second place to register it.
 
 It passes its own revision down as a Helm parameter:
@@ -38,8 +38,8 @@ points the entire cluster at that branch. A whole-cluster change can be tried wi
 touching `main`.
 
 ArgoCD then manages ArgoCD, at wave -99. Its chart version, its values and its custom image
-are reconciled like any other app, which means an upgrade is a pull request rather than a
-`helm upgrade` typed at a terminal.
+are reconciled like any other app. An upgrade is a pull request, not a `helm upgrade` typed
+at a terminal.
 
 ## Upstream charts, local values
 
@@ -61,10 +61,10 @@ sources:
 
 The second source exists only to be referenced. `ref: repo` names it, `$repo` resolves to
 it in the first source's `valueFiles`, and no chart is ever vendored. Upstream stays
-upstream; the diff in this repository is only ever the configuration.
+upstream, and the diff in this repository is only ever the configuration.
 
-`targetRevision` is a constraint, not a pin — `v1.*.*`, `3.*`, `0.28.*`. Patch and minor
-releases arrive on their own, majors never do. For a homelab that is the right trade: the
+`targetRevision` is a constraint, not a pin: `v1.*.*`, `3.*`, `0.28.*`. Patch and minor
+releases arrive on their own, majors never do. For a homelab that is the right trade. The
 alternative is either a pull request per patch release for every chart in the cluster, or
 infrastructure that silently rots. Workload images are handled the opposite way, pinned
 exactly and moved by automation that leaves a commit behind.
@@ -117,8 +117,8 @@ replacements are healthy.
 Exceptions are per-resource and explicit:
 
 - **Data that must outlive its manifest** carries
-  `argocd.argoproj.io/sync-options: Delete=false,Prune=false` — the 7 TiB media PVC and its
-  namespace, for instance. Removing the app must not be able to remove the library.
+  `argocd.argoproj.io/sync-options: Delete=false,Prune=false`, such as the 7 TiB media PVC
+  and its namespace. Removing the app must not be able to remove the library.
 - **Fields owned by something else** are excluded with `ignoreDifferences`. metrics-server's
   APIService is annotated for cert-manager CA injection, and its `insecureSkipTLSVerify`
   does not survive the round trip through the API server. Without the exclusion the app
@@ -130,8 +130,8 @@ The blog runs as dev and prod from a single
 [`ApplicationSet`](../kubernetes/bootstrap/charts/app-of-apps/templates/blog.yaml) over a
 list generator, each element selecting a
 [kustomize overlay](../kubernetes/kustomizations/blog/overlays/). The base holds the
-deployment, service, ingress and network policy; the overlays change replica count, host
-name, pull policy and — importantly — which image tag the environment tracks.
+deployment, service, ingress and network policy. The overlays change replica count, host
+name, pull policy, and most importantly which image tag the environment tracks.
 
 Because the generator's `{{env}}` and Helm's `{{ }}` share a delimiter, the template escapes
 the ArgoCD placeholders so Helm emits them literally and ArgoCD expands them later. It is
@@ -140,9 +140,8 @@ the kind of thing that costs an afternoon once, so it is commented in place.
 ## Image updates that leave a trail
 
 [ArgoCD Image Updater](https://argocd-image-updater.readthedocs.io/) watches registries and
-writes new tags **back into this repository** rather than patching the cluster. Git stays
-the source of truth, and every image bump is a commit with an author, a diff and a
-revert.
+writes new tags **back into this repository** instead of patching the cluster. Git stays the
+source of truth, and every image bump is a commit with an author, a diff and a revert.
 
 ```mermaid
 flowchart LR
@@ -178,7 +177,7 @@ Every secret in this repository is committed, encrypted with
 ```
 
 Filename is the contract. Anything with `secret` in its name is encrypted on commit and
-opaque on GitHub; the naming rule is enforced in review and the same pattern excludes those
+opaque on GitHub. The naming rule is enforced in review, and the same pattern excludes those
 files from [detect-secrets](../.pre-commit-config.yaml), because a git-crypt blob would
 otherwise be flagged as high-entropy on every run.
 
@@ -199,10 +198,10 @@ exactly where and when it is needed, with no operator in the loop.
 
 The key reaches the repo-server as a Kubernetes Secret, and that Secret is
 [in this repository](../kubernetes/kustomizations/argocd/argocd-gitcrypt-secret.yaml) like
-everything else — its filename matches `*secret*`, so git-crypt encrypts it with the very
-key it contains. That sounds circular, and it is, harmlessly: the file is only readable by
-something that can already read the repository, so committing it gives an attacker nothing
-while letting the cluster's access be declared rather than injected by hand.
+everything else. Its filename matches `*secret*`, so git-crypt encrypts it with the very key
+it contains. That is circular, and harmlessly so. The file is only readable by something
+that can already read the repository, so committing it gives an attacker nothing, and the
+cluster's access ends up declared instead of injected by hand.
 
 What breaks the circle is an out-of-band copy, and git-crypt supports two:
 
@@ -212,7 +211,7 @@ What breaks the circle is an out-of-band copy, and git-crypt supports two:
 | `git-crypt unlock` with a registered GPG key | The collaborator key under [`.git-crypt/keys/`](../.git-crypt/), which holds the same symmetric key encrypted to a GPG public key |
 
 Either one unlocks a fresh clone, and from there `kubectl apply -k` hands the cluster the
-Secret it needs. Losing **both** is the unrecoverable case — see
+Secret it needs. Losing **both** is the unrecoverable case. See
 [Storage and backups](storage-and-backups.md#what-is-actually-recoverable).
 
 The image is built and published from this repository, tagged with the ArgoCD app version
@@ -229,7 +228,7 @@ person who applied it forgets they did.
 
 ## See also
 
-- [Operations](operations.md) — bootstrapping, adding an app, and what to do when a sync
+- [Operations](operations.md): bootstrapping, adding an app, and what to do when a sync
   will not settle
-- [Supply chain](supply-chain.md) — where the images that Image Updater discovers come from
-- [Conventions](conventions.md) — the review and validation gates a change passes first
+- [Supply chain](supply-chain.md): where the images that Image Updater discovers come from
+- [Conventions](conventions.md): the review and validation gates a change passes first

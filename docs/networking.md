@@ -25,12 +25,12 @@ flowchart LR
 **Externally**, `zmuda.pro` resolves to a Cloudflare-proxied CNAME pointing at
 `<tunnel-id>.cfargotunnel.com`. Cloudflare terminates the visitor's TLS and hands the
 request to a `cloudflared` pod over a connection that pod opened outbound. Nothing listens
-on the router; there is no NAT rule to get wrong.
+on the router, so there is no NAT rule to get wrong.
 
-**Internally**, hostnames like `argocd.zmuda.pro` resolve — via PiHole on the NAS — to an
-address from the Cilium load-balancer pool, announced on the LAN by ARP. Those addresses are
-RFC 1918 and the tunnel only forwards to Traefik, so there is no route from the internet to
-them at all; no rule has to deny one.
+**Internally**, PiHole on the NAS resolves hostnames like `argocd.zmuda.pro` to an address
+from the Cilium load-balancer pool, announced on the LAN by ARP. Those addresses are RFC 1918
+and the tunnel only forwards to Traefik. There is no route from the internet to them at all,
+so no rule has to deny one.
 
 Both paths terminate at the same Traefik service, so an application is configured once and
 its exposure is decided entirely by which DNS record points at it.
@@ -39,7 +39,7 @@ its exposure is decided entirely by which DNS record points at it.
 
 Cilium is the CNI, and it replaces kube-proxy outright. Talos ships with
 `cluster.network.cni.name: none` and `cluster.proxy.disabled: true`, so there is no CNI or
-proxy to remove first — the cluster simply has no networking until ArgoCD installs it.
+proxy to remove first. The cluster has no networking at all until ArgoCD installs it.
 
 ```yaml
 kubeProxyReplacement: true
@@ -54,8 +54,8 @@ agent. It also survives a control-plane restart without the agents noticing.
 
 The `cgroup` and `securityContext.capabilities` blocks in
 [values.yaml](../kubernetes/helm/cilium/values.yaml) exist because Talos mounts cgroups
-itself and grants no capability the workload has not asked for. They are copied from
-Cilium's Talos guidance rather than invented.
+itself and grants no capability the workload has not asked for. Both blocks are copied
+straight from Cilium's Talos guidance.
 
 ### Load balancing without a load balancer
 
@@ -94,10 +94,10 @@ this cluster has capacity for.
 
 ### Observability
 
-Hubble relay and UI are enabled and published at `hubble.zmuda.pro` (internal only). Being
-able to *see* flows is what makes the network policies below maintainable — a denied flow
-shows up as a drop with both identities named, instead of an application that hangs for
-reasons nobody can reconstruct.
+Hubble relay and UI are enabled and published at `hubble.zmuda.pro` (internal only). Seeing
+the flows is what makes the network policies below maintainable. A denied flow shows up as a
+drop with both identities named, instead of an application that hangs for reasons nobody can
+reconstruct.
 
 ## Traefik
 
@@ -123,8 +123,8 @@ mechanisms restore the original, and both are needed:
   address range, so `X-Forwarded-For` from those sources is believed and from anywhere else
   is not.
 - The [`cloudflare` plugin middleware](../kubernetes/kustomizations/traefik/cloudflare-middleware.yaml)
-  rewrites the request header from `CF-Connecting-IP`, trusting only `10.0.0.0/8` — the
-  pod network, which is where `cloudflared` sits.
+  rewrites the request header from `CF-Connecting-IP`, trusting only `10.0.0.0/8`. That is
+  the pod network, which is where `cloudflared` sits.
 
 Ingresses that are exposed externally opt into the middleware by annotation. Trusting a
 forwarded header unconditionally is how access logs, rate limits and IP-based rules all
@@ -143,10 +143,10 @@ ingress:
   - service: https://traefik.traefik.svc.cluster.local:443
 ```
 
-The tunnel is a dumb pipe. It does not know about applications, and adding a public
-hostname is a DNS change plus an ingress label — never a tunnel config change. Its liveness
-probe hits `/ready` on the metrics port, so a tunnel that is running but not connected is
-restarted rather than left to look healthy.
+The tunnel is a dumb pipe. It does not know about applications, and adding a public hostname
+is a DNS change plus an ingress label, never a tunnel config change. Its liveness probe hits
+`/ready` on the metrics port, so a tunnel that is running but not connected gets restarted
+instead of looking healthy.
 
 Credentials come from a git-crypt encrypted secret, and the image tag is pinned by
 kustomize and moved by [Image Updater](gitops.md#image-updates-that-leave-a-trail).
@@ -172,8 +172,8 @@ sources:
 
 Split-horizon DNS usually means maintaining two zone files that disagree. Here it means one
 label on one manifest, and the record appears in the right place. The blog demonstrates the
-whole mechanism in two overlays of the same base: prod is `dns-type: external` with a
-Cloudflare-proxied CNAME to the tunnel; dev is `dns-type: internal` and exists only on the
+whole mechanism in two overlays of the same base. Prod is `dns-type: external` with a
+Cloudflare-proxied CNAME to the tunnel. Dev is `dns-type: internal` and exists only on the
 LAN.
 
 PiHole gets `registry: noop` and `upsert-only` because it has no TXT registry to track
@@ -186,11 +186,11 @@ cert-manager issues from Let's Encrypt using a **DNS-01** solver with a Cloudfla
 token, and both a staging and a production
 [ClusterIssuer](../kubernetes/kustomizations/cert-manager/cluster-issuer.yaml) exist.
 
-DNS-01 is the only option that works here, and it is also the better one: HTTP-01 requires
+DNS-01 is the only option that works here, and it is also the better one. HTTP-01 requires
 the validation server to reach the host, which is impossible for a name that resolves only
-on the LAN. With DNS-01, internal-only services still get publicly trusted certificates —
-`argocd.zmuda.pro`, `hubble.zmuda.pro` and the rest are real HTTPS, not a click-through
-warning or a private CA that every device has to be taught about.
+on the LAN. With DNS-01, internal-only services still get publicly trusted certificates.
+`argocd.zmuda.pro`, `hubble.zmuda.pro` and the rest are real HTTPS, with no click-through
+warning and no private CA that every device has to be taught about.
 
 Applications request a certificate with a single annotation:
 
@@ -213,8 +213,8 @@ ingress:
 egress: []
 ```
 
-A static site has no reason to originate a connection, so it cannot. Where egress is
-genuinely needed it is enumerated, at the narrowest form Cilium supports —
+A static site has no reason to originate a connection, so it cannot. Where egress is really
+needed it gets enumerated in the narrowest form Cilium supports.
 [Vaultwarden](../kubernetes/kustomizations/vaultwarden/netpol.yaml) may reach kube-dns, one
 SMTP host by FQDN, and one IP and port for backups. Nothing else, including the rest of the
 LAN.
@@ -225,6 +225,6 @@ meant as soon as the pod behind it moves.
 
 ## See also
 
-- [Architecture](architecture.md) — where these components sit in the boot order
-- [Security](security.md) — what watches the traffic these policies allow
-- [Operations](operations.md) — exposing a new application on either path
+- [Architecture](architecture.md): where these components sit in the boot order
+- [Security](security.md): what watches the traffic these policies allow
+- [Operations](operations.md): exposing a new application on either path

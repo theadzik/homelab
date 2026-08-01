@@ -1,10 +1,10 @@
 # Helm charts
 
-Charts written here rather than consumed from upstream. They are kept independent of this
-homelab's configuration so they can be used by anyone: no hardcoded storage classes, no
-assumed ingress controller, no cluster-specific values.
+Charts written here instead of consumed from upstream. They are kept independent of this
+homelab's configuration so anyone can use them: no hardcoded storage classes, no assumed
+ingress controller, no cluster-specific values.
 
-Charts for upstream software live upstream — this directory is only for the ones that do not
+Charts for upstream software live upstream. This directory is only for the ones that do not
 exist elsewhere. See [GitOps](../docs/gitops.md#upstream-charts-local-values) for how the
 two are combined.
 
@@ -41,8 +41,8 @@ sources:
 
 ## Contributing to a chart
 
-Charts are versioned with SemVer in `Chart.yaml`; bump it in the same commit as the change,
-because ArgoCD tracks this repository's revision rather than a chart release.
+Charts are versioned with SemVer in `Chart.yaml`. Bump it in the same commit as the change,
+because ArgoCD tracks this repository's revision and not a chart release.
 
 ```bash
 helm lint media-stack

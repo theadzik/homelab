@@ -5,8 +5,8 @@ encrypted and the repo-server has to be able to read them.
 
 ## How it works
 
-The image installs the `git-crypt` binary — downloaded in a build stage and verified against
-a pinned SHA256 — and then renames ArgoCD's `git` and puts a wrapper in its place:
+The image installs the `git-crypt` binary, downloaded in a build stage and verified against
+a pinned SHA256. It then renames ArgoCD's `git` and puts a wrapper in its place:
 
 ```sh
 #!/bin/sh
@@ -25,8 +25,8 @@ repository with nothing encrypted still works.
 `GITCRYPT_KEY_PATH` and the volume behind it are set in
 [the ArgoCD values](../../kubernetes/helm/argocd/values.yaml). The Secret itself is
 [committed](../../kubernetes/kustomizations/argocd/argocd-gitcrypt-secret.yaml), encrypted
-by git-crypt with the key it contains — harmless, since reading it already requires being
-able to read the repository, and it keeps the cluster's access declarative.
+by git-crypt with the key it contains. That is harmless, since reading it already requires
+being able to read the repository, and it keeps the cluster's access declarative.
 
 ## Versioning
 
@@ -35,7 +35,7 @@ The image is built `FROM quay.io/argoproj/argocd:$TAG`, and the tag is not chose
 out of the [ArgoCD Application](../../kubernetes/bootstrap/charts/app-of-apps/templates/argocd.yaml),
 resolves that chart's `appVersion` with `helm search`, and builds and tags with it.
 
-So the patched image cannot drift from the ArgoCD the cluster is actually running: bumping
+So the patched image cannot drift from the ArgoCD the cluster is actually running. Bumping
 the chart version in git is the only way to move it, and doing so builds a matching image on
 merge.
 

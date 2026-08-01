@@ -26,7 +26,7 @@ talosctl health --nodes $CONTROL_PLANE_IP --talosconfig=./talosconfig
 talosctl kubeconfig --nodes $CONTROL_PLANE_IP --talosconfig=./talosconfig
 ```
 
-The cluster comes up with no CNI and no kube-proxy, by design — see
+The cluster comes up with no CNI and no kube-proxy, by design. See
 [Architecture](architecture.md#why-talos). Nothing will schedule until step 4.
 
 The full PXE and DHCP setup is written up in
@@ -34,8 +34,8 @@ The full PXE and DHCP setup is written up in
 
 ### 2. Unlock the repository
 
-Either path works — an exported key file, or the GPG key registered as a git-crypt
-collaborator:
+Either path works: an exported key file, or the GPG key registered as a git-crypt
+collaborator.
 
 ```bash
 git-crypt unlock /path/to/homelab-git-crypt.key   # symmetric key held elsewhere
@@ -44,8 +44,7 @@ git-crypt unlock                                  # GPG key already in the local
 
 Without one of them, the ArgoCD values and the git-crypt Secret applied in step 4 are
 ciphertext. The Secret is in this repository but encrypted with the key it carries, so it
-cannot bootstrap itself — see
-[GitOps](gitops.md#secrets-in-a-public-repository).
+cannot bootstrap itself. See [GitOps](gitops.md#secrets-in-a-public-repository).
 
 ### 3. Install ArgoCD by hand, once
 
@@ -68,7 +67,7 @@ kubectl apply -k kubernetes/kustomizations/argocd
 That applies the git-crypt key secret and the
 [`argocd-bootstrap` Application](../kubernetes/kustomizations/argocd/argocd-bootstrap.yaml),
 which points at the app-of-apps chart. ArgoCD then installs Cilium, at which point the
-cluster has networking, and proceeds through the sync waves to everything else — including
+cluster has networking, and works through the sync waves to everything else. That includes
 adopting its own release.
 
 To bootstrap from a branch instead of `main`, change `targetRevision` in that one file. The
@@ -76,24 +75,24 @@ revision is inherited by every child application, so the whole cluster follows.
 
 ## Adding an application
 
-1. **Choose a delivery style** — upstream chart with values, kustomize, or a local chart.
+1. **Choose a delivery style**: upstream chart with values, kustomize, or a local chart.
    The [comparison is in GitOps](gitops.md#upstream-charts-local-values).
 2. **Write the manifests**, under `kubernetes/helm/<app>/` or
    `kubernetes/kustomizations/<app>/`. Any file containing a Secret must have `secret` in
    its filename, or it will be committed in plaintext.
 3. **Register it** in [`kubernetes/bootstrap/charts/app-of-apps/templates/`](../kubernetes/bootstrap/charts/app-of-apps/templates/).
    An app that is not registered here does not exist. Give it a sync wave if it has
-   dependencies; workloads with none can leave the default.
-4. **Decide its exposure** with a `dns-type` label — `internal` for PiHole, `external` for
-   Cloudflare — and add a `CiliumNetworkPolicy`. See
+   dependencies. Workloads with none can leave the default.
+4. **Decide its exposure** with a `dns-type` label, `internal` for PiHole or `external` for
+   Cloudflare, and add a `CiliumNetworkPolicy`. See
    [Networking](networking.md#dns-one-cluster-two-providers).
 5. **Validate before committing** (below).
-6. **Open a pull request.** Merging is what deploys it; the sync-wave inventory regenerates
+6. **Open a pull request.** Merging is what deploys it. The sync-wave inventory regenerates
    itself afterwards.
 
 ## Validating a change
 
-Never edit [`sync-waves-inventory.md`](../sync-waves-inventory.md) — it is generated.
+Never edit [`sync-waves-inventory.md`](../sync-waves-inventory.md). It is generated.
 
 ```bash
 # everything the repository lints, in one pass
@@ -106,9 +105,9 @@ helm lint charts/<chart>          # local charts only
 ```
 
 The [`validate-k8s-change`](../.github/skills/validate-k8s-change/SKILL.md) skill automates
-the discovery part: it works out which kustomizations and Helm values a diff touches, maps
-values files back to the app-of-apps template that consumes them, and runs the right
-command for each. Details in [Conventions](conventions.md).
+the discovery part. It works out which kustomizations and Helm values a diff touches, maps
+values files back to the app-of-apps template that consumes them, and runs the right command
+for each. Details in [Conventions](conventions.md).
 
 ## Trying a change without merging it
 
@@ -123,13 +122,13 @@ For a single application, ArgoCD's UI can target a branch for that app alone.
 | Symptom | First check | Usual cause |
 | --- | --- | --- |
 | App stuck `OutOfSync` on the same field forever | `argocd app diff <app>` | A field written by another controller. Needs an `ignoreDifferences` entry, as metrics-server has |
-| App `Progressing` on a fresh cluster | Sync wave of what it depends on | Something in an earlier wave has not gone healthy; waves do not advance until they do |
-| New image not deploying | Image Updater logs, then the tag filter | The tag does not match `allowTags`. This is usually correct behaviour — see the [filters](gitops.md#image-updates-that-leave-a-trail) |
+| App `Progressing` on a fresh cluster | Sync wave of what it depends on | Something in an earlier wave has not gone healthy. Waves do not advance until they do |
+| New image not deploying | Image Updater logs, then the tag filter | The tag does not match `allowTags`. Usually that is correct behaviour, see the [filters](gitops.md#image-updates-that-leave-a-trail) |
 | Certificate not issued | `kubectl describe certificate`, then the Challenge | DNS-01 propagation, or the Cloudflare token secret |
 | Ingress returns 404 | Ingress `ingressClassName` and the `dns-type` label | Record created in the wrong zone, or no record at all |
 | Pod cannot reach something | Hubble UI, filter to drops | A `CiliumNetworkPolicy` doing exactly what it says |
 | Kyverno reports a verification failure | The image's tags in GHCR | An image published before the current attestation format, or one built by a workflow the policy does not trust |
-| PVC will not bind | Storage class name, then the CSI controller logs | Wrong protocol for the access mode — `ReadWriteMany` needs NFS |
+| PVC will not bind | Storage class name, then the CSI controller logs | Wrong protocol for the access mode. `ReadWriteMany` needs NFS |
 
 ### Restoring a volume
 
@@ -155,8 +154,8 @@ A replacement node is a PXE boot and a `talosctl apply-config`. No data lives on
 
 ## The local machine
 
-[`ansible/`](../ansible/) sets up a workstation to work on this repository — it is not
-cluster configuration.
+[`ansible/`](../ansible/) sets up a workstation to work on this repository. It is not cluster
+configuration.
 
 ```bash
 ./ansible/install-scripts/bootstrap.sh              # fresh machine: git identity, brew, pipx, ansible
@@ -175,6 +174,6 @@ under `ansible/` are in
 
 ## See also
 
-- [GitOps](gitops.md) — why merging is deployment
-- [Conventions](conventions.md) — the checks that run before a merge is possible
-- [Bootstrap notes](../kubernetes/bootstrap/README.md) — the chart the bootstrap points at
+- [GitOps](gitops.md): why merging is deployment
+- [Conventions](conventions.md): the checks that run before a merge is possible
+- [Bootstrap notes](../kubernetes/bootstrap/README.md): the chart the bootstrap points at

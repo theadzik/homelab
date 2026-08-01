@@ -2,7 +2,7 @@
 
 The chart in [`charts/app-of-apps/`](charts/app-of-apps/) is the root of the entire cluster.
 Its templates are the ArgoCD `Application` and `ApplicationSet` definitions for every
-component; an application that is not registered here does not exist.
+component. An application that is not registered here does not exist.
 
 ## How it is reached
 
@@ -22,7 +22,7 @@ spec:
 So changing `targetRevision` in that one Application moves the whole cluster to another
 branch. To change how the cluster is bootstrapped at all, edit that file.
 
-The full bootstrap sequence — Talos, git-crypt, ArgoCD, hand-over — is in
+The full bootstrap sequence, covering Talos, git-crypt, ArgoCD and the hand-over, is in
 [Operations](../../docs/operations.md#bootstrapping-from-nothing).
 
 ## Adding an application
@@ -37,8 +37,8 @@ Add one template here. It needs:
   `ref: repo` indirection.
 - An `ImageUpdater` resource, if its image should track upstream releases.
 
-Do not edit [`sync-waves-inventory.md`](../../sync-waves-inventory.md); it is regenerated
+Do not edit [`sync-waves-inventory.md`](../../sync-waves-inventory.md). It is regenerated
 from these templates on every push to `main`.
 
-A template whose filename starts with `_` is not rendered by Helm — that is how an
+A template whose filename starts with `_` is not rendered by Helm. That is how an
 application is parked without deleting its definition.

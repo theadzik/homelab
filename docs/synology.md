@@ -1,6 +1,6 @@
 # Synology DS923+
 
-Everything else in this repository is reconciled by ArgoCD. The NAS is the exception: DSM
+Everything else in this repository is reconciled by ArgoCD. The NAS is the exception. DSM
 has no declarative interface worth automating against, and the cluster that would run the
 automation PXE boots from this machine anyway. These notes exist so the manual configuration
 is at least written down.
@@ -11,19 +11,19 @@ Everything below is applied through the DSM web interface or over SSH.
 
 | Role | Used by |
 | --- | --- |
-| iSCSI and NFS targets | The [Synology CSI driver](storage-and-backups.md#storage-classes) — every PersistentVolume in the cluster |
+| iSCSI and NFS targets | The [Synology CSI driver](storage-and-backups.md#storage-classes), so every PersistentVolume in the cluster |
 | S3 object storage ([Garage](https://garagehq.deuxfleurs.fr/documentation/quick-start/)) | Velero backups |
 | DNS ([PiHole](https://pi-hole.net/)) | The LAN, and external-dns for internal records |
 | DHCP and TFTP | PXE booting the Talos nodes |
 | ACME client (`acme.sh`) | DSM's own certificate, since it is not in the cluster |
 
 PiHole is reachable at <https://pihole.zmuda.pro:8443/admin/>, and the NAS itself at
-`synology.zmuda.pro` — an A record created from a pair of `ExternalName` services in the
-[CSI kustomization](../kubernetes/kustomizations/synology-csi/external-service.yaml), purely
-so that external-dns publishes the name.
+`synology.zmuda.pro`. That A record comes from a pair of `ExternalName` services in the
+[CSI kustomization](../kubernetes/kustomizations/synology-csi/external-service.yaml), which
+exist purely so external-dns publishes the name.
 
-The dependency is worth stating plainly: the NAS is a single point of failure for storage,
-DNS, DHCP and node boot. The cluster survives losing any node; it does not survive losing
+The dependency is worth stating plainly. The NAS is a single point of failure for storage,
+DNS, DHCP and node boot. The cluster survives losing any node. It does not survive losing
 this.
 
 ## Running PiHole and DSM's DHCP server together
@@ -76,7 +76,7 @@ systemctl restart "$SERVICE"
 exit 0
 ```
 
-The script rewrites an existing `--port=` flag rather than appending a second one, so it is
+The script rewrites an existing `--port=` flag instead of appending a second one, so it is
 safe on every boot and not only the ones that follow an update.
 
 ## Storage tiers
@@ -89,8 +89,8 @@ choosing a tier is a one-line change in a PVC. See
 ## PXE boot
 
 The NAS serves DHCP and TFTP for the Talos nodes, which is what lets a replacement node join
-with no installation media. The full setup — static IP, TFTP share, DHCP options and the
-Talos Factory image — is written up in
+with no installation media. The full setup, covering static IP, TFTP share, DHCP options and
+the Talos Factory image, is written up in
 [PXE Booting Talos Linux from Synology NAS](https://zmuda.pro/talos-linux-using-pxe).
 
 An earlier post covers the storage side: [Synology DS923+ as a Storage Server for

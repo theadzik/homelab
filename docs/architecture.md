@@ -36,8 +36,8 @@ that the cluster dials outward, so the router exposes nothing at all.
 
 The nodes run [Talos Linux](https://www.talos.dev/): an immutable, API-driven distribution
 with no shell, no SSH and no package manager. The whole node configuration is two files in
-[talos/](../talos/) — a Factory schematic naming the system extensions, and a machine
-config patch applied to every node.
+[talos/](../talos/): a Factory schematic naming the system extensions, and a machine config
+patch applied to every node.
 
 That trade was made knowingly. The previous generation of this homelab was Debian preseed
 plus Ansible roles ([part 1](https://zmuda.pro/os-ansible-argocd-part-1),
@@ -80,8 +80,8 @@ templates, so it cannot drift from what is actually deployed.
 | 10 | Optimisation | Descheduler, last, so it rebalances a settled cluster |
 
 The ordering encodes real dependencies, not preference. Traefik cannot get a certificate
-before cert-manager exists; nothing can be scheduled onto Synology volumes before the CSI
-driver is up; the descheduler evicting pods during the initial converge would be actively
+before cert-manager exists. Nothing can be scheduled onto Synology volumes before the CSI
+driver is up. And a descheduler evicting pods during the initial converge would be actively
 harmful.
 
 ## Component inventory
@@ -117,15 +117,16 @@ harmful.
 
 ## Where the state lives
 
-Nothing important lives on a node. Talos machines are cattle: reinstall by PXE and rejoin.
+Nothing important lives on a node. A Talos machine is cattle. Reinstall it by PXE and it
+rejoins.
 
-- **Block and file storage** — the DS923+ over iSCSI and NFS, split into HDD and SSD tiers
-  by a `location: /volume2` parameter on the storage class.
-- **Object storage** — [Garage](https://garagehq.deuxfleurs.fr/) on the same NAS, which is
+- **Block and file storage**: the DS923+ over iSCSI and NFS, split into HDD and SSD tiers by
+  a `location: /volume2` parameter on the storage class.
+- **Object storage**: [Garage](https://garagehq.deuxfleurs.fr/) on the same NAS, which is
   where Velero puts cluster backups.
-- **Secrets** — in this repository, encrypted with git-crypt, decrypted by ArgoCD at sync
+- **Secrets**: in this repository, encrypted with git-crypt, decrypted by ArgoCD at sync
   time.
-- **Everything else** — this repository. If the cluster is lost, the recovery path is
+- **Everything else**: this repository. If the cluster is lost, the recovery path is
   [bootstrap](operations.md#bootstrapping-from-nothing), not a restore.
 
 [Storage and backups](storage-and-backups.md) covers the tiers, the snapshot schedule and

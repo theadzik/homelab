@@ -1,8 +1,8 @@
 # Storage and backups
 
 Nodes hold nothing worth keeping. Every byte that matters is on the Synology DS923+ or in
-this repository, which is what makes a node a disposable PXE boot rather than a machine
-anyone is careful with.
+this repository, which is what makes a node a disposable PXE boot instead of a machine
+anyone has to be careful with.
 
 ## Storage classes
 
@@ -20,7 +20,7 @@ synology-<protocol>-<reclaim>[-<tier>][-<purpose>]
 | reclaim | `retain`, `delete` | Whether losing the PVC should be survivable |
 | tier | *(none)* = HDD, `ssd` = `/volume2` | Latency vs. capacity |
 
-`synology-nfs-delete` is the cluster default: the safe thing to get by accident is a volume
+`synology-nfs-delete` is the cluster default. The safe thing to get by accident is a volume
 that goes away with its claim, not one that quietly accumulates on the NAS forever.
 
 Two of the parameters took some working out:
@@ -31,7 +31,7 @@ Two of the parameters took some working out:
 - **PostgreSQL gets a class of its own**, `synology-nfs-retain-ssd-postgres`, mounted `hard`
   with `0750` permissions. A soft NFS mount returns I/O errors on interruption, and a
   database that receives an I/O error where it expected a pause can corrupt its data files.
-  Everywhere else the mount options are a preference; here they are a correctness
+  Everywhere else the mount options are a preference. Here they are a correctness
   requirement.
 
 All classes allow volume expansion, so growing a volume is an edit to a PVC.
@@ -41,7 +41,7 @@ All classes allow volume expansion, so growing a volume is an edit to a PVC.
 The [external-snapshotter](https://github.com/kubernetes-csi/external-snapshotter) CRDs are
 pulled straight into the kustomization from a pinned upstream tag, and a default
 `VolumeSnapshotClass` points at the Synology driver. That makes CSI snapshots available to
-anything that asks — most importantly Velero.
+anything that asks for one, Velero above all.
 
 ## Velero
 
@@ -66,7 +66,7 @@ labels:
 ```
 
 Backups land in a [Garage](https://garagehq.deuxfleurs.fr/) S3 bucket on the NAS. The
-location is deliberately **not** marked default — a backup should be sent somewhere on
+location is deliberately **not** marked default. A backup should be sent somewhere on
 purpose, not by omission.
 
 Object-level backups matter less here than they would elsewhere, because the manifests are
@@ -75,9 +75,9 @@ declared: generated secrets, CRD state, whatever ArgoCD would recreate but not r
 
 ## Application-level backup: Vaultwarden
 
-A password manager gets a third layer, because the recovery story for everything else —
-rebuild the cluster from git — is far too slow for the thing that holds every credential.
-The [backup and restore images](../apps/vaultwarden/) built in this repository do it:
+A password manager gets a third layer. The recovery story for everything else, rebuilding
+the cluster from git, is far too slow for the thing that holds every credential. The
+[backup and restore images](../apps/vaultwarden/) built in this repository do it:
 
 ```mermaid
 flowchart TD
@@ -97,7 +97,7 @@ flowchart TD
 What makes it hold up:
 
 - **The restore runs as an init container.** Nobody has to notice that a volume came up
-  empty and go looking for a runbook; it is repaired before Vaultwarden opens it.
+  empty and go looking for a runbook. It is repaired before Vaultwarden opens it.
 - **Failing to restore fails the pod.** Starting empty would present a working but empty
   vault, and the first client to sync would overwrite its own copy with nothing. Refusing to
   start is the safer failure, and it was chosen on purpose.
@@ -135,23 +135,22 @@ Coverage is uneven, so it is worth setting out case by case:
 | The whole cluster | [Bootstrap from this repository](operations.md#bootstrapping-from-nothing) | Everything declarative returns unattended |
 | A PVC | Velero CSI snapshot, if it was labelled | Up to 12 hours of data |
 | Vaultwarden data | Local backup, then Google Drive, automatically | Up to 12 hours, and the only path that survives losing the NAS |
-| The NAS | Vaultwarden restores from Drive. Everything else was on it. | Media is re-acquirable; other volumes are not |
+| The NAS | Vaultwarden restores from Drive. Everything else was on it. | Media is re-acquirable, other volumes are not |
 
-That last row is the standing gap, and it is a known one: Velero's bucket lives on the same
-NAS as the volumes it backs up, so it protects against deletion and corruption but not
-against hardware loss. Fixing it means paying for an off-site S3 target, which is the only
-thing stopping it.
+That last row is the standing gap, and a known one. Velero's bucket lives on the same NAS as
+the volumes it backs up, so it protects against deletion and corruption but not against
+hardware loss. Fixing it means paying for an off-site S3 target, which is the only thing
+stopping it.
 
 The other unrecoverable case is losing every way to unlock the repository. The git-crypt key
 is committed here as the Secret ArgoCD mounts, encrypted with itself, so it is no use for
-bootstrapping — that needs either the exported key file kept elsewhere or the GPG key
-registered under [`.git-crypt/keys/`](../.git-crypt/). Two independent paths, and both are
-held outside this repository. Lose both and nothing here decrypts, including the backups of
-things that were encrypted with what it protects. See
+bootstrapping. That needs either the exported key file kept elsewhere or the GPG key
+registered under [`.git-crypt/keys/`](../.git-crypt/). Two independent paths, both held
+outside this repository. Lose both and nothing here decrypts, backups included. See
 [GitOps](gitops.md#secrets-in-a-public-repository).
 
 ## See also
 
-- [Synology notes](synology.md) — what is configured on the NAS itself, by hand
-- [Architecture](architecture.md#where-the-state-lives) — how storage fits the whole
-- [Operations](operations.md) — restore procedures and bootstrap
+- [Synology notes](synology.md): what is configured on the NAS itself, by hand
+- [Architecture](architecture.md#where-the-state-lives): how storage fits the whole
+- [Operations](operations.md): restore procedures and bootstrap
