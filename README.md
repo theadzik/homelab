@@ -1,45 +1,106 @@
 # homelab
 
-This repository contains most of the code I use to manage my homelab environment.
-I use Kubernetes running on Talos Linux and Synology DS923+ for storage.
-GitOps is done using ArgoCD. I keep all the code in this repository, including
-secrets encrypted with git-crypt.
+A three-node Kubernetes cluster on [Talos Linux](https://www.talos.dev/), managed entirely
+by GitOps. Every workload, every piece of platform configuration and every secret is in
+this repository — ArgoCD reconciles the rest.
 
-## `/ansible`
+It runs real things: a public website, a password vault, a media stack with GPU
+transcoding, a recipe manager with its own PostgreSQL cluster. It is also where I try ideas
+that are hard to justify trying at work for the first time.
 
-Ansible (duh!) playbook to configure dev environment on my local machine.
+```mermaid
+flowchart LR
+    dev[pull request] --> main[(main)]
+    main --> argo[ArgoCD]
+    argo --> k8s["Talos cluster<br/>1 control plane, 2 workers"]
+    k8s --> nas["Synology DS923+<br/>iSCSI · NFS · S3"]
+    ghcr[(ghcr.io)] -->|signed images| k8s
+    k8s -.->|new tag, as a commit| main
+```
 
-## `/apps`
+## Stack
 
-Dockerfiles and scripts used to build images.
+| | |
+| --- | --- |
+| **OS / cluster** | Talos Linux, Kubernetes, PXE-booted bare metal |
+| **GitOps** | ArgoCD (app-of-apps, ApplicationSets, Image Updater), Helm, Kustomize |
+| **Networking** | Cilium (kube-proxy replacement, L2 announcements, Hubble), Traefik, Cloudflare Tunnel, external-dns, cert-manager |
+| **Storage** | Synology CSI (iSCSI + NFS), CSI snapshots, Velero, Garage S3 |
+| **Security** | Kyverno, Falco, Pod Security Admission, CiliumNetworkPolicy, git-crypt, Docker Hardened Images |
+| **Supply chain** | Trivy + Grype, syft, cosign keyless signing, SLSA provenance, CycloneDX SBOMs |
+| **Automation** | GitHub Actions (reusable workflows), Dependabot, pre-commit, Ansible |
 
-* `/apps/custom-argocd` - ArgoCD with enabled git-crypt support.
-* `/apps/vaultwarden` - Backup and restore scripts made for Vaultwarden. Designed to be
-  running as initContainer (restore) and a CronJob (backup).
+## Things worth stealing
 
-## `/charts`
+Documentation for each, with the reasoning:
 
-Public Helm charts that can be released independently of the homelab configuration.
+- **[Images are verified by the cluster that runs them](docs/supply-chain.md)** — built to an
+  OCI layout, scanned before push, signed at their digest, and checked at admission by a
+  Kyverno policy whose match conditions avoid the vacuous-pass trap. Plus a daily rescan that
+  reports instead of gating, and two scanners because their databases disagree.
+- **[One bootstrap Application creates the whole cluster](docs/gitops.md)** — and passes its
+  own git revision to every child, so pointing it at a branch moves the entire cluster to
+  that branch.
+- **[Image updates arrive as commits, not as cluster changes](docs/gitops.md#image-updates-that-leave-a-trail)** —
+  with per-environment tag filters, because `newest-build` with no filter will happily
+  deploy an open pull request's image.
+- **[Split-horizon DNS from a single label](docs/networking.md#dns-one-cluster-two-providers)** —
+  `dns-type: internal` or `external` on an Ingress decides whether the record is created in
+  PiHole or Cloudflare. Same manifest, two zones.
+- **[Secrets committed to a public repository](docs/gitops.md#secrets-in-a-public-repository)** —
+  git-crypt selected by filename, and a patched ArgoCD that unlocks after every fetch, so
+  decryption needs no operator.
+- **[A password vault that repairs itself](docs/storage-and-backups.md#application-level-backup-vaultwarden)** —
+  encrypted backups to the NAS and off-site, restored by an init container, and a pod that
+  refuses to start empty rather than presenting an empty vault to its clients.
+- **[Agent instructions as reviewed repository artifacts](docs/conventions.md#instructions-as-repository-artifacts)** —
+  one file, symlinked so Claude Code and Copilot cannot drift apart, plus a review checklist
+  and a validation skill that any human can run.
+- **[The gaps, written down](docs/security.md#known-gaps)** — where the controls stop, and
+  what it would take to close each one.
 
-* `/charts/media-stack` - Comprehensive media automation stack (Jellyfin, Radarr, Sonarr, Bazarr, NZBGet).
-  See [charts/README.md](charts/README.md) for details.
+## Documentation
 
-## `/kubernetes`
+| Page | Contents |
+| --- | --- |
+| [Architecture](docs/architecture.md) | Hardware, Talos configuration, layering, component inventory |
+| [GitOps](docs/gitops.md) | App-of-apps, sync waves, image updates, secrets in git |
+| [Networking](docs/networking.md) | Cilium, ingress, split-horizon DNS, certificates, network policy |
+| [Storage and backups](docs/storage-and-backups.md) | Storage classes, Velero, application-level backup, what is recoverable |
+| [Supply chain](docs/supply-chain.md) | Build, scan, sign, attest, admit, rescan |
+| [Security](docs/security.md) | Posture, layers, and known gaps |
+| [Operations](docs/operations.md) | Bootstrap, adding an application, day-2 runbook |
+| [Conventions](docs/conventions.md) | Layout, quality gates, review rules |
+| [Synology](docs/synology.md) | What is configured on the NAS by hand |
 
-Kubernetes manifests, helm values, and bootstrap configurations for my homelab cluster.
+## Repository layout
 
-* `/kubernetes/bootstrap` - Cluster bootstrap configurations,
-  including ArgoCD helm version, bootstrap app-of-apps chart,
-  and sync wave inventory. Custom ArgoCD image is built using AppVersion from selected chart.
-* `/kubernetes/helm` - Helm values for applications deployed in my cluster.
-  Chart definitions may be in `/charts` (for public charts) or inline.
-* `/kubernetes/kustomziations` - Kustomizations
-  (and sometimes just plain manifests with a `kustomization.yaml` file to look fancy)
-  for applications that don't have helm charts, or I don't want to use them for some reason.
+```text
+kubernetes/bootstrap/   app-of-apps chart - every application is registered here
+kubernetes/helm/        values for upstream charts
+kubernetes/kustomizations/  manifests for apps deployed without a chart
+charts/                 Helm charts written here, publishable on their own
+apps/                   Dockerfiles and the scripts they package
+talos/                  node configuration: schematic and machine config patch
+ansible/                workstation setup, not cluster configuration
+docs/                   the pages above
+```
 
-[Sync-wave inventory](./sync-waves-inventory.md) is
-automatically generated when applications change in the app-of-apps chart.
+[sync-waves-inventory.md](sync-waves-inventory.md) is generated from the app-of-apps
+templates on every push to `main`.
 
-## `/talos`
+## Related repositories
 
-Talos Linux configuration. Schematic files are used to generate Talos config and patches.
+| Repository | What it is |
+| --- | --- |
+| [github-workflows](https://github.com/theadzik/github-workflows) | The reusable build workflow every image here is built by: OCI layout, scan, sign, attest, tags last |
+| [blog](https://github.com/theadzik/blog) | [zmuda.pro](https://zmuda.pro), deployed to this cluster from `ghcr.io` in two environments |
+| [workout](https://github.com/theadzik/workout) | Unrelated to the cluster: a Python CLI that advances Garmin workout targets by double progression |
+
+Several decisions here are written up at length on the blog — [PXE booting Talos from a
+Synology NAS](https://zmuda.pro/talos-linux-using-pxe), [the NAS as Kubernetes
+storage](https://zmuda.pro/synology-nas-setup), and [what this replaced](https://zmuda.pro/os-ansible-argocd-part-2).
+
+## Licence
+
+[MIT](LICENSE).
