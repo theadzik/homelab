@@ -21,19 +21,24 @@ jobs:
     with:
       tag-prefix: "vw-backup-"
   backup-build-push:
-    uses: theadzik/github-workflows/.github/workflows/build-and-push.yaml@a75831dcde77fb4ad7caa180497a48fd0be072c4 # v1.0.0
+    uses: theadzik/github-workflows/.github/workflows/build-and-push.yaml@1d7be13ba716c8f074a22d26eb8cfa7b032d00e8 # v2.1.0
     needs: get-tag
     permissions:
       contents: read
       id-token: write
       attestations: write
       artifact-metadata: write
+      packages: write
     with:
       # A pull request must build its own head, not the last released tag,
       # or the Dockerfile change under review is never actually exercised.
       git-ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || needs.get-tag.outputs.git_tag }}
       tags: "type=raw,value=${{ needs.get-tag.outputs.docker_tag }}"
-      image-name: "vw-backup"
+      registry: ghcr.io
+      image-name: "${{ github.repository_owner }}/vw-backup"
+      registry-username: ${{ github.actor }}
+      extra-registry: dhi.io
+      extra-registry-username: ${{ secrets.DOCKERHUB_USERNAME }}
       context-path: "apps/vaultwarden/backup"
       # The shared workflow scans by default. Every finding here is inside the
       # rclone binary copied from rclone/rclone, in rclone's own Go
@@ -42,4 +47,6 @@ jobs:
       # rebuild can - so the gate would block the weekly rebuild indefinitely.
       scan: false
       push: ${{ github.event_name != 'pull_request' }}
-    secrets: inherit
+    secrets:
+      REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+      EXTRA_REGISTRY_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
