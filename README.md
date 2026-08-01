@@ -1,5 +1,9 @@
 # homelab
 
+> [!NOTE]
+> The documentation in this repository was AI generated, but reviewed and approved by a person.
+> It *should* be free of hallucinations but something might have slipped through. Sorry!
+
 A three-node Kubernetes cluster on [Talos Linux](https://www.talos.dev/), managed entirely
 by GitOps. Every workload, every piece of platform configuration and every secret is in
 this repository, and ArgoCD reconciles the rest.
