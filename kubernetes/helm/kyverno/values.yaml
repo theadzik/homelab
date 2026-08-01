@@ -1,6 +1,6 @@
 features:
   backgroundScan:
-    # To limit 429 rate limits on dockerhub
+    # Each scan re-verifies every matched pod against Rekor and the registry.
     backgroundScanInterval: 6h
 
 reportsController:

@@ -3,34 +3,18 @@ kind: ImageValidatingPolicy
 metadata:
   name: validate-image-attestations
 spec:
-  # No credentials block: every image this policy matches is a public GHCR
-  # package, and GHCR hands an anonymous pull token to any client that asks.
-  # The Docker Hub secret was only ever needed while we published there.
+  # No credentials: every image matched here is a public GHCR package.
   webhookConfiguration:
     timeoutSeconds: 30
   failurePolicy: Ignore
   evaluation:
     background:
       enabled: true
-  # Audit only, deliberately, as the first step back to real enforcement.
-  #
-  # Since the images moved to ghcr.io this policy has verified *nothing*: the
-  # glob below used to read `theadzik/*`, which does not match
-  # `ghcr.io/theadzik/*`, so no image was ever extracted and every
-  # `.all()` over the empty list passed vacuously - including the Deny path.
-  # Auditing genuinely verifies and reports, which is already strictly more
-  # than was happening before.
-  #
-  # Deny goes back on once admission latency has been watched on real traffic.
-  # Verification is not cached between admissions (three consecutive checks of
-  # one image took 35s, 34s, 34s) and the webhook is capped at 30s by
-  # Kubernetes, so blocking before measuring risks stalling deployments.
+  # Audit until verification fits the webhook timeout with margin.
   validationActions:
     - Audit
-  # Skip pods that have nothing to do with us instead of admitting them on a
-  # vacuous pass. Without this the policy is consulted for all 74 pods in the
-  # cluster and writes a meaningless `pass` for each; with it, 10 are scanned -
-  # exactly those running one of our images.
+  # Without this the webhook is consulted for every pod in the cluster and
+  # records a vacuous pass for each, since .all() over no images is true.
   matchConditions:
     - name: only-our-images
       expression: >-
@@ -50,10 +34,7 @@ spec:
       cosign:
         keyless:
           identities:
-            # One signer, not a repository full of them. The previous pattern
-            # accepted a signature from any repo of ours, and its unescaped
-            # dots also matched a lookalike host. This is the same identity the
-            # shared workflow verifies against immediately after signing.
+            # One signer. Dots are escaped so a lookalike host cannot match.
             - issuer: "https://token.actions.githubusercontent.com"
               subjectRegExp: "^https://github\\.com/theadzik/github-workflows/\\.github/workflows/build-and-push\\.yaml@.+$"
         ctlog:
@@ -69,12 +50,6 @@ spec:
     mutateDigest: true
     required: true
     verifyDigest: true
-  # Every container, not just the main ones. `images.containers` covers only
-  # spec.containers, so init containers were never checked - vw-restore runs
-  # as one, and so does the argocd binary inside argocd-dex-server, meaning
-  # both shipped unverified. Confirmed by running these expressions against a
-  # deliberately wrong signer identity: vaultwarden flipped from pass to fail
-  # only once initContainers were included.
   validations:
     - expression: >-
         (images.containers + images.initContainers + images.ephemeralContainers).map(image,

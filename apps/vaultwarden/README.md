@@ -25,7 +25,7 @@ Mounts both data and backup PVCs:
 ```yaml
 initContainers:
   - name: restore
-    image: theadzik/vw-restore:2025.5.1
+    image: ghcr.io/theadzik/vw-restore:main
     volumeMounts:
       - mountPath: /data           # Main data volume
         name: data
