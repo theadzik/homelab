@@ -72,6 +72,7 @@ Documentation for each, with the reasoning:
 | [Security](docs/security.md) | Posture, layers, and known gaps |
 | [Operations](docs/operations.md) | Bootstrap, adding an application, day-2 runbook |
 | [Conventions](docs/conventions.md) | Layout, quality gates, review rules |
+| [Talos](docs/talos.md) | Node config generation, version pinning, the CNI bootstrap gap |
 | [Synology](docs/synology.md) | What is configured on the NAS by hand |
 
 ## Repository layout

@@ -6,33 +6,58 @@ what to check when something does not settle.
 ## Bootstrapping from nothing
 
 The only manual steps are the ones that must exist before GitOps can. Everything after step
-four happens on its own.
+five happens on its own.
 
 ### 1. Nodes
 
-Talos machines PXE boot from the NAS, so a replacement node needs no installation media.
-Configuration comes from the two files in [talos/](../talos/):
+Talos machines PXE boot from the NAS, so a replacement node needs no installation media. The
+machine configs are generated from the inputs in [talos/](../talos/), never hand-written:
 
 ```bash
-export CONTROL_PLANE_IP=192.168.0.2
-export CLUSTER_NAME=homelab
+./talos/generate.sh                        # writes controlplane.yaml, worker.yaml, talosconfig
 
-talosctl gen config $CLUSTER_NAME https://$CONTROL_PLANE_IP:6443 --config-patch @talos/patch-all.yaml
-talosctl apply-config --insecure --nodes $CONTROL_PLANE_IP --file controlplane.yaml
-talosctl --talosconfig=./talosconfig config endpoints $CONTROL_PLANE_IP
-
-talosctl bootstrap --nodes $CONTROL_PLANE_IP --talosconfig=./talosconfig
-talosctl health --nodes $CONTROL_PLANE_IP --talosconfig=./talosconfig
-talosctl kubeconfig --nodes $CONTROL_PLANE_IP --talosconfig=./talosconfig
+talosctl apply-config --insecure -n 192.168.0.2 --file talos/controlplane.yaml
+talosctl bootstrap -n 192.168.0.2
+talosctl health -n 192.168.0.2
+talosctl kubeconfig
 ```
 
-The cluster comes up with no CNI and no kube-proxy, by design. See
-[Architecture](architecture.md#why-talos). Nothing will schedule until step 4.
+That script needs `secret-certs.yaml` decrypted, so on a machine that has never held the
+git-crypt key, do step 3 first. What the script does and why it exists is in
+[Talos](talos.md#regenerating).
+
+The cluster comes up with no CNI and no kube-proxy, by design. Nothing can be scheduled
+until the next step, and Talos reboots a node that has waited about ten minutes for a CNI,
+so do not stop here.
 
 The full PXE and DHCP setup is written up in
 [PXE Booting Talos Linux from Synology NAS](https://zmuda.pro/talos-linux-using-pxe).
 
-### 2. Unlock the repository
+### 2. Install Cilium by hand, once
+
+ArgoCD installs everything in this cluster except the thing that lets ArgoCD run at all. A
+cluster with no CNI schedules no pods, so Cilium goes on manually and its Application adopts
+the release later, at sync wave -80.
+
+From the repository root, because the values path is relative to it:
+
+```bash
+helm template cilium --version 1.20.0 oci://quay.io/cilium/charts/cilium \
+  -f kubernetes/helm/cilium/values.yaml -n kube-system \
+  | sed -n '/^---$/,$p' | kubectl apply -f -
+
+kubectl get nodes                                # Ready, not NotReady
+kubectl -n kube-system rollout status ds/cilium
+```
+
+The `sed` is a workaround, not a flourish. Helm 4.2.1 prints `Pulled:` and `Digest:` lines
+to **stdout** before the rendered YAML when templating straight from an `oci://` reference
+([helm#32215](https://github.com/helm/helm/issues/32215)), which is enough to break
+`kubectl apply -f -`. Both lines go to stdout, so redirecting stderr does not help.
+Discarding everything before the first `---` does. Pulling the chart first with
+`helm pull … --untar` and templating the local directory avoids it too.
+
+### 3. Unlock the repository
 
 Either path works: an exported key file, or the GPG key registered as a git-crypt
 collaborator.
@@ -42,11 +67,12 @@ git-crypt unlock /path/to/homelab-git-crypt.key   # symmetric key held elsewhere
 git-crypt unlock                                  # GPG key already in the local keyring
 ```
 
-Without one of them, the ArgoCD values and the git-crypt Secret applied in step 4 are
-ciphertext. The Secret is in this repository but encrypted with the key it carries, so it
-cannot bootstrap itself. See [GitOps](gitops.md#secrets-in-a-public-repository).
+Without one of them, the Talos secrets bundle, the ArgoCD values and the git-crypt Secret
+applied in step 5 are all ciphertext. That Secret is in this repository but encrypted with
+the key it carries, so it cannot bootstrap itself. See
+[GitOps](gitops.md#secrets-in-a-public-repository).
 
-### 3. Install ArgoCD by hand, once
+### 4. Install ArgoCD by hand, once
 
 ```bash
 helm repo add argo https://argoproj.github.io/argo-helm
@@ -58,7 +84,7 @@ helm install argocd argo/argo-cd \
 
 This is the last `helm install` anyone runs against this cluster.
 
-### 4. Hand over
+### 5. Hand over
 
 ```bash
 kubectl apply -k kubernetes/kustomizations/argocd
@@ -66,9 +92,13 @@ kubectl apply -k kubernetes/kustomizations/argocd
 
 That applies the git-crypt key secret and the
 [`argocd-bootstrap` Application](../kubernetes/kustomizations/argocd/argocd-bootstrap.yaml),
-which points at the app-of-apps chart. ArgoCD then installs Cilium, at which point the
-cluster has networking, and works through the sync waves to everything else. That includes
-adopting its own release.
+which points at the app-of-apps chart. ArgoCD works through the sync waves from there,
+adopting the Cilium release from step 2 and its own release along the way.
+
+Expect Cilium's CA to change once when that adoption happens. The chart marks `cilium-ca`,
+`hubble-server-certs` and `hubble-relay-client-certs` as non-idempotent and generates them
+fresh on every render, so the certificates ArgoCD renders are not the ones installed by
+hand. Hubble rotates its certificates on the first sync and carries on.
 
 To bootstrap from a branch instead of `main`, change `targetRevision` in that one file. The
 revision is inherited by every child application, so the whole cluster follows.
