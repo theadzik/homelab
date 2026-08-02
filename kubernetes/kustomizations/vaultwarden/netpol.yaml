@@ -11,7 +11,6 @@ spec:
         - matchLabels:
             k8s:io.kubernetes.pod.namespace: traefik
   egress:
-    # Allow DNS resolution via kube-dns
     - toEndpoints:
         - matchLabels:
             k8s:io.kubernetes.pod.namespace: kube-system
@@ -22,8 +21,9 @@ spec:
               protocol: UDP
             - port: "53"
               protocol: TCP
-
-    # Allow SMTP to Proton Mail for email notifications (STARTTLS on 587)
+          rules:
+            dns:
+              - matchPattern: "*"
     - toFQDNs:
         - matchName: smtp.protonmail.ch
       toPorts:
@@ -40,6 +40,7 @@ spec:
     # Allow backup to Garage S3 on NAS (if backup feature enabled)
     - toCIDR:
         - 192.168.0.6/32
+        - 192.168.0.7/32
       toPorts:
         - ports:
             - port: "3900"
