@@ -39,7 +39,13 @@ its exposure is decided entirely by which DNS record points at it.
 
 Cilium is the CNI, and it replaces kube-proxy outright. Talos ships with
 `cluster.network.cni.name: none` and `cluster.proxy.disabled: true`, so there is no CNI or
-proxy to remove first. The cluster has no networking at all until ArgoCD installs it.
+proxy to remove first. The cluster has no networking at all until Cilium is installed.
+
+That last part has a consequence at bootstrap. ArgoCD cannot be the thing that installs
+Cilium, because ArgoCD is a pod and pods need a CNI. So the chart goes on by hand once, and
+the `cilium` Application adopts the release afterwards at sync wave -80, before any workload
+or platform component that will depend on it. The commands are in
+[Operations](operations.md#2-install-cilium-by-hand-once).
 
 ```yaml
 kubeProxyReplacement: true
@@ -56,6 +62,10 @@ The `cgroup` and `securityContext.capabilities` blocks in
 [values.yaml](../kubernetes/helm/cilium/values.yaml) exist because Talos mounts cgroups
 itself and grants no capability the workload has not asked for. Both blocks are copied
 straight from Cilium's Talos guidance.
+
+`bpf.hostLegacyRouting: true` is also set. It sends traffic between the host network stack
+and pods through the kernel's normal routing path instead of Cilium's eBPF shortcut, which
+trades a little throughput for the host behaving the way the rest of the stack expects.
 
 ### Load balancing without a load balancer
 
@@ -215,13 +225,32 @@ egress: []
 
 A static site has no reason to originate a connection, so it cannot. Where egress is really
 needed it gets enumerated in the narrowest form Cilium supports.
-[Vaultwarden](../kubernetes/kustomizations/vaultwarden/netpol.yaml) may reach kube-dns, one
-SMTP host by FQDN, and one IP and port for backups. Nothing else, including the rest of the
-LAN.
+[Vaultwarden](../kubernetes/kustomizations/vaultwarden/netpol.yaml) may reach kube-dns,
+`smtp.protonmail.ch` on 587, `*.bitwarden.com` on 443 for push notifications, and the NAS on
+the Garage S3 port. Nothing else, including the rest of the LAN.
 
 Writing those rules against `smtp.protonmail.ch` and the `traefik` namespace, instead of
 against IP ranges, is what makes them readable a year later. A CIDR stops meaning what it
 meant as soon as the pod behind it moves.
+
+Name-based rules have one requirement that is easy to miss. Cilium learns which IP a name
+resolves to by watching the pod's DNS answers, so the DNS rule has to route them through its
+proxy:
+
+```yaml
+- toEndpoints:
+    - matchLabels:
+        k8s:io.kubernetes.pod.namespace: kube-system
+        k8s-app: kube-dns
+  toPorts:
+    - ports: [{ port: "53", protocol: UDP }, { port: "53", protocol: TCP }]
+      rules:
+        dns:
+          - matchPattern: "*"
+```
+
+Without that `rules.dns` block, DNS still works and every `toFQDNs` rule silently matches
+nothing, because Cilium never saw the answer that would have told it which IP to allow.
 
 ## See also
 

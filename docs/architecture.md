@@ -35,9 +35,10 @@ that the cluster dials outward, so the router exposes nothing at all.
 ## Why Talos
 
 The nodes run [Talos Linux](https://www.talos.dev/): an immutable, API-driven distribution
-with no shell, no SSH and no package manager. The whole node configuration is two files in
-[talos/](../talos/): a Factory schematic naming the system extensions, and a machine config
-patch applied to every node.
+with no shell, no SSH and no package manager. A node is configured by one machine config
+file, and that file is generated from the inputs in [talos/](../talos/): a Factory schematic
+naming the system extensions, a patch applied to every node, and an encrypted bundle holding
+the cluster PKI. See [Talos](talos.md).
 
 That trade was made knowingly. The previous generation of this homelab was Debian preseed
 plus Ansible roles ([part 1](https://zmuda.pro/os-ansible-argocd-part-1),
@@ -50,7 +51,7 @@ Four settings in that patch shape everything above them:
 
 | Setting | Why |
 | --- | --- |
-| `cluster.network.cni.name: none` | Cilium is installed by ArgoCD instead, so the CNI is versioned in git like everything else. |
+| `cluster.network.cni.name: none` | Cilium provides the CNI, from a chart versioned in git like everything else. |
 | `cluster.proxy.disabled: true` | Cilium replaces kube-proxy entirely. One less component, and eBPF service handling instead of iptables. |
 | `rotate-server-certificates: true` | Kubelet serving certs get signed by the cluster CA, which is what lets metrics-server run without `insecureSkipTLSVerify`. |
 | `cdi_spec_dirs` in containerd | Points CDI at writable paths so the Intel GPU driver can publish device specs at runtime. |
@@ -68,9 +69,10 @@ templates, so it cannot drift from what is actually deployed.
 | Wave | Layer | Components |
 | --- | --- | --- |
 | -99 | Self-management | ArgoCD manages its own chart and values |
+| -80 | Networking | Cilium, which every later pod needs in order to be scheduled |
 | -50 | Runtime detection | Falco, before anything it might need to watch |
 | -40 | Scheduling primitives | PriorityClasses |
-| -35 | Node-level plumbing | Cilium, Synology CSI, Intel GPU resource driver |
+| -35 | Node-level plumbing | Synology CSI, Intel GPU resource driver |
 | -25 | Trust and entry | cert-manager, Kyverno, Traefik, kubelet cert approver |
 | -15 | Cluster services | external-dns, metrics-server |
 | -5 | Data services | CloudNativePG operator |
@@ -142,4 +144,5 @@ what is actually recoverable.
 | [Supply chain](supply-chain.md) | How images are built, signed and admitted |
 | [Security](security.md) | Runtime detection, hardening, secret handling |
 | [Operations](operations.md) | Bootstrap, adding an app, day-2 tasks |
+| [Talos](talos.md) | Generating the machine configs, version pins, the CNI gap |
 | [Conventions](conventions.md) | Repository layout, quality gates, automation |

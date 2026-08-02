@@ -117,17 +117,27 @@ packet socket. Disabling those rules would have been the easy way out:
 - rule: Drop and execute new binary in container
   exceptions:
     - name: cilium_cni_exec
-      fields: [proc.exepath, proc.name]
+      fields: [proc.exepath, container.image.repository]
       comps: [=, =]
       values:
-        - [/opt/cni/bin/cilium-cni, cilium-cni]
+        - [/opt/cni/bin/cilium-cni, quay.io/cilium/cilium]
+    - name: cilium_cni_plugin_runtime_exec
+      fields: [proc.exepath, proc.pname]
+      comps: [=, =]
+      values:
+        - [/opt/cni/bin/cilium-cni, containerd]
   override:
     exceptions: append
 ```
 
-The exception names the exact binary at the exact path, and appends to the rule instead of
-replacing it. Everything else that drops and executes a binary in a container still trips
-the alarm, which is the whole reason to tune an alert instead of switching it off.
+Each exception names an exact path together with something that identifies the caller, and
+appends to the rule instead of replacing it. Everything else that drops and executes a
+binary in a container still trips the alarm, which is the whole reason to tune an alert
+instead of switching it off.
+
+The pair exists because the same binary is invoked two ways. Cilium's own pod runs it, which
+the first exception matches by image, and containerd runs it when setting up a sandbox,
+which has no pod image to match on at all and needs the parent process name instead.
 
 ## Secrets
 
