@@ -9,19 +9,26 @@ where three repositories can share one implementation.
 ```mermaid
 flowchart LR
     subgraph build["GitHub Actions (shared workflow)"]
-        b[build to OCI layout] --> s[Trivy scan]
-        s --> p[push by digest]
-        p --> sig[cosign sign]
-        sig --> att["attest SBOM<br/>+ provenance"]
-        att --> v[verify signature]
-        v --> t[publish tags]
+        direction TB
+        subgraph build_row1[" "]
+            direction LR
+            b[build to OCI layout] --> s[Trivy scan] --> p[push by digest]
+        end
+        subgraph build_row2[" "]
+            direction LR
+            sig[cosign sign] --> att["attest SBOM<br/>+ provenance"] --> v[verify signature] --> t[publish tags]
+        end
+        p --> sig
     end
 
     t --> reg[(ghcr.io/theadzik)]
-    reg --> iu[Image Updater]
-    iu --> git[(git)]
-    git --> argo[ArgoCD]
-    argo --> adm{Kyverno admission}
+
+    subgraph deploy[" "]
+        direction LR
+        iu[Image Updater] --> git[(git)] --> argo[ArgoCD] --> adm{Kyverno admission}
+    end
+
+    reg --> iu
     adm --> pod[pod runs]
     reg -.->|daily rescan| issue["GitHub issue<br/>reopened, never duplicated"]
 ```

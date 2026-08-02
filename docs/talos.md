@@ -146,14 +146,8 @@ outside its own directory tree - the default restriction exists to stop a kustom
 pulled from somewhere untrusted reading arbitrary local files, which does not apply to one
 we wrote ourselves.
 
-Three things about what goes in are worth knowing:
+Two things about what goes in are worth knowing:
 
-- **ArgoCD is templated with `kubernetes/helm/argocd/values.yaml` only, never
-  `values-secret.yaml`.** Talos has no way to decrypt it, and nothing at boot needs it - no
-  SSO, no write-back credentials. The `argocd` self-management
-  [Application](../kubernetes/bootstrap/charts/app-of-apps/templates/argocd.yaml) lists both
-  files, so the moment it syncs, ArgoCD re-configures itself with the full values, secrets
-  included.
 - **`argocd-server-transport.yaml` is left out.** It is a Traefik `ServersTransport`, and
   Traefik's CRD does not exist at boot - Traefik itself is still several sync waves away.
   The `argocd` Application's second source is
@@ -177,8 +171,7 @@ been watched happen on real hardware. If `argocd-bootstrap` is missing after a f
 existed: `kubectl apply -k kubernetes/kustomizations/argocd`.
 
 Once Cilium is up, a node stops waiting - Talos applies inline manifests itself as part of
-its own bootstrap sequence, with no ten-minute reboot window for a human to beat like the
-old by-hand install had.
+its own bootstrap sequence.
 
 ## See also
 
