@@ -50,8 +50,8 @@ kubectl get nodes                                # Ready, not NotReady
 kubectl -n kube-system rollout status ds/cilium
 ```
 
-The `sed` is a workaround, not a flourish. Helm 4.2.1 prints `Pulled:` and `Digest:` lines
-to **stdout** before the rendered YAML when templating straight from an `oci://` reference
+That `sed` is doing real work. Helm 4.2.1 prints `Pulled:` and `Digest:` lines to **stdout**
+before the rendered YAML when templating straight from an `oci://` reference
 ([helm#32215](https://github.com/helm/helm/issues/32215)), which is enough to break
 `kubectl apply -f -`. Both lines go to stdout, so redirecting stderr does not help.
 Discarding everything before the first `---` does. Pulling the chart first with
@@ -134,10 +134,9 @@ helm template <release> <chart> -f kubernetes/helm/<app>/values.yaml
 helm lint charts/<chart>          # local charts only
 ```
 
-The [`validate-k8s-change`](../.github/skills/validate-k8s-change/SKILL.md) skill automates
-the discovery part. It works out which kustomizations and Helm values a diff touches, maps
-values files back to the app-of-apps template that consumes them, and runs the right command
-for each. Details in [Conventions](conventions.md).
+A changed values file has to be rendered with the chart the app-of-apps template names, so
+start there when working out what to run. [Conventions](conventions.md#kubernetes-rendering)
+has the details.
 
 ## Trying a change without merging it
 
@@ -198,9 +197,10 @@ playbook asserts a supported distribution (Ubuntu or Fedora) before it changes a
 `kubectx`, `talosctl`, `velero`, `argocd`.
 
 The `git` role downloads `git-crypt`, asserts its SHA256 against a pinned value, and fails
-the play on a mismatch instead of installing whatever arrived. Conventions for anything
-under `ansible/` are in
-[ansible-playbook-conventions](../.github/instructions/ansible-playbook-conventions.instructions.md).
+the play on a mismatch instead of installing whatever arrived. Anything added under
+`ansible/` should follow the same pattern: fully qualified module names, an idempotency
+guard on every `command` or `shell` task, and pinned artifact URLs with an expected
+checksum.
 
 ## See also
 

@@ -32,8 +32,8 @@ Three, and each has a failure mode that no tool catches:
    or the CSI driver must be ordered after them, and nothing else should be reordered to
    make room.
 
-All three are on the [release reviewer's](../.github/agents/homelab-release-reviewer.agent.md)
-checklist for that reason.
+Each of them is worth a second look during review, because none of them shows up as a
+failing check.
 
 ## Quality gates
 
@@ -67,11 +67,11 @@ helm template <release> <chart> -f kubernetes/helm/<app>/values.yaml
 helm lint charts/<chart>
 ```
 
-The [`validate-k8s-change`](../.github/skills/validate-k8s-change/SKILL.md) skill does the
-tedious part. It reads the diff and resolves which kustomizations and values files are
-affected. Each values file is then mapped back to the app-of-apps template that consumes it,
-which is what tells the skill the chart, repo and release name to render with. It runs every
-impacted target and continues past failures, so one broken app does not hide the next.
+Working out what to render is most of the effort. A changed values file only makes sense
+together with the app-of-apps template that consumes it, since that template holds the
+chart, the repo and the release name to render with. For a kustomize app, check
+`kustomization.yaml` for patches, transformers and `images:` entries before assuming an edit
+to a base manifest is enough.
 
 ### Merge gates
 
@@ -83,23 +83,25 @@ Commit subjects follow [Conventional Commits](https://www.conventionalcommits.or
 (`feat:`, `fix:`, `ci:`, `build:`, `docs:`, `chore:`), with an optional scope. Automated
 image bumps use `build:`, which keeps them distinguishable from human changes at a glance.
 
-## Instructions as repository artifacts
+## Ansible
 
-AI coding agents are used on this repository, and their instructions are versioned like any
-other configuration: one source of truth, reviewed in pull requests, and kept in sync with
-what the linters enforce.
+Roles under [`ansible/`](../ansible/) configure a workstation, not the cluster, but they
+follow their own rules:
 
-| File | Scope | Applies to |
-| --- | --- | --- |
-| [`.github/copilot-instructions.md`](../.github/copilot-instructions.md) | Repository-wide conventions | Everything. `CLAUDE.md` at the root is a **symlink** to it, so two tools read one file |
-| [`ansible-playbook-conventions`](../.github/instructions/ansible-playbook-conventions.instructions.md) | `ansible/**` | Module choice, idempotency guards, variable placement, pinned downloads with checksum asserts |
-| [`homelab-release-reviewer`](../.github/agents/homelab-release-reviewer.agent.md) | Review | A reviewer persona that audits sync-wave ordering, secret filenames and app-of-apps registration, and reports instead of editing |
-| [`validate-k8s-change`](../.github/skills/validate-k8s-change/SKILL.md) | Pre-commit | The rendering procedure above, as an executable skill |
+- Fully qualified module names (`ansible.builtin.*`, `community.general.*`), and a module in
+  preference to `command` or `shell` wherever one exists.
+- Every `command` or `shell` task carries an idempotency guard: `creates`, `removes`, or an
+  explicit `changed_when`.
+- No downloads of "latest". Pin the artifact URL to a version and assert its SHA256, the way
+  the `git` role does for `git-crypt`, so a changed binary fails the play instead of being
+  installed.
+- Cross-role values in `playbooks/vars/local-common.yaml`, role-owned defaults in
+  `roles/<role>/defaults/main.yaml`.
 
-The symlink is what keeps this maintainable. Two separate instruction files would drift
-within a month, and one file under two names cannot. The checklists follow the same
-reasoning. Anything an agent is told to check is something a human reviewer should check
-too, so both read the same list.
+```bash
+ansible-playbook ansible/playbooks/local-setup.yaml --syntax-check
+ansible-playbook ansible/playbooks/local-setup.yaml --check
+```
 
 ## Comments
 

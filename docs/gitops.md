@@ -87,8 +87,8 @@ That file is generated, not written. A [GitHub Actions
 workflow](../.github/workflows/sync-waves-inventory.yaml) reads the app-of-apps templates
 on every push to `main` and commits the result back, authenticating as a GitHub App so the
 commit has a clear author and the push does not require a personal token. Editing it by hand
-is a repository policy violation, checked in [review](../.github/agents/homelab-release-reviewer.agent.md):
-the wave lives on the Application, and the document follows.
+is a repository policy violation. The wave lives on the Application, and the document
+follows.
 
 Waves matter most on a cold start, when everything converges at once. See
 [Architecture](architecture.md#layers) for what each band contains and why.

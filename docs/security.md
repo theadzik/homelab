@@ -143,9 +143,8 @@ Two controls sit around that arrangement:
   excluded from the scan itself, because a git-crypt blob is high-entropy by construction
   and would otherwise produce a permanent false positive.
 - **The naming rule is reviewed, not just linted.** A secret in a file without `secret` in
-  its name is committed in plaintext, silently. The
-  [release reviewer](../.github/agents/homelab-release-reviewer.agent.md) checks it as a
-  policy violation on every release-affecting change.
+  its name is committed in plaintext, silently, and no check will say so. It is on the
+  review list for anything that adds or moves a manifest.
 
 The git-crypt key is here too, as the Secret ArgoCD mounts, encrypted with itself. Only
 someone who can already read the repository can read it, so it adds no exposure, and it
