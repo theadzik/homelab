@@ -177,7 +177,7 @@ Docker, GitHub Actions and pre-commit. The reasoning is the same throughout.
 | `cooldown: default-days: 7` | A compromised release is usually yanked within days. Waiting a week costs nothing and skips that window. |
 | `semver-major-days: 14` | Majors carry the largest diff and get the least useful review. Upstream's follow-up patch usually lands inside two weeks. |
 | `insecure-external-code-execution: deny` on pip | Resolving a Python manifest can execute code from the package being resolved. Nothing here needs that, and denying it keeps a compromised release away from Dependabot's registry credentials. |
-| `replaces-base: true` on the Docker Hub registry | Images with no registry host resolve to Docker Hub anonymously, sharing one rate limit with every other caller on the runners. |
+| `replaces-base: true` on the Docker Hub registry | Images with no registry host, like `ubuntu` or `rclone/rclone`, default to an anonymous Docker Hub lookup. `replaces-base` routes that default through the credentialed `docker-hub` registry entry instead, so those pulls share my account's rate limit rather than sharing the anonymous one with every other caller on the runners. |
 | `pre-commit` ecosystem | Hook revisions are pinned in `.pre-commit-config.yaml` and are the only copy of those versions. Hadolint and shellcheck stop gaining rules the moment those pins go stale. |
 
 Third-party GitHub Actions are pinned by commit SHA with the version in a trailing comment,
