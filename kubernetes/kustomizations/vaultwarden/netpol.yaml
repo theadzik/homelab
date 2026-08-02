@@ -31,7 +31,7 @@ spec:
             - port: "587"
               protocol: TCP
     - toFQDNs:
-        - matchName: push.bitwarden.com
+        - matchPattern: "*.bitwarden.com"
       toPorts:
         - ports:
             - port: "443"
