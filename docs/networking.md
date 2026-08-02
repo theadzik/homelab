@@ -63,9 +63,12 @@ The `cgroup` and `securityContext.capabilities` blocks in
 itself and grants no capability the workload has not asked for. Both blocks are copied
 straight from Cilium's Talos guidance.
 
-`bpf.hostLegacyRouting: true` is also set. It sends traffic between the host network stack
-and pods through the kernel's normal routing path instead of Cilium's eBPF shortcut, which
-trades a little throughput for the host behaving the way the rest of the stack expects.
+`bpf.hostLegacyRouting: true` comes from the same guidance and fixes a specific collision.
+Talos forwards kube-dns to the host resolver by default from 1.8 onwards, and that does not
+work with Cilium's eBPF host-routing. Cilium's
+[Talos prerequisites](https://docs.cilium.io/en/stable/installation/k8s-install-helm/) are
+blunt about the consequence: set it, or DNS does not work. It routes host traffic through
+the kernel's normal path instead of the eBPF shortcut, which costs some throughput.
 
 ### Load balancing without a load balancer
 

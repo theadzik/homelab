@@ -52,4 +52,7 @@ l2announcements:
   leaseRenewDeadline: 1s
   leaseRetryPeriod: 200ms
 bpf:
+  # Talos forwards kube-dns to the host resolver by default since 1.8, which does not
+  # work with eBPF host-routing. Without this, DNS breaks.
+  # https://docs.cilium.io/en/stable/installation/k8s-install-helm/
   hostLegacyRouting: true
