@@ -9,7 +9,7 @@ metadata:
 spec:
   project: default
   sources:
-    - chart: .
+    - path: .
       repoURL: oci://quay.io/cilium/charts/cilium
       targetRevision: 1.*
       helm:
