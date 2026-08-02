@@ -13,7 +13,7 @@ silently.
 | [`kubernetes/kustomizations/<app>/`](../kubernetes/kustomizations/) | Manifests for apps without a chart worth using | `kustomization.yaml` is the entry point, including for plain manifests |
 | [`charts/`](../charts/) | Helm charts written here | Publishable on their own, SemVer in `Chart.yaml` |
 | [`apps/`](../apps/) | Dockerfiles and the scripts they package | One directory per image, matching a build workflow |
-| [`talos/`](../talos/) | Node configuration | Schematic plus one patch applied to every node |
+| [`talos/`](../talos/) | Node config inputs | The machine configs are generated from these and never committed |
 | [`ansible/`](../ansible/) | Workstation setup | Not cluster configuration |
 | [`docs/`](.) | These pages | Reasoning that outlives any single manifest |
 | `.tmp/` | Scratch | The only place temporary files go, and it is ignored |
