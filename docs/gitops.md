@@ -237,6 +237,7 @@ person who applied it forgets they did.
 
 ## See also
 
+- [Bootstrap chart](bootstrap.md): the app-of-apps chart itself, and adding a template to it
 - [Operations](operations.md): bootstrapping, adding an app, and what to do when a sync
   will not settle
 - [Supply chain](supply-chain.md): where the images that Image Updater discovers come from

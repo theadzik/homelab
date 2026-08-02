@@ -66,6 +66,7 @@ Documentation for each, with the reasoning:
 | --- | --- |
 | [Architecture](docs/architecture.md) | Hardware, Talos configuration, layering, component inventory |
 | [GitOps](docs/gitops.md) | App-of-apps, sync waves, image updates, secrets in git |
+| [Bootstrap chart](docs/bootstrap.md) | Getting ArgoCD running, and adding a template to app-of-apps |
 | [Networking](docs/networking.md) | Cilium, ingress, split-horizon DNS, certificates, network policy |
 | [Storage and backups](docs/storage-and-backups.md) | Storage classes, Velero, application-level backup, what is recoverable |
 | [Supply chain](docs/supply-chain.md) | Build, scan, sign, attest, admit, rescan |

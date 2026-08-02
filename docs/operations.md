@@ -75,14 +75,19 @@ the key it carries, so it cannot bootstrap itself. See
 ### 4. Install ArgoCD by hand, once
 
 ```bash
+kubectl create namespace argocd
+
 helm repo add argo https://argoproj.github.io/argo-helm
-helm install argocd argo/argo-cd \
+helm template argocd argo/argo-cd --version 10.2.2 \
   -f kubernetes/helm/argocd/values.yaml \
   -f kubernetes/helm/argocd/values-secret.yaml \
-  -n argocd --create-namespace
+  -n argocd | kubectl apply -f -
 ```
 
-This is the last `helm install` anyone runs against this cluster.
+`helm template`, not `helm install`. ArgoCD's chart renders no `Namespace` object, which is
+why one is created first, and there is no Helm release left behind to track, because ArgoCD
+manages its own chart from here on. This is the last time its manifests are ever applied by
+hand. Why is in [Bootstrap chart](bootstrap.md#getting-argocd-running-in-the-first-place).
 
 ### 5. Hand over
 
@@ -90,9 +95,10 @@ This is the last `helm install` anyone runs against this cluster.
 kubectl apply -k kubernetes/kustomizations/argocd
 ```
 
-That applies the git-crypt key secret and the
+Only now can this run: it creates the
 [`argocd-bootstrap` Application](../kubernetes/kustomizations/argocd/argocd-bootstrap.yaml),
-which points at the app-of-apps chart. ArgoCD works through the sync waves from there,
+and `Application` is a custom resource whose CRD step 4 just installed. That Application
+points at the app-of-apps chart, and ArgoCD works through the sync waves from there,
 adopting the Cilium release from step 2 and its own release along the way.
 
 Expect Cilium's CA to change once when that adoption happens. The chart marks `cilium-ca`,
@@ -207,4 +213,4 @@ checksum.
 
 - [GitOps](gitops.md): why merging is deployment
 - [Conventions](conventions.md): the checks that run before a merge is possible
-- [Bootstrap notes](../kubernetes/bootstrap/README.md): the chart the bootstrap points at
+- [Bootstrap chart](bootstrap.md): the chart step 5 points at, and how to add to it
