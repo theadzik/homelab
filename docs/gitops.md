@@ -93,6 +93,25 @@ Four delivery styles coexist, chosen per app:
 | Kustomize | No chart, or the chart is more trouble than the manifests | [cloudflared](../kubernetes/kustomizations/cloudflared/) |
 | Local chart in this repo | The thing is worth publishing on its own | [media-stack](../charts/media-stack/) |
 
+A local chart is still wired the multi-source way, just with `path` instead of `chart` and
+`repoURL` in the first source:
+
+```yaml
+sources:
+  - path: charts/media-stack
+    repoURL: "{{ .Values.spec.sources.repoURL }}"
+    targetRevision: "{{ .Values.spec.sources.targetRevision }}"
+    helm:
+      releaseName: media
+      valueFiles:
+        - $repo/kubernetes/helm/media/values.yaml
+```
+
+The chart itself stays generic on purpose: no hardcoded storage classes, no assumed ingress
+controller, nothing that only makes sense in this cluster. Everything specific lives in the
+values file, same as an upstream chart. That is what makes `charts/` a place for charts
+worth publishing on their own, and not just a second home for cluster config.
+
 ## Sync waves
 
 Ordering is expressed as `argocd.argoproj.io/sync-wave` on each Application, and the
@@ -206,7 +225,9 @@ exit $ec
 ```
 
 Every `git fetch` the repo-server performs is followed by an unlock, so decryption happens
-exactly where and when it is needed, with no operator in the loop.
+exactly where and when it is needed, with no operator in the loop. Every other git subcommand
+passes straight through, and a failed unlock is swallowed rather than failing the fetch, so a
+repository with nothing encrypted still works.
 
 The key reaches the repo-server as a Kubernetes Secret, and that Secret is
 [in this repository](../kubernetes/kustomizations/argocd/argocd-gitcrypt-secret.yaml) like

@@ -50,6 +50,11 @@ quay.io/argoproj/argocd:<that version>`. The patched image therefore cannot drif
 version the cluster is actually running. Changing the chart version in git is the only way
 to move it.
 
+Its [build stage](../apps/custom-argocd/Dockerfile) downloads `git-crypt` pinned to a
+version and asserts the download against a pinned SHA256, failing the build on a mismatch
+instead of installing whatever arrived. It is the same pattern the Ansible `git` role uses
+for the same binary on a workstation; see [Conventions](conventions.md#ansible).
+
 The two Vaultwarden images also rebuild weekly on a schedule. Base images gain fixes
 between releases, and an image that is only rebuilt when its source changes gets steadily
 older than its own base.

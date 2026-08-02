@@ -96,13 +96,23 @@ flowchart TD
 
 What makes it hold up:
 
+- **`sqlite3 .backup` instead of copying the file.** A live database copied byte-for-byte can
+  be mid-transaction; the backup API produces a consistent snapshot without stopping
+  Vaultwarden.
 - **The restore runs as an init container.** Nobody has to notice that a volume came up
   empty and go looking for a runbook. It is repaired before Vaultwarden opens it.
 - **Failing to restore fails the pod.** Starting empty would present a working but empty
   vault, and the first client to sync would overwrite its own copy with nothing. Refusing to
-  start is the safer failure, and it was chosen on purpose.
+  start is the safer failure, and it was chosen on purpose. The restore checks that the
+  database file exists after extraction rather than trusting a decrypt-and-untar pipeline's
+  exit code.
 - **The remote copy is off-site and encrypted before it leaves the cluster**, with a key
-  Google Drive never sees.
+  Google Drive never sees. The key reaches `openssl` as `-pass env:`, never as a process
+  argument, so it cannot leak through `ps` or `/proc`.
+- **A failed remote upload is a warning, not a failure.** The local copy on the NAS already
+  exists, so failing the whole job over that would mean a red CronJob for a condition that
+  lost nothing. Every other step is fatal, and `backoffLimit: 0` keeps a genuine failure
+  visible instead of letting it retry into a loop.
 
 Both images run as UID 1000, non-root, read-only root filesystem, all capabilities dropped,
 and they are built from [Docker Hardened Images](supply-chain.md#base-images) and signed
