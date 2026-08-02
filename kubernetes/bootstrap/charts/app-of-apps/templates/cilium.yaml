@@ -5,15 +5,24 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "-35"
+    argocd.argoproj.io/sync-wave: "-80"
 spec:
   project: default
   sources:
+    - path: .
+      repoURL: oci://quay.io/cilium/charts/cilium
+      targetRevision: 1.*
+      helm:
+        releaseName: cilium
+        valueFiles:
+          - $repo/kubernetes/helm/cilium/values.yaml
     - path: kubernetes/kustomizations/cilium
       repoURL: "{{ .Values.spec.sources.repoURL }}"
       targetRevision: "{{ .Values.spec.sources.targetRevision }}"
+      ref: repo
   destination:
     server: https://kubernetes.default.svc
+    namespace: kube-system
   syncPolicy:
     automated:
       enabled: true

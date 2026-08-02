@@ -4,6 +4,11 @@ The chart in [`charts/app-of-apps/`](charts/app-of-apps/) is the root of the ent
 Its templates are the ArgoCD `Application` and `ApplicationSet` definitions for every
 component. An application that is not registered here does not exist.
 
+Nothing here can be applied until Cilium is running, because a cluster with no CNI cannot
+schedule ArgoCD either. Cilium goes on by hand first and the `cilium` Application adopts it
+at sync wave -80. The full sequence is in
+[Operations](../../docs/operations.md#bootstrapping-from-nothing).
+
 ## How it is reached
 
 One `Application` is applied by hand,
@@ -21,9 +26,6 @@ spec:
 
 So changing `targetRevision` in that one Application moves the whole cluster to another
 branch. To change how the cluster is bootstrapped at all, edit that file.
-
-The full bootstrap sequence, covering Talos, git-crypt, ArgoCD and the hand-over, is in
-[Operations](../../docs/operations.md#bootstrapping-from-nothing).
 
 ## Adding an application
 
