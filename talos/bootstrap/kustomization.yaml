@@ -15,6 +15,7 @@
 # once Traefik is running.
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: argocd # Namespace for the below resources, helm releases have their own targets
 resources:
   - ../../kubernetes/kustomizations/argocd/argocd-namespace.yaml
   - ../../kubernetes/kustomizations/argocd/argocd-bootstrap.yaml
@@ -33,4 +34,6 @@ helmCharts:
     releaseName: argocd
     namespace: argocd
     includeCRDs: true
-    valuesFile: ../../kubernetes/helm/argocd/values.yaml
+    additionalValuesFiles:
+      - ../../kubernetes/helm/argocd/values.yaml
+      - ../../kubernetes/helm/argocd/values-secret.yaml

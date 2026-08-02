@@ -42,10 +42,10 @@ Cilium is the CNI, and it replaces kube-proxy outright. Talos ships with
 proxy to remove first. The cluster has no networking at all until Cilium is installed.
 
 That last part has a consequence at bootstrap. ArgoCD cannot be the thing that installs
-Cilium, because ArgoCD is a pod and pods need a CNI. So the chart goes on by hand once, and
+Cilium, because ArgoCD is a pod and pods need a CNI. Talos creates it directly instead, and
 the `cilium` Application adopts the release afterwards at sync wave -80, before any workload
-or platform component that will depend on it. The commands are in
-[Operations](operations.md#2-install-cilium-by-hand-once).
+or platform component that will depend on it. See
+[Talos](talos.md#bootstrapping-cilium-and-argocd) for how.
 
 ```yaml
 kubeProxyReplacement: true

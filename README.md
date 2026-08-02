@@ -45,6 +45,10 @@ Documentation for each, with the reasoning:
 - **[One bootstrap Application creates the whole cluster](docs/gitops.md)** and passes its
   own git revision to every child, so pointing it at a branch moves the entire cluster to
   that branch.
+- **[`talosctl bootstrap` alone gets ArgoCD running](docs/talos.md#bootstrapping-cilium-and-argocd).**
+  Cilium and ArgoCD are rendered from the same Helm values that back their normal
+  Applications and embedded in the machine config as a Talos inline manifest, so nothing is
+  ever `helm install`ed or `kubectl apply`ed by hand to get from bare metal to GitOps.
 - **[Image updates arrive as commits, not as cluster changes](docs/gitops.md#image-updates-that-leave-a-trail)**,
   with per-environment tag filters, because `newest-build` and no filter will happily deploy
   an open pull request's image.
@@ -73,7 +77,7 @@ Documentation for each, with the reasoning:
 | [Security](docs/security.md) | Posture, layers, and known gaps |
 | [Operations](docs/operations.md) | Bootstrap, adding an application, day-2 runbook |
 | [Conventions](docs/conventions.md) | Layout, quality gates, review rules |
-| [Talos](docs/talos.md) | Node config generation, version pinning, the CNI bootstrap gap |
+| [Talos](docs/talos.md) | Node config generation, version pinning, bootstrapping Cilium and ArgoCD |
 | [Synology](docs/synology.md) | What is configured on the NAS by hand |
 
 ## Repository layout

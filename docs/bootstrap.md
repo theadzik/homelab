@@ -13,36 +13,17 @@ adding a template to it.
 ## Getting ArgoCD running in the first place
 
 The chart is useless without ArgoCD to read it, and ArgoCD is not itself deployed by
-GitOps, since nothing can bootstrap the thing that does the bootstrapping. It goes on by
-hand, and the sequence is two commands, not one:
+GitOps, since nothing can bootstrap the thing that does the bootstrapping. Talos gets it
+running instead: `talos/bootstrap/` renders ArgoCD's chart (values only, no secrets - Talos
+cannot decrypt those) and adds the three plain manifests that get things moving, and the
+whole bundle is applied automatically the moment `talosctl bootstrap` runs. See
+[Talos](talos.md#bootstrapping-cilium-and-argocd) for exactly what goes in and why.
 
-```bash
-kubectl create namespace argocd
-
-helm template argocd argo/argo-cd --version 10.2.2 \
-  -f kubernetes/helm/argocd/values.yaml \
-  -f kubernetes/helm/argocd/values-secret.yaml \
-  -n argocd | kubectl apply -f -
-```
-
-`helm template`, not `helm install`. The chart renders no `Namespace` object of its own,
-which is why the namespace is created first, but it does render everything else the
-`argocd` namespace needs. There is no Helm release to track afterwards, because ArgoCD
-manages its own chart as soon as it exists. See
-[GitOps](gitops.md#one-entry-point-and-one-thing-before-it) for how that self-management
-works.
-
-Only once ArgoCD's CRDs exist can the second command run:
-
-```bash
-kubectl apply -k kubernetes/kustomizations/argocd
-```
-
-That kustomization is what actually reaches this chart. It creates the git-crypt secret and
-the [`argocd-bootstrap` Application](../kubernetes/kustomizations/argocd/argocd-bootstrap.yaml),
-an `Application` object pointing at `kubernetes/bootstrap/charts/app-of-apps`. Trying to
-apply it before ArgoCD exists fails outright: `Application` is a custom resource, and its
-CRD is one of the things the first command installs.
+One of those three files is
+[`argocd-bootstrap.yaml`](../kubernetes/kustomizations/argocd/argocd-bootstrap.yaml), an
+`Application` object pointing at `kubernetes/bootstrap/charts/app-of-apps` - this chart.
+`Application` is a custom resource, and its CRD comes from the ArgoCD chart rendered
+alongside it in the same bundle, so it exists by the time this file is applied.
 
 `argocd-bootstrap` passes its own git revision to every template it renders, as a Helm
 parameter:

@@ -5,10 +5,27 @@ what to check when something does not settle.
 
 ## Bootstrapping from nothing
 
-The only manual steps are the ones that must exist before GitOps can. Everything after step
-five happens on its own.
+Cilium and ArgoCD both come up on their own now, embedded in the control plane's machine
+config and applied by Talos itself as part of `talosctl bootstrap`. See
+[Talos](talos.md#bootstrapping-cilium-and-argocd) for how. What is left is getting that
+machine config generated and onto the node.
 
-### 1. Nodes
+### 1. Unlock the repository
+
+Either path works: an exported key file, or the GPG key registered as a git-crypt
+collaborator.
+
+```bash
+git-crypt unlock /path/to/homelab-git-crypt.key   # symmetric key held elsewhere
+git-crypt unlock                                  # GPG key already in the local keyring
+```
+
+Do this before the next step. `talos/generate.sh` reads `secret-certs.yaml` and
+`secret-nut-client.yaml`, both git-crypt encrypted, and renders ArgoCD from
+`kubernetes/helm/argocd/values.yaml` alongside them. See
+[GitOps](gitops.md#secrets-in-a-public-repository).
+
+### 2. Nodes
 
 Talos machines PXE boot from the NAS, so a replacement node needs no installation media. The
 machine configs are generated from the inputs in [talos/](../talos/), never hand-written:
@@ -22,92 +39,29 @@ talosctl health -n 192.168.0.2
 talosctl kubeconfig
 ```
 
-That script needs `secret-certs.yaml` decrypted, so on a machine that has never held the
-git-crypt key, do step 3 first. What the script does and why it exists is in
-[Talos](talos.md#regenerating).
+`talosctl bootstrap` is where Cilium and ArgoCD actually get created, along with the
+[`argocd-bootstrap` Application](../kubernetes/kustomizations/argocd/argocd-bootstrap.yaml)
+that points ArgoCD at the app-of-apps chart. From there ArgoCD works through the sync waves
+on its own, adopting the Cilium and ArgoCD releases Talos just created and reconfiguring
+itself with the full values, secrets included, the moment its own `argocd` Application
+syncs.
 
-The cluster comes up with no CNI and no kube-proxy, by design. Nothing can be scheduled
-until the next step, and Talos reboots a node that has waited about ten minutes for a CNI,
-so do not stop here.
+Expect Cilium's CA to change once when that adoption happens. The chart marks `cilium-ca`,
+`hubble-server-certs` and `hubble-relay-client-certs` as non-idempotent and generates them
+fresh on every render, so the certificates ArgoCD renders differ from the ones Talos
+installed at boot. Hubble rotates its certificates on the first sync and carries on.
+
+```bash
+kubectl get nodes                                    # Ready, not NotReady
+kubectl -n argocd get application argocd-bootstrap    # exists, then Synced
+```
 
 The full PXE and DHCP setup is written up in
 [PXE Booting Talos Linux from Synology NAS](https://zmuda.pro/talos-linux-using-pxe).
 
-### 2. Install Cilium by hand, once
-
-ArgoCD installs everything in this cluster except the thing that lets ArgoCD run at all. A
-cluster with no CNI schedules no pods, so Cilium goes on manually and its Application adopts
-the release later, at sync wave -80.
-
-From the repository root, because the values path is relative to it:
-
-```bash
-helm template cilium --version 1.20.0 oci://quay.io/cilium/charts/cilium \
-  -f kubernetes/helm/cilium/values.yaml -n kube-system \
-  | sed -n '/^---$/,$p' | kubectl apply -f -
-
-kubectl get nodes                                # Ready, not NotReady
-kubectl -n kube-system rollout status ds/cilium
-```
-
-That `sed` is doing real work. Helm 4.2.1 prints `Pulled:` and `Digest:` lines to **stdout**
-before the rendered YAML when templating straight from an `oci://` reference
-([helm#32215](https://github.com/helm/helm/issues/32215)), which is enough to break
-`kubectl apply -f -`. Both lines go to stdout, so redirecting stderr does not help.
-Discarding everything before the first `---` does. Pulling the chart first with
-`helm pull … --untar` and templating the local directory avoids it too.
-
-### 3. Unlock the repository
-
-Either path works: an exported key file, or the GPG key registered as a git-crypt
-collaborator.
-
-```bash
-git-crypt unlock /path/to/homelab-git-crypt.key   # symmetric key held elsewhere
-git-crypt unlock                                  # GPG key already in the local keyring
-```
-
-Without one of them, the Talos secrets bundle, the ArgoCD values and the git-crypt Secret
-applied in step 5 are all ciphertext. That Secret is in this repository but encrypted with
-the key it carries, so it cannot bootstrap itself. See
-[GitOps](gitops.md#secrets-in-a-public-repository).
-
-### 4. Install ArgoCD by hand, once
-
-```bash
-kubectl create namespace argocd
-
-helm repo add argo https://argoproj.github.io/argo-helm
-helm template argocd argo/argo-cd --version 10.2.2 \
-  -f kubernetes/helm/argocd/values.yaml \
-  -f kubernetes/helm/argocd/values-secret.yaml \
-  -n argocd | kubectl apply -f -
-```
-
-`helm template`, not `helm install`. ArgoCD's chart renders no `Namespace` object, which is
-why one is created first, and there is no Helm release left behind to track, because ArgoCD
-manages its own chart from here on. This is the last time its manifests are ever applied by
-hand. Why is in [Bootstrap chart](bootstrap.md#getting-argocd-running-in-the-first-place).
-
-### 5. Hand over
-
-```bash
-kubectl apply -k kubernetes/kustomizations/argocd
-```
-
-Only now can this run: it creates the
-[`argocd-bootstrap` Application](../kubernetes/kustomizations/argocd/argocd-bootstrap.yaml),
-and `Application` is a custom resource whose CRD step 4 just installed. That Application
-points at the app-of-apps chart, and ArgoCD works through the sync waves from there,
-adopting the Cilium release from step 2 and its own release along the way.
-
-Expect Cilium's CA to change once when that adoption happens. The chart marks `cilium-ca`,
-`hubble-server-certs` and `hubble-relay-client-certs` as non-idempotent and generates them
-fresh on every render, so the certificates ArgoCD renders are not the ones installed by
-hand. Hubble rotates its certificates on the first sync and carries on.
-
-To bootstrap from a branch instead of `main`, change `targetRevision` in that one file. The
-revision is inherited by every child application, so the whole cluster follows.
+To bootstrap from a branch instead of `main`, change `targetRevision` in
+`argocd-bootstrap.yaml` before running `generate.sh`. The revision is inherited by every
+child application, so the whole cluster follows.
 
 ## Adding an application
 
@@ -164,7 +118,7 @@ For a single application, ArgoCD's UI can target a branch for that app alone.
 | Pod cannot reach something | Hubble UI, filter to drops | A `CiliumNetworkPolicy` doing exactly what it says |
 | Kyverno reports a verification failure | The image's tags in GHCR | An image published before the current attestation format, or one built by a workflow the policy does not trust |
 | PVC will not bind | Storage class name, then the CSI controller logs | Wrong protocol for the access mode. `ReadWriteMany` needs NFS |
-| Kubernetes version rolls back after `apply-config` | The image pins in `talos/patch-all.yaml` | `talosctl upgrade-k8s` writes the new version to the nodes but not to the patch. See [Talos](talos.md#version-pinning) |
+| Kubernetes version rolls back after `apply-config` | `KUBERNETES_VERSION` in `talos/generate.sh` | `talosctl upgrade-k8s` writes the new version to the nodes but not to the script. See [Talos](talos.md#version-pinning) |
 
 ### Restoring a volume
 
@@ -201,7 +155,7 @@ ansible-playbook ansible/playbooks/local-setup.yaml -K
 Roles: `general`, `wsl`, `oh-my-zsh`, `git`, `k8s-tools`, `docker`, `node`, `vscode`. The
 playbook asserts a supported distribution (Ubuntu or Fedora) before it changes anything, and
 `k8s-tools` installs the toolchain these docs assume: `kubectl`, `helm`, `kustomize`, `k9s`,
-`kubectx`, `talosctl`, `velero`, `argocd`.
+`kubectx`, `talosctl`, `velero`, `argocd`, `yq`, `jq`.
 
 The `git` role downloads `git-crypt`, asserts its SHA256 against a pinned value, and fails
 the play on a mismatch instead of installing whatever arrived. Anything added under
@@ -213,4 +167,5 @@ checksum.
 
 - [GitOps](gitops.md): why merging is deployment
 - [Conventions](conventions.md): the checks that run before a merge is possible
-- [Bootstrap chart](bootstrap.md): the chart step 5 points at, and how to add to it
+- [Bootstrap chart](bootstrap.md): the app-of-apps chart `argocd-bootstrap` points at, and
+  how to add to it

@@ -10,8 +10,9 @@ hand-edited, and neither file is committed.
 | File | What it is |
 | --- | --- |
 | [`generate.sh`](../talos/generate.sh) | Regenerates the machine configs and `talosconfig` |
-| [`schematic.yaml`](../talos/schematic.yaml) | Image Factory schematic listing the system extensions. Its ID appears in `machine.install.image` |
+| [`schematic.yaml`](../talos/schematic.yaml) | Image Factory schematic listing the system extensions |
 | [`patch-all.yaml`](../talos/patch-all.yaml) | Config patch applied to every node type |
+| [`bootstrap/`](../talos/bootstrap/) | Kustomization rendering Cilium and ArgoCD for the control plane's inline manifest |
 | `secret-nut-client.yaml` | Patch holding the UPS monitoring credentials, git-crypt encrypted |
 | `secret-certs.yaml` | Cluster PKI and join tokens, git-crypt encrypted |
 | `controlplane.yaml`, `worker.yaml`, `talosconfig` | Generator output, git-ignored, contains the PKI in plaintext |
@@ -22,8 +23,12 @@ hand-edited, and neither file is committed.
 ./talos/generate.sh
 ```
 
-The script wraps `talosctl gen config` with both patches and the secrets bundle, fills in
-the talosconfig endpoint, and validates what came out.
+Besides `talosctl`, the script needs `kustomize`, `helm`, `yq` and `jq` on the path - all
+part of the [workstation setup](operations.md#the-local-machine).
+
+It wraps `talosctl gen config` with both patches and the secrets bundle, adds the rendered
+Cilium/ArgoCD manifest as a third, control-plane-only patch, fills in the talosconfig
+endpoint, and validates what came out.
 
 `--with-secrets` is what makes the output reproducible. Without it, every run mints a fresh
 PKI and new join tokens, and the result cannot be applied to a running cluster. That bundle
@@ -77,23 +82,38 @@ byte-identical the way the machine configs are.
 ## Version pinning
 
 `talosctl gen config` defaults the Kubernetes version to whatever the local `talosctl`
-binary was built with. That quietly changes the generated config every time the CLI is
-upgraded, so the version is pinned in [`patch-all.yaml`](../talos/patch-all.yaml) instead,
-across five fields:
+binary was built with, and the Talos version affects which config fields it even knows how
+to generate. Leaving either unset means the output quietly changes every time someone's CLI
+gets upgraded. `generate.sh` pins both explicitly as flags:
 
-- `machine.kubelet.image`
-- `cluster.apiServer.image`
-- `cluster.controllerManager.image`
-- `cluster.scheduler.image`
-- `cluster.proxy.image`
+```sh
+talosctl gen config ... --kubernetes-version 1.36.3 --talos-version v1.13.7
+```
 
-Bump all five together. Watch out for `talosctl upgrade-k8s`, which rewrites these fields on
-the nodes directly. After running it, update the patch to match or the next `apply-config`
-rolls Kubernetes back to the pinned version.
+`--kubernetes-version` sets every image this cluster needs for that version in one place -
+`machine.kubelet.image` on every node, and `apiServer`/`controllerManager`/`scheduler`
+images on control plane nodes only, since workers do not run those. Bump the one variable in
+the script rather than five fields in a patch.
 
-The Talos version is separate and lives in the tag on `machine.install.image`. That tag is a
-Talos version and not a Kubernetes one, and the schematic ID in front of it comes from
-`schematic.yaml`.
+Watch out for `talosctl upgrade-k8s`, which rewrites those images on the nodes directly.
+After running it, update `KUBERNETES_VERSION` in the script to match, or the next
+`apply-config` rolls the cluster back to the old pin.
+
+`--talos-version` is the schema contract `gen config` renders against, kept in step with the
+actual Talos release running on the nodes.
+
+`--install-image` is built from the two together: the schematic ID and `TALOS_VERSION`
+combine into `factory.talos.dev/metal-installer/<schematic-id>:<talos-version>`. The
+schematic ID itself is not a value copied into the script - it is fetched fresh from the
+Image Factory on every run, by posting [`schematic.yaml`](../talos/schematic.yaml) to
+`https://factory.talos.dev/schematics`:
+
+```sh
+curl -sS -X POST --data-binary @schematic.yaml https://factory.talos.dev/schematics | jq -r .id
+```
+
+Deriving it this way means editing the system extensions in `schematic.yaml` can never leave
+a stale ID behind for someone to notice later.
 
 ## Validating
 
@@ -102,21 +122,63 @@ talosctl validate -c controlplane.yaml -m metal
 talosctl validate -c worker.yaml -m metal
 ```
 
-`--config-patch` applies to every node type, so generated worker configs carry the
-`apiServer`, `controllerManager` and `scheduler` image pins as well. Workers ignore those
-fields. It is the only place the generated worker config differs from the live one.
+## Bootstrapping Cilium and ArgoCD
 
-## Why the CNI is missing on purpose
+[`patch-all.yaml`](../talos/patch-all.yaml) sets `cluster.network.cni.name: none` and
+disables kube-proxy, because Cilium provides both. See [Networking](networking.md#cilium).
+That leaves a real gap: with no CNI nothing can be scheduled, ArgoCD included, so the tool
+that installs everything else in this cluster cannot install itself.
 
-`patch-all.yaml` sets `cluster.network.cni.name: none` and disables kube-proxy, because
-Cilium provides both. See [Networking](networking.md#cilium).
+Talos has a mechanism built for exactly this -
+[`cluster.inlineManifests`](https://docs.siderolabs.com/talos/v1.13/reference/configuration/v1alpha1/config#inlinemanifests):
+manifests embedded directly in the machine config, applied automatically as part of
+`talosctl bootstrap`, before anything else. `generate.sh` builds one from
+[`talos/bootstrap/`](../talos/bootstrap/), a kustomization that renders Cilium and ArgoCD via
+Helm and adds the three files that get ArgoCD's own bootstrap `Application` running:
 
-That leaves a gap at bootstrap. With no CNI nothing can be scheduled, ArgoCD included, so
-the tool that installs everything else cannot install Cilium. Cilium goes on by hand once,
-and the `cilium` Application adopts it at sync wave -80. Talos holds a node at phase 18/19
-while it waits for a CNI and reboots it after roughly ten minutes, so the window is short.
-The commands are in
-[Operations](operations.md#2-install-cilium-by-hand-once).
+```sh
+kustomize build --enable-helm --load-restrictor LoadRestrictionsNone talos/bootstrap
+```
+
+`--load-restrictor LoadRestrictionsNone` is needed because that kustomization reaches into
+`kubernetes/helm/` and `kubernetes/kustomizations/argocd/` for its values and resources,
+outside its own directory tree - the default restriction exists to stop a kustomization
+pulled from somewhere untrusted reading arbitrary local files, which does not apply to one
+we wrote ourselves.
+
+Three things about what goes in are worth knowing:
+
+- **ArgoCD is templated with `kubernetes/helm/argocd/values.yaml` only, never
+  `values-secret.yaml`.** Talos has no way to decrypt it, and nothing at boot needs it - no
+  SSO, no write-back credentials. The `argocd` self-management
+  [Application](../kubernetes/bootstrap/charts/app-of-apps/templates/argocd.yaml) lists both
+  files, so the moment it syncs, ArgoCD re-configures itself with the full values, secrets
+  included.
+- **`argocd-server-transport.yaml` is left out.** It is a Traefik `ServersTransport`, and
+  Traefik's CRD does not exist at boot - Traefik itself is still several sync waves away.
+  The `argocd` Application's second source is
+  [`kubernetes/kustomizations/argocd`](../kubernetes/kustomizations/argocd/), so it picks
+  that file up on its own, later, once Traefik is running.
+- **The CRDs are included, and nothing is trimmed to save space.** ArgoCD's three CRDs alone
+  render to roughly 1.8 MB, so `controlplane.yaml` ends up around 2.4 MB against
+  `worker.yaml`'s few kilobytes. Rendered output like this is never committed regardless of
+  size, so there is no diff to keep readable and no reason to hand-edit it down.
+
+Ordering matters here, because ArgoCD's own bootstrap `Application` is a custom resource
+that needs its CRD to already exist. `kustomize build` sorts by kind before anything else,
+so every `CustomResourceDefinition` in the combined output lands before any resource that
+might use one - verified directly against this exact kustomization: all three ArgoCD CRDs
+sit in the first 30 KB of a 2 MB file, the bootstrap `Application` many thousands of lines
+later. What is not independently verified is how Talos's own apply step walks that stream
+internally - inline manifests exist specifically to solve CRD-then-CR bootstrap ordering
+(CNI installs are the canonical use case), so this is very likely handled, but it has not
+been watched happen on real hardware. If `argocd-bootstrap` is missing after a fresh
+`talosctl bootstrap`, the fallback is the same command a human would have run before this
+existed: `kubectl apply -k kubernetes/kustomizations/argocd`.
+
+Once Cilium is up, a node stops waiting - Talos applies inline manifests itself as part of
+its own bootstrap sequence, with no ten-minute reboot window for a human to beat like the
+old by-hand install had.
 
 ## See also
 

@@ -7,31 +7,37 @@ how secrets survive being committed to a public repository.
 
 ## One entry point, and one thing before it
 
-Two things are applied by hand, and only once. Everything else descends from them.
+Nothing is applied by hand anymore. Everything below descends from what Talos creates the
+moment `talosctl bootstrap` runs.
 
 ```mermaid
 flowchart LR
-    Z["cilium<br/>Helm chart, kubectl apply"] --> A["argocd-bootstrap<br/>wave -100"]
+    T["talosctl bootstrap<br/>Talos inline manifest"] --> Z["cilium"]
+    T --> AC["argocd"]
+    T --> A["argocd-bootstrap<br/>wave -100"]
     A --> B["app-of-apps chart<br/>kubernetes/bootstrap/"]
-    B --> C["argocd<br/>wave -99"]
+    B --> C["argocd<br/>wave -99, adopts AC"]
     B --> Z2["cilium<br/>wave -80, adopts Z"]
     B --> D["platform<br/>waves -50..-5"]
     B --> E["workloads<br/>wave 0+"]
     C -.->|manages its own chart and values| C
 ```
 
-Cilium goes first, before ArgoCD exists at all. A cluster with no CNI schedules no pods, so
-nothing, including ArgoCD, can run until Cilium is on the nodes. It is installed with a plain
-`helm template | kubectl apply`, and the `cilium` Application in the app-of-apps chart
-adopts that release afterwards, at sync wave -80. See
-[Operations](operations.md#2-install-cilium-by-hand-once) for the command.
+Cilium and ArgoCD both have to exist before ArgoCD can do anything, since a cluster with no
+CNI schedules no pods and GitOps needs ArgoCD running to begin with. Both come from a Talos
+[inline manifest](https://docs.siderolabs.com/talos/v1.13/reference/configuration/v1alpha1/config#inlinemanifests),
+rendered from the same charts and values that back the `cilium` and `argocd` Applications
+below, and applied automatically as part of `talosctl bootstrap` - no `helm install`, no
+`kubectl apply`, nothing run by hand. See
+[Talos](talos.md#bootstrapping-cilium-and-argocd) for what that actually contains.
 
-Everything after that is one `Application`, applied by hand exactly once.
-[`argocd-bootstrap.yaml`](../kubernetes/kustomizations/argocd/argocd-bootstrap.yaml) points
-ArgoCD at [`kubernetes/bootstrap/charts/app-of-apps`](../kubernetes/bootstrap/charts/app-of-apps/),
-a Helm chart whose templates are the `Application` and `ApplicationSet` definitions for
-everything else. Adding an app to the cluster means adding one template there. There is no
-second place to register it.
+The same bundle also creates
+[`argocd-bootstrap.yaml`](../kubernetes/kustomizations/argocd/argocd-bootstrap.yaml), one
+`Application` object that points ArgoCD at
+[`kubernetes/bootstrap/charts/app-of-apps`](../kubernetes/bootstrap/charts/app-of-apps/), a
+Helm chart whose templates are the `Application` and `ApplicationSet` definitions for
+everything else. That is the actual entry point: adding an app to the cluster means adding
+one template there, and there is no second place to register it.
 
 It passes its own revision down as a Helm parameter:
 
