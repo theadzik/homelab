@@ -16,24 +16,6 @@ silently.
 | [`talos/`](../talos/) | Node config inputs | The machine configs are generated from these and never committed |
 | [`ansible/`](../ansible/) | Workstation setup | Not cluster configuration |
 | [`docs/`](.) | These pages | Reasoning that outlives any single manifest |
-| `.tmp/` | Scratch | The only place temporary files go, and it is ignored |
-
-## Rules that are not linted
-
-Three, and each has a failure mode that no tool catches:
-
-1. **A file containing a Secret has `secret` in its filename.** That pattern is the entire
-   git-crypt selector in [`.gitattributes`](../.gitattributes). Get the name wrong and the
-   file is committed in plaintext, with no error anywhere.
-2. **[`sync-waves-inventory.md`](../sync-waves-inventory.md) is never edited by hand.** It is
-   generated from the app-of-apps templates. A manual edit is overwritten on the next push
-   to `main`, and misleads everyone until then.
-3. **Sync waves express dependencies, not preferences.** A new app that needs cert-manager
-   or the CSI driver must be ordered after them, and nothing else should be reordered to
-   make room.
-
-Each of them is worth a second look during review, because none of them shows up as a
-failing check.
 
 ## Quality gates
 
@@ -102,26 +84,6 @@ follow their own rules:
 ansible-playbook ansible/playbooks/local-setup.yaml --syntax-check
 ansible-playbook ansible/playbooks/local-setup.yaml --check
 ```
-
-## Comments
-
-The repository has a house style for comments, and it is applied to YAML as much as to code:
-a comment earns its place by saying something the manifest cannot.
-
-```yaml
-# Without this the webhook is consulted for every pod in the cluster and
-# passes each one without checking anything, since .all() over no images is true.
-matchConditions:
-  - name: only-our-images
-```
-
-Keep that one. Delete `# timeout in seconds` above `timeoutSeconds`, and delete narration of
-which approach was tried first. That belongs in the commit message, or on one of these
-pages.
-
-Findings and measurements age badly in a manifest. `# takes 20-30s` is stale as soon as
-anything changes. `# verification is slow enough to matter near the webhook timeout` stays
-true.
 
 ## See also
 

@@ -3,10 +3,10 @@
 Day-0 to day-2: how the cluster is created from nothing, how a change gets into it, and
 what to check when something does not settle.
 
-## Bootstrapping from nothing
+## Bootstrapping
 
-Cilium and ArgoCD both come up on their own now, embedded in the control plane's machine
-config and applied by Talos itself as part of `talosctl bootstrap`. See
+Cilium and ArgoCD both come up on their own, embedded in the control plane's machine
+config and applied by Talos itself as part of `talosctl apply-config`. See
 [Talos](talos.md#bootstrapping-cilium-and-argocd) for how. What is left is getting that
 machine config generated and onto the node.
 

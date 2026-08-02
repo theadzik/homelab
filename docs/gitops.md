@@ -16,18 +16,19 @@ flowchart LR
     T --> AC["argocd"]
     T --> A["argocd-bootstrap<br/>wave -100"]
     A --> B["app-of-apps chart<br/>kubernetes/bootstrap/"]
-    B --> C["argocd<br/>wave -99, adopts AC"]
-    B --> Z2["cilium<br/>wave -80, adopts Z"]
+    B --> C["argocd<br/>wave -99"]
+    B --> Z2["cilium<br/>wave -80"]
     B --> D["platform<br/>waves -50..-5"]
     B --> E["workloads<br/>wave 0+"]
-    C -.->|manages its own chart and values| C
+    AC <-.-|adopted by| C
+    Z <-.-|adopted by| Z2
 ```
 
 Cilium and ArgoCD both have to exist before ArgoCD can do anything, since a cluster with no
 CNI schedules no pods and GitOps needs ArgoCD running to begin with. Both come from a Talos
 [inline manifest](https://docs.siderolabs.com/talos/v1.13/reference/configuration/v1alpha1/config#inlinemanifests),
 rendered from the same charts and values that back the `cilium` and `argocd` Applications
-below, and applied automatically as part of `talosctl bootstrap` - no `helm install`, no
+below, and applied automatically as part of `talosctl apply-config` - no `helm install`, no
 `kubectl apply`, nothing run by hand. See
 [Talos](talos.md#bootstrapping-cilium-and-argocd) for what that actually contains.
 
@@ -89,7 +90,6 @@ Four delivery styles coexist, chosen per app:
 | Style | Used when | Example |
 | --- | --- | --- |
 | Upstream chart + values file | The values are worth a file of their own | [metrics-server](../kubernetes/helm/metrics-server/values.yaml) |
-| Upstream chart + inline `valuesObject` | A handful of resource requests, and nothing else | [cert-manager](../kubernetes/bootstrap/charts/app-of-apps/templates/cert-manager.yaml) |
 | Kustomize | No chart, or the chart is more trouble than the manifests | [cloudflared](../kubernetes/kustomizations/cloudflared/) |
 | Local chart in this repo | The thing is worth publishing on its own | [media-stack](../charts/media-stack/) |
 
@@ -173,13 +173,10 @@ The tag filters are where the real policy sits:
 
 | App | Strategy | Filter | Why |
 | --- | --- | --- | --- |
-| blog-dev | `newest-build` | `^sha-[0-9a-f]{7}$` | Per-commit builds of `main` only. Without the filter it also accepted `pr-<n>` tags, so dev ran unmerged code. |
+| blog-dev | `newest-build` | `^sha-[0-9a-f]{7}$` | Per-commit builds from `main` branch. |
 | blog-prod | `semver` | `^\d{4}\.\d{1,2}\.\d{1,2}$` | CalVer releases only. |
 | radarr, sonarr | `semver` | `^\d+\.\d+\.\d+$` | Upstream publishes non-release tags on the same repository. |
 | jellyfin, bazarr, nzbget | `semver` on `~10`, `~1`, `~26` | | Major pinned at the image reference, minors flow. |
-
-Skipping the regex is how dev ended up running pull request builds: `newest-build` takes
-whatever was pushed most recently, and a registry holds a great deal more than releases.
 
 ## Secrets in a public repository
 
@@ -225,7 +222,7 @@ What breaks the circle is an out-of-band copy, and git-crypt supports two:
 | `git-crypt unlock <keyfile>` | An exported symmetric key, kept outside the repository and outside the cluster |
 | `git-crypt unlock` with a registered GPG key | The collaborator key under [`.git-crypt/keys/`](../.git-crypt/), which holds the same symmetric key encrypted to a GPG public key |
 
-Either one unlocks a fresh clone, and from there `kubectl apply -k` hands the cluster the
+Either one unlocks a fresh clone, and from there `./talos/generate.sh` with `talosctl apply-config` hands the cluster the
 Secret it needs. Losing **both** is the unrecoverable case. See
 [Storage and backups](storage-and-backups.md#what-is-actually-recoverable).
 

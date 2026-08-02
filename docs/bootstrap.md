@@ -14,8 +14,8 @@ adding a template to it.
 
 The chart is useless without ArgoCD to read it, and ArgoCD is not itself deployed by
 GitOps, since nothing can bootstrap the thing that does the bootstrapping. Talos gets it
-running instead: `talos/bootstrap/` renders ArgoCD's chart (values only, no secrets - Talos
-cannot decrypt those) and adds the three plain manifests that get things moving, and the
+running instead: `talos/bootstrap/` renders ArgoCD's chart and adds the three
+plain manifests that get things moving, and the
 whole bundle is applied automatically the moment `talosctl bootstrap` runs. See
 [Talos](talos.md#bootstrapping-cilium-and-argocd) for exactly what goes in and why.
 

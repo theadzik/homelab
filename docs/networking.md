@@ -187,7 +187,7 @@ Split-horizon DNS usually means maintaining two zone files that disagree. Here i
 label on one manifest, and the record appears in the right place. The blog demonstrates the
 whole mechanism in two overlays of the same base. Prod is `dns-type: external` with a
 Cloudflare-proxied CNAME to the tunnel. Dev is `dns-type: internal` and exists only on the
-LAN.
+LAN. I chose this approach so I can test my services as though I was on another network.
 
 PiHole gets `registry: noop` and `upsert-only` because it has no TXT registry to track
 record ownership, so external-dns must not be allowed to conclude that a record it cannot
