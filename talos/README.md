@@ -32,7 +32,7 @@ have a working `talosconfig` to authenticate with — so this is a repair path,
 not a backup:
 
 ```sh
-talosctl -n 192.168.0.2 read /system/state/config.yaml > /tmp/cp.yaml
+talosctl -n 192.168.0.2 get machineconfig v1alpha1 -o jsonpath='{.spec}' > /tmp/cp.yaml
 talosctl gen secrets --from-controlplane-config /tmp/cp.yaml -o secret-certs.yaml
 ```
 
@@ -106,3 +106,48 @@ Generated worker configs carry the `cluster.apiServer`/`controllerManager`/
 `scheduler` image pins because `--config-patch` applies to every node type.
 Workers ignore those fields; it is the only divergence from the live worker
 config.
+
+## CNI installation
+
+`patch-all.yaml` sets `cluster.network.cni.name: none` and disables kube-proxy,
+because Cilium provides both. That leaves a bootstrap gap: with no CNI, nothing
+schedules — including Argo CD — so Cilium cannot be installed by the same
+GitOps that installs everything else. It goes on once by hand, and the
+`cilium` Application (sync-wave `-80`) adopts it afterwards.
+
+Talos holds the node at "phase 18/19" while it waits for a CNI and reboots
+after roughly ten minutes, so this needs to happen shortly after
+`talosctl bootstrap`:
+
+```sh
+talosctl bootstrap -n 192.168.0.2
+talosctl kubeconfig
+```
+
+Then, **from the repository root** (the values path is relative to it):
+
+```sh
+helm template cilium --version 1.20.0 oci://quay.io/cilium/charts/cilium -f kubernetes/helm/cilium/values.yaml -n kube-system \
+  | sed -n '/^---$/,$p' | kubectl apply -f -
+```
+
+The `sed` is a workaround, not decoration. Helm 4.2.1 introduced a regression
+([helm#32215](https://github.com/helm/helm/issues/32215)) that prints `Pulled:`
+and `Digest:` lines to **stdout** before the rendered YAML when templating
+straight from an `oci://` reference, which breaks `kubectl apply -f -`. Both
+lines are on stdout, not stderr, so `2>/dev/null` does not help. Dropping
+everything before the first `---` does. Pulling the chart first
+(`helm pull … --untar`) and templating the local directory avoids it too.
+
+The values are Talos-specific: `k8sServiceHost: localhost` and
+`k8sServicePort: 7445` point Cilium at KubePrism rather than a kube-proxy
+service IP, and must stay in step with `machine.features.kubePrism` in the
+generated config.
+
+### Handing over to Argo CD
+
+The chart generates `cilium-ca`, `hubble-server-certs`, and
+`hubble-relay-client-certs` fresh on every render — Cilium labels them
+`cilium.io/helm-template-non-idempotent`. The CA installed here is therefore
+not the one Argo CD renders later, and the Hubble certificates get rotated the
+first time it syncs. Harmless, but it is why the CA changes on its own.
