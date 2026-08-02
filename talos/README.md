@@ -32,7 +32,7 @@ have a working `talosconfig` to authenticate with — so this is a repair path,
 not a backup:
 
 ```sh
-talosctl -n 192.168.0.2 read /system/state/config.yaml > /tmp/cp.yaml
+talosctl -n 192.168.0.2 get machineconfig v1alpha1 -o jsonpath='{.spec}' > /tmp/cp.yaml
 talosctl gen secrets --from-controlplane-config /tmp/cp.yaml -o secret-certs.yaml
 ```
 
