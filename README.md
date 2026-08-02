@@ -1,7 +1,7 @@
 # homelab
 
 > [!NOTE]
-> The documentation in this repository was AI generated, but reviewed and approved by a person.
+> The documentation in this repository was AI generated, but reviewed and corrected by a person.
 > It *should* be free of hallucinations but something might have slipped through. Sorry!
 
 A three-node Kubernetes cluster on [Talos Linux](https://www.talos.dev/), managed entirely
@@ -40,7 +40,7 @@ Documentation for each, with the reasoning:
 
 - **[Images are verified by the cluster that runs them](docs/supply-chain.md).** Built to an
   OCI layout, scanned before push, signed at their digest, and checked at admission by a
-  Kyverno policy that will not quietly pass a pod it never looked at. Plus a daily rescan
+  Kyverno policy that verifies those signatures. Plus a daily rescan
   that reports instead of gating, and two scanners because their databases disagree.
 - **[One bootstrap Application creates the whole cluster](docs/gitops.md)** and passes its
   own git revision to every child, so pointing it at a branch moves the entire cluster to
@@ -57,9 +57,6 @@ Documentation for each, with the reasoning:
 - **[A password vault that repairs itself](docs/storage-and-backups.md#application-level-backup-vaultwarden).**
   Encrypted backups to the NAS and off-site, restored by an init container, and a pod that
   refuses to start empty instead of showing its clients an empty vault.
-- **[Agent instructions as reviewed repository artifacts](docs/conventions.md#instructions-as-repository-artifacts).**
-  One file, symlinked so Claude Code and Copilot cannot drift apart, plus a review checklist
-  and a validation skill that any human can run.
 - **[The gaps, written down](docs/security.md#known-gaps).** Where the controls stop, and
   what it would take to close each one.
 
