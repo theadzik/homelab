@@ -30,6 +30,12 @@ spec:
         - ports:
             - port: "587"
               protocol: TCP
+    - toFQDNs:
+        - matchName: push.bitwarden.com
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP
 
     # Allow backup to Garage S3 on NAS (if backup feature enabled)
     - toCIDR:
