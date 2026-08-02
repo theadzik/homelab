@@ -178,4 +178,7 @@ controlplane.yaml
 worker.yaml
 talosconfig
 
+# local cache from `kustomize build --enable-helm talos/bootstrap`
+talos/bootstrap/charts/
+
 .tmp/

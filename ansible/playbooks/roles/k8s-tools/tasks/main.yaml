@@ -16,3 +16,5 @@
     - siderolabs/tap/talosctl
     - velero
     - argocd
+    - yq
+    - jq
