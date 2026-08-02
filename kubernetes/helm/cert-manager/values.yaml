@@ -1,0 +1,15 @@
+installCRDs: true
+resources:
+  requests:
+    cpu: 10m
+    memory: 128Mi
+webhook:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 128Mi
+cainjector:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 128Mi
