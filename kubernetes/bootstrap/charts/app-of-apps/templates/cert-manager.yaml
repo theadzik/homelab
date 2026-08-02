@@ -12,22 +12,8 @@ spec:
       targetRevision: v1.*.*
       helm:
         releaseName: cert-manager
-        valuesObject:
-          installCRDs: true
-          resources:
-            requests:
-              cpu: 10m
-              memory: 128Mi
-          webhook:
-            resources:
-              requests:
-                cpu: 10m
-                memory: 128Mi
-          cainjector:
-            resources:
-              requests:
-                cpu: 10m
-                memory: 128Mi
+        valueFiles:
+          - $repo/kubernetes/helm/cert-manager/values.yaml
     - path: kubernetes/kustomizations/cert-manager
       repoURL: "{{ .Values.spec.sources.repoURL }}"
       targetRevision: "{{ .Values.spec.sources.targetRevision }}"
