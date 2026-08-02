@@ -5,19 +5,28 @@ cluster any other way. This page covers how that is wired: what bootstraps what,
 upstream charts are combined with local values, how image updates get back into git, and
 how secrets survive being committed to a public repository.
 
-## One entry point
+## One entry point, and one thing before it
 
-A single `Application` is applied by hand, once, ever. Everything else descends from it.
+Two things are applied by hand, and only once. Everything else descends from them.
 
 ```mermaid
 flowchart LR
-    A["argocd-bootstrap<br/>wave -100"] --> B["app-of-apps chart<br/>kubernetes/bootstrap/"]
+    Z["cilium<br/>Helm chart, kubectl apply"] --> A["argocd-bootstrap<br/>wave -100"]
+    A --> B["app-of-apps chart<br/>kubernetes/bootstrap/"]
     B --> C["argocd<br/>wave -99"]
+    B --> Z2["cilium<br/>wave -80, adopts Z"]
     B --> D["platform<br/>waves -50..-5"]
     B --> E["workloads<br/>wave 0+"]
     C -.->|manages its own chart and values| C
 ```
 
+Cilium goes first, before ArgoCD exists at all. A cluster with no CNI schedules no pods, so
+nothing, including ArgoCD, can run until Cilium is on the nodes. It is installed with a plain
+`helm template | kubectl apply`, and the `cilium` Application in the app-of-apps chart
+adopts that release afterwards, at sync wave -80. See
+[Operations](operations.md#2-install-cilium-by-hand-once) for the command.
+
+Everything after that is one `Application`, applied by hand exactly once.
 [`argocd-bootstrap.yaml`](../kubernetes/kustomizations/argocd/argocd-bootstrap.yaml) points
 ArgoCD at [`kubernetes/bootstrap/charts/app-of-apps`](../kubernetes/bootstrap/charts/app-of-apps/),
 a Helm chart whose templates are the `Application` and `ApplicationSet` definitions for
