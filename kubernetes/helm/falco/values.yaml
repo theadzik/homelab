@@ -38,6 +38,11 @@ customRules:
           values:
             - [/opt/cni/bin/cilium-cni, quay.io/cilium/cilium]
             - [/opt/cni/bin/cilium-sysctlfix, quay.io/cilium/cilium]
+        - name: cilium_cni_plugin_runtime_exec
+          fields: [proc.exepath, proc.pname]
+          comps: [=, =]
+          values:
+            - [/opt/cni/bin/cilium-cni, containerd]
       override:
         exceptions: append
 
