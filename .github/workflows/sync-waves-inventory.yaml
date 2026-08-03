@@ -6,13 +6,13 @@ on:
     branches:
       - "main"
     paths:
-      - "kubernetes/bootstrap/charts/app-of-apps/templates/*"
+      - "kubernetes/charts/app-of-apps/templates/*"
       - "./github/scripts/sync-waves-inventory/**"
       - ".github/workflows/sync-waves-inventory.yaml"
   workflow_dispatch:
 
 env:
-  APPLICATIONS_PATH: "${{ github.workspace }}/kubernetes/bootstrap/charts/app-of-apps/templates/"
+  APPLICATIONS_PATH: "${{ github.workspace }}/kubernetes/charts/app-of-apps/templates/"
   OUTPUT_PATH: "${{ github.workspace }}/sync-waves-inventory.md"
 
 jobs:

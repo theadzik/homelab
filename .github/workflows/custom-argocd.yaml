@@ -4,14 +4,14 @@ on:
   pull_request:
     paths:
       - ".github/workflows/custom-argocd.yaml"
-      - "kubernetes/bootstrap/charts/app-of-apps/templates/argocd.yaml"
+      - "kubernetes/charts/app-of-apps/templates/argocd.yaml"
       - "apps/custom-argocd/**"
   push:
     branches:
       - main
     paths:
       - ".github/workflows/custom-argocd.yaml"
-      - "kubernetes/bootstrap/charts/app-of-apps/templates/argocd.yaml"
+      - "kubernetes/charts/app-of-apps/templates/argocd.yaml"
       - "apps/custom-argocd/**"
 jobs:
   get-version:
@@ -42,7 +42,7 @@ jobs:
 
           echo "app_version=$app_version" >> $GITHUB_OUTPUT
         env:
-          ARGOCD_TEMPLATE_FILE: "${{ github.workspace }}/kubernetes/bootstrap/charts/app-of-apps/templates/argocd.yaml"
+          ARGOCD_TEMPLATE_FILE: "${{ github.workspace }}/kubernetes/charts/app-of-apps/templates/argocd.yaml"
 
   build-push:
     needs: get-version

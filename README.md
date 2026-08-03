@@ -83,10 +83,9 @@ Documentation for each, with the reasoning:
 ## Repository layout
 
 ```text
-kubernetes/bootstrap/   app-of-apps chart - every application is registered here
+kubernetes/charts/      app-of-apps chart (every application is registered here), plus Helm charts written here that are publishable on their own
 kubernetes/helm/        values for upstream charts
 kubernetes/kustomizations/  manifests for apps deployed without a chart
-charts/                 Helm charts written here, publishable on their own
 apps/                   Dockerfiles and the scripts they package
 talos/                  node configuration: schematic and machine config patch
 ansible/                workstation setup, not cluster configuration

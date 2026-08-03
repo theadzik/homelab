@@ -70,7 +70,7 @@ child application, so the whole cluster follows.
 2. **Write the manifests**, under `kubernetes/helm/<app>/` or
    `kubernetes/kustomizations/<app>/`. Any file containing a Secret must have `secret` in
    its filename, or it will be committed in plaintext.
-3. **Register it** in [`kubernetes/bootstrap/charts/app-of-apps/templates/`](../kubernetes/bootstrap/charts/app-of-apps/templates/).
+3. **Register it** in [`kubernetes/charts/app-of-apps/templates/`](../kubernetes/charts/app-of-apps/templates/).
    An app that is not registered here does not exist. Give it a sync wave if it has
    dependencies. Workloads with none can leave the default.
 4. **Decide its exposure** with a `dns-type` label, `internal` for PiHole or `external` for
@@ -91,7 +91,7 @@ pre-commit run --all-files
 # render what you changed
 kustomize build kubernetes/kustomizations/<app>
 helm template <release> <chart> -f kubernetes/helm/<app>/values.yaml
-helm lint charts/<chart>          # local charts only
+helm lint kubernetes/charts/<chart>    # local charts only
 ```
 
 A changed values file has to be rendered with the chart the app-of-apps template names, so

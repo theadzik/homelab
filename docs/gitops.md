@@ -15,7 +15,7 @@ flowchart LR
     T["talosctl bootstrap<br/>Talos inline manifest"] --> Z["cilium"]
     T --> AC["argocd"]
     T --> A["argocd-bootstrap<br/>wave -100"]
-    A --> B["app-of-apps chart<br/>kubernetes/bootstrap/"]
+    A --> B["app-of-apps chart<br/>kubernetes/charts/app-of-apps/"]
     B --> C["argocd<br/>wave -99"]
     B --> Z2["cilium<br/>wave -80"]
     B --> D["platform<br/>waves -50..-5"]
@@ -35,7 +35,7 @@ below, and applied automatically as part of `talosctl apply-config` - no `helm i
 The same bundle also creates
 [`argocd-bootstrap.yaml`](../kubernetes/kustomizations/argocd/argocd-bootstrap.yaml), one
 `Application` object that points ArgoCD at
-[`kubernetes/bootstrap/charts/app-of-apps`](../kubernetes/bootstrap/charts/app-of-apps/), a
+[`kubernetes/charts/app-of-apps`](../kubernetes/charts/app-of-apps/), a
 Helm chart whose templates are the `Application` and `ApplicationSet` definitions for
 everything else. That is the actual entry point: adding an app to the cluster means adding
 one template there, and there is no second place to register it.
@@ -91,14 +91,14 @@ Four delivery styles coexist, chosen per app:
 | --- | --- | --- |
 | Upstream chart + values file | The values are worth a file of their own | [metrics-server](../kubernetes/helm/metrics-server/values.yaml) |
 | Kustomize | No chart, or the chart is more trouble than the manifests | [cloudflared](../kubernetes/kustomizations/cloudflared/) |
-| Local chart in this repo | The thing is worth publishing on its own | [media-stack](../charts/media-stack/) |
+| Local chart in this repo | The thing is worth publishing on its own | [media-stack](../kubernetes/charts/media-stack/) |
 
 A local chart is still wired the multi-source way, just with `path` instead of `chart` and
 `repoURL` in the first source:
 
 ```yaml
 sources:
-  - path: charts/media-stack
+  - path: kubernetes/charts/media-stack
     repoURL: "{{ .Values.spec.sources.repoURL }}"
     targetRevision: "{{ .Values.spec.sources.targetRevision }}"
     helm:
@@ -109,8 +109,9 @@ sources:
 
 The chart itself stays generic on purpose: no hardcoded storage classes, no assumed ingress
 controller, nothing that only makes sense in this cluster. Everything specific lives in the
-values file, same as an upstream chart. That is what makes `charts/` a place for charts
-worth publishing on their own, and not just a second home for cluster config.
+values file, same as an upstream chart. That is what makes a chart like this one worth
+publishing on its own, unlike `app-of-apps` next to it in `kubernetes/charts/`, which is
+cluster glue and nothing else.
 
 ## Sync waves
 
@@ -161,7 +162,7 @@ Exceptions are per-resource and explicit:
 ## Two environments from one manifest
 
 The blog runs as dev and prod from a single
-[`ApplicationSet`](../kubernetes/bootstrap/charts/app-of-apps/templates/blog.yaml) over a
+[`ApplicationSet`](../kubernetes/charts/app-of-apps/templates/blog.yaml) over a
 list generator, each element selecting a
 [kustomize overlay](../kubernetes/kustomizations/blog/overlays/). The base holds the
 deployment, service, ingress and network policy. The overlays change replica count, host

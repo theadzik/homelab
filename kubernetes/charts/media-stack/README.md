@@ -74,13 +74,13 @@ These components are optional but enable additional features:
 ### From local chart
 
 ```bash
-helm install media-stack ./charts/media-stack -f values.yaml -n media --create-namespace
+helm install media-stack ./kubernetes/charts/media-stack -f values.yaml -n media --create-namespace
 ```
 
 ### Using custom values
 
 ```bash
-helm install media-stack ./charts/media-stack -f my-values.yaml -n media --create-namespace
+helm install media-stack ./kubernetes/charts/media-stack -f my-values.yaml -n media --create-namespace
 ```
 
 ## Configuration
@@ -264,8 +264,8 @@ This chart can be used with a single `values.yaml` file or split into:
 Example deployment with overrides:
 
 ```bash
-helm install media-stack ./charts/media-stack \
-  -f charts/media-stack/values.yaml \
+helm install media-stack ./kubernetes/charts/media-stack \
+  -f kubernetes/charts/media-stack/values.yaml \
   -f my-environment-values.yaml
 ```
 

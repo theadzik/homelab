@@ -44,7 +44,7 @@ flowchart LR
 
 `custom-argocd` works out its own tag. The
 [workflow](../.github/workflows/custom-argocd.yaml) reads the chart version out of the
-[ArgoCD Application](../kubernetes/bootstrap/charts/app-of-apps/templates/argocd.yaml),
+[ArgoCD Application](../kubernetes/charts/app-of-apps/templates/argocd.yaml),
 resolves that chart's `appVersion` with `helm search`, and builds `FROM
 quay.io/argoproj/argocd:<that version>`. The patched image therefore cannot drift from the
 version the cluster is actually running. Changing the chart version in git is the only way
