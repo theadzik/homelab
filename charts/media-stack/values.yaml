@@ -3,28 +3,9 @@ namespaceAnnotations: {}
 
 networkPolicy:
   enabled: false
-  ingress:
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: traefik
-      ports:
-        - protocol: TCP
-    - from:
-        - podSelector: {}
-
-  egress:
-    - to:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: kube-system
-      ports:
-        - protocol: UDP
-          port: 53
-    - to:
-        - podSelector: {}
-    - to:
-        - namespaceSelector: {}
+  # Namespaces outside the stack allowed to reach the services.
+  ingressNamespaces: []
+  # - traefik
 
 # Global ingress annotations (applied to all ingresses)
 ingressAnnotations: {}
