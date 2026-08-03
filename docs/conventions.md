@@ -8,10 +8,9 @@ silently.
 
 | Path | Contains | Rule |
 | --- | --- | --- |
-| [`kubernetes/bootstrap/`](../kubernetes/bootstrap/) | The app-of-apps chart | Every application is registered here or it does not exist |
+| [`kubernetes/charts/`](../kubernetes/charts/) | app-of-apps, plus Helm charts written here | app-of-apps registers every application or it does not exist; the rest are publishable on their own, SemVer in `Chart.yaml` |
 | [`kubernetes/helm/<app>/`](../kubernetes/helm/) | Values for upstream charts | Chart stays upstream, only values live here |
 | [`kubernetes/kustomizations/<app>/`](../kubernetes/kustomizations/) | Manifests for apps without a chart worth using | `kustomization.yaml` is the entry point, including for plain manifests |
-| [`charts/`](../charts/) | Helm charts written here | Publishable on their own, SemVer in `Chart.yaml` |
 | [`apps/`](../apps/) | Dockerfiles and the scripts they package | One directory per image, matching a build workflow |
 | [`talos/`](../talos/) | Node config inputs | The machine configs are generated from these and never committed |
 | [`ansible/`](../ansible/) | Workstation setup | Not cluster configuration |
@@ -41,12 +40,12 @@ pre-commit run --all-files
 ### Kubernetes rendering
 
 Passing the linters above says nothing about whether a manifest still renders. Before
-committing anything under `kubernetes/` or `charts/`:
+committing anything under `kubernetes/`:
 
 ```bash
 kustomize build kubernetes/kustomizations/<app>
 helm template <release> <chart> -f kubernetes/helm/<app>/values.yaml
-helm lint charts/<chart>
+helm lint kubernetes/charts/<chart>
 ```
 
 Working out what to render is most of the effort. A changed values file only makes sense
@@ -67,17 +66,21 @@ image bumps use `build:`, which keeps them distinguishable from human changes at
 
 ## Charts
 
-Charts under [`charts/`](../charts/) are written here instead of consumed from upstream,
-which means keeping them independent of this homelab's configuration so anyone could use
-them: no hardcoded storage classes, no assumed ingress controller, no cluster-specific
-values. Cluster-specific configuration stays in `kubernetes/helm/<chart>/values.yaml`, same
-as an upstream chart; see [GitOps](gitops.md#upstream-charts-local-values).
+[`kubernetes/charts/`](../kubernetes/charts/) holds two different kinds of chart.
+`app-of-apps` is cluster glue - the entrypoint chart covered in
+[Bootstrap chart](bootstrap.md), pinned at `1.0.0` and never meant to be reused elsewhere.
+Everything else, such as `media-stack`, is written here instead of consumed from upstream
+because it's worth publishing on its own, which means keeping it independent of this
+homelab's configuration so anyone could use it: no hardcoded storage classes, no assumed
+ingress controller, no cluster-specific values. Cluster-specific configuration stays in
+`kubernetes/helm/<chart>/values.yaml`, same as an upstream chart; see
+[GitOps](gitops.md#upstream-charts-local-values).
 
-SemVer in `Chart.yaml` is bumped in the same commit as the change, because ArgoCD tracks
-this repository's revision and not a chart release. A few conventions beyond that:
-template helpers in `_helpers.tpl`, recommended Kubernetes labels on every object, every
-optional feature behind a value that defaults to off, and a README that states which
-cluster capability each option requires. Linting and rendering a chart follow the same
+For a publishable chart, SemVer in `Chart.yaml` is bumped in the same commit as the change,
+because ArgoCD tracks this repository's revision and not a chart release. A few conventions
+beyond that: template helpers in `_helpers.tpl`, recommended Kubernetes labels on every
+object, every optional feature behind a value that defaults to off, and a README that states
+which cluster capability each option requires. Linting and rendering a chart follow the same
 commands as any other Kubernetes change, in
 [Kubernetes rendering](#kubernetes-rendering) above.
 

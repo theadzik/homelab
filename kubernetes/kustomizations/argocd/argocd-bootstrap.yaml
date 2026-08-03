@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     repoURL: "https://github.com/theadzik/homelab/"
-    path: "kubernetes/bootstrap/charts/app-of-apps"
+    path: "kubernetes/charts/app-of-apps"
     targetRevision: main
     helm:
       parameters:

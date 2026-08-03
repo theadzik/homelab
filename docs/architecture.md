@@ -111,7 +111,7 @@ harmful.
 
 | Workload | What it is | Notable |
 | --- | --- | --- |
-| [media-stack](../charts/media-stack/) | Jellyfin, Radarr, Sonarr, Bazarr, NZBGet | A [public Helm chart](../charts/) written here, GPU transcoding through DRA |
+| [media-stack](../kubernetes/charts/media-stack/) | Jellyfin, Radarr, Sonarr, Bazarr, NZBGet | A [public Helm chart](../kubernetes/charts/) written here, GPU transcoding through DRA |
 | [Vaultwarden](../apps/vaultwarden/) | Password manager | Encrypted backups, restore as an init container |
 | [Tandoor](../kubernetes/kustomizations/tandoor/) | Recipe manager | PostgreSQL from the CloudNativePG operator |
 | [Audiobookshelf](../kubernetes/kustomizations/audiobookshelf/) | Audiobook and podcast server | |

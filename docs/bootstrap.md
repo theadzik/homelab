@@ -1,6 +1,6 @@
 # The bootstrap chart
 
-[`kubernetes/bootstrap/charts/app-of-apps/`](../kubernetes/bootstrap/charts/app-of-apps/) is
+[`kubernetes/charts/app-of-apps/`](../kubernetes/charts/app-of-apps/) is
 a Helm chart, and its templates are the whole of the app-of-apps pattern: every
 `Application` and `ApplicationSet` in the cluster is one file in that directory. An
 application that has no template here is not deployed, no matter what else exists under
@@ -21,7 +21,7 @@ whole bundle is applied automatically the moment `talosctl bootstrap` runs. See
 
 One of those three files is
 [`argocd-bootstrap.yaml`](../kubernetes/kustomizations/argocd/argocd-bootstrap.yaml), an
-`Application` object pointing at `kubernetes/bootstrap/charts/app-of-apps` - this chart.
+`Application` object pointing at `kubernetes/charts/app-of-apps` - this chart.
 `Application` is a custom resource, and its CRD comes from the ArgoCD chart rendered
 alongside it in the same bundle, so it exists by the time this file is applied.
 

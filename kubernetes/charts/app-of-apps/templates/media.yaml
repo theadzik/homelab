@@ -7,7 +7,7 @@ metadata:
 spec:
   project: default
   sources:
-    - path: charts/media-stack
+    - path: kubernetes/charts/media-stack
       repoURL: "{{ .Values.spec.sources.repoURL }}"
       targetRevision: "{{ .Values.spec.sources.targetRevision }}"
       helm:
