@@ -1,0 +1,94 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: recipes
+  labels:
+    app: recipes
+    tier: frontend
+spec:
+  description: >-
+    Tandoor frontend: reachable only from Traefik and kubelet probes.
+    Egress is open so recipe imports can fetch arbitrary sites.
+  endpointSelector:
+    matchLabels:
+      "k8s:app": recipes
+      "k8s:tier": frontend
+  ingress:
+    # The ingress splits across both containers: `/` goes to gunicorn on 8080,
+    # `/media` and `/static` go to nginx on 80. Both are required.
+    - fromEndpoints:
+        - matchLabels:
+            "k8s:io.kubernetes.pod.namespace": traefik
+      toPorts:
+        - ports:
+            - port: "80"
+              protocol: TCP
+            - port: "8080"
+              protocol: TCP
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            "k8s:io.kubernetes.pod.namespace": kube-system
+            "k8s:k8s-app": kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+            - port: "53"
+              protocol: TCP
+    # Postgres, plus the public internet for recipe URL imports.
+    - toEntities:
+        - all
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: database-cluster
+  labels:
+    app.kubernetes.io/name: postgresql
+spec:
+  description: >-
+    CloudNativePG instances: 5432 from the namespace (Tandoor plus streaming
+    replication), 8000 from peer instances and kubelet probes.
+  endpointSelector:
+    matchLabels:
+      "k8s:cnpg.io/cluster": database-cluster
+  ingress:
+    # 5432 covers both the Tandoor app and replicas streaming from the primary.
+    # 8000 is the primary polling its replicas' instance managers.
+    - fromEndpoints:
+        - matchLabels:
+            "k8s:io.kubernetes.pod.namespace": tandoor
+      toPorts:
+        - ports:
+            - port: "5432"
+              protocol: TCP
+            - port: "8000"
+              protocol: TCP
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            "k8s:io.kubernetes.pod.namespace": kube-system
+            "k8s:k8s-app": kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+            - port: "53"
+              protocol: TCP
+    # Peer instances: streaming replication on 5432, instance-manager polling
+    # on 8000.
+    - toEndpoints:
+        - matchLabels:
+            "k8s:io.kubernetes.pod.namespace": tandoor
+            "k8s:cnpg.io/cluster": database-cluster
+      toPorts:
+        - ports:
+            - port: "5432"
+              protocol: TCP
+            - port: "8000"
+              protocol: TCP
+    # The instance manager watches the API server to coordinate failover and
+    # publish its own status.
+    - toEntities:
+        - kube-apiserver
