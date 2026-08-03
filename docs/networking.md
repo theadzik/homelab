@@ -255,6 +255,62 @@ proxy:
 Without that `rules.dns` block, DNS still works and every `toFQDNs` rule silently matches
 nothing, because Cilium never saw the answer that would have told it which IP to allow.
 
+Cilium runs with `allow-localhost=always`, so a node reaches pods on itself
+whatever the policy says. Setting that to `policy`, or enabling the host firewall, would mean
+adding a `fromEntities: host` rule to every file in this section.
+
+### When egress cannot be enumerated
+
+Enumeration works only when the destinations are knowable when the rule is written. The media
+stack and Tandoor's frontend are the cases where they are not: which indexer, usenet provider
+or recipe site gets configured is a decision made long after. Both take `toEntities: all` and
+do their segmentation on the ingress side instead.
+
+The kube-dns rule they carry is redundant next to `all`. It stays because it is the rule that
+has to survive if `all` is ever narrowed to `world`, and a name resolution failure is not the
+kind of breakage that is obvious from the diff that caused it. Neither uses the `rules.dns`
+proxy above, because neither has a `toFQDNs` rule for it to serve.
+
+The [media stack](../kubernetes/charts/media-stack/templates/networkpolicy.yaml) renders one
+policy per service instead of one for the namespace, and that is
+what pays for the tighter ingress: every service is reachable only on its own port, so
+Traefik reaching Radarr on 7878 does not also let it reach Jellyfin on 8096. Sonarr still
+reaches NZBGet because the namespace itself is on the ingress list alongside `traefik`.
+
+### CloudNativePG
+
+[Tandoor](../kubernetes/kustomizations/tandoor/networkpolicy.yaml) runs two tiers in one
+namespace and they get different answers. The frontend imports
+recipes from arbitrary URLs, so its egress is open. The database's destinations are finite,
+so they are listed:
+
+```yaml
+# tandoor database-cluster
+egress:
+  - toEndpoints:
+      - matchLabels: { k8s:io.kubernetes.pod.namespace: kube-system, k8s-app: kube-dns }
+    toPorts: [{ ports: [{ port: "53", protocol: UDP }, { port: "53", protocol: TCP }] }]
+  - toEndpoints:
+      - matchLabels: { k8s:cnpg.io/cluster: database-cluster }
+    toPorts: [{ ports: [{ port: "5432" }, { port: "8000" }] }]
+  - toEntities: [kube-apiserver]
+```
+
+Port 8000 is the instance manager rather than Postgres: kubelet probes `/healthz` and
+`/readyz` there over HTTPS, and the primary polls its replicas on it. 5432 carries
+application queries and streaming replication both.
+
+The operator in `cnpg-system` needs no rule. It coordinates through the API server and never
+dials the instances, which is the same reason the instances need `kube-apiserver` egress of
+their own: they publish their status and watch for failover themselves.
+
+That last rule matches on identity, and which identity the API server has depends on where
+the question is asked from. From either worker it is identity 7, `reserved:kube-apiserver`
+plus `reserved:remote-node`. From the control plane's own agent the same address is identity
+1, `reserved:host`, because there it is the local node. The rule holds because the control
+plane carries a `NoSchedule` taint and the instances can only ever land on workers. Giving
+the cluster a toleration for that taint would quietly break it.
+
 ## See also
 
 - [Architecture](architecture.md): where these components sit in the boot order

@@ -24,7 +24,7 @@ page describes the layers, and is explicit about where they stop.
 | Admission | Pod Security Admission per namespace | Below |
 | Admission | Kyverno signature and attestation verification | [Supply chain](supply-chain.md#admission-the-cluster-checks-the-work) |
 | Workload | Non-root, read-only root filesystem, no capabilities | Below |
-| Network | Default-deny CiliumNetworkPolicy per namespace | [Networking](networking.md#network-policy) |
+| Network | Default-deny CiliumNetworkPolicy per namespace or workload | [Networking](networking.md#network-policy) |
 | Runtime | Falco syscall detection with alert routing | Below |
 | Build | Scan before push, sign, attest, daily rescan | [Supply chain](supply-chain.md) |
 | Repository | Encrypted secrets, pinned actions, protected `main` | Below |

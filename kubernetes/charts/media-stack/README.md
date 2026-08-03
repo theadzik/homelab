@@ -194,6 +194,7 @@ Service-specific labels are rendered after global labels. If the same key is set
 
 ### Network Policy
 
+- **Scope**: One policy per enabled service, so each is reachable only on its own port
 - **Ingress**: Allows traffic from the release namespace and any namespace listed in `networkPolicy.ingressNamespaces`
 - **Egress**: Allows DNS to kube-dns and all outbound traffic
 - **Type**: CiliumNetworkPolicy only
