@@ -40,8 +40,7 @@ These components are optional but enable additional features:
    - Chart supports any ingress controller compatible with `networking.k8s.io/v1`
 
 2. **Network Policy Support**
-   - Standard NetworkPolicy: Built into most CNI plugins (Calico, Cilium, Weave)
-   - CiliumNetworkPolicy: Requires Cilium CNI (`networkPolicy.type: CiliumNetworkPolicy`)
+   - Requires Cilium CNI when `networkPolicy.enabled: true`
    - Optional but recommended for network segmentation
 
 3. **Vertical Pod Autoscaler (VPA)** (if `vpa.enabled: true`)
@@ -66,7 +65,6 @@ These components are optional but enable additional features:
 | StatefulSet           | apps/v1                   | 1.9+ (GA)                       |
 | Service               | v1                        | All versions                    |
 | Ingress               | networking.k8s.io/v1      | 1.19+ (GA)                      |
-| NetworkPolicy         | networking.k8s.io/v1      | 1.7+ (GA)                       |
 | CiliumNetworkPolicy   | cilium.io/v2              | Requires Cilium CNI             |
 | VPA                   | autoscaling.k8s.io/v1     | 1.28+ (requires VPA controller) |
 | ResourceClaimTemplate | resource.k8s.io/v1        | 1.34+ (GA)                      |
@@ -196,12 +194,12 @@ Service-specific labels are rendered after global labels. If the same key is set
 
 ### Network Policy
 
-- **Ingress**: Allows pod-to-pod communication within namespace and traffic from Traefik
-- **Egress**: Allows all outbound traffic by default (configurable)
-- **Type**: Standard Kubernetes NetworkPolicy or CiliumNetworkPolicy
-- **Configuration**: Set via `networkPolicy.ingress` and `networkPolicy.egress` lists
+- **Ingress**: Allows traffic from the release namespace and any namespace listed in `networkPolicy.ingressNamespaces`
+- **Egress**: Allows DNS to kube-dns and all outbound traffic
+- **Type**: CiliumNetworkPolicy only
+- **Configuration**: Set via `networkPolicy.ingressNamespaces`
 - **Disable**: Set `networkPolicy.enabled: false` to remove network segmentation
-- **Selector**: Uses component labels (`app.kubernetes.io/component`)
+- **Selector**: Uses `app.kubernetes.io/name`, `app.kubernetes.io/instance`, and `app.kubernetes.io/part-of`
 
 ### Storage
 
@@ -280,7 +278,7 @@ media/
 ├── templates/
 │   ├── _helpers.tpl        # Template helpers for labels and names
 │   ├── namespace.yaml      # Namespace and annotations
-│   ├── networkpolicy.yaml  # NetworkPolicy or CiliumNetworkPolicy
+│   ├── networkpolicy.yaml  # CiliumNetworkPolicy resources
 │   ├── pvc.yaml            # All PersistentVolumeClaims
 │   ├── secrets.yaml        # Service secrets
 │   ├── statefulset.yaml    # All StatefulSets
@@ -319,11 +317,17 @@ All resources are labeled following [Helm best practices](https://helm.sh/docs/c
 
 - `app.kubernetes.io/component: <service-name>` - Component (jellyfin, radarr, etc.)
 
-**Selector labels** (used by Services, Ingress, NetworkPolicy):
+**Selector labels** (used by Services and Ingress):
 
 - `app.kubernetes.io/name: media-stack`
 - `app.kubernetes.io/instance: <release-name>`
 - `app.kubernetes.io/component: <service-name>`
+
+**CiliumNetworkPolicy endpoint selector labels**:
+
+- `app.kubernetes.io/name: <service-name>`
+- `app.kubernetes.io/instance: <release-name>`
+- `app.kubernetes.io/part-of: media-stack`
 
 **Label helpers**: Use template helpers from `_helpers.tpl`:
 
@@ -358,8 +362,7 @@ All resources are labeled following [Helm best practices](https://helm.sh/docs/c
 
 **NetworkPolicy not enforcing?**
 
-- Verify CNI supports NetworkPolicy: Check your CNI plugin documentation
-- For CiliumNetworkPolicy: Ensure Cilium CNI is installed and running
+- Ensure Cilium CNI is installed and running
 - Test with `networkPolicy.enabled: false` to isolate the issue
 
 **VPA not adjusting resources?**
