@@ -39,6 +39,13 @@ spec:
     # Postgres, plus the public internet for recipe URL imports.
     - toEntities:
         - all
+  # Recipe imports need the internet, but never the LAN or the control plane.
+  # Denying them stops a compromised frontend reaching the NAS, nodes or API.
+  egressDeny:
+    - toCIDR:
+        - "192.168.0.0/16"
+    - toEntities:
+        - kube-apiserver
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy

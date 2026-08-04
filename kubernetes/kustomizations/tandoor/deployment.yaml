@@ -87,6 +87,10 @@ spec:
         - name: recipes-nginx
           image: nginx:1.29.3-alpine
           imagePullPolicy: IfNotPresent
+          securityContext:
+            capabilities:
+              drop:
+                - NET_RAW
           ports:
             - containerPort: 80
               protocol: TCP
@@ -191,6 +195,9 @@ spec:
                   key: password
           securityContext:
             runAsUser: 65533
+            capabilities:
+              drop:
+                - NET_RAW
       volumes:
         - name: media
           persistentVolumeClaim:

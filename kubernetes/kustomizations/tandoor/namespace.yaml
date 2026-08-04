@@ -2,5 +2,11 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: tandoor
+  labels:
+    # The recipes init runs as root and nginx runs as root, so restricted is not
+    # attainable; baseline is, with warn/audit reporting the restricted gap.
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/warn: restricted
+    pod-security.kubernetes.io/audit: restricted
   annotations:
     argocd.argoproj.io/sync-options: Delete=false,Prune=false
