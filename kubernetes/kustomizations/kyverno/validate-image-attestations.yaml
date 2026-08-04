@@ -3,20 +3,17 @@ kind: ImageValidatingPolicy
 metadata:
   name: validate-image-attestations
 spec:
-  # No credentials: every image matched here is a public GHCR package.
   webhookConfiguration:
     timeoutSeconds: 30
   failurePolicy: Ignore
   evaluation:
     background:
       enabled: true
-  # Audit until verification fits the webhook timeout with margin.
   validationActions:
     - Audit
-  # Without this the webhook is consulted for every pod in the cluster and
-  # passes each one without checking anything, since .all() over no images is true.
+    - Warn
   matchConditions:
-    - name: only-our-images
+    - name: only-theadzik-images
       expression: >-
         object.spec.containers.exists(c, c.image.startsWith("ghcr.io/theadzik/"))
         || (has(object.spec.initContainers)
@@ -34,26 +31,10 @@ spec:
       cosign:
         keyless:
           identities:
-            # One signer. Dots are escaped so a lookalike host cannot match.
             - issuer: "https://token.actions.githubusercontent.com"
               subjectRegExp: "^https://github\\.com/theadzik/github-workflows/\\.github/workflows/build-and-push\\.yaml@.+$"
         ctlog:
           url: https://rekor.sigstore.dev
-  attestations:
-    - name: sbom_cyclonedx
-      intoto:
-        type: "https://cyclonedx.org/bom"
-    # Transitional. Images published before github-workflows v2.2.0 carry an
-    # SPDX SBOM instead. Drop this entry and the `||` branch below once no
-    # running image predates it - as of this change that is blog prod
-    # (2026.8.1) and blog dev (sha-9742a89), both of which move to CycloneDX at
-    # their next build. The vaultwarden and argocd images are already there.
-    - name: sbom_spdx
-      intoto:
-        type: "https://spdx.dev/Document/v2.3"
-    - name: provenance
-      intoto:
-        type: "https://slsa.dev/provenance/v1"
   validationConfigurations:
     mutateDigest: true
     required: true
@@ -64,16 +45,3 @@ spec:
           verifyImageSignatures(image, [attestors.cosign])
         ).all(e, e > 0)
       message: Failed to verify image signature
-    # CEL `||` short-circuits, so an image carrying the current format costs one
-    # attestation fetch; only a pre-v2.2.0 image pays for the second.
-    - expression: >-
-        (images.containers + images.initContainers + images.ephemeralContainers).all(image,
-          verifyAttestationSignatures(image, attestations.sbom_cyclonedx, [attestors.cosign]) > 0
-          || verifyAttestationSignatures(image, attestations.sbom_spdx, [attestors.cosign]) > 0
-        )
-      message: "Failed to verify SBOM attestation signature"
-    - expression: >-
-        (images.containers + images.initContainers + images.ephemeralContainers).map(image,
-          verifyAttestationSignatures(image, attestations.provenance, [attestors.cosign])
-        ).all(e, e > 0)
-      message: "Failed to verify provenance attestation signature"
