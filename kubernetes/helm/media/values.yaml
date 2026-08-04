@@ -115,10 +115,11 @@ services:
       runAsNonRoot: true
       runAsGroup: 1000
       runAsUser: 1000
-      allowPrivilegeEscalation: false
       capabilities:
+        # NET_RAW only: the LinuxServer s6 init needs CHOWN/SETUID to prepare
+        # /run and drop to uid 1000, so ALL cannot be dropped here.
         drop:
-          - ALL
+          - NET_RAW
     pvc:
       config:
         name: radarr-config-ssd
@@ -159,10 +160,11 @@ services:
       runAsNonRoot: true
       runAsGroup: 1000
       runAsUser: 1000
-      allowPrivilegeEscalation: false
       capabilities:
+        # NET_RAW only: the LinuxServer s6 init needs CHOWN/SETUID to prepare
+        # /run and drop to uid 1000, so ALL cannot be dropped here.
         drop:
-          - ALL
+          - NET_RAW
     pvc:
       config:
         name: sonarr-config-ssd
@@ -203,10 +205,11 @@ services:
       runAsNonRoot: true
       runAsGroup: 1000
       runAsUser: 1000
-      allowPrivilegeEscalation: false
       capabilities:
+        # NET_RAW only: the LinuxServer s6 init needs CHOWN/SETUID to prepare
+        # /run and drop to uid 1000, so ALL cannot be dropped here.
         drop:
-          - ALL
+          - NET_RAW
     pvc:
       config:
         name: bazarr-config-ssd
@@ -243,10 +246,11 @@ services:
         cpu: 1000m
         memory: 2Gi
     securityContext:
-      allowPrivilegeEscalation: false
       capabilities:
+        # NET_RAW only: the LinuxServer s6 init needs CHOWN/SETUID to prepare
+        # /run and drop to uid 1000, so ALL cannot be dropped here.
         drop:
-          - ALL
+          - NET_RAW
     podSecurityContext:
       runAsUser: 1000
       runAsGroup: 1000
