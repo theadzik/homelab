@@ -5,13 +5,12 @@ metadata:
 spec:
   webhookConfiguration:
     timeoutSeconds: 30
-  failurePolicy: Ignore
+  failurePolicy: Fail
   evaluation:
     background:
       enabled: true
   validationActions:
-    - Audit
-    - Warn
+    - Deny
   matchConditions:
     - name: only-theadzik-images
       expression: >-
