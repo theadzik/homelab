@@ -237,7 +237,9 @@ services:
     # limits:
     #   cpu: 2000m
     #   memory: 4Gi
-    securityContext:
+    # fsGroup is a pod-level field, so these belong in podSecurityContext, not the
+    # container securityContext the template renders from `securityContext`.
+    podSecurityContext:
       runAsUser: 1000
       runAsGroup: 1000
       fsGroup: 1000

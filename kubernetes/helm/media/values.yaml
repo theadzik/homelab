@@ -1,9 +1,20 @@
 namespaceAnnotations:
   argocd.argoproj.io/sync-options: Delete=false,Prune=false
+# LinuxServer images (jellyfin) start as root to apply PUID/PGID, so restricted
+# is not attainable here; baseline is, and warn/audit surface what restricted
+# would still reject.
+namespaceLabels:
+  pod-security.kubernetes.io/enforce: baseline
+  pod-security.kubernetes.io/warn: restricted
+  pod-security.kubernetes.io/audit: restricted
 networkPolicy:
   enabled: true
   ingressNamespaces:
     - traefik
+  egressDenyCIDRs:
+    - 192.168.0.0/16
+  egressDenyEntities:
+    - kube-apiserver
 ingressClassName: traefik
 ingressAnnotations:
   cert-manager.io/cluster-issuer: lets-encrypt-prod
@@ -54,6 +65,12 @@ services:
         memory: 2Gi
     env:
       HOSTNAME: jellyfin.zmuda.pro
+    # Root is required for the LinuxServer init and GPU access, so capabilities
+    # cannot be fully dropped; NET_RAW is removed to stop on-node packet sniffing.
+    securityContext:
+      capabilities:
+        drop:
+          - NET_RAW
     pvc:
       config:
         name: jellyfin-config-ssd
@@ -98,6 +115,10 @@ services:
       runAsNonRoot: true
       runAsGroup: 1000
       runAsUser: 1000
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
     pvc:
       config:
         name: radarr-config-ssd
@@ -138,6 +159,10 @@ services:
       runAsNonRoot: true
       runAsGroup: 1000
       runAsUser: 1000
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
     pvc:
       config:
         name: sonarr-config-ssd
@@ -178,6 +203,10 @@ services:
       runAsNonRoot: true
       runAsGroup: 1000
       runAsUser: 1000
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
     pvc:
       config:
         name: bazarr-config-ssd
@@ -213,7 +242,13 @@ services:
       requests:
         cpu: 1000m
         memory: 2Gi
-    securityContext: null
+    # Runs as uid 1000 (podSecurityContext), so it needs no capabilities; dropping
+    # them removes NET_RAW and closes on-node packet sniffing from this pod.
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
     podSecurityContext:
       runAsUser: 1000
       runAsGroup: 1000
