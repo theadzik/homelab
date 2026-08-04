@@ -35,7 +35,12 @@ spec:
       refresh: true
     syncOptions:
       - PruneLast=true
-
+      - CreateNamespace=true
+    managedNamespaceMetadata:
+      labels:
+        pod-security.kubernetes.io/enforce: privileged
+        pod-security.kubernetes.io/audit: restricted
+        pod-security.kubernetes.io/warn: restricted
 ---
 
 apiVersion: argocd-image-updater.argoproj.io/v1alpha1
