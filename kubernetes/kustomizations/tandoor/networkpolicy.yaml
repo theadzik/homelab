@@ -56,7 +56,7 @@ metadata:
 spec:
   description: >-
     CloudNativePG instances: 5432 from the namespace (Tandoor plus streaming
-    replication), 8000 from peer instances and kubelet probes.
+    replication), 8000 from peer instances, kubelet probes and the operator.
   endpointSelector:
     matchLabels:
       "k8s:cnpg.io/cluster": database-cluster
@@ -70,6 +70,16 @@ spec:
         - ports:
             - port: "5432"
               protocol: TCP
+            - port: "8000"
+              protocol: TCP
+    # The CloudNativePG operator lives in cnpg-system and polls each instance's
+    # manager on 8000 for status. Without this it reports an HTTP communication
+    # issue and cannot reconcile the cluster.
+    - fromEndpoints:
+        - matchLabels:
+            "k8s:io.kubernetes.pod.namespace": cnpg-system
+      toPorts:
+        - ports:
             - port: "8000"
               protocol: TCP
   egress:
