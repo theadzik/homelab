@@ -237,7 +237,7 @@ services:
     # limits:
     #   cpu: 2000m
     #   memory: 4Gi
-    securityContext:
+    podSecurityContext:
       runAsUser: 1000
       runAsGroup: 1000
       fsGroup: 1000

@@ -15,7 +15,7 @@ metadata:
 spec:
   description: >-
     {{ $svcName }}: ingress only from the media stack itself{{ if $ingressNamespaces }} and
-    {{ join ", " $ingressNamespaces }}{{ end }}; egress unrestricted.
+    {{ join ", " $ingressNamespaces }}{{ end }}; egress to the internet{{ if or $.Values.networkPolicy.egressDenyCIDRs $.Values.networkPolicy.egressDenyEntities }}, denied to the LAN and control plane{{ end }}.
   endpointSelector:
     matchLabels:
       "k8s:app.kubernetes.io/name": {{ $svcName | quote }}
@@ -48,6 +48,22 @@ spec:
     # public internet, so egress stays open.
     - toEntities:
         - all
+  {{- if or $.Values.networkPolicy.egressDenyCIDRs $.Values.networkPolicy.egressDenyEntities }}
+  # Storage is reached over node-mounted NFS/iSCSI, never the pod network, so
+  # denying the LAN here cannot affect volumes. It stops a compromised pod from
+  # reaching the NAS (NFS/iSCSI/NUT), the nodes, etcd or the Kubernetes API.
+  egressDeny:
+    {{- with $.Values.networkPolicy.egressDenyCIDRs }}
+    - toCIDR:
+        {{- range . }}
+        - {{ . | quote }}
+        {{- end }}
+    {{- end }}
+    {{- with $.Values.networkPolicy.egressDenyEntities }}
+    - toEntities:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+  {{- end }}
 {{- end }}
 {{- end }}
 {{- end }}
