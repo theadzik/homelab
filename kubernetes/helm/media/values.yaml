@@ -242,8 +242,6 @@ services:
       requests:
         cpu: 1000m
         memory: 2Gi
-    # Runs as uid 1000 (podSecurityContext), so it needs no capabilities; dropping
-    # them removes NET_RAW and closes on-node packet sniffing from this pod.
     securityContext:
       allowPrivilegeEscalation: false
       capabilities:
