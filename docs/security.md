@@ -22,7 +22,7 @@ page describes the layers, and is explicit about where they stop.
 | Perimeter | No inbound ports, outbound-only Cloudflare Tunnel | [Networking](networking.md#the-two-paths) |
 | Identity | OIDC groups, deny-by-default ArgoCD RBAC | Below |
 | Admission | Pod Security Admission per namespace | Below |
-| Admission | Kyverno signature and attestation verification | [Supply chain](supply-chain.md#admission-the-cluster-checks-the-work) |
+| Admission | Kyverno cosign signature verification | [Supply chain](supply-chain.md#admission-the-cluster-checks-the-work) |
 | Workload | Non-root, read-only root filesystem, no capabilities | Below |
 | Network | Default-deny CiliumNetworkPolicy per namespace or workload | [Networking](networking.md#network-policy) |
 | Runtime | Falco syscall detection with alert routing | Below |
