@@ -13,11 +13,6 @@ resources:
 metrics:
   enabled: false
 
-kubectl:
-  image:
-    repository: docker.io/bitnamilegacy/kubectl
-    tag: 1.33.4
-
 initContainers:
   - name: velero-plugin-for-aws
     image: velero/velero-plugin-for-aws:v1.12.0
