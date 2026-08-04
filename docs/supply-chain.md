@@ -109,31 +109,19 @@ An unescaped `.` matches any character, which would let a lookalike host satisfy
 pattern. Only the ref after `@` is open, because each caller pins a different commit of the
 shared workflow.
 
-One detail in the policy only surfaced once it was running against real pods:
 `matchConditions` restricts the webhook to pods that reference one of our images. Without it
 the webhook is consulted for every pod in the cluster and passes each one without checking
-anything, because a CEL `.all()` over an empty list is `true`. The policy was reporting
-success for pods it had never looked at.
+anything, because a CEL `.all()` over an empty list is `true`.
 
-The policy used to also verify the SBOM and provenance attestation signatures, each its own
-`verifyAttestationSignatures` call and its own Rekor lookup. Both attestations are still
-produced and signed at build time - the diagram at the top of this page hasn't changed - only
-the admission-time check of them was dropped, to buy back margin against the webhook timeout.
-More on why below.
+### Enforcement
 
-### Currently Audit, not Deny
+`validationActions: [Deny]` and `failurePolicy: Fail`. A pod whose image fails signature
+verification is rejected at admission, and so is one whose webhook call cannot complete at
+all - a slow or unreachable Rekor fails closed rather than waving the pod through.
 
-`validationActions: [Audit, Warn]` and `failurePolicy: Ignore`. The policy reports
-violations and surfaces a warning on the admission response. It does not block them.
-
-This is a staging post, not an oversight. Verification means fetching attestations and
-querying Rekor for every container in a matched pod, and the cost sits close enough to the
-webhook timeout that flipping to `Deny` today would trade a supply-chain risk for an
-availability risk. A slow transparency log would start blocking unrelated deployments.
-Dropping the SBOM and provenance checks above was one step toward affording `Deny`: one
-signature verification per container instead of three. Until verification is cheap enough to
-enable it, a background scan re-verifies every matched pod every six hours, so drift stays
-visible even while it is not blocked.
+A background scan still re-verifies every matched pod every six hours. Admission control
+only ever sees a pod once, at creation, so this is what catches a signer identity or key
+that becomes untrusted after a pod is already running.
 
 ## Detection after the build
 

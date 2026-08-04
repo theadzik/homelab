@@ -187,9 +187,6 @@ scoped to one app instead of a PAT.
 
 Anyone copying something from here should know where it stops:
 
-- **Kyverno audits, it does not deny.** Signature and attestation failures are recorded and
-  re-checked every six hours, but an unsigned image would still run. The reason and the
-  path out are in [Supply chain](supply-chain.md#currently-audit-not-deny).
 - **Pod Security Admission is not on every namespace**, because some upstream images cannot
   satisfy any standard above `privileged` without being rebuilt.
 - **Two copied binaries are invisible to every scanner**, documented in the
