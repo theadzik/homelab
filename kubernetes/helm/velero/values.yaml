@@ -1,6 +1,6 @@
 image:
   imagePullSecrets:
-    - name: dockerhub-image-pull-secret
+    - dockerhub-image-pull-secret
 
 resources:
   requests:
