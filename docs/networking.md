@@ -311,6 +311,28 @@ plus `reserved:remote-node`. From the control plane's own agent the same address
 plane carries a `NoSchedule` taint and the instances can only ever land on workers. Giving
 the cluster a toleration for that taint would quietly break it.
 
+### The storage backstop
+
+The rules above govern the pod network, but storage does not travel over it. The
+[synology-csi node driver](../kubernetes/kustomizations/synology-csi/node.yml) runs on the
+host network and the node kernel performs every NFS and iSCSI mount; a pod only ever sees a
+bind-mounted directory. An application pod therefore has no reason to open its own connection
+to the NAS storage ports, and one policy states that for the whole cluster rather than
+trusting each namespace to repeat it:
+
+```yaml
+# deny-pod-egress-to-nas-storage
+endpointSelector: {}          # every pod; never reserved:host
+egressDeny:
+  - toCIDR: [192.168.0.6/32, 192.168.0.7/32]
+    toPorts: [{ ports: [{ port: "2049" }, { port: "111" }, { port: "3260" }, { port: "3493" }] }]
+```
+
+`endpointSelector: {}` matches pods and not the host endpoint, so the driver's own mounts are
+untouched. `egressDeny` is subtractive: it overrides any allow but denies nothing else a pod
+was granted, so a namespace with no policy of its own still gets it. Velero and the Vaultwarden
+backup reach Garage S3 on 3900, which is why that port is not in the list.
+
 ## See also
 
 - [Architecture](architecture.md): where these components sit in the boot order

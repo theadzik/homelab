@@ -45,3 +45,42 @@ spec:
         - ports:
             - port: "3900"
               protocol: TCP
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: vw-backup-netpol
+spec:
+  description: >-
+    Vaultwarden backup CronJob (app=vw-backup): no ingress; egress to DNS and the
+    public internet only (rclone to Google Drive on 443). It has no need to reach
+    the LAN or the control plane, so that egress is denied; the backup and data
+    volumes are node-mounted, so denying the LAN does not affect them. The CronJob
+    needs its own policy because vaultwarden-netpol selects `ingress: exposed`,
+    which this pod does not carry.
+  endpointSelector:
+    matchLabels:
+      app: vw-backup
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: kube-system
+            k8s:k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+            - port: "53"
+              protocol: TCP
+    # rclone pushes the encrypted backup to Google Drive over HTTPS.
+    - toEntities:
+        - all
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP
+  egressDeny:
+    - toCIDR:
+        - 192.168.0.0/16
+    - toEntities:
+        - kube-apiserver

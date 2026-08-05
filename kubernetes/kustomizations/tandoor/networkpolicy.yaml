@@ -39,8 +39,8 @@ spec:
     # Postgres, plus the public internet for recipe URL imports.
     - toEntities:
         - all
-  # Recipe imports need the internet, but never the LAN or the control plane.
-  # Denying them stops a compromised frontend reaching the NAS, nodes or API.
+  # Recipe imports need the internet, but the frontend has no need to reach the
+  # LAN or the control plane, so that egress is denied.
   egressDeny:
     - toCIDR:
         - "192.168.0.0/16"

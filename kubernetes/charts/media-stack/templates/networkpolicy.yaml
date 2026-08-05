@@ -49,9 +49,9 @@ spec:
     - toEntities:
         - all
   {{- if or $.Values.networkPolicy.egressDenyCIDRs $.Values.networkPolicy.egressDenyEntities }}
-  # Storage is reached over node-mounted NFS/iSCSI, never the pod network, so
-  # denying the LAN here cannot affect volumes. It stops a compromised pod from
-  # reaching the NAS (NFS/iSCSI/NUT), the nodes, etcd or the Kubernetes API.
+  # Storage is node-mounted, not reached over the pod network, so denying the LAN
+  # here does not affect volumes. These apps have no need to reach the LAN or the
+  # control plane, so that egress is denied.
   egressDeny:
     {{- with $.Values.networkPolicy.egressDenyCIDRs }}
     - toCIDR:
