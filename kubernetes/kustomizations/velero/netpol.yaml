@@ -1,0 +1,32 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: velero
+  namespace: velero
+spec:
+  description: >-
+    Velero: egress to DNS, the Kubernetes API (backup and restore resources) and
+    the Garage S3 endpoint on the NAS (192.168.0.6:3900) for backup storage.
+    Nothing else on the LAN or in the cluster is needed, so nothing else is
+    allowed.
+  endpointSelector: {}
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            "k8s:io.kubernetes.pod.namespace": kube-system
+            "k8s:k8s-app": kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+            - port: "53"
+              protocol: TCP
+    - toEntities:
+        - kube-apiserver
+    # Garage S3 on the NAS — the only LAN destination Velero needs.
+    - toCIDR:
+        - 192.168.0.6/32
+      toPorts:
+        - ports:
+            - port: "3900"
+              protocol: TCP

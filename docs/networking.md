@@ -311,27 +311,32 @@ plus `reserved:remote-node`. From the control plane's own agent the same address
 plane carries a `NoSchedule` taint and the instances can only ever land on workers. Giving
 the cluster a toleration for that taint would quietly break it.
 
-### The storage backstop
+### The LAN backstop
 
-The rules above govern the pod network, but storage does not travel over it. The
-[synology-csi node driver](../kubernetes/kustomizations/synology-csi/node.yml) runs on the
-host network and the node kernel performs every NFS and iSCSI mount; a pod only ever sees a
-bind-mounted directory. An application pod therefore has no reason to open its own connection
-to the NAS storage ports, and one policy states that for the whole cluster rather than
-trusting each namespace to repeat it:
+The rules above govern the pod network, but very little of what a pod does should touch the
+home LAN at all. Storage is mounted by the
+[synology-csi driver](../kubernetes/kustomizations/synology-csi/node.yml) on the host network,
+and cluster DNS is [forwarded to the host resolver](../kubernetes/helm/cilium/values.yaml), so
+neither crosses the pod network. So rather than list the LAN as a denied destination in every
+namespace, one clusterwide policy states it once:
 
 ```yaml
-# deny-pod-egress-to-nas-storage
-endpointSelector: {}          # every pod; never reserved:host
+# deny-pod-egress-to-lan
+endpointSelector:             # every pod except the three that need the LAN,
+  matchExpressions:           # and never reserved:host
+    - { key: k8s:io.kubernetes.pod.namespace, operator: NotIn,
+        values: [external-dns, velero, vaultwarden] }
 egressDeny:
-  - toCIDR: [192.168.0.6/32, 192.168.0.7/32]
-    toPorts: [{ ports: [{ port: "2049" }, { port: "111" }, { port: "3260" }, { port: "3493" }] }]
+  - toCIDR: [192.168.0.0/16]
 ```
 
-`endpointSelector: {}` matches pods and not the host endpoint, so the driver's own mounts are
-untouched. `egressDeny` is subtractive: it overrides any allow but denies nothing else a pod
-was granted, so a namespace with no policy of its own still gets it. Velero and the Vaultwarden
-backup reach Garage S3 on 3900, which is why that port is not in the list.
+Three namespaces reach a LAN service directly and are left out of the selector: `external-dns`
+talks to the PiHole API, and `velero` and `vaultwarden` push backups to Garage S3. Everything
+else is denied the whole `192.168.0.0/16`. Two properties make this safe: the selector matches
+pods and not the host, so the driver's own mounts are untouched; and a `toCIDR` rule matches
+only the `world` identity, so node IPs (`remote-node`) and LoadBalancer-backed service traffic
+are unaffected. The excluded namespaces keep their own egress rules — the Vaultwarden backup
+CronJob, for instance, still denies the LAN through its own policy.
 
 ## See also
 

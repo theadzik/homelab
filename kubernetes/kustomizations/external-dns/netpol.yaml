@@ -1,0 +1,39 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: external-dns
+spec:
+  description: >-
+    external-dns (pihole and cloudflare instances): egress to DNS, the Kubernetes
+    API (watching ingresses and services), the PiHole API on the NAS
+    (192.168.0.6/7:8443) and the public internet on 443 (the Cloudflare API).
+    No other LAN or cluster destination is needed.
+  endpointSelector: {}
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            "k8s:io.kubernetes.pod.namespace": kube-system
+            "k8s:k8s-app": kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+            - port: "53"
+              protocol: TCP
+    - toEntities:
+        - kube-apiserver
+    # PiHole admin API on the NAS — the only LAN destination external-dns needs.
+    - toCIDR:
+        - 192.168.0.6/32
+        - 192.168.0.7/32
+      toPorts:
+        - ports:
+            - port: "8443"
+              protocol: TCP
+    # The Cloudflare instance manages DNS through api.cloudflare.com.
+    - toEntities:
+        - world
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP

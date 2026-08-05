@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: external-dns
 resources:
   - namespace.yaml
+  - netpol.yaml
 secretGenerator:
   - name: pihole-secret
     envs:
