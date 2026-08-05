@@ -26,9 +26,9 @@ spec:
               protocol: UDP
             - port: "53"
               protocol: TCP
-    # Metadata, cover art and podcast feeds live on the public internet.
+    # Metadata, cover art and podcast feeds live on the public internet only.
     - toEntities:
-        - all
+        - world
   # Storage is node-mounted, not reached over the pod network, so denying the LAN
   # here does not affect volumes.
   egressDeny:

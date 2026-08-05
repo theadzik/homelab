@@ -36,9 +36,18 @@ spec:
               protocol: UDP
             - port: "53"
               protocol: TCP
-    # Postgres, plus the public internet for recipe URL imports.
+    # The frontend's database lives in this namespace on 5432.
+    - toEndpoints:
+        - matchLabels:
+            "k8s:cnpg.io/cluster": database-cluster
+      toPorts:
+        - ports:
+            - port: "5432"
+              protocol: TCP
+    # Recipe URL imports reach the public internet only — external destinations,
+    # not the cluster, nodes or host.
     - toEntities:
-        - all
+        - world
   # Recipe imports need the internet, but the frontend has no need to reach the
   # LAN or the control plane, so that egress is denied.
   egressDeny:

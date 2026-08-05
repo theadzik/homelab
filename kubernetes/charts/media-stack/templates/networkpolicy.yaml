@@ -32,8 +32,8 @@ spec:
             - port: {{ $svc.port | quote }}
               protocol: TCP
   egress:
-    # Stated explicitly so that narrowing the rule below to `world` later does
-    # not silently break name resolution.
+    # Stated explicitly so that the `world` rule below does not silently break
+    # name resolution.
     - toEndpoints:
         - matchLabels:
             "k8s:io.kubernetes.pod.namespace": kube-system
@@ -44,10 +44,15 @@ spec:
               protocol: UDP
             - port: "53"
               protocol: TCP
-    # Indexers, usenet providers, metadata and subtitle APIs all live on the
-    # public internet, so egress stays open.
+    # The stack talks to itself: the *arr apps drive NZBGet, Bazarr reaches the
+    # *arr APIs. Kept in-cluster so `world` below need not include it.
+    - toEndpoints:
+        - matchLabels:
+            "k8s:io.kubernetes.pod.namespace": {{ $.Release.Namespace | quote }}
+    # Indexers, usenet providers, metadata and subtitle APIs live on the public
+    # internet only — external destinations, not the cluster, nodes or host.
     - toEntities:
-        - all
+        - world
   {{- if or $.Values.networkPolicy.egressDenyCIDRs $.Values.networkPolicy.egressDenyEntities }}
   # Storage is node-mounted, not reached over the pod network, so denying the LAN
   # here does not affect volumes. These apps have no need to reach the LAN or the

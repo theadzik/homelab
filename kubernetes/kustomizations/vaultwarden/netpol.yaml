@@ -72,9 +72,10 @@ spec:
               protocol: UDP
             - port: "53"
               protocol: TCP
-    # rclone pushes the encrypted backup to Google Drive over HTTPS.
+    # rclone pushes the encrypted backup to Google Drive over HTTPS (external
+    # destinations only).
     - toEntities:
-        - all
+        - world
       toPorts:
         - ports:
             - port: "443"
