@@ -4,24 +4,31 @@ metadata:
   name: deny-pod-egress-to-lan
 spec:
   description: >-
-    Defence-in-depth: application pods have no business reaching the home LAN.
-    Storage (NFS/iSCSI) is mounted by the synology-csi driver on the host
-    network, and cluster DNS is forwarded to the host resolver, so neither
-    crosses the pod network. Every pod is therefore denied egress to
-    192.168.0.0/16, except the three namespaces that legitimately reach a LAN
-    service directly: external-dns (the PiHole API) and the Garage S3 clients
-    (Velero and Vaultwarden backups). The rule is subtractive and does not select
-    the host (reserved:host), so the driver's own mounts are unaffected. Node
-    IPs carry the remote-node identity, which a CIDR rule does not match, so
-    in-cluster node traffic (kubelet, health) is untouched.
+    Defence-in-depth: application pods have no business reaching the home LAN, so
+    every selected pod is denied egress to 192.168.0.0/16 — EXCEPT the three node
+    IPs. Those must be carved out: the API server is 192.168.0.2:6443 and a CIDR
+    deny here *does* match node IPs, so without the except every pod loses the
+    control plane (this is what took the cluster down on the first attempt).
+    kube-system is left out of the selector entirely because CoreDNS forwards
+    upstream over the LAN; a deny that catches it breaks cluster DNS. external-dns,
+    velero and vaultwarden are left out because they reach a LAN service directly
+    (PiHole API / Garage S3) and carry their own tight egress allow-lists. The NAS
+    (.6/.7) is deliberately NOT excepted, so pods still cannot open their own NFS/
+    iSCSI/S3 session to storage. Subtractive; does not select the host
+    (reserved:host), so the synology-csi host-network mounts are unaffected.
   endpointSelector:
     matchExpressions:
       - key: k8s:io.kubernetes.pod.namespace
         operator: NotIn
         values:
-          - external-dns
-          - velero
-          - vaultwarden
+          - kube-system # CoreDNS forwards DNS upstream over the LAN
+          - external-dns # PiHole API
+          - velero # Garage S3
+          - vaultwarden # Garage S3
   egressDeny:
-    - toCIDR:
-        - 192.168.0.0/16
+    - toCIDRSet:
+        - cidr: 192.168.0.0/16
+          except:
+            - 192.168.0.2/32 # control-plane-1 — API server :6443
+            - 192.168.0.3/32 # worker-1
+            - 192.168.0.4/32 # worker-2
