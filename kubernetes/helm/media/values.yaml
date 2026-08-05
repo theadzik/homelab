@@ -66,7 +66,7 @@ services:
     env:
       HOSTNAME: jellyfin.zmuda.pro
     # Root is required for the LinuxServer init and GPU access, so capabilities
-    # cannot be fully dropped; NET_RAW is removed to stop on-node packet sniffing.
+    # cannot be fully dropped; NET_RAW is dropped as the app needs no raw sockets.
     securityContext:
       capabilities:
         drop:

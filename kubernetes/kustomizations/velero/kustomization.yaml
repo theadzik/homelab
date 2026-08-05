@@ -3,4 +3,5 @@ kind: Kustomization
 resources:
   - s3-secret.yaml
   - namespace.yaml
+  - netpol.yaml
   - ../image-pull-secret

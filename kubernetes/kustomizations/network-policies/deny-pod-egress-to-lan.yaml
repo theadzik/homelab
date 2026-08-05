@@ -1,0 +1,27 @@
+apiVersion: cilium.io/v2
+kind: CiliumClusterwideNetworkPolicy
+metadata:
+  name: deny-pod-egress-to-lan
+spec:
+  description: >-
+    Defence-in-depth: application pods have no business reaching the home LAN.
+    Storage (NFS/iSCSI) is mounted by the synology-csi driver on the host
+    network, and cluster DNS is forwarded to the host resolver, so neither
+    crosses the pod network. Every pod is therefore denied egress to
+    192.168.0.0/16, except the three namespaces that legitimately reach a LAN
+    service directly: external-dns (the PiHole API) and the Garage S3 clients
+    (Velero and Vaultwarden backups). The rule is subtractive and does not select
+    the host (reserved:host), so the driver's own mounts are unaffected. Node
+    IPs carry the remote-node identity, which a CIDR rule does not match, so
+    in-cluster node traffic (kubelet, health) is untouched.
+  endpointSelector:
+    matchExpressions:
+      - key: k8s:io.kubernetes.pod.namespace
+        operator: NotIn
+        values:
+          - external-dns
+          - velero
+          - vaultwarden
+  egressDeny:
+    - toCIDR:
+        - 192.168.0.0/16

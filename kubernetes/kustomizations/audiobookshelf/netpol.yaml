@@ -3,8 +3,36 @@ kind: CiliumNetworkPolicy
 metadata:
   name: audiobookshelf-network-policy
 spec:
+  description: >-
+    Audiobookshelf: ingress only from Traefik; egress to DNS and the public
+    internet (cover art, podcast feeds, metadata providers). The app has no need
+    to reach the LAN or the control plane, so that egress is denied. Volumes are
+    node-mounted, so denying the LAN here does not affect storage.
   endpointSelector: {}
   ingress:
     - fromEndpoints:
         - matchLabels:
             k8s:io.kubernetes.pod.namespace: traefik
+  egress:
+    # Stated explicitly so that narrowing egress later does not silently break
+    # name resolution.
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: kube-system
+            k8s:k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+            - port: "53"
+              protocol: TCP
+    # Metadata, cover art and podcast feeds live on the public internet only.
+    - toEntities:
+        - world
+  # Storage is node-mounted, not reached over the pod network, so denying the LAN
+  # here does not affect volumes.
+  egressDeny:
+    - toCIDR:
+        - 192.168.0.0/16
+    - toEntities:
+        - kube-apiserver

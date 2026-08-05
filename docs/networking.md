@@ -311,6 +311,33 @@ plus `reserved:remote-node`. From the control plane's own agent the same address
 plane carries a `NoSchedule` taint and the instances can only ever land on workers. Giving
 the cluster a toleration for that taint would quietly break it.
 
+### The LAN backstop
+
+The rules above govern the pod network, but very little of what a pod does should touch the
+home LAN at all. Storage is mounted by the
+[synology-csi driver](../kubernetes/kustomizations/synology-csi/node.yml) on the host network,
+and cluster DNS is [forwarded to the host resolver](../kubernetes/helm/cilium/values.yaml), so
+neither crosses the pod network. So rather than list the LAN as a denied destination in every
+namespace, one clusterwide policy states it once:
+
+```yaml
+# deny-pod-egress-to-lan
+endpointSelector:             # every pod except the three that need the LAN,
+  matchExpressions:           # and never reserved:host
+    - { key: k8s:io.kubernetes.pod.namespace, operator: NotIn,
+        values: [external-dns, velero, vaultwarden] }
+egressDeny:
+  - toCIDR: [192.168.0.0/16]
+```
+
+Three namespaces reach a LAN service directly and are left out of the selector: `external-dns`
+talks to the PiHole API, and `velero` and `vaultwarden` push backups to Garage S3. Everything
+else is denied the whole `192.168.0.0/16`. Two properties make this safe: the selector matches
+pods and not the host, so the driver's own mounts are untouched; and a `toCIDR` rule matches
+only the `world` identity, so node IPs (`remote-node`) and LoadBalancer-backed service traffic
+are unaffected. The excluded namespaces keep their own egress rules — the Vaultwarden backup
+CronJob, for instance, still denies the LAN through its own policy.
+
 ## See also
 
 - [Architecture](architecture.md): where these components sit in the boot order
