@@ -10,11 +10,11 @@ namespaceLabels:
 networkPolicy:
   enabled: true
   ingressNamespaces:
-    - traefik
+  - traefik
   egressDenyCIDRs:
-    - 192.168.0.0/16
+  - 192.168.0.0/16
   egressDenyEntities:
-    - kube-apiserver
+  - kube-apiserver
 ingressClassName: traefik
 ingressAnnotations:
   cert-manager.io/cluster-issuer: lets-encrypt-prod
@@ -30,7 +30,7 @@ persistentVolumeClaims:
   downloads:
     enabled: true
     accessModes:
-      - ReadWriteMany
+    - ReadWriteMany
     storage: 7Ti
     storageClassName: synology-nfs-retain
     annotations:
@@ -47,11 +47,11 @@ resourceClaimTemplate:
   spec:
     devices:
       requests:
-        - name: i915
-          exactly:
-            deviceClassName: gpu.intel.com
-            allocationMode: ExactCount
-            count: 1
+      - name: i915
+        exactly:
+          deviceClassName: gpu.intel.com
+          allocationMode: ExactCount
+          count: 1
 services:
   jellyfin:
     enabled: true
@@ -70,14 +70,14 @@ services:
     securityContext:
       capabilities:
         drop:
-          - NET_RAW
+        - NET_RAW
     pvc:
       config:
         name: jellyfin-config-ssd
         storage: 10Gi
         storageClassName: synology-iscsi-retain-ssd
         accessModes:
-          - ReadWriteOnce
+        - ReadWriteOnce
         annotations:
           argocd.argoproj.io/sync-options: Delete=false,Prune=false
         labels:
@@ -119,14 +119,14 @@ services:
         # NET_RAW only: the LinuxServer s6 init needs CHOWN/SETUID to prepare
         # /run and drop to uid 1000, so ALL cannot be dropped here.
         drop:
-          - NET_RAW
+        - NET_RAW
     pvc:
       config:
         name: radarr-config-ssd
         storage: 2Gi
         storageClassName: synology-iscsi-retain-ssd
         accessModes:
-          - ReadWriteOnce
+        - ReadWriteOnce
         annotations:
           argocd.argoproj.io/sync-options: Delete=false,Prune=false
         labels:
@@ -164,14 +164,14 @@ services:
         # NET_RAW only: the LinuxServer s6 init needs CHOWN/SETUID to prepare
         # /run and drop to uid 1000, so ALL cannot be dropped here.
         drop:
-          - NET_RAW
+        - NET_RAW
     pvc:
       config:
         name: sonarr-config-ssd
         storage: 2Gi
         storageClassName: synology-iscsi-retain-ssd
         accessModes:
-          - ReadWriteOnce
+        - ReadWriteOnce
         annotations:
           argocd.argoproj.io/sync-options: Delete=false,Prune=false
         labels:
@@ -209,14 +209,14 @@ services:
         # NET_RAW only: the LinuxServer s6 init needs CHOWN/SETUID to prepare
         # /run and drop to uid 1000, so ALL cannot be dropped here.
         drop:
-          - NET_RAW
+        - NET_RAW
     pvc:
       config:
         name: bazarr-config-ssd
         storage: 2Gi
         storageClassName: synology-iscsi-retain-ssd
         accessModes:
-          - ReadWriteOnce
+        - ReadWriteOnce
         annotations:
           argocd.argoproj.io/sync-options: Delete=false,Prune=false
         labels:
@@ -239,7 +239,7 @@ services:
   nzbget:
     enabled: true
     image: lscr.io/linuxserver/nzbget
-    tag: "26.2.20260731"
+    tag: "26.2.20260807"
     port: 6789
     resources:
       requests:
@@ -250,7 +250,7 @@ services:
         # NET_RAW only: the LinuxServer s6 init needs CHOWN/SETUID to prepare
         # /run and drop to uid 1000, so ALL cannot be dropped here.
         drop:
-          - NET_RAW
+        - NET_RAW
     podSecurityContext:
       runAsUser: 1000
       runAsGroup: 1000
@@ -262,7 +262,7 @@ services:
         storage: 5Gi
         storageClassName: synology-iscsi-retain-ssd
         accessModes:
-          - ReadWriteOnce
+        - ReadWriteOnce
         annotations:
           argocd.argoproj.io/sync-options: Delete=false,Prune=false
         labels:
@@ -272,7 +272,7 @@ services:
         storage: 128Gi
         storageClassName: synology-iscsi-delete-ssd
         accessModes:
-          - ReadWriteOnce
+        - ReadWriteOnce
         annotations:
           argocd.argoproj.io/sync-options: Delete=false,Prune=false
     existingSecretName: nzbget-secret
