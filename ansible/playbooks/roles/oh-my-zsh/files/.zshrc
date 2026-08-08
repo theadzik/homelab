@@ -81,3 +81,4 @@ if [[ "$TERM_PROGRAM" == "vscode" ]]; then
 fi
 
 export EDITOR=/usr/bin/vim
+export REPWISE_CONFIG=~/git/repwise/workouts.yaml
