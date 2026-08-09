@@ -56,6 +56,8 @@ alias kns="kubens"
 alias t="talosctl"
 alias tf="terraform"
 
+export REPWISE_CONFIG=~/git/repwise/workouts.yaml
+source <(repwise completion zsh)
 source <(kubectl completion zsh)
 source <(talosctl completion zsh)
 
@@ -81,4 +83,3 @@ if [[ "$TERM_PROGRAM" == "vscode" ]]; then
 fi
 
 export EDITOR=/usr/bin/vim
-export REPWISE_CONFIG=~/git/repwise/workouts.yaml
