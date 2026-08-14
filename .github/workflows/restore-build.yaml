@@ -40,9 +40,7 @@ jobs:
       extra-registry: dhi.io
       extra-registry-username: ${{ vars.DOCKERHUB_USERNAME }}
       context-path: "apps/vaultwarden/restore"
-      # Same as backup-build.yaml: the only findings are inside the rclone
-      # binary copied from rclone/rclone, in rclone's own Go dependencies.
-      scan: false
+      scan: true
       push: ${{ github.event_name != 'pull_request' }}
     secrets:
       REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
