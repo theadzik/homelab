@@ -1,0 +1,10 @@
+# Build-time metadata that belongs in the repository, never in the image.
+#
+# Today's Dockerfile copies named files rather than the whole context, so
+# nothing here is currently reachable. This exists so that a later `COPY . .`
+# cannot quietly bake the scanner's accepted-CVE list into a published layer,
+# where it would advertise exactly which known findings this image ships with.
+.trivyignore.yaml
+.trivyignore
+.dockerignore
+Dockerfile

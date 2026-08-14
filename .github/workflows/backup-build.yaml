@@ -21,7 +21,7 @@ jobs:
     with:
       tag-prefix: "vw-backup-"
   backup-build-push:
-    uses: theadzik/github-workflows/.github/workflows/build-and-push.yaml@59202524db1536b7e91d4c8a9e16e9de15f1ab24 # v2.2.0
+    uses: theadzik/github-workflows/.github/workflows/build-and-push.yaml@177bace11704171ede4a7a272e2b734bcad760df # v2.3.0
     needs: get-tag
     permissions:
       contents: read
@@ -40,12 +40,10 @@ jobs:
       extra-registry: dhi.io
       extra-registry-username: ${{ vars.DOCKERHUB_USERNAME }}
       context-path: "apps/vaultwarden/backup"
-      # The shared workflow scans by default. Every finding here is inside the
-      # rclone binary copied from rclone/rclone, in rclone's own Go
-      # dependencies (CVE-2026-56852 in x/text, GHSA-hrxh-6v49-42gf in grpc).
-      # Nothing in this Dockerfile can action them - only an upstream rclone
-      # rebuild can - so the gate would block the weekly rebuild indefinitely.
-      scan: false
+      scan: true
+      # Dated acceptances for findings inside the copied rclone binary. Read the
+      # file before extending a date; it is not a mute button.
+      trivyignores: "apps/vaultwarden/backup/.trivyignore.yaml"
       push: ${{ github.event_name != 'pull_request' }}
     secrets:
       REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
