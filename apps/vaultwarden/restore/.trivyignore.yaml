@@ -1,0 +1,49 @@
+# Trivy risk acceptances for the vw-restore build gate.
+#
+# Passed to the shared build workflow as `trivyignores`, which hands it to
+# Trivy as --ignorefile. These are acceptances, not exploitability claims: the
+# vulnerable code is present and reachable. Nothing here says the image is safe
+# from them - it says the fix does not exist at this layer.
+#
+# Both findings are in the Go standard library statically linked into rclone,
+# which arrives by `COPY --from=rclone/rclone:1.75.0` and is not built here.
+# Only an rclone release compiled against Go 1.26.6 or newer fixes them.
+#
+# VEX was considered and rejected. Trivy only suppresses on `not_affected`,
+# which is a factual claim that the vulnerable code cannot be reached, and
+# rclone resolves DNS and speaks HTTP on every run - so for both of these that
+# claim would be false. Ignore rules state the truth: known, unfixable here,
+# accepted until a date.
+#
+# The purl is deliberately version-less, so an rclone bump that still carries
+# the finding does not need this file edited. `expired_at` is what keeps that
+# honest - on that date these fail the build again and have to be re-argued
+# against whatever rclone ships by then. Do not extend a date without
+# re-reading the entry.
+#
+# Scoped to pkg:golang/stdlib, so an OS package or a first-party Go binary
+# hitting the same CVE would still fail the gate.
+#
+# scan-published-images.yaml does not read this file, by design. It reports and
+# never gates, so it keeps showing these every day - which is how the day one of
+# them becomes fixable gets noticed.
+#
+# vw-backup carries the same two acceptances for the same rclone binary; keep
+# the two files in step.
+
+vulnerabilities:
+  # stdlib v1.26.5, compiled into usr/bin/rclone. Fixed in Go 1.26.6.
+  - id: CVE-2026-39821
+    purls: ["pkg:golang/stdlib"]
+    expired_at: 2026-11-14
+    statement: >-
+      golang.org/x/net/idna privilege escalation via incorrect Punycode label
+      processing, in the Go stdlib linked into rclone 1.75.0. Not rebuildable
+      from this repository.
+  - id: CVE-2026-46600
+    purls: ["pkg:golang/stdlib"]
+    expired_at: 2026-11-14
+    statement: >-
+      golang.org/x/net/dns/dnsmessage denial of service via invalid DNS record
+      parsing, in the Go stdlib linked into rclone 1.75.0. Not rebuildable from
+      this repository.

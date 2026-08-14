@@ -52,7 +52,7 @@ jobs:
       attestations: write
       artifact-metadata: write
       packages: write
-    uses: theadzik/github-workflows/.github/workflows/build-and-push.yaml@59202524db1536b7e91d4c8a9e16e9de15f1ab24 # v2.2.0
+    uses: theadzik/github-workflows/.github/workflows/build-and-push.yaml@177bace11704171ede4a7a272e2b734bcad760df # v2.3.0
     with:
       git-ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
       tags: "type=raw,value=${{ needs.get-version.outputs.app_version }}"
@@ -65,6 +65,9 @@ jobs:
       extra-registry-username: ${{ vars.DOCKERHUB_USERNAME }}
       context-path: "apps/custom-argocd"
       scan: true
+      # Dated acceptances for findings inside the upstream Argo CD binaries.
+      # Read the file before extending a date; it is not a mute button.
+      trivyignores: "apps/custom-argocd/.trivyignore.yaml"
       # Pull requests validate the build only; publishing happens on push to main.
       push: ${{ github.event_name != 'pull_request' }}
     secrets:
