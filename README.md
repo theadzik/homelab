@@ -31,7 +31,7 @@ flowchart LR
 | **Networking** | Cilium (kube-proxy replacement, L2 announcements, Hubble), Traefik, Cloudflare Tunnel, external-dns, cert-manager |
 | **Storage** | Synology CSI (iSCSI + NFS), CSI snapshots, Velero, Garage S3 |
 | **Security** | Kyverno, Falco, Pod Security Admission, CiliumNetworkPolicy, git-crypt, Docker Hardened Images |
-| **Supply chain** | Trivy + Grype, syft, cosign keyless signing, SLSA provenance, CycloneDX SBOMs |
+| **Supply chain** | Trivy + Grype, cosign keyless signing, SLSA provenance, CycloneDX SBOMs |
 | **Automation** | GitHub Actions (reusable workflows), Dependabot, pre-commit, Ansible |
 
 ## Things worth stealing
