@@ -6,6 +6,13 @@ spec:
   webhookConfiguration:
     timeoutSeconds: 30
   failurePolicy: Fail
+  # Only validate Pods. Without this, Kyverno autogenerates rules for pod
+  # controllers (Deployments, Jobs, CronJobs, ...), re-verifying the same
+  # image on every controller admission on top of the Pod itself.
+  autogen:
+    podControllers:
+      controllers:
+        - none
   evaluation:
     background:
       enabled: true
