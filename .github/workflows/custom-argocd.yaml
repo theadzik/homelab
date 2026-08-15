@@ -52,7 +52,7 @@ jobs:
       attestations: write
       artifact-metadata: write
       packages: write
-    uses: theadzik/github-workflows/.github/workflows/build-and-push.yaml@177bace11704171ede4a7a272e2b734bcad760df # v2.3.0
+    uses: theadzik/github-workflows/.github/workflows/build-and-push.yaml@bc3bbe8c89bd2d610c35185f020aeec522db9306 # v4.0.0
     with:
       git-ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
       tags: "type=raw,value=${{ needs.get-version.outputs.app_version }}"
