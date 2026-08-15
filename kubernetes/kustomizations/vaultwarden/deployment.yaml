@@ -26,7 +26,7 @@ spec:
           image: ghcr.io/theadzik/vw-restore:main
           imagePullPolicy: Always
           volumeMounts:
-            - mountPath: /home/vaultwarden
+            - mountPath: /.config/rclone
               name: rclone-conf
             - mountPath: /data
               name: data
@@ -37,13 +37,6 @@ spec:
           envFrom:
             - secretRef:
                 name: backup-encryption-secret
-          env:
-            - name: RCLONE_TEMP_DIR
-              value: "/tmp"
-            - name: RCLONE_CONFIG_DIR
-              value: "/tmp"
-            - name: XDG_CONFIG_HOME
-              value: "/tmp"
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
