@@ -29,4 +29,4 @@ labels:
       app.kubernetes.io/instance: prod
 images:
   - name: ghcr.io/theadzik/zmuda-pro-blog
-    newTag: 2026.8.1
+    newTag: 2026.8.2
