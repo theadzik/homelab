@@ -83,15 +83,15 @@ keeps nothing that installed them.
 
 That produces a known blind spot, [written down in the
 Dockerfile](../apps/vaultwarden/backup/Dockerfile) so nobody has to rediscover it. Binaries
-that arrive by `COPY` leave no package-manager record, and `syft` has no classifier for
-`sqlite3` or `tar`. Neither appears in the SBOM or in a scan, so a CVE in either would be
-invisible to every gate here.
+that arrive by `COPY` leave no package-manager record, and nothing that runs here classifies
+`sqlite3` or `tar` from the binary alone. Neither appears in the SBOM or in a scan, so a CVE
+in either would be invisible to every gate here.
 
 The obvious fixes do not work. The non-dev base ships no `apk`, so nothing can be installed
 in the final stage. Copying the build stage's package database would then claim the whole
-dev toolchain is present. And `BUILDKIT_SBOM_SCAN_STAGE` stopped applying once syft took
-over SBOM generation from BuildKit. The gap therefore stands, with a note in the Dockerfile:
-*if you add another copied binary, add it here.*
+dev toolchain is present. And `BUILDKIT_SBOM_SCAN_STAGE` does not apply, because the SBOM is
+written by Trivy from the built layout rather than by BuildKit. The gap therefore stands,
+with a note in the Dockerfile: *if you add another copied binary, add it here.*
 
 ## Admission: the cluster checks the work
 
@@ -148,12 +148,18 @@ How it reports:
 - **One issue, reopened and rewritten.** A daily scan that files a daily issue is a daily
   notification nobody reads. When the findings clear, it comments and closes.
 
-Three images have the *build* gate switched off (`scan: false`), each with the reason in the
-workflow. Every finding sits inside a binary copied from an upstream image, in rclone's own
-Go dependencies or ArgoCD's, and nothing in this repository can rebuild those. Left on, the
-gate would block the weekly rebuild forever and never once produce a finding anyone could
-act on. The daily scan covers those images instead, and is where an upstream fix shows up
-first.
+The build gate is on for all four images. It used to be switched off (`scan: false`) for
+three of them, because every finding sits inside a binary copied from an upstream image - in
+rclone's own Go dependencies or ArgoCD's - and nothing in this repository can rebuild those.
+Left on with no acceptances, the gate would have blocked the weekly rebuild forever without
+ever producing a finding anyone could act on.
+
+Turning it back on meant writing those findings down instead of muting the gate. Each image
+now carries a [`.trivyignore.yaml`](../apps/vaultwarden/backup/.trivyignore.yaml) naming
+every accepted CVE, scoped to the purl that carries it, with a reason and an expiry date. A
+new finding outside those entries fails the build, and an acceptance stops applying on its
+date rather than outliving its reason. The daily scan still covers the same images, and is
+where an upstream fix shows up first.
 
 ## Why GHCR
 

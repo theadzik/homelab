@@ -1,10 +1,10 @@
 name: Scan published images
 
 # Post-build detection. The build gate only ever runs once, on the day an image
-# is built, and it is switched off entirely for the three images whose findings
-# live in an upstream binary this repo cannot rebuild. So nothing notices a CVE
-# published the day after a build, and nothing notices the more useful event:
-# an upstream release that makes a known finding actionable at last.
+# is built, and the findings that live in an upstream binary this repo cannot
+# rebuild are accepted in each image's .trivyignore.yaml. So nothing notices a
+# CVE published the day after a build, and nothing notices the more useful
+# event: an upstream release that makes an accepted finding actionable at last.
 #
 # This reports, it never gates. Every finding it can see today is already known
 # and accepted, so failing the run would train everyone to ignore it.
@@ -31,7 +31,7 @@ jobs:
       issues: write
     steps:
       # Trivy is not preinstalled on ubuntu-latest. Installing it explicitly,
-      # and pinning it, for the same reason grype and syft are pinned: a scanner
+      # and pinning it, for the same reason grype is pinned below: a scanner
       # arriving by installer default is a silent variable.
       - name: Install Trivy
         uses: aquasecurity/setup-trivy@81e514348e19b6112ce2a7e3ecbafe19c1e1f567 # v0.3.1
@@ -42,7 +42,7 @@ jobs:
         uses: anchore/scan-action/download-grype@e1165082ffb1fe366ebaf02d8526e7c4989ea9d2 # v7.4.0
         id: grype
         with:
-          # Pinned for the same reason syft is pinned in build-and-push.yaml: a
+          # Pinned for the same reason Trivy is pinned in build-and-push.yaml: a
           # scanner version arriving by installer default is a silent variable.
           grype-version: v0.116.1
 
