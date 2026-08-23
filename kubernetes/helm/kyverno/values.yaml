@@ -1,3 +1,13 @@
+admissionController:
+  # validate-image-attestations is fail-closed on every Pod CREATE, so a single
+  # replica turns any restart, eviction or node reboot into a cluster-wide
+  # pod-creation outage. Two replicas keep an endpoint behind kyverno-svc while
+  # one is being replaced, and the PDB stops a drain taking both at once.
+  replicas: 2
+  podDisruptionBudget:
+    enabled: true
+    minAvailable: 1
+
 features:
   backgroundScan:
     # Each scan re-verifies every matched pod against Rekor and the registry.

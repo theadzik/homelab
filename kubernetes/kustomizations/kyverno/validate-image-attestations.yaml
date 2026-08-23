@@ -5,10 +5,7 @@ metadata:
 spec:
   webhookConfiguration:
     timeoutSeconds: 30
-  failurePolicy: Fail
-  # Only validate Pods. Without this, Kyverno autogenerates rules for pod
-  # controllers (Deployments, Jobs, CronJobs, ...), re-verifying the same
-  # image on every controller admission on top of the Pod itself.
+  failurePolicy: Ignore
   autogen:
     podControllers:
       controllers:
@@ -42,9 +39,14 @@ spec:
         ctlog:
           url: https://rekor.sigstore.dev
   validationConfigurations:
-    mutateDigest: true
+    # mutateDigest rewrites the admitted Pod image to tag@sha256:... . That digest
+    # exists only on the live Pod, never in git, so argocd-image-updater reads it
+    # back from Application.status.summary.images, compares it against the bare tag
+    # its semver strategy resolves, and rewrites on every cycle without ever
+    # converging.
+    mutateDigest: false
     required: true
-    verifyDigest: true
+    verifyDigest: false
   validations:
     - expression: >-
         (images.containers + images.initContainers + images.ephemeralContainers).map(image,
