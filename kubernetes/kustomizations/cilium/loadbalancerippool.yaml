@@ -4,5 +4,5 @@ metadata:
   name: "local-pool"
 spec:
   blocks:
-    - start: "192.168.0.50"
-      stop: "192.168.0.100"
+    - start: "192.168.0.210"
+      stop: "192.168.0.220"
