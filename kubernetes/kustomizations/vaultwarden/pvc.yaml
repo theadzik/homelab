@@ -7,8 +7,15 @@ metadata:
   labels:
     backup.velero.io/csi-snapshot: "true"
 spec:
+  # This is an iSCSI block volume, and ext4 is not a cluster filesystem. RWM let
+  # Kubernetes attach the same LUN to two nodes at once, which risks corrupting the
+  # filesystem and breaks vaultwarden's SQLite WAL: WAL readers coordinate with the
+  # writer through the -shm mmap, which is only coherent within a single host, so a
+  # backup pod on another node spun in sqlite3 .backup for 16h. RWO still allows the
+  # backup and vaultwarden to share the volume, because they are pinned to one node
+  # by the podAffinity in backup-cronjob.yaml.
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi

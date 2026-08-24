@@ -12,6 +12,7 @@ DATADIR="${DATADIR:-/data}"
 BACKUP_LOCAL_DIR="${BACKUP_LOCAL_DIR:-/backup}"
 BACKUP_REMOTE_DIR="${BACKUP_REMOTE_DIR:-gdrive:backup}"
 TEMP_DIR="${TEMP_DIR:-/tmp/vaultwarden-backup}"
+SQLITE_TIMEOUT="${SQLITE_TIMEOUT:-300}"
 BACKUP_FILE="vaultwarden-$(date "+%F--%H%M")"
 
 # Validate prerequisites
@@ -22,7 +23,14 @@ BACKUP_FILE="vaultwarden-$(date "+%F--%H%M")"
 mkdir -p "$TEMP_DIR"
 
 log "Backing up SQLite database..."
-sqlite3 "$DATADIR/db.sqlite3" ".backup '$TEMP_DIR/db.sqlite3'"
+# .backup restarts its copy whenever it sees the source change. If this pod is not
+# on the same host as vaultwarden, WAL's -shm mmap is not coherent between them, the
+# source never looks settled, and the restart loop spins on a full core forever. Cap
+# it so the job fails visibly rather than wedging every later backup.
+timeout "$SQLITE_TIMEOUT" sqlite3 "$DATADIR/db.sqlite3" ".backup '$TEMP_DIR/db.sqlite3'" || {
+  log "ERROR: sqlite3 .backup failed or exceeded ${SQLITE_TIMEOUT}s (exit $?)"
+  exit 1
+}
 log "SQLite DB backup complete"
 
 log "Compressing and encrypting..."

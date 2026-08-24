@@ -10,6 +10,10 @@ spec:
   jobTemplate:
     spec:
       backoffLimit: 0
+      # concurrencyPolicy is Forbid, so a job that never returns blocks every
+      # later backup indefinitely and silently. Successful runs take well under
+      # a minute; this bounds a hung one instead of letting it wedge the schedule.
+      activeDeadlineSeconds: 900
       template:
         spec:
           containers:
@@ -50,6 +54,19 @@ spec:
                 limits:
                   memory: "1Gi"
                   cpu: "1"
+          affinity:
+            # The data PVC is an iSCSI volume that can attach to several nodes at
+            # once, and vaultwarden keeps its SQLite DB in WAL mode. WAL readers
+            # coordinate with the writer through the -shm mmap, which is only
+            # coherent within one host, so a backup scheduled onto a different node
+            # never sees a settled snapshot and sqlite3 .backup restarts its copy
+            # forever. Pin the backup to whichever node vaultwarden is running on.
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchLabels:
+                      app: vaultwarden
+                  topologyKey: kubernetes.io/hostname
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
