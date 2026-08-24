@@ -10,6 +10,15 @@ log() {
 
 verify_restore() {
   [ -f "$DATABASE" ] || { log "ERROR: Database not found after extraction"; exit 1; }
+
+  # Deliberately a warning and not a failure. Archives written before the backup
+  # started carrying rsa_key.pem restore perfectly well; Vaultwarden just mints a
+  # new signing key, and every session and 2FA "remember this device" token stops
+  # verifying. Refusing to start over that would turn a good restore into an
+  # outage, so this only has to be said out loud - the alternative is discovering
+  # it at a login prompt with "Error decoding JWT" in the log.
+  [ -f "$KEY_FILE" ] || \
+    log "WARNING: rsa_key.pem absent from this backup - a new signing key will be generated, so all sessions and remembered 2FA devices are invalidated"
 }
 
 restore_archive() {
@@ -35,6 +44,7 @@ find_latest_remote_backup() {
 
 DATADIR="${DATADIR:-/data}"
 DATABASE="$DATADIR/db.sqlite3"
+KEY_FILE="$DATADIR/rsa_key.pem"
 BACKUP_LOCAL_DIR="${BACKUP_LOCAL_DIR:-/backup}"
 BACKUP_REMOTE_DIR="${BACKUP_REMOTE_DIR:-gdrive:backup}"
 TEMP_DIR="/tmp/vaultwarden-restore"
