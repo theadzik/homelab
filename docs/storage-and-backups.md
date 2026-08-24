@@ -99,6 +99,21 @@ What makes it hold up:
 - **`sqlite3 .backup` instead of copying the file.** A live database copied byte-for-byte can
   be mid-transaction; the backup API produces a consistent snapshot without stopping
   Vaultwarden.
+- **The job is pinned to Vaultwarden's node by `podAffinity`.** The database runs in WAL
+  mode, and WAL readers coordinate with the writer through the `-shm` mmap, which is only
+  coherent between processes on one host. The data claim is an iSCSI LUN, so nothing at the
+  storage layer prevents a second node attaching it - it was `ReadWriteMany` until it became
+  clear that meant two kernels caching the same non-cluster filesystem. Scheduled away from
+  Vaultwarden, the backup reads a `-wal` that never looks settled and `.backup` restarts its
+  copy indefinitely: one run burned a full core for 16 hours on a 1.3 MB database. Co-located
+  it finishes in about twenty seconds. `ReadWriteOnce` now states the same constraint to the
+  scheduler, and still permits both pods on the node they share.
+- **A hang is bounded in two places.** `concurrencyPolicy: Forbid` is what makes an
+  unbounded job dangerous rather than merely slow: it never returns, so every later run is
+  skipped and the schedule dies quietly - the failure above went unnoticed for a day, and
+  was visible only as a CPU graph. `activeDeadlineSeconds` kills the job, and a `timeout`
+  around `.backup` itself fails the step first so the log says which stage hung, rather than
+  leaving a deadline to explain it.
 - **The restore runs as an init container.** Nobody has to notice that a volume came up
   empty and go looking for a runbook. It is repaired before Vaultwarden opens it.
 - **Failing to restore fails the pod.** Starting empty would present a working but empty
