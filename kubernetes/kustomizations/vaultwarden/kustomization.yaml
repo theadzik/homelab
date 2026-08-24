@@ -30,4 +30,4 @@ images:
   - name: ghcr.io/theadzik/vw-restore
     newTag: 2026.7.1
   - name: ghcr.io/theadzik/vw-backup
-    newTag: 2026.7.1
+    newTag: 2026.8.1
