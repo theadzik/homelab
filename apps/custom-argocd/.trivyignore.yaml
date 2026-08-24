@@ -1,38 +1,5 @@
-# Trivy risk acceptances for the custom-argocd build gate.
-#
-# Passed to the shared build workflow as `trivyignores`, which hands it to
-# Trivy as --ignorefile. These are acceptances, not exploitability claims: the
-# vulnerable code is present and, for most of these, reachable. Nothing here
-# says the image is safe from them - it says the fix does not exist at this
-# layer.
-#
-# Every entry lives in a Go binary shipped by quay.io/argoproj/argocd, which
-# this Dockerfile consumes as a base image and does not build. There is no
-# version of this repository that fixes them; only an Argo CD release compiled
-# against a newer toolchain and newer modules does. Measured against
-# quay.io/argoproj/argocd:v3.4.6: 128 fixable HIGH findings across five Go
-# binaries - pebble, argocd, git-lfs, helm and kustomize - which collapse to
-# the 46 package/CVE pairs below.
-#
-# VEX was considered and rejected. Trivy only suppresses on `not_affected`,
-# which is a factual claim that the vulnerable code cannot be reached, and for
-# findings in go-git, oras-go and net/http inside Argo CD's own request path
-# that claim would be false. Ignore rules state the truth: known, unfixable
-# here, accepted until a date.
-#
-# The purls are deliberately version-less, so an upstream bump that carries the
-# same finding forward does not need this file edited. `expired_at` is what
-# keeps that honest - on that date these findings fail the build again and have
-# to be re-argued against whatever Argo CD ships by then. Do not extend a date
-# without re-reading the entry.
-#
-# scan-published-images.yaml does not read this file, by design. It reports and
-# never gates, so it keeps showing these every day - which is how the day one of
-# them becomes fixable gets noticed.
-
 vulnerabilities:
-
-  # stdlib, compiled into argocd, git-lfs, helm, kustomize, pebble. 20 accepted.
+  # stdlib, compiled into argocd, git-lfs, helm, kustomize, pebble. 24 accepted.
   - id: CVE-2025-22874
     purls: ["pkg:golang/stdlib"]
     expired_at: 2026-11-14
@@ -53,10 +20,6 @@ vulnerabilities:
     purls: ["pkg:golang/stdlib"]
     expired_at: 2026-11-14
     statement: stdlib in an upstream Argo CD binary; needs an upstream rebuild.
-  - id: CVE-2026-27137
-    purls: ["pkg:golang/stdlib"]
-    expired_at: 2026-11-14
-    statement: stdlib in an upstream Argo CD binary; needs an upstream rebuild.
   - id: CVE-2026-27145
     purls: ["pkg:golang/stdlib"]
     expired_at: 2026-11-14
@@ -73,15 +36,15 @@ vulnerabilities:
     purls: ["pkg:golang/stdlib"]
     expired_at: 2026-11-14
     statement: stdlib in an upstream Argo CD binary; needs an upstream rebuild.
-  - id: CVE-2026-33810
-    purls: ["pkg:golang/stdlib"]
-    expired_at: 2026-11-14
-    statement: stdlib in an upstream Argo CD binary; needs an upstream rebuild.
   - id: CVE-2026-33811
     purls: ["pkg:golang/stdlib"]
     expired_at: 2026-11-14
     statement: stdlib in an upstream Argo CD binary; needs an upstream rebuild.
   - id: CVE-2026-33814
+    purls: ["pkg:golang/stdlib"]
+    expired_at: 2026-11-14
+    statement: stdlib in an upstream Argo CD binary; needs an upstream rebuild.
+  - id: CVE-2026-33818
     purls: ["pkg:golang/stdlib"]
     expired_at: 2026-11-14
     statement: stdlib in an upstream Argo CD binary; needs an upstream rebuild.
@@ -113,8 +76,28 @@ vulnerabilities:
     purls: ["pkg:golang/stdlib"]
     expired_at: 2026-11-14
     statement: stdlib in an upstream Argo CD binary; needs an upstream rebuild.
+  - id: CVE-2026-56853
+    purls: ["pkg:golang/stdlib"]
+    expired_at: 2026-11-14
+    statement: stdlib in an upstream Argo CD binary; needs an upstream rebuild.
+  - id: CVE-2026-56858
+    purls: ["pkg:golang/stdlib"]
+    expired_at: 2026-11-14
+    statement: stdlib in an upstream Argo CD binary; needs an upstream rebuild.
+  - id: CVE-2026-56859
+    purls: ["pkg:golang/stdlib"]
+    expired_at: 2026-11-14
+    statement: stdlib in an upstream Argo CD binary; needs an upstream rebuild.
+  - id: CVE-2026-56860
+    purls: ["pkg:golang/stdlib"]
+    expired_at: 2026-11-14
+    statement: stdlib in an upstream Argo CD binary; needs an upstream rebuild.
+  - id: CVE-2026-56862
+    purls: ["pkg:golang/stdlib"]
+    expired_at: 2026-11-14
+    statement: stdlib in an upstream Argo CD binary; needs an upstream rebuild.
 
-  # golang.org/x/crypto, compiled into git-lfs, helm. 10 accepted.
+  # golang.org/x/crypto, compiled into git-lfs. 10 accepted.
   - id: CVE-2025-47913
     purls: ["pkg:golang/golang.org/x/crypto"]
     expired_at: 2026-11-14
@@ -184,54 +167,20 @@ vulnerabilities:
     expired_at: 2026-11-14
     statement: golang.org/x/text in an upstream Argo CD binary; needs an upstream rebuild.
 
-  # oras.land/oras-go/v2, compiled into argocd, helm. 2 accepted.
-  - id: CVE-2026-50151
-    purls: ["pkg:golang/oras.land/oras-go/v2"]
-    expired_at: 2026-11-14
-    statement: oras.land/oras-go/v2 in an upstream Argo CD binary; needs an upstream rebuild.
+  # oras.land/oras-go/v2, compiled into argocd, helm. 1 accepted.
   - id: CVE-2026-50163
     purls: ["pkg:golang/oras.land/oras-go/v2"]
     expired_at: 2026-11-14
     statement: oras.land/oras-go/v2 in an upstream Argo CD binary; needs an upstream rebuild.
 
-  # google.golang.org/grpc, compiled into argocd, helm. 2 accepted.
-  - id: CVE-2026-33186
-    purls: ["pkg:golang/google.golang.org/grpc"]
-    expired_at: 2026-11-14
-    statement: google.golang.org/grpc in an upstream Argo CD binary; needs an upstream rebuild.
+  # google.golang.org/grpc, compiled into argocd. 1 accepted.
   - id: GHSA-hrxh-6v49-42gf
     purls: ["pkg:golang/google.golang.org/grpc"]
     expired_at: 2026-11-14
     statement: google.golang.org/grpc in an upstream Argo CD binary; needs an upstream rebuild.
 
-  # github.com/containerd/containerd, compiled into helm. 2 accepted.
-  - id: CVE-2026-46680
-    purls: ["pkg:golang/github.com/containerd/containerd"]
-    expired_at: 2026-11-14
-    statement: github.com/containerd/containerd in an upstream Argo CD binary; needs an upstream rebuild.
-  - id: CVE-2026-53488
-    purls: ["pkg:golang/github.com/containerd/containerd"]
-    expired_at: 2026-11-14
-    statement: github.com/containerd/containerd in an upstream Argo CD binary; needs an upstream rebuild.
-
-  # github.com/go-git/go-git/v5, compiled into argocd. 2 accepted.
-  - id: CVE-2026-45022
-    purls: ["pkg:golang/github.com/go-git/go-git/v5"]
-    expired_at: 2026-11-14
-    statement: github.com/go-git/go-git/v5 in an upstream Argo CD binary; needs an upstream rebuild.
+  # github.com/go-git/go-git/v5, compiled into argocd. 1 accepted.
   - id: CVE-2026-71556
     purls: ["pkg:golang/github.com/go-git/go-git/v5"]
     expired_at: 2026-11-14
     statement: github.com/go-git/go-git/v5 in an upstream Argo CD binary; needs an upstream rebuild.
-
-  # github.com/go-git/go-billy/v5, compiled into argocd. 1 accepted.
-  - id: CVE-2026-44973
-    purls: ["pkg:golang/github.com/go-git/go-billy/v5"]
-    expired_at: 2026-11-14
-    statement: github.com/go-git/go-billy/v5 in an upstream Argo CD binary; needs an upstream rebuild.
-
-  # github.com/moby/spdystream, compiled into helm. 1 accepted.
-  - id: CVE-2026-35469
-    purls: ["pkg:golang/github.com/moby/spdystream"]
-    expired_at: 2026-11-14
-    statement: github.com/moby/spdystream in an upstream Argo CD binary; needs an upstream rebuild.

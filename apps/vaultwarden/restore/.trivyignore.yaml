@@ -5,15 +5,18 @@
 # vulnerable code is present and reachable. Nothing here says the image is safe
 # from them - it says the fix does not exist at this layer.
 #
-# Both findings are in the Go standard library statically linked into rclone,
-# which arrives by `COPY --from=rclone/rclone:1.75.0` and is not built here.
-# Only an rclone release compiled against Go 1.26.6 or newer fixes them.
+# Every finding here is in the Go standard library statically linked into
+# rclone, which arrives by `COPY --from=rclone/rclone:1.75.0` and is not built
+# here. 1.75.0 is the current rclone release and ships Go 1.26.5; only an rclone
+# release compiled against Go 1.26.6 or newer fixes them.
 #
 # VEX was considered and rejected. Trivy only suppresses on `not_affected`,
-# which is a factual claim that the vulnerable code cannot be reached, and
-# rclone resolves DNS and speaks HTTP on every run - so for both of these that
-# claim would be false. Ignore rules state the truth: known, unfixable here,
-# accepted until a date.
+# which is a factual claim that the vulnerable code cannot be reached. rclone
+# resolves DNS, parses certificates and speaks TLS on every run, so that claim
+# is plainly false for most of these, and proving it for the rest would mean
+# auditing which of rclone's paths a backup run reaches - where being wrong
+# drops a real finding silently. Ignore rules state what is known: present,
+# unfixable here, accepted until a date.
 #
 # The purl is deliberately version-less, so an rclone bump that still carries
 # the finding does not need this file edited. `expired_at` is what keeps that
@@ -28,7 +31,7 @@
 # never gates, so it keeps showing these every day - which is how the day one of
 # them becomes fixable gets noticed.
 #
-# vw-backup carries the same two acceptances for the same rclone binary; keep
+# vw-backup carries the same acceptances for the same rclone binary; keep
 # the two files in step.
 
 vulnerabilities:
@@ -47,3 +50,43 @@ vulnerabilities:
       golang.org/x/net/dns/dnsmessage denial of service via invalid DNS record
       parsing, in the Go stdlib linked into rclone 1.75.0. Not rebuildable from
       this repository.
+  # Go's 2026-08 security release. Same binary, same fix: an rclone built on
+  # Go 1.26.6 or newer clears these together with the two above.
+  - id: CVE-2026-33818
+    purls: ["pkg:golang/stdlib"]
+    expired_at: 2026-11-14
+    statement: >-
+      encoding/asn1 denial of service via excessive recursion in Unmarshal, in
+      the Go stdlib linked into rclone 1.75.0. Not rebuildable from this
+      repository.
+  - id: CVE-2026-56853
+    purls: ["pkg:golang/stdlib"]
+    expired_at: 2026-11-14
+    statement: >-
+      net/http denial of service against unencrypted HTTP/2 connections, in the
+      Go stdlib linked into rclone 1.75.0. Not rebuildable from this repository.
+  - id: CVE-2026-56858
+    purls: ["pkg:golang/stdlib"]
+    expired_at: 2026-11-14
+    statement: >-
+      html/template cross-site scripting via pathological input, in the Go
+      stdlib linked into rclone 1.75.0. Not rebuildable from this repository.
+  - id: CVE-2026-56859
+    purls: ["pkg:golang/stdlib"]
+    expired_at: 2026-11-14
+    statement: >-
+      encoding/xml denial of service via decoding recursion depth, in the Go
+      stdlib linked into rclone 1.75.0. Not rebuildable from this repository.
+  - id: CVE-2026-56860
+    purls: ["pkg:golang/stdlib"]
+    expired_at: 2026-11-14
+    statement: >-
+      net/url denial of service from quadratic complexity in path parsing, in
+      the Go stdlib linked into rclone 1.75.0. Not rebuildable from this
+      repository.
+  - id: CVE-2026-56862
+    purls: ["pkg:golang/stdlib"]
+    expired_at: 2026-11-14
+    statement: >-
+      crypto/tls denial of service via indefinite KeyUpdate messages, in the Go
+      stdlib linked into rclone 1.75.0. Not rebuildable from this repository.
