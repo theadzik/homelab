@@ -34,7 +34,23 @@ timeout "$SQLITE_TIMEOUT" sqlite3 "$DATADIR/db.sqlite3" ".backup '$TEMP_DIR/db.s
 log "SQLite DB backup complete"
 
 log "Compressing and encrypting..."
-tar -czf - --directory="$TEMP_DIR" db.sqlite3 --directory="$DATADIR" attachments 2>/dev/null \
+# rsa_key.pem signs the session JWTs. It is not part of the vault's own encryption
+# - losing it exposes nothing and decrypts nothing - but restoring without it makes
+# Vaultwarden mint a new one, which invalidates every active session and every 2FA
+# "remember this device" token. Restoring the vault and then logging every client
+# out is a poor recovery, so the key travels with the data.
+#
+# Held in the positional parameters so the member list stays a single tar call:
+# archives written before this change restore fine, and a data directory without
+# the key still backs up rather than failing.
+set -- --directory="$TEMP_DIR" db.sqlite3 --directory="$DATADIR" attachments
+if [ -f "$DATADIR/rsa_key.pem" ]; then
+  set -- "$@" rsa_key.pem
+else
+  log "WARNING: rsa_key.pem not found in $DATADIR; a restore from this backup will log every client out"
+fi
+
+tar -czf - "$@" 2>/dev/null \
   | openssl enc -e -aes256 -salt -pbkdf2 \
   -pass "env:BACKUP_ENCRYPTION_KEY" \
   -out "$BACKUP_LOCAL_DIR/$BACKUP_FILE.tar.gz"

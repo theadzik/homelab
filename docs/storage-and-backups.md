@@ -114,6 +114,13 @@ What makes it hold up:
   was visible only as a CPU graph. `activeDeadlineSeconds` kills the job, and a `timeout`
   around `.backup` itself fails the step first so the log says which stage hung, rather than
   leaving a deadline to explain it.
+- **The signing key travels with the data.** `rsa_key.pem` is not part of the vault's
+  encryption and decrypts nothing, so archiving it alongside the database costs nothing that
+  the AES-256 wrapper does not already cover. Leave it out and Vaultwarden mints a fresh one
+  on restore, at which point every session and every remembered 2FA device stops verifying.
+  That was learned by restoring without it and meeting `Error decoding JWT: InvalidSignature`
+  at the next login. Archives written before the key was included still restore; they warn
+  that sessions are about to be invalidated rather than failing over it.
 - **The restore runs as an init container.** Nobody has to notice that a volume came up
   empty and go looking for a runbook. It is repaired before Vaultwarden opens it.
 - **Failing to restore fails the pod.** Starting empty would present a working but empty
