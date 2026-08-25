@@ -1,4 +1,9 @@
-- block:
+# WSL identifies itself in the kernel release string: "...-Microsoft" on WSL1,
+# "...-microsoft-standard-WSL2" on WSL2. No other distribution ships that.
+- name: Configure WSL.
+  when: ansible_facts["kernel"] | lower is search("microsoft")
+  become: true
+  block:
     - name: Copy wsl.conf.
       ansible.builtin.copy:
         src: "wsl.conf"
@@ -6,4 +11,3 @@
         owner: root
         group: root
         mode: "0644"
-  become: true
