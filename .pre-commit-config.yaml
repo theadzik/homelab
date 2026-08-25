@@ -21,7 +21,7 @@ repos:
           - "--conf=.yamlfmt.yaml"
         exclude: "\\.argocd-source-.*\\.yaml$|templates/.*$"
   - repo: https://github.com/PyCQA/isort
-    rev: 9.0.0b2
+    rev: 9.0.0b5
     hooks:
       - id: isort
   - repo: https://github.com/psf/black
