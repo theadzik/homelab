@@ -6,6 +6,7 @@ docker_apt_prerequisites:
   - ca-certificates
   - curl
   - gnupg
+  - python3-debian # required by ansible.builtin.deb822_repository
   - software-properties-common
 
 docker_dnf_prerequisites:

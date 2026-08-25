@@ -2,6 +2,7 @@
   ansible.builtin.apt:
     name:
       - apt-transport-https
+      - python3-debian # required by ansible.builtin.deb822_repository
     state: present
   when: ansible_facts["distribution"] | lower == "ubuntu"
   become: true
@@ -26,23 +27,34 @@
   when: ansible_facts["distribution"] | lower == "ubuntu"
   become: true
 
+- name: Ensure the legacy one-line VS Code repository file is absent.
+  ansible.builtin.file:
+    path: /etc/apt/sources.list.d/{{ vscode_repo_file }}.list
+    state: absent
+  when: ansible_facts["distribution"] | lower == "ubuntu"
+  become: true
+
 - name: Ensure VS Code repository is added to apt.
-  ansible.builtin.apt_repository:
-    repo: >-
-      deb [arch={{ vscode_arch_mapping.get(ansible_facts["architecture"], ansible_facts["architecture"]) }}
-      signed-by={{ vscode_keyring_path }}]
-      https://packages.microsoft.com/repos/code stable main
-    filename: "{{ vscode_repo_file }}"
+  ansible.builtin.deb822_repository:
+    name: "{{ vscode_repo_file }}"
+    types: deb
+    uris: https://packages.microsoft.com/repos/code
+    suites: stable
+    components: main
+    architectures: "{{ vscode_arch_mapping.get(ansible_facts['architecture'], ansible_facts['architecture']) }}"
+    signed_by: "{{ vscode_keyring_path }}"
+    enabled: true
     state: present
   when: ansible_facts["distribution"] | lower == "ubuntu"
   become: true
+  register: vscode_apt_repo
 
 - name: Ensure VS Code is installed on Ubuntu.
   ansible.builtin.apt:
     name: code
     state: latest
     update_cache: true
-    cache_valid_time: 3600
+    cache_valid_time: "{{ 0 if vscode_apt_repo.changed else 3600 }}"
   when: ansible_facts["distribution"] | lower == "ubuntu"
   become: true
 
