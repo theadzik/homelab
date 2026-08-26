@@ -18,9 +18,9 @@ spec:
         valueFiles:
           - $repo/kubernetes/helm/argocd/values.yaml
           - $repo/kubernetes/helm/argocd/values-{{ .Values.env }}.yaml
-{{/* Dex's GitHub connector and the GitHub App credential template. Not loaded
-     in dev: they are prod's own credentials, and a Docker cluster has no use
-     for either. See kubernetes/helm/argocd/values-dev.yaml. */}}
+{{- /* Dex's GitHub connector and the GitHub App credential template. Not loaded
+       in dev: they are prod's own credentials, and a Docker cluster has no use
+       for either. See kubernetes/helm/argocd/values-dev.yaml. */ -}}
 {{- if eq .Values.env "prod" }}
           - $repo/kubernetes/helm/argocd/values-secret.yaml
 {{- end }}

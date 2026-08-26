@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Create or destroy the dev cluster: three Talos nodes as Docker containers,
-# bootstrapped the same way the bare-metal cluster is. See ../docs/dev-cluster.md.
+# running the same charts and values as the bare-metal cluster. The one thing
+# that differs is when the bootstrap bundle is applied, and why - see the
+# comment above the kubectl calls below, and ../docs/dev-cluster.md.
 #
 #   ./talos/dev.sh create    (default)
 #   ./talos/dev.sh destroy
@@ -71,21 +73,39 @@ create() {
         | grep -q '^apiVersion:' \
         || die "repository is git-crypt locked; run 'git-crypt unlock' first"
 
-    # Same mechanism as generate.sh: everything Talos must apply before ArgoCD
-    # exists goes in as one inlineManifest, because Talos replaces that list
-    # per patch file rather than appending to it.
-    local inline_patch bootstrap_manifest
-    inline_patch="$(mktemp)"
-    # shellcheck disable=SC2064  # expand now, the temp file name is fixed
-    trap "rm -f '$inline_patch'" EXIT
-
+    # This is the one place dev cannot mirror prod. Prod embeds the whole
+    # Cilium + ArgoCD bundle in the machine config as an inlineManifest, but
+    # the Docker provisioner hands the machine config to the node in the
+    # USERDATA environment variable, and Linux caps a single environment
+    # variable at MAX_ARG_STRLEN - 32 pages, 128 KiB - for the whole
+    # "USERDATA=<base64>" string. That is roughly 98 KiB of YAML against a
+    # bundle of 2 MB, 90% of which is ArgoCD's three CRDs. Exceeding it does
+    # not warn; the container exits 255 with "exec /sbin/init: argument list
+    # too long" and the create panics afterwards on the node that never got
+    # an address.
+    #
+    # So dev applies the same bundle with kubectl once the API server is up,
+    # from the same kustomization prod renders into its machine config. The
+    # cluster still boots with no CNI and no kube-proxy, and everything from
+    # the bootstrap Application onwards is identical.
+    local rendered bootstrap_manifest crds
+    rendered="$(mktemp)"
     bootstrap_manifest="$(mktemp)"
+    crds="$(mktemp)"
+    # shellcheck disable=SC2064  # expand now, the temp file names are fixed
+    trap "rm -f '$rendered' '$bootstrap_manifest' '$crds'" EXIT
+
     kustomize build --enable-helm --load-restrictor LoadRestrictionsNone \
-        "${REPO_ROOT}/talos/bootstrap/dev" > "$bootstrap_manifest"
-    BOOTSTRAP_MANIFEST="$bootstrap_manifest" yq -n \
-        '.cluster.inlineManifests = [{"name": "bootstrap", "contents": load_str(strenv(BOOTSTRAP_MANIFEST))}]' \
-        > "$inline_patch"
-    rm -f "$bootstrap_manifest"
+        "${REPO_ROOT}/talos/bootstrap/dev" > "$rendered"
+
+    # ArgoCD's chart renders a cert-manager Certificate for its own ingress,
+    # and cert-manager is many sync waves away from existing - so its CRD is
+    # not installed and the object cannot be created yet. Prod embeds the same
+    # premature resource and Talos logs the failure and carries on; kubectl
+    # would abort the script instead, so it is dropped here and left to the
+    # `argocd` Application, which creates it once cert-manager is up.
+    yq 'select(.apiVersion != "cert-manager.io/v1")' "$rendered" > "$bootstrap_manifest"
+    yq 'select(.kind == "CustomResourceDefinition")' "$bootstrap_manifest" > "$crds"
 
     talosctl cluster create docker \
         --name "$CLUSTER_NAME" \
@@ -97,8 +117,25 @@ create() {
         --cpus-workers "$CPUS_WORKER" \
         --memory-controlplanes "$MEMORY_CONTROLPLANE" \
         --memory-workers "$MEMORY_WORKER" \
-        --config-patch "@${REPO_ROOT}/talos/patch-all.yaml" \
-        --config-patch-controlplanes "@${inline_patch}"
+        --config-patch "@${REPO_ROOT}/talos/patch-all.yaml"
+
+    # Nothing can be scheduled yet - that is the point of applying Cilium
+    # here - but the API server is a static pod on the host network, so it
+    # answers regardless.
+    local kube=(kubectl --context "admin@${CLUSTER_NAME}")
+
+    # CRDs first and established before the rest, because the bundle contains
+    # the argocd-bootstrap Application and kubectl will not create a custom
+    # resource whose kind the API server does not know yet. kustomize sorts
+    # CRDs to the front of its output, which is enough for Talos but not for
+    # kubectl, which does not wait between objects.
+    #
+    # Server-side apply is not optional: the applicationsets CRD is 1.4 MB,
+    # and a client-side apply would try to store all of it in the
+    # last-applied-configuration annotation and be rejected as too long.
+    "${kube[@]}" apply --server-side --force-conflicts -f "$crds"
+    "${kube[@]}" wait --for=condition=established --timeout=120s -f "$crds"
+    "${kube[@]}" apply --server-side --force-conflicts -f "$bootstrap_manifest"
 
     cat <<EOF
 
