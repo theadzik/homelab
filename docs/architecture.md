@@ -47,7 +47,8 @@ build pipeline. Talos replaces it with a declarative config and a PXE boot, and 
 migration is written up in
 [PXE Booting Talos Linux from Synology NAS](https://zmuda.pro/talos-linux-using-pxe).
 
-Four settings in that patch shape everything above them:
+Four settings in those patches shape everything above them - the first two shared with the
+[dev cluster](dev-cluster.md), the last two prod's alone:
 
 | Setting | Why |
 | --- | --- |
