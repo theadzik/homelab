@@ -1,9 +1,12 @@
 # Dev cluster
 
-Three Talos nodes as Docker containers on the workstation, bootstrapped the same way the
-bare-metal cluster is, from the same repository and the same charts. It exists so that a
-change to Cilium, to ArgoCD, or to the bootstrap path itself can be tried somewhere that is
-not the cluster serving the vault and the media library.
+Three Talos nodes as Docker containers on the workstation, running the same charts, the same
+values and the same GitOps chain as the bare-metal cluster. It exists so that a change to
+Cilium, to ArgoCD, or to an application can be tried somewhere that is not the cluster
+serving the vault and the media library.
+
+One step differs, and only one: how the bootstrap bundle reaches the cluster. That is
+[below](#the-one-mechanism-that-does-not-survive), with the reason it cannot be otherwise.
 
 ```sh
 ./talos/dev.sh create
@@ -187,6 +190,36 @@ so the repo-server still needs the key, and `argocd-gitcrypt-secret.yaml` is in 
 bootstrap bundle for exactly that reason. `dev.sh` checks the working tree is unlocked before
 rendering, because kustomize would otherwise embed the ciphertext as if it were the key and
 every unlock would fail silently.
+
+## When a first boot does not settle
+
+Everything converges at once on a cluster this fast, which makes cold-start races more
+likely here than on hardware. The one seen so far is metrics-server against cert-manager:
+they are one sync wave apart, and if cert-manager's webhook has endpoints but is not yet
+answering when metrics-server syncs, its `Certificate` and `Issuer` fail admission.
+
+```text
+Certificate/metrics-server  SyncFailed  Internal error occurred: failed calling webhook
+  "webhook.cert-manager.io": ... connect: no route to host
+```
+
+Ordinarily ArgoCD would retry. It does not here, because the same sync also applied the
+Deployment and the APIService, and the operation sits in `Running` waiting for those to
+become healthy - which they never will, since the Deployment is waiting on the secret the
+`Certificate` would have produced. A failed sync retries; a wedged one does not.
+
+Deleting the Application is enough. `argocd-bootstrap` recreates it within a refresh
+interval, and the second attempt finds a webhook that answers:
+
+```sh
+kubectl -n argocd delete application metrics-server
+```
+
+Check the webhook really is healthy first, so this is not repeated against a broken cluster:
+
+```sh
+kubectl -n cert-manager get endpoints cert-manager-webhook
+```
 
 ## Adding a component to dev
 
