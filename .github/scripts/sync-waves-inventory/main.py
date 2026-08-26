@@ -18,6 +18,13 @@ application_file_paths = [
 for file_path in application_file_paths:
     application_file = open(file_path, "r")
     content = application_file.read()
+    # Drop Go template actions that occupy whole lines on their own. These are
+    # control flow - the `has ... .Values.enabledApps` guards wrapping every
+    # template, and block comments - so they contribute no YAML, and quoting
+    # them the way inline expressions are quoted below would produce a bare
+    # string where a document is expected. Non-greedy, so a multi-line action
+    # ends at the first `}}` that closes a line.
+    content = re.sub(r"^[ \t]*\{\{-?.*?-?\}\}[ \t]*\n", "", content, flags=re.S | re.M)
     # Sanitize Go templating to avoid YAML parsing errors
     content_sanitized = re.sub(
         r'(?<!["\'\`])\{\{(?:[^{}]|(?:\{\{)|(?:\}\}))*\}\}(?!["\'\`])',
