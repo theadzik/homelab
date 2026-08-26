@@ -1,0 +1,12 @@
+# Traefik connects to argocd-server over HTTPS and verifies the certificate it
+# gets back, so this name has to match the one ArgoCD serves - the CN of the
+# certificate cert-manager issues from global.domain in
+# kubernetes/helm/argocd/values-dev.yaml. Getting it wrong is a 500 from
+# Traefik and "x509: certificate is valid for ..., not ..." in its log, which
+# is why this file is per-environment rather than shared.
+apiVersion: traefik.io/v1alpha1
+kind: ServersTransport
+metadata:
+  name: argocd-server-transport
+spec:
+  serverName: argocd.dev.zmuda.pro
