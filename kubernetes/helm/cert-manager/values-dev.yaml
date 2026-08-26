@@ -1,0 +1,4 @@
+# No dev-specific chart values, for the same reason as values-prod.yaml: the
+# difference is the issuers, not the controller. Dev's are self-signed, in
+# kubernetes/kustomizations/cert-manager/overlays/dev/.
+{}

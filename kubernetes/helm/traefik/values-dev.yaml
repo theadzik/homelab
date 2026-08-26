@@ -1,0 +1,6 @@
+# Nothing to override. Dev reaches Traefik directly on its Cilium-announced
+# LoadBalancer address with no proxy in between, so the file exists to hold the
+# absence of everything in values-prod.yaml: no Cloudflare plugin, and no
+# trusted proxy ranges, because here there is no trustworthy hop to take a
+# client address from.
+{}

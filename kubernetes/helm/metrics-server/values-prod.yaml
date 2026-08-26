@@ -1,0 +1,5 @@
+# No prod-specific chart values. `tls.type: cert-manager` in values.yaml makes
+# the chart provision its own issuer and CA rather than borrowing a
+# ClusterIssuer, so the one thing that does differ between environments does not
+# reach this chart.
+{}

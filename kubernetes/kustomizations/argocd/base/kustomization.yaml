@@ -1,0 +1,14 @@
+# Shared by both environments. The bootstrap Application is not here: it is the
+# one file that differs per environment, so it lives in each overlay.
+#
+# argocd-server-transport.yaml is a Traefik ServersTransport, so it needs
+# Traefik's CRD to exist. That is fine here - this kustomization is synced by
+# the `argocd` Application, long after Traefik. It is deliberately left out of
+# talos/bootstrap/, which runs before Traefik exists.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: argocd
+resources:
+  - argocd-namespace.yaml
+  - argocd-gitcrypt-secret.yaml
+  - argocd-server-transport.yaml

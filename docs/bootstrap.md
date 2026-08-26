@@ -14,13 +14,13 @@ adding a template to it.
 
 The chart is useless without ArgoCD to read it, and ArgoCD is not itself deployed by
 GitOps, since nothing can bootstrap the thing that does the bootstrapping. Talos gets it
-running instead: `talos/bootstrap/` renders ArgoCD's chart and adds the three
+running instead: `talos/bootstrap/prod/` renders ArgoCD's chart and adds the three
 plain manifests that get things moving, and the
 whole bundle is applied automatically the moment `talosctl bootstrap` runs. See
 [Talos](talos.md#bootstrapping-cilium-and-argocd) for exactly what goes in and why.
 
 One of those three files is
-[`argocd-bootstrap.yaml`](../kubernetes/kustomizations/argocd/argocd-bootstrap.yaml), an
+[`argocd-bootstrap.yaml`](../kubernetes/kustomizations/argocd/overlays/prod/argocd-bootstrap.yaml), an
 `Application` object pointing at `kubernetes/charts/app-of-apps` - this chart.
 `Application` is a custom resource, and its CRD comes from the ArgoCD chart rendered
 alongside it in the same bundle, so it exists by the time this file is applied.

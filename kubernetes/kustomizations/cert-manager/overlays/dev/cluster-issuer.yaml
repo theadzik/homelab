@@ -1,0 +1,23 @@
+# Same two names as prod, so every Ingress and Certificate in the repository
+# resolves its issuer in either environment without an overlay of its own.
+#
+# They self-sign instead of talking to Let's Encrypt. ACME needs a public DNS
+# name and the DNS-01 solver needs the Cloudflare token, neither of which a
+# Docker cluster has, and issuing real certificates for throwaway hostnames
+# would burn the rate limit on the zone prod depends on. Certificates come out
+# untrusted, so dev clients use `curl -k`.
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: lets-encrypt-staging
+spec:
+  selfSigned: {}
+
+---
+
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: lets-encrypt-prod
+spec:
+  selfSigned: {}

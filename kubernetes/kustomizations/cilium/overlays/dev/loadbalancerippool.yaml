@@ -1,0 +1,13 @@
+# Inside the Docker network talosctl creates for the dev cluster (10.5.0.0/24,
+# set by dev.sh). The nodes take .2-.4 and Docker's own gateway takes .1, so the
+# top of the range is free. L2 announcements work on a Docker bridge exactly as
+# they do on the LAN, and the bridge is attached to the workstation, so these
+# addresses are reachable from the host with no port forwarding.
+apiVersion: "cilium.io/v2"
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: "local-pool"
+spec:
+  blocks:
+    - start: "10.5.0.210"
+      stop: "10.5.0.220"
