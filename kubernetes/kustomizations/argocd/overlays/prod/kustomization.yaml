@@ -1,6 +1,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: argocd
+# argocd-server-transport.yaml is a Traefik ServersTransport, so it needs
+# Traefik's CRD to exist. That is fine here - this kustomization is synced by
+# the `argocd` Application, long after Traefik. It is deliberately left out of
+# talos/bootstrap/, which runs before Traefik exists.
 resources:
   - ../../base
   - argocd-bootstrap.yaml
+  - argocd-server-transport.yaml
