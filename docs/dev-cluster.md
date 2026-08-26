@@ -22,10 +22,82 @@ this repository cares most about behave identically.
 | Talos | `v1.13.7` from the Image Factory, with system extensions | `v1.13.7` stock image, no extensions possible |
 | Kubernetes | `1.36.3` | `1.36.3` |
 | Machine config | `patch-all.yaml` + `patch-prod.yaml` + secrets bundle | `patch-all.yaml` alone |
+| Kubelet serving certs | rotated, signed by the cluster CA | self-signed |
 | CNI | Cilium, kube-proxy replacement, L2 announcements | the same, from the same values file |
-| Bootstrap | `talos/bootstrap/prod` as an inline manifest | `talos/bootstrap/dev`, same mechanism |
+| Bootstrap | `talos/bootstrap/prod` as an inline manifest | `talos/bootstrap/dev`, applied by `dev.sh` - see below |
 | Cluster PKI | `secret-certs.yaml`, reproducible across runs | minted fresh per cluster, thrown away with it |
 | LoadBalancer pool | `192.168.0.210-220` on the LAN | `10.5.0.210-220` on the Docker bridge |
+
+## The one mechanism that does not survive
+
+Prod embeds Cilium, ArgoCD and the bootstrap `Application` in the control plane's machine
+config as a [Talos inline manifest](talos.md#bootstrapping-cilium-and-argocd), so
+`talosctl bootstrap` alone gets from bare metal to GitOps with nothing applied by hand.
+Dev renders the same bundle from the same kustomization, but `dev.sh` applies it with
+`kubectl` once the API server answers.
+
+That is not a stylistic choice. `talosctl cluster create docker` hands each node its machine
+config in the `USERDATA` environment variable, and Linux caps a single environment variable
+at `MAX_ARG_STRLEN` - 32 pages, 128 KiB - for the whole `USERDATA=<base64>` string. About
+98 KiB of YAML, against this:
+
+| Part of the bundle | Size |
+| --- | --- |
+| `applicationsets.argoproj.io` CRD | 1.39 MB |
+| `applications.argoproj.io` CRD | 397 KB |
+| everything Cilium | 64 KB |
+| `appprojects.argoproj.io` CRD | 17 KB |
+| everything else | 116 KB |
+
+Cilium on its own would fit, with about 9 KB to spare once the control plane config itself
+is accounted for. That margin is one chart bump wide, and going over it does not produce a
+warning - the container exits 255 with `exec /sbin/init: argument list too long`, and
+`talosctl` then panics parsing the address of a node that never started. A bootstrap that
+breaks that way on a Cilium upgrade is worse than one that never used the mechanism, so dev
+does not use it at all.
+
+What survives is everything that matters downstream: the cluster still boots with
+`cni: none` and no kube-proxy, Cilium still comes from the same chart and values, and from
+the bootstrap `Application` onwards dev and prod are the same cluster.
+
+### The one thing that follows from it
+
+`rotate-server-certificates` is in `patch-prod.yaml` rather than `patch-all.yaml` for the
+same reason, and this is worth understanding before moving it back.
+
+The setting makes the kubelet request a serving certificate from the cluster CA, and
+something in-cluster has to approve that CSR - `kubelet-serving-cert-approver`, an ordinary
+Deployment, which needs a CNI. Prod resolves the circularity because Talos applies Cilium
+from the machine config *during* bootstrap. Dev cannot: it applies the bundle after
+`talosctl cluster create` returns, and create does not return while the kubelet is
+unhealthy. The kubelet is unhealthy precisely because its serving certificate is unsigned.
+
+The failure is a quiet one. `cluster create` simply never finishes, and the reason is only
+visible in the node's own log:
+
+```console
+$ docker logs homelab-dev-controlplane-1
+[talos] diagnostic still active {"id": "kubelet-csr",
+  "message": "kubelet server certificate rotation is enabled, but CSR is not approved",
+  "details": ["pending CSRs: csr-srd82"]}
+```
+
+So dev kubelets keep their self-signed serving certificates, `kubelet-serving-cert-approver`
+is not in `enabledApps` because it would have nothing to approve, and metrics-server is
+given `--kubelet-insecure-tls` in
+[`values-dev.yaml`](../kubernetes/helm/metrics-server/values-dev.yaml) so its scrapes still
+complete. That flag is the narrowest available: it covers metrics-server's connection out to
+the kubelets and nothing else, so the API server still verifies metrics-server itself.
+
+Three details in `dev.sh` follow from applying by hand rather than through Talos. CRDs go on
+first and are waited for, because `kubectl` will not create the bootstrap `Application`
+before the API server knows its kind, and unlike Talos it does not wait between objects. The
+apply is server-side, because a client-side apply would try to record that 1.39 MB CRD in a
+`last-applied-configuration` annotation and be rejected. And the cert-manager `Certificate`
+ArgoCD's chart renders for its own ingress is filtered out, because cert-manager's CRD does
+not exist this early - prod embeds the same premature object and Talos logs the failure and
+moves on, where `kubectl` would abort the script. The `argocd` Application creates it later,
+once cert-manager is up.
 
 The PKI is the one place where dev is deliberately *less* reproducible.
 `talosctl cluster create docker` has no `--with-secrets`, and a dev cluster has no reason to
@@ -44,6 +116,8 @@ from `enabledApps` in
   CSI driver, and with them every application that needs a PersistentVolume.
 - **An install disk.** Nothing is installed; the container *is* the running system. This is
   what `patch-prod.yaml` exists to keep out of the dev config.
+- **Anything that has to be approved from inside the cluster before the cluster works.**
+  See [the one thing that follows from it](#the-one-thing-that-follows-from-it) below.
 - **The things that would touch something real.** external-dns would write into the live
   PiHole and Cloudflare zones, cloudflared would publish the dev cluster on the internet,
   Velero would write to the NAS, and Image Updater would commit image bumps back to the

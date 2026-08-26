@@ -19,6 +19,8 @@
 #   blog                        no storage dependency, but nothing to test yet
 #   kyverno                     admission policy; adds a failure mode to a first
 #                               boot without testing anything Docker changes
+#   kubelet-serving-cert-       nothing to approve: `rotate-server-certificates`
+#   approver                    is prod-only, see talos/patch-prod.yaml
 #
 # Any of these is one line away from being enabled. Add its stem here and, for
 # a chart with values, add a values-dev.yaml beside its values.yaml.
@@ -27,7 +29,6 @@ enabledApps:
   - argocd
   - cert-manager
   - cilium
-  - kubelet-serving-cert-approver
   - metrics-server
   - priority-classes
   - traefik

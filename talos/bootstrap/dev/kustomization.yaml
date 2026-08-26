@@ -1,6 +1,11 @@
-# Rendered by ../../dev.sh and embedded into the dev control plane's machine
-# config as an inlineManifest, the same way the prod bundle next door is. This
-# is what gets the Docker cluster to the point where ArgoCD exists at all.
+# Rendered by ../../dev.sh, which applies it with kubectl once the API server
+# answers. This is what gets the Docker cluster to the point where ArgoCD
+# exists at all.
+#
+# Prod embeds the equivalent bundle in the machine config as an inlineManifest
+# instead. Dev cannot: the Docker provisioner passes the machine config in an
+# environment variable, and 2 MB of ArgoCD CRDs does not fit in one. dev.sh
+# has the details.
 #
 # Same two charts and the same three files as prod, differing only in which
 # values file each chart layers on top. values-secret.yaml appears nowhere:

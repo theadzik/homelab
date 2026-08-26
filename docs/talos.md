@@ -12,9 +12,9 @@ hand-edited, and neither file is committed.
 | [`generate.sh`](../talos/generate.sh) | Regenerates the machine configs and `talosconfig` |
 | [`schematic.yaml`](../talos/schematic.yaml) | Image Factory schematic listing the system extensions |
 | [`patch-all.yaml`](../talos/patch-all.yaml) | Config patch applied to every node type, in both environments |
-| [`patch-prod.yaml`](../talos/patch-prod.yaml) | The parts that only apply to real hardware: install disk, containerd CDI directories |
+| [`patch-prod.yaml`](../talos/patch-prod.yaml) | The parts that need real hardware or an already-running cluster: install disk, containerd CDI directories, kubelet serving-cert rotation |
 | [`bootstrap/prod/`](../talos/bootstrap/prod/) | Kustomization rendering Cilium and ArgoCD for the control plane's inline manifest |
-| [`bootstrap/dev/`](../talos/bootstrap/dev/) | The same, for the Docker cluster - see [Dev cluster](dev-cluster.md) |
+| [`bootstrap/dev/`](../talos/bootstrap/dev/) | The same bundle for the Docker cluster, applied by `dev.sh` rather than inlined - see [Dev cluster](dev-cluster.md) |
 | [`dev.sh`](../talos/dev.sh) | Creates and destroys the Docker cluster |
 | `secret-nut-client.yaml` | Patch holding the UPS monitoring credentials, git-crypt encrypted |
 | `secret-certs.yaml` | Cluster PKI and join tokens, git-crypt encrypted |
