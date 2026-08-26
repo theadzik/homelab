@@ -191,34 +191,40 @@ bootstrap bundle for exactly that reason. `dev.sh` checks the working tree is un
 rendering, because kustomize would otherwise embed the ciphertext as if it were the key and
 every unlock would fail silently.
 
-## When a first boot does not settle
+## Cold starts, and the one that had to be designed around
 
-Everything converges at once on a cluster this fast, which makes cold-start races more
-likely here than on hardware. The one seen so far is metrics-server against cert-manager:
-they are one sync wave apart, and if cert-manager's webhook has endpoints but is not yet
-answering when metrics-server syncs, its `Certificate` and `Issuer` fail admission.
+Everything converges at once on a cluster this fast, so races that hardware timing hides
+show up here reliably. One is worth knowing in detail, because it does not resolve itself.
+
+metrics-server sits one sync wave behind cert-manager, and asks cert-manager for its own
+serving certificate. On a fresh dev cluster the webhook is routinely still coming up when
+that `Certificate` is applied:
 
 ```text
 Certificate/metrics-server  SyncFailed  Internal error occurred: failed calling webhook
   "webhook.cert-manager.io": ... connect: no route to host
 ```
 
-Ordinarily ArgoCD would retry. It does not here, because the same sync also applied the
-Deployment and the APIService, and the operation sits in `Running` waiting for those to
-become healthy - which they never will, since the Deployment is waiting on the secret the
-`Certificate` would have produced. A failed sync retries; a wedged one does not.
+A failed sync retries. This one does not, because the same sync also applied the Deployment,
+so the operation sits in `Running` waiting for a pod that is itself waiting for the secret
+the failed `Certificate` would have produced. Nothing times out. The cluster stays wedged
+until someone deletes the Application.
 
-Deleting the Application is enough. `argocd-bootstrap` recreates it within a refresh
-interval, and the second attempt finds a webhook that answers:
+Rather than leave that in the boot path,
+[`values-dev.yaml`](../kubernetes/helm/metrics-server/values-dev.yaml) has metrics-server
+generate its own certificate, which takes cert-manager out of the picture; the API server
+then cannot verify it, so `apiService.insecureSkipTLSVerify` is true here and false in prod.
+Dev gives up testing that one integration in exchange for booting unattended.
+
+The same shape can appear elsewhere - a custom resource applied alongside the workload that
+needs it, one wave after the controller that admits it. The symptom is an Application stuck
+`Running` with a `SyncFailed` resource in its sync result, and the recovery is to delete it
+and let `argocd-bootstrap` recreate it once the webhook answers:
 
 ```sh
-kubectl -n argocd delete application metrics-server
-```
-
-Check the webhook really is healthy first, so this is not repeated against a broken cluster:
-
-```sh
-kubectl -n cert-manager get endpoints cert-manager-webhook
+kubectl -n argocd get application <app> \
+  -o jsonpath='{.status.operationState.phase}{"\n"}'
+kubectl -n argocd delete application <app>
 ```
 
 ## Adding a component to dev
