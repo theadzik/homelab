@@ -1,13 +1,29 @@
-# Dev does not set `rotate-server-certificates` on the kubelet, because the
-# approver that signs those CSRs cannot run before the CNI that dev applies
-# after boot - talos/patch-prod.yaml has the full reasoning. So kubelet serving
-# certificates here are self-signed and metrics-server has to be told to accept
-# them, or every scrape fails the handshake and no node ever reports metrics.
+# Two overrides, both tracing back to differences dev cannot avoid.
 #
-# This is scoped as tightly as it can be: it affects metrics-server's
-# connection out to the kubelets, and nothing else. `tls.type: cert-manager` in
-# values.yaml still governs metrics-server's own serving certificate, and
-# `apiService.insecureSkipTLSVerify: false` still holds, so the API server
-# still verifies metrics-server.
+# --kubelet-insecure-tls: dev does not set `rotate-server-certificates` on the
+# kubelet, because the approver that signs those CSRs cannot run before the CNI
+# that dev applies after boot - talos/patch-prod.yaml has the reasoning. Kubelet
+# serving certificates are therefore self-signed, and metrics-server has to
+# accept them or every scrape fails the handshake. It covers metrics-server's
+# connection out to the kubelets and nothing else.
+#
+# tls.type: prod has the chart ask cert-manager for metrics-server's own serving
+# certificate. Here that deadlocks a cold start. metrics-server is one sync wave
+# behind cert-manager, and on a cluster this fast the webhook is routinely not
+# answering yet when the Certificate and Issuer are applied:
+#
+#   Internal error occurred: failed calling webhook "webhook.cert-manager.io":
+#   ... connect: no route to host
+#
+# Ordinarily ArgoCD retries. It cannot here, because the same sync also applied
+# the Deployment, so the operation waits in Running for a pod that is waiting
+# for the secret the failed Certificate would have produced. Nothing times out
+# and nothing retries. Letting metrics-server generate its own certificate takes
+# cert-manager off the boot path entirely; insecureSkipTLSVerify follows,
+# because that certificate chains to nothing the API server knows.
 args:
   - --kubelet-insecure-tls
+tls:
+  type: metrics-server
+apiService:
+  insecureSkipTLSVerify: true
