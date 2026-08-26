@@ -1,7 +1,18 @@
-# The parts of the machine config that only mean something on real hardware.
-# A Docker node has no disk to install to and no GPU to publish device specs
-# for, so dev applies patch-all.yaml alone.
+# The parts of the machine config that only work on real hardware, or that
+# depend on something already running in the cluster. Dev applies
+# patch-all.yaml alone.
 machine:
+  kubelet:
+    extraArgs:
+      # Requires kubelet-serving-cert-approver in-cluster to approve the CSRs,
+      # which is why this cannot be in patch-all.yaml. The approver is an
+      # ordinary Deployment, so it needs a CNI, and prod only gets away with
+      # the circularity because Talos applies Cilium from the machine config
+      # during bootstrap. Dev applies its bundle after `talosctl cluster
+      # create` returns, and create will not return while the kubelet is
+      # unhealthy - so in dev the kubelet keeps its self-signed serving
+      # certificate. See docs/dev-cluster.md.
+      rotate-server-certificates: true
   # https://docs.siderolabs.com/talos/v1.12/configure-your-talos-cluster/images-container-runtime/containerd#set-cdi-plugin-spec-dirs-to-writable-directories
   files:
     - path: /etc/cri/conf.d/20-customization.part

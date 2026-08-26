@@ -1,16 +1,15 @@
 # Applied to every node type, in both environments. See README.md in this
 # directory for the full regeneration procedure.
 #
+# What is left here is deliberately small: only the settings that hold on a
+# Docker container as well as on a real machine, and that nothing has to be
+# running in-cluster to satisfy. Anything else belongs in patch-prod.yaml.
+#
 # NOTE: this patch alone does NOT reproduce either cluster. Prod pairs it with
 # `patch-prod.yaml`, `secret-nut-client.yaml` for the NUT credentials,
 # `secret-certs.yaml` via `--with-secrets` for the PKI and join tokens, and
 # generate.sh's `--kubernetes-version`/`--install-image` flags - see
 # docs/talos.md#version-pinning. Dev pairs it with the flags in dev.sh.
-machine:
-  kubelet:
-    extraArgs:
-      # Requires kubelet-serving-cert-approver in-cluster to approve the CSRs.
-      rotate-server-certificates: true
 cluster:
   network:
     cni:
