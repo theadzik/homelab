@@ -1,12 +1,23 @@
-# Traefik connects to argocd-server over HTTPS and verifies the certificate it
-# gets back, so this name has to match the one ArgoCD serves - the CN of the
-# certificate cert-manager issues from global.domain in
-# kubernetes/helm/argocd/values-dev.yaml. Getting it wrong is a 500 from
-# Traefik and "x509: certificate is valid for ..., not ..." in its log, which
-# is why this file is per-environment rather than shared.
+# Traefik connects to argocd-server over HTTPS, so it needs to know both what
+# name to expect and whether it can verify the certificate carrying it.
+#
+# serverName has to match the name ArgoCD serves - the CN of the certificate
+# cert-manager issues from global.domain in kubernetes/helm/argocd/values-dev.yaml.
+# Getting it wrong is a 500 from Traefik and "x509: certificate is valid for
+# ..., not ..." in its log, which is why this file is per-environment rather
+# than shared.
+#
+# insecureSkipVerify is what prod does not need. There the certificate comes
+# from Let's Encrypt and chains to a root Traefik already trusts; here the dev
+# ClusterIssuer self-signs, so every certificate is its own root and there is
+# no chain to check - "x509: certificate signed by unknown authority". This
+# turns off verification for one hop inside the cluster, to a backend selected
+# by Kubernetes Service, and nothing else: Traefik still terminates a real
+# certificate towards the client, and argocd-server still refuses plain HTTP.
 apiVersion: traefik.io/v1alpha1
 kind: ServersTransport
 metadata:
   name: argocd-server-transport
 spec:
   serverName: argocd.dev.zmuda.pro
+  insecureSkipVerify: true

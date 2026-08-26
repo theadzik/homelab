@@ -10,6 +10,9 @@ config and applied by Talos itself as part of `talosctl apply-config`. See
 [Talos](talos.md#bootstrapping-cilium-and-argocd) for how. What is left is getting that
 machine config generated and onto the node.
 
+This page is the bare-metal cluster. For the Docker one, which is `./talos/dev.sh create`
+and shares everything below the machine config, see [Dev cluster](dev-cluster.md).
+
 ### 1. Unlock the repository
 
 Either path works: an exported key file, or the GPG key registered as a git-crypt
