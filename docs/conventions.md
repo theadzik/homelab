@@ -9,10 +9,10 @@ silently.
 | Path | Contains | Rule |
 | --- | --- | --- |
 | [`kubernetes/charts/`](../kubernetes/charts/) | app-of-apps, plus Helm charts written here | app-of-apps registers every application or it does not exist; the rest are publishable on their own, SemVer in `Chart.yaml` |
-| [`kubernetes/helm/<app>/`](../kubernetes/helm/) | Values for upstream charts | Chart stays upstream, only values live here |
-| [`kubernetes/kustomizations/<app>/`](../kubernetes/kustomizations/) | Manifests for apps without a chart worth using | `kustomization.yaml` is the entry point, including for plain manifests |
+| [`kubernetes/helm/<app>/`](../kubernetes/helm/) | Values for upstream charts | Chart stays upstream, only values live here. `values.yaml` is shared; `values-dev.yaml` and `values-prod.yaml` hold what differs |
+| [`kubernetes/kustomizations/<app>/`](../kubernetes/kustomizations/) | Manifests for apps without a chart worth using | `kustomization.yaml` is the entry point, including for plain manifests. An app that differs per environment splits into `base/` and `overlays/{dev,prod}/` |
 | [`apps/`](../apps/) | Dockerfiles and the scripts they package | One directory per image, matching a build workflow |
-| [`talos/`](../talos/) | Node config inputs | The machine configs are generated from these and never committed |
+| [`talos/`](../talos/) | Node config inputs, for both clusters | The machine configs are generated from these and never committed |
 | [`ansible/`](../ansible/) | Workstation setup | Not cluster configuration |
 | [`docs/`](.) | These pages | Reasoning that outlives any single manifest |
 

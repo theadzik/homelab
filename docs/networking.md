@@ -135,7 +135,7 @@ mechanisms restore the original, and both are needed:
 - `forwardedHeaders.trustedIPs` and `proxyProtocol.trustedIPs` list every Cloudflare
   address range, so `X-Forwarded-For` from those sources is believed and from anywhere else
   is not.
-- The [`cloudflare` plugin middleware](../kubernetes/kustomizations/traefik/cloudflare-middleware.yaml)
+- The [`cloudflare` plugin middleware](../kubernetes/kustomizations/traefik/overlays/prod/cloudflare-middleware.yaml)
   rewrites the request header from `CF-Connecting-IP`, trusting only `10.0.0.0/8`. That is
   the pod network, which is where `cloudflared` sits.
 
@@ -197,7 +197,7 @@ account for should be deleted.
 
 cert-manager issues from Let's Encrypt using a **DNS-01** solver with a Cloudflare API
 token, and both a staging and a production
-[ClusterIssuer](../kubernetes/kustomizations/cert-manager/cluster-issuer.yaml) exist.
+[ClusterIssuer](../kubernetes/kustomizations/cert-manager/overlays/prod/cluster-issuer.yaml) exist.
 
 DNS-01 is the only option that works here, and it is also the better one. HTTP-01 requires
 the validation server to reach the host, which is impossible for a name that resolves only

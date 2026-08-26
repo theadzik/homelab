@@ -1,3 +1,4 @@
+{{- if has "audiobookshelf" .Values.enabledApps }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -52,3 +53,4 @@ spec:
       images:
         - alias: "audiobookshelf"
           imageName: "ghcr.io/advplyr/audiobookshelf:~2"
+{{- end }}

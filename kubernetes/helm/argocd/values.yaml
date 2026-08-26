@@ -1,5 +1,4 @@
 global:
-  domain: argocd.zmuda.pro
   image:
     repository: ghcr.io/theadzik/custom-argocd
     tag: ""
@@ -13,13 +12,6 @@ global:
 configs:
   params:
     server.insecure: false
-  rbac:
-    policy.csv: |
-      p, role:authenticated, *, *, *, deny
-      g, zmuda-pro:argocd-admins, role:admin
-    policy.default: role:authenticated
-    scopes: "[groups, email]"
-    policy.matchMode: "glob"
 
 server:
   service:
@@ -28,17 +20,8 @@ server:
       traefik.ingress.kubernetes.io/service.serverstransport: argocd-argocd-server-transport@kubernetescrd
   ingress:
     enabled: true
-    labels:
-      dns-type: internal
     ingressClassName: "traefik"
     tls: true
-  certificate:
-    enabled: true
-    secretName: argocd-server-tls
-    issuer:
-      name: lets-encrypt-prod
-      kind: ClusterIssuer
-    domain: argocd.zmuda.pro
 
 repoServer:
   env:

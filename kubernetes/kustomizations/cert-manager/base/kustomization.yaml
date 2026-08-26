@@ -1,0 +1,7 @@
+# Only the namespace is shared. Both ClusterIssuers are named the same in each
+# environment but issue very differently, so they live in the overlays.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: cert-manager
+resources:
+  - namespace.yaml

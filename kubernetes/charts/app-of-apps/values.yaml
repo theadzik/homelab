@@ -1,4 +1,43 @@
+# Defaults are production's, so a bootstrap that passes no values file at all
+# still renders the production cluster. Each environment's own file overrides
+# what it needs: see values-prod.yaml and values-dev.yaml next to this one.
 spec:
   sources:
     repoURL: "https://github.com/theadzik/homelab"
     targetRevision: HEAD
+
+# Selects the per-component overlay: templates read it to pick
+# `values-<env>.yaml` beside a chart's values.yaml, and the
+# `kustomizations/<app>/overlays/<env>` path.
+env: prod
+
+# Which templates render. Names are template file stems in templates/, which is
+# also what a person edits to change an application. A component missing from
+# this list is not deployed, and ArgoCD prunes it if it was.
+#
+# Helm replaces lists rather than merging them, so each environment's file
+# states its whole set rather than a delta.
+enabledApps:
+  - argocd
+  - argocd-image-updater
+  - audiobookshelf
+  - blog
+  - cert-manager
+  - cilium
+  - cloudflared
+  - cnpg
+  - descheduler
+  - external-dns
+  - falco
+  - intel-gpu-resource-driver
+  - kubelet-serving-cert-approver
+  - kyverno
+  - media
+  - metrics-server
+  - priority-classes
+  - synology-csi
+  - tandoor
+  - traefik
+  - vaultwarden
+  - velero
+  - vpa

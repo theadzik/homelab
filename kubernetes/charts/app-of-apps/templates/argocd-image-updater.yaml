@@ -1,3 +1,4 @@
+{{- if has "argocd-image-updater" .Values.enabledApps }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -37,3 +38,4 @@ spec:
       refresh: true
     syncOptions:
       - PruneLast=true
+{{- end }}

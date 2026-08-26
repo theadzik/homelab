@@ -1,0 +1,5 @@
+# No prod-specific chart values. What differs between the environments is not
+# the controller but what it is asked to issue: the ACME ClusterIssuers and the
+# Cloudflare API token live in
+# kubernetes/kustomizations/cert-manager/overlays/prod/.
+{}

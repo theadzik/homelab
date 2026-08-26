@@ -1,3 +1,4 @@
+{{- if has "synology-csi" .Values.enabledApps }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -82,3 +83,4 @@ spec:
           commonUpdateSettings:
             updateStrategy: "semver"
             allowTags: "regexp:^v[0-9]+\\.[0-9]+\\.[0-9]+$"
+{{- end }}

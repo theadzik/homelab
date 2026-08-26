@@ -1,0 +1,6 @@
+# The announcement policy is identical in both environments. The address pool
+# it announces from is not, so it lives in the overlays.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - l2announcementpolicy.yaml

@@ -18,8 +18,7 @@ TALOS_VERSION="v1.13.7"
 SCHEMATIC_ID="$(curl -sS -X POST --data-binary @schematic.yaml https://factory.talos.dev/schematics | jq -er '.id')"
 INSTALL_IMAGE="factory.talos.dev/metal-installer/${SCHEMATIC_ID}:${TALOS_VERSION}"
 
-# Cilium and ArgoCD (values.yaml only - see talos/bootstrap/kustomization.yaml
-# for why values-secret.yaml never appears here) get rendered and embedded as
+# Cilium and ArgoCD get rendered from talos/bootstrap/prod and embedded as
 # one inlineManifest, control-plane only. Talos merges the inlineManifests
 # list from separate --config-patch files by replacing it, not appending, so
 # everything has to go in through one patch or the second would silently drop
@@ -29,7 +28,7 @@ trap 'rm -f "$INLINE_MANIFESTS_PATCH"' EXIT
 
 BOOTSTRAP_MANIFEST="$(mktemp)"
 kustomize build --enable-helm --load-restrictor LoadRestrictionsNone \
-    "$REPO_ROOT/talos/bootstrap" > "$BOOTSTRAP_MANIFEST"
+    "$REPO_ROOT/talos/bootstrap/prod" > "$BOOTSTRAP_MANIFEST"
 BOOTSTRAP_MANIFEST="$BOOTSTRAP_MANIFEST" yq -n \
     '.cluster.inlineManifests = [{"name": "bootstrap", "contents": load_str(strenv(BOOTSTRAP_MANIFEST))}]' \
     > "$INLINE_MANIFESTS_PATCH"
@@ -42,6 +41,7 @@ talosctl gen config \
     --talos-version "$TALOS_VERSION" \
     --install-image "$INSTALL_IMAGE" \
     --config-patch @patch-all.yaml \
+    --config-patch @patch-prod.yaml \
     --config-patch @secret-nut-client.yaml \
     --config-patch-control-plane "@${INLINE_MANIFESTS_PATCH}" \
     --with-docs=false --with-examples=false \

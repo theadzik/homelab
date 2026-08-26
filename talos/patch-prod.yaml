@@ -1,0 +1,13 @@
+# The parts of the machine config that only mean something on real hardware.
+# A Docker node has no disk to install to and no GPU to publish device specs
+# for, so dev applies patch-all.yaml alone.
+machine:
+  # https://docs.siderolabs.com/talos/v1.12/configure-your-talos-cluster/images-container-runtime/containerd#set-cdi-plugin-spec-dirs-to-writable-directories
+  files:
+    - path: /etc/cri/conf.d/20-customization.part
+      op: create
+      content: |
+        [plugins."io.containerd.cri.v1.runtime"]
+          cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
+  install:
+    disk: /dev/nvme0n1

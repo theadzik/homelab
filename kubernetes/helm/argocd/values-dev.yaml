@@ -1,0 +1,22 @@
+# values-secret.yaml is deliberately not loaded in dev. It carries the Dex
+# GitHub connector and the GitHub App credential template, both of which are
+# prod's, and neither of which a Docker cluster has any use for. That leaves
+# ArgoCD with no SSO, so the local admin account stays on - it is the only way
+# to log in here. The password is generated into the argocd-initial-admin-secret
+# Secret; talos/dev.sh prints the command to read it.
+global:
+  domain: argocd.dev.zmuda.pro
+
+configs:
+  cm:
+    url: https://argocd.dev.zmuda.pro
+    admin.enabled: "true"
+
+server:
+  certificate:
+    enabled: true
+    secretName: argocd-server-tls
+    issuer:
+      name: lets-encrypt-prod
+      kind: ClusterIssuer
+    domain: argocd.dev.zmuda.pro

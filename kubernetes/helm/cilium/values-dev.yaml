@@ -1,0 +1,19 @@
+# Same shape as prod on a hostname that resolves nowhere. There is no
+# external-dns in dev, so the `dns-type` label is dropped rather than left to
+# imply a record gets created; point /etc/hosts at the Traefik LoadBalancer
+# address instead. lets-encrypt-prod is a self-signed issuer here, so the
+# certificate is untrusted by design - see
+# kubernetes/kustomizations/cert-manager/overlays/dev/cluster-issuer.yaml.
+hubble:
+  ui:
+    ingress:
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: lets-encrypt-prod
+      className: "traefik"
+      hosts:
+        - hubble.dev.zmuda.pro
+      tls:
+        - secretName: hubble-tls
+          hosts:
+            - hubble.dev.zmuda.pro

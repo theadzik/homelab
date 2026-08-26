@@ -78,6 +78,7 @@ Documentation for each, with the reasoning:
 | [Operations](docs/operations.md) | Bootstrap, adding an application, day-2 runbook |
 | [Conventions](docs/conventions.md) | Layout, quality gates, review rules |
 | [Talos](docs/talos.md) | Node config generation, version pinning, bootstrapping Cilium and ArgoCD |
+| [Dev cluster](docs/dev-cluster.md) | The same cluster in Docker: what matches prod, what cannot, and how to reach it |
 | [Synology](docs/synology.md) | What is configured on the NAS by hand |
 
 ## Repository layout
@@ -87,7 +88,7 @@ kubernetes/charts/      app-of-apps chart (every application is registered here)
 kubernetes/helm/        values for upstream charts
 kubernetes/kustomizations/  manifests for apps deployed without a chart
 apps/                   Dockerfiles and the scripts they package
-talos/                  node configuration: schematic and machine config patch
+talos/                  node configuration: schematic, machine config patches, and the dev cluster script
 ansible/                workstation setup, not cluster configuration
 docs/                   the pages above
 ```

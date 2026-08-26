@@ -40,7 +40,7 @@ talosctl kubeconfig
 ```
 
 `talosctl bootstrap` is where Cilium and ArgoCD actually get created, along with the
-[`argocd-bootstrap` Application](../kubernetes/kustomizations/argocd/argocd-bootstrap.yaml)
+[`argocd-bootstrap` Application](../kubernetes/kustomizations/argocd/overlays/prod/argocd-bootstrap.yaml)
 that points ArgoCD at the app-of-apps chart. From there ArgoCD works through the sync waves
 on its own, adopting the Cilium and ArgoCD releases Talos just created and reconfiguring
 itself with the full values, secrets included, the moment its own `argocd` Application

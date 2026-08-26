@@ -1,0 +1,45 @@
+# Rendered by ../../dev.sh and embedded into the dev control plane's machine
+# config as an inlineManifest, the same way the prod bundle next door is. This
+# is what gets the Docker cluster to the point where ArgoCD exists at all.
+#
+# Same two charts and the same three files as prod, differing only in which
+# values file each chart layers on top. values-secret.yaml appears nowhere:
+# unlike prod, dev never loads it, not even once ArgoCD is managing itself -
+# see kubernetes/helm/argocd/values-dev.yaml.
+#
+# argocd-gitcrypt-secret.yaml is still here, because the branch dev tracks has
+# the same git-crypt encrypted files in it as main, and the repo-server has to
+# be able to read them.
+#
+# The argocd base's argocd-server-transport.yaml is deliberately not among the
+# resources below - it is a Traefik ServersTransport, and Traefik's CRD does
+# not exist at boot. The `argocd` Application's second source is
+# kubernetes/kustomizations/argocd/overlays/dev, so it picks that file up on
+# its own once Traefik is running. That is why the files are listed one by one
+# instead of referencing the kustomizations.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: argocd # Namespace for the below resources, helm releases have their own targets
+resources:
+  - ../../../kubernetes/kustomizations/argocd/base/argocd-namespace.yaml
+  - ../../../kubernetes/kustomizations/argocd/overlays/dev/argocd-bootstrap.yaml
+  - ../../../kubernetes/kustomizations/argocd/base/argocd-gitcrypt-secret.yaml
+helmCharts:
+  - name: cilium
+    repo: oci://quay.io/cilium/charts
+    version: 1.20.0
+    releaseName: cilium
+    namespace: kube-system
+    includeCRDs: true
+    valuesFile: ../../../kubernetes/helm/cilium/values.yaml
+    additionalValuesFiles:
+      - ../../../kubernetes/helm/cilium/values-dev.yaml
+  - name: argo-cd
+    repo: https://argoproj.github.io/argo-helm
+    version: 10.2.2
+    releaseName: argocd
+    namespace: argocd
+    includeCRDs: true
+    additionalValuesFiles:
+      - ../../../kubernetes/helm/argocd/values.yaml
+      - ../../../kubernetes/helm/argocd/values-dev.yaml

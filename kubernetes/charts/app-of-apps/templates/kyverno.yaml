@@ -1,3 +1,4 @@
+{{- if has "kyverno" .Values.enabledApps }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -46,3 +47,4 @@ spec:
         factor: 2
         maxDuration: 3m
       refresh: true
+{{- end }}

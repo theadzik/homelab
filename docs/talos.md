@@ -11,8 +11,11 @@ hand-edited, and neither file is committed.
 | --- | --- |
 | [`generate.sh`](../talos/generate.sh) | Regenerates the machine configs and `talosconfig` |
 | [`schematic.yaml`](../talos/schematic.yaml) | Image Factory schematic listing the system extensions |
-| [`patch-all.yaml`](../talos/patch-all.yaml) | Config patch applied to every node type |
-| [`bootstrap/`](../talos/bootstrap/) | Kustomization rendering Cilium and ArgoCD for the control plane's inline manifest |
+| [`patch-all.yaml`](../talos/patch-all.yaml) | Config patch applied to every node type, in both environments |
+| [`patch-prod.yaml`](../talos/patch-prod.yaml) | The parts that only apply to real hardware: install disk, containerd CDI directories |
+| [`bootstrap/prod/`](../talos/bootstrap/prod/) | Kustomization rendering Cilium and ArgoCD for the control plane's inline manifest |
+| [`bootstrap/dev/`](../talos/bootstrap/dev/) | The same, for the Docker cluster - see [Dev cluster](dev-cluster.md) |
+| [`dev.sh`](../talos/dev.sh) | Creates and destroys the Docker cluster |
 | `secret-nut-client.yaml` | Patch holding the UPS monitoring credentials, git-crypt encrypted |
 | `secret-certs.yaml` | Cluster PKI and join tokens, git-crypt encrypted |
 | `controlplane.yaml`, `worker.yaml`, `talosconfig` | Generator output, git-ignored, contains the PKI in plaintext |
@@ -133,11 +136,11 @@ Talos has a mechanism built for exactly this -
 [`cluster.inlineManifests`](https://docs.siderolabs.com/talos/v1.13/reference/configuration/v1alpha1/config#inlinemanifests):
 manifests embedded directly in the machine config, applied automatically as part of
 `talosctl bootstrap`, before anything else. `generate.sh` builds one from
-[`talos/bootstrap/`](../talos/bootstrap/), a kustomization that renders Cilium and ArgoCD via
+[`talos/bootstrap/prod/`](../talos/bootstrap/prod/), a kustomization that renders Cilium and ArgoCD via
 Helm and adds the three files that get ArgoCD's own bootstrap `Application` running:
 
 ```sh
-kustomize build --enable-helm --load-restrictor LoadRestrictionsNone talos/bootstrap
+kustomize build --enable-helm --load-restrictor LoadRestrictionsNone talos/bootstrap/prod
 ```
 
 `--load-restrictor LoadRestrictionsNone` is needed because that kustomization reaches into
@@ -151,7 +154,7 @@ Two things about what goes in are worth knowing:
 - **`argocd-server-transport.yaml` is left out.** It is a Traefik `ServersTransport`, and
   Traefik's CRD does not exist at boot - Traefik itself is still several sync waves away.
   The `argocd` Application's second source is
-  [`kubernetes/kustomizations/argocd`](../kubernetes/kustomizations/argocd/), so it picks
+  [`kubernetes/kustomizations/argocd/overlays/prod`](../kubernetes/kustomizations/argocd/overlays/prod/), so it picks
   that file up on its own, later, once Traefik is running.
 - **The CRDs are included, and nothing is trimmed to save space.** ArgoCD's three CRDs alone
   render to roughly 1.8 MB, so `controlplane.yaml` ends up around 2.4 MB against
@@ -168,7 +171,7 @@ internally - inline manifests exist specifically to solve CRD-then-CR bootstrap 
 (CNI installs are the canonical use case), so this is very likely handled, but it has not
 been watched happen on real hardware. If `argocd-bootstrap` is missing after a fresh
 `talosctl bootstrap`, the fallback is the same command a human would have run before this
-existed: `kubectl apply -k kubernetes/kustomizations/argocd`.
+existed: `kubectl apply -k kubernetes/kustomizations/argocd/overlays/prod`.
 
 Once Cilium is up, a node stops waiting - Talos applies inline manifests itself as part of
 its own bootstrap sequence.

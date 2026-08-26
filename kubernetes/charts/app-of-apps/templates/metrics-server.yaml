@@ -1,3 +1,4 @@
+{{- if has "metrics-server" .Values.enabledApps }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -16,6 +17,7 @@ spec:
         releaseName: metrics-server
         valueFiles:
           - $repo/kubernetes/helm/metrics-server/values.yaml
+          - $repo/kubernetes/helm/metrics-server/values-{{ .Values.env }}.yaml
     - repoURL: "{{ .Values.spec.sources.repoURL }}"
       targetRevision: "{{ .Values.spec.sources.targetRevision }}"
       ref: repo
@@ -49,3 +51,4 @@ spec:
       name: v1beta1.metrics.k8s.io
       jsonPointers:
         - /spec/insecureSkipTLSVerify
+{{- end }}

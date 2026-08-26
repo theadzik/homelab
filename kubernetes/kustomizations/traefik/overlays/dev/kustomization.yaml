@@ -1,0 +1,7 @@
+# No middleware. The Cloudflare one restores the real client IP from
+# CF-Connecting-IP, and nothing in dev sets that header.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: traefik
+resources:
+  - ../../base

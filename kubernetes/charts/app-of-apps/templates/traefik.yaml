@@ -1,3 +1,4 @@
+{{- if has "traefik" .Values.enabledApps }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -17,9 +18,10 @@ spec:
         skipCrds: false
         valueFiles:
           - $repo/kubernetes/helm/traefik/values.yaml
+          - $repo/kubernetes/helm/traefik/values-{{ .Values.env }}.yaml
     - repoURL: "{{ .Values.spec.sources.repoURL }}"
       targetRevision: "{{ .Values.spec.sources.targetRevision }}"
-      path: kubernetes/kustomizations/traefik
+      path: kubernetes/kustomizations/traefik/overlays/{{ .Values.env }}
       ref: repo
   destination:
     server: "https://kubernetes.default.svc"
@@ -44,3 +46,4 @@ spec:
         pod-security.kubernetes.io/enforce: privileged
         pod-security.kubernetes.io/audit: restricted
         pod-security.kubernetes.io/warn: restricted
+{{- end }}

@@ -1,3 +1,4 @@
+{{- if has "blog" .Values.enabledApps }}
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
@@ -80,3 +81,4 @@ spec:
           commonUpdateSettings:
             updateStrategy: "semver"
             allowTags: "regexp:^[0-9]{4}\\.[0-9]{1,2}\\.[0-9]{1,2}$"
+{{- end }}
