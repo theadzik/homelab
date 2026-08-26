@@ -41,11 +41,25 @@ die() { echo "error: $*" >&2; exit 1; }
 
 destroy() {
     talosctl cluster destroy --name "$CLUSTER_NAME" || true
-    # cluster create merged these in; leaving them behind makes `kubectl
-    # config get-contexts` lie about what exists.
+
+    # cluster create merged both configs in, and destroy removes neither.
+    # Leaving them behind makes `kubectl config get-contexts` and `talosctl
+    # config contexts` list clusters that no longer exist.
     kubectl config delete-context "admin@${CLUSTER_NAME}" 2>/dev/null || true
     kubectl config delete-cluster "$CLUSTER_NAME" 2>/dev/null || true
     kubectl config delete-user "admin@${CLUSTER_NAME}" 2>/dev/null || true
+
+    # talosctl does not overwrite a context whose name is taken - it adds
+    # `-1`, `-2` and so on - so a create/destroy loop silently accumulates
+    # them, and the stale ones point at forwarded ports that have since been
+    # reused. Remove every context this cluster has ever created, not just
+    # the current one.
+    local context
+    for context in $(talosctl config contexts 2>/dev/null \
+        | awk -v n="$CLUSTER_NAME" '$1 == "*" {$1 = ""} {sub(/^ +/, "")} $1 == n || $1 ~ "^" n "-[0-9]+$" {print $1}'); do
+        talosctl config remove "$context" --noconfirm >/dev/null 2>&1 || true
+    done
+
     echo "destroyed ${CLUSTER_NAME}"
 }
 
