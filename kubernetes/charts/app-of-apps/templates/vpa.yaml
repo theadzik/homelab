@@ -1,3 +1,4 @@
+{{- if has "vpa" .Values.enabledApps }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -49,3 +50,4 @@ spec:
         pod-security.kubernetes.io/enforce: privileged
         pod-security.kubernetes.io/audit: restricted
         pod-security.kubernetes.io/warn: restricted
+{{- end }}

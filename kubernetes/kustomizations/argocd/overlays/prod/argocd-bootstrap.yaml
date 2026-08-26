@@ -14,6 +14,8 @@ spec:
     path: "kubernetes/charts/app-of-apps"
     targetRevision: main
     helm:
+      valueFiles:
+        - values-prod.yaml
       parameters:
         - name: "spec.sources.targetRevision"
           value: $ARGOCD_APP_SOURCE_TARGET_REVISION

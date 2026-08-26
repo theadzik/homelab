@@ -1,3 +1,4 @@
+{{- if has "cert-manager" .Values.enabledApps }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -14,7 +15,8 @@ spec:
         releaseName: cert-manager
         valueFiles:
           - $repo/kubernetes/helm/cert-manager/values.yaml
-    - path: kubernetes/kustomizations/cert-manager
+          - $repo/kubernetes/helm/cert-manager/values-{{ .Values.env }}.yaml
+    - path: kubernetes/kustomizations/cert-manager/overlays/{{ .Values.env }}
       repoURL: "{{ .Values.spec.sources.repoURL }}"
       targetRevision: "{{ .Values.spec.sources.targetRevision }}"
       ref: repo
@@ -41,3 +43,4 @@ spec:
         pod-security.kubernetes.io/enforce: privileged
         pod-security.kubernetes.io/audit: restricted
         pod-security.kubernetes.io/warn: restricted
+{{- end }}

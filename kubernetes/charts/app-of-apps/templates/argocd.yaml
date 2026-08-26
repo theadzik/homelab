@@ -1,3 +1,4 @@
+{{- if has "argocd" .Values.enabledApps }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -16,8 +17,14 @@ spec:
         releaseName: argocd
         valueFiles:
           - $repo/kubernetes/helm/argocd/values.yaml
+          - $repo/kubernetes/helm/argocd/values-{{ .Values.env }}.yaml
+{{/* Dex's GitHub connector and the GitHub App credential template. Not loaded
+     in dev: they are prod's own credentials, and a Docker cluster has no use
+     for either. See kubernetes/helm/argocd/values-dev.yaml. */}}
+{{- if eq .Values.env "prod" }}
           - $repo/kubernetes/helm/argocd/values-secret.yaml
-    - path: kubernetes/kustomizations/argocd
+{{- end }}
+    - path: kubernetes/kustomizations/argocd/overlays/{{ .Values.env }}
       repoURL: "{{ .Values.spec.sources.repoURL }}"
       targetRevision: "{{ .Values.spec.sources.targetRevision }}"
       ref: repo
@@ -45,3 +52,4 @@ spec:
         pod-security.kubernetes.io/enforce: privileged
         pod-security.kubernetes.io/audit: restricted
         pod-security.kubernetes.io/warn: restricted
+{{- end }}

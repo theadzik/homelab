@@ -1,0 +1,4 @@
+# The bare-metal cluster. values.yaml already defaults to prod, so this file
+# only makes that explicit - loading it or not gives the same result, which is
+# what keeps a bootstrap that predates the dev environment working.
+env: prod

@@ -1,0 +1,33 @@
+# The Docker cluster from talos/dev.sh.
+#
+# The list is the whole dev environment: everything absent from it is either
+# impossible on a Docker node or would reach out and touch something real.
+#
+#   synology-csi                iSCSI to the NAS, and the iscsi-tools system
+#                               extension a Docker node cannot have
+#   intel-gpu-resource-driver   needs the i915 extension and a real GPU
+#   falco                       kernel-level runtime detection on a shared host
+#                               kernel it does not own
+#   velero                      backs up to Garage on the NAS
+#   external-dns                would write records into the real PiHole and
+#                               Cloudflare zones
+#   cloudflared                 would publish the dev cluster on the internet
+#   argocd-image-updater        would commit image bumps back to this branch
+#   cnpg, audiobookshelf,       need PersistentVolumes, and dev has no storage
+#   media, tandoor,             class until something replaces Synology CSI
+#   vaultwarden
+#   blog                        no storage dependency, but nothing to test yet
+#   kyverno                     admission policy; adds a failure mode to a first
+#                               boot without testing anything Docker changes
+#
+# Any of these is one line away from being enabled. Add its stem here and, for
+# a chart with values, add a values-dev.yaml beside its values.yaml.
+env: dev
+enabledApps:
+  - argocd
+  - cert-manager
+  - cilium
+  - kubelet-serving-cert-approver
+  - metrics-server
+  - priority-classes
+  - traefik

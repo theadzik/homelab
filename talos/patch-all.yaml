@@ -1,25 +1,16 @@
-# Applied to every node type via `talosctl gen config --config-patch @patch-all.yaml`.
-# See README.md in this directory for the full regeneration procedure.
+# Applied to every node type, in both environments. See README.md in this
+# directory for the full regeneration procedure.
 #
-# NOTE: this patch alone does NOT reproduce the live cluster. It must be paired
-# with `secret-nut-client.yaml` for the NUT credentials, with
+# NOTE: this patch alone does NOT reproduce either cluster. Prod pairs it with
+# `patch-prod.yaml`, `secret-nut-client.yaml` for the NUT credentials,
 # `secret-certs.yaml` via `--with-secrets` for the PKI and join tokens, and
-# with generate.sh's `--kubernetes-version`/`--install-image` flags for the
-# fields that used to live here - see docs/talos.md#version-pinning.
+# generate.sh's `--kubernetes-version`/`--install-image` flags - see
+# docs/talos.md#version-pinning. Dev pairs it with the flags in dev.sh.
 machine:
   kubelet:
     extraArgs:
       # Requires kubelet-serving-cert-approver in-cluster to approve the CSRs.
       rotate-server-certificates: true
-  # https://docs.siderolabs.com/talos/v1.12/configure-your-talos-cluster/images-container-runtime/containerd#set-cdi-plugin-spec-dirs-to-writable-directories
-  files:
-    - path: /etc/cri/conf.d/20-customization.part
-      op: create
-      content: |
-        [plugins."io.containerd.cri.v1.runtime"]
-          cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
-  install:
-    disk: /dev/nvme0n1
 cluster:
   network:
     cni:

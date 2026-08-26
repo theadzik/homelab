@@ -1,3 +1,4 @@
+{{- if has "cilium" .Values.enabledApps }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -16,7 +17,8 @@ spec:
         releaseName: cilium
         valueFiles:
           - $repo/kubernetes/helm/cilium/values.yaml
-    - path: kubernetes/kustomizations/cilium
+          - $repo/kubernetes/helm/cilium/values-{{ .Values.env }}.yaml
+    - path: kubernetes/kustomizations/cilium/overlays/{{ .Values.env }}
       repoURL: "{{ .Values.spec.sources.repoURL }}"
       targetRevision: "{{ .Values.spec.sources.targetRevision }}"
       ref: repo
@@ -43,3 +45,4 @@ spec:
         pod-security.kubernetes.io/enforce: privileged
         pod-security.kubernetes.io/audit: restricted
         pod-security.kubernetes.io/warn: restricted
+{{- end }}

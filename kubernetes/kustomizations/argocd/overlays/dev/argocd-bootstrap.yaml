@@ -1,0 +1,46 @@
+# Entry point for the dev cluster, same role as the prod file next door.
+#
+# targetRevision is the branch the whole dev cluster tracks: every child
+# Application inherits it through $ARGOCD_APP_SOURCE_TARGET_REVISION, so
+# changing it here moves the entire cluster to another branch. It has to match
+# the branch this file is read from, because the `argocd` Application syncs
+# kubernetes/kustomizations/argocd/overlays/dev and would otherwise reconcile
+# the value back to whatever is committed.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-bootstrap
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "-100" # Always run first
+spec:
+  project: default
+  source:
+    repoURL: "https://github.com/theadzik/homelab/"
+    path: "kubernetes/charts/app-of-apps"
+    targetRevision: feat/dev-env
+    helm:
+      valueFiles:
+        - values-dev.yaml
+      parameters:
+        - name: "spec.sources.targetRevision"
+          value: $ARGOCD_APP_SOURCE_TARGET_REVISION
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - PruneLast=true
+    retry:
+      limit: 10
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 3m
+      refresh: true

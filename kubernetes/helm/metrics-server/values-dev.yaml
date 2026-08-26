@@ -1,0 +1,5 @@
+# No dev-specific chart values. insecureSkipTLSVerify stays false here too:
+# `rotate-server-certificates` in talos/patch-all.yaml applies to both
+# environments, so kubelet serving certificates are signed by the cluster CA on
+# a Docker node exactly as they are on bare metal.
+{}

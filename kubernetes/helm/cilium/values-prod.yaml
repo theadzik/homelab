@@ -1,0 +1,18 @@
+# Everything above this file is identical in both environments - the CNI itself
+# does not change between bare metal and Docker. Only how Hubble is published
+# does.
+hubble:
+  ui:
+    ingress:
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: lets-encrypt-prod
+      className: "traefik"
+      hosts:
+        - hubble.zmuda.pro
+      labels:
+        dns-type: internal
+      tls:
+        - secretName: hubble-tls
+          hosts:
+            - hubble.zmuda.pro

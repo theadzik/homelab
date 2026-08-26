@@ -33,7 +33,7 @@ below, and applied automatically as part of `talosctl apply-config` - no `helm i
 [Talos](talos.md#bootstrapping-cilium-and-argocd) for what that actually contains.
 
 The same bundle also creates
-[`argocd-bootstrap.yaml`](../kubernetes/kustomizations/argocd/argocd-bootstrap.yaml), one
+[`argocd-bootstrap.yaml`](../kubernetes/kustomizations/argocd/overlays/prod/argocd-bootstrap.yaml), one
 `Application` object that points ArgoCD at
 [`kubernetes/charts/app-of-apps`](../kubernetes/charts/app-of-apps/), a
 Helm chart whose templates are the `Application` and `ApplicationSet` definitions for
@@ -231,7 +231,7 @@ passes straight through, and a failed unlock is swallowed rather than failing th
 repository with nothing encrypted still works.
 
 The key reaches the repo-server as a Kubernetes Secret, and that Secret is
-[in this repository](../kubernetes/kustomizations/argocd/argocd-gitcrypt-secret.yaml) like
+[in this repository](../kubernetes/kustomizations/argocd/base/argocd-gitcrypt-secret.yaml) like
 everything else. Its filename matches `*secret*`, so git-crypt encrypts it with the very key
 it contains. That is circular, and it does no harm. The file is only readable by something
 that can already read the repository, so committing it gives an attacker nothing, and the
