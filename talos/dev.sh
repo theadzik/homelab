@@ -39,25 +39,54 @@ BOOTSTRAP_APP="${REPO_ROOT}/kubernetes/kustomizations/argocd/overlays/dev/argocd
 
 die() { echo "error: $*" >&2; exit 1; }
 
+# Context names from `talosctl config contexts`, which prints a header row and
+# marks the current context with a `*` in the first column.
+talos_contexts() {
+    talosctl config contexts 2>/dev/null \
+        | awk 'NR > 1 { print ($1 == "*") ? $2 : $1 }'
+}
+
+is_dev_context() {
+    case "$1" in
+        "$CLUSTER_NAME" | "$CLUSTER_NAME"-[0-9]*) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
 destroy() {
     talosctl cluster destroy --name "$CLUSTER_NAME" || true
 
-    # cluster create merged both configs in, and destroy removes neither.
-    # Leaving them behind makes `kubectl config get-contexts` and `talosctl
-    # config contexts` list clusters that no longer exist.
+    # cluster create merged both configs in, and cluster destroy removes
+    # neither. Leaving them behind makes `kubectl config get-contexts` and
+    # `talosctl config contexts` list clusters that no longer exist.
     kubectl config delete-context "admin@${CLUSTER_NAME}" 2>/dev/null || true
     kubectl config delete-cluster "$CLUSTER_NAME" 2>/dev/null || true
     kubectl config delete-user "admin@${CLUSTER_NAME}" 2>/dev/null || true
 
     # talosctl does not overwrite a context whose name is taken - it adds
-    # `-1`, `-2` and so on - so a create/destroy loop silently accumulates
-    # them, and the stale ones point at forwarded ports that have since been
-    # reused. Remove every context this cluster has ever created, not just
-    # the current one.
-    local context
-    for context in $(talosctl config contexts 2>/dev/null \
-        | awk -v n="$CLUSTER_NAME" '$1 == "*" {$1 = ""} {sub(/^ +/, "")} $1 == n || $1 ~ "^" n "-[0-9]+$" {print $1}'); do
-        talosctl config remove "$context" --noconfirm >/dev/null 2>&1 || true
+    # `-1`, `-2` and so on - so a create/destroy loop accumulates them, each
+    # pointing at a forwarded port that has since been reused. Every context
+    # this cluster has ever created goes, not just the current one.
+    local context other=""
+
+    # It will not remove the context it is currently on, and says so while
+    # still exiting 0, so move off it first. Any other context will do. If dev
+    # is the only one there is nowhere to move to, and the leftover is
+    # harmless.
+    for context in $(talos_contexts); do
+        if ! is_dev_context "$context"; then
+            other="$context"
+            break
+        fi
+    done
+    if [ -n "$other" ]; then
+        talosctl config context "$other" >/dev/null 2>&1 || true
+    fi
+
+    for context in $(talos_contexts); do
+        if is_dev_context "$context"; then
+            talosctl config remove "$context" --noconfirm >/dev/null 2>&1 || true
+        fi
     done
 
     echo "destroyed ${CLUSTER_NAME}"
