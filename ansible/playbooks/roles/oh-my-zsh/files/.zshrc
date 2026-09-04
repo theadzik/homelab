@@ -56,7 +56,7 @@ alias kns="kubens"
 alias t="talosctl"
 alias tf="terraform"
 
-export REPWISE_CONFIG=~/git/repwise/workouts.yaml
+export REPWISE_CONFIG=~/git/workouts/workouts.yaml
 source <(repwise completion zsh)
 source <(kubectl completion zsh)
 source <(talosctl completion zsh)
