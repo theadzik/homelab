@@ -1,0 +1,56 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: ["config:recommended"],
+
+  // Dependabot already owns pip, docker, github-actions and pre-commit here.
+  // Renovate is enabled for exactly one thing Dependabot cannot see: the chart
+  // versions living in `targetRevision` inside the ArgoCD Application
+  // manifests. Dependabot only ever reads `dependencies:` out of a Chart.yaml,
+  // so reaching those versions with it would mean wrapping every upstream
+  // chart in a local umbrella chart first. Any manager enabled beyond argocd
+  // would race Dependabot for files it is already updating.
+  enabledManagers: ["argocd"],
+
+  argocd: {
+    // The argocd manager matches no files at all by default - without this it
+    // silently does nothing.
+    managerFilePatterns: [
+      "/^kubernetes/charts/app-of-apps/templates/.+\\.yaml$/",
+    ],
+  },
+
+  // The point of the exercise. `targetRevision: 40.*.*` resolves to whatever
+  // upstream published most recently, so what is deployed can change without a
+  // commit and the repo stops being the record of what is running. Pinning
+  // rewrites the wildcard to the exact version it resolves to today, and every
+  // move after that arrives as a reviewable PR.
+  rangeStrategy: "pin",
+
+  // Mirrors the `cooldown: default-days: 7` the Dependabot entries carry: long
+  // enough that an upstream release pulled shortly after publication is not
+  // already merged here.
+  minimumReleaseAge: "7 days",
+
+  // No `schedule` here on purpose. This repo runs Renovate from a workflow, so
+  // the cron in renovate.yaml is already the schedule; a second one here would
+  // be a silent gate that has to be kept in sync with it. Set one here if
+  // Renovate ever moves to the hosted GitHub App instead.
+
+  // A chart major is where the breaking changes are, and reviewing one next to
+  // three patch bumps is how it gets skimmed. Patches and minors group into a
+  // single PR; majors each get their own.
+  packageRules: [
+    {
+      matchManagers: ["argocd"],
+      matchUpdateTypes: ["minor", "patch"],
+      groupName: "argocd charts",
+    },
+    {
+      matchManagers: ["argocd"],
+      matchUpdateTypes: ["major"],
+      // Majors in this repo have needed values changes (traefik 40 -> 41
+      // renamed the whole `logs:` block). Keep the upgrade notes in the PR.
+      commitMessagePrefix: "bump(major):",
+    },
+  ],
+}

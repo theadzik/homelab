@@ -11,7 +11,7 @@ spec:
   sources:
     - chart: vertical-pod-autoscaler
       repoURL: https://kubernetes.github.io/autoscaler
-      targetRevision: "*"
+      targetRevision: 0.12.0
       helm:
         releaseName: vertical-pod-autoscaler
         valueFiles:
