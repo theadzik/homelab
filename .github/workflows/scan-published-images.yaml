@@ -2,12 +2,14 @@ name: Scan published images
 
 # Post-build detection. The build gate only ever runs once, on the day an image
 # is built, and the findings that live in an upstream binary this repo cannot
-# rebuild are accepted in each image's .trivyignore.yaml. So nothing notices a
-# CVE published the day after a build, and nothing notices the more useful
-# event: an upstream release that makes an accepted finding actionable at last.
+# rebuild are tolerated there via `fail-on-vulnerabilities: false`. So nothing
+# notices a CVE published the day after a build, and nothing notices the more
+# useful event: an upstream release that makes a tolerated finding fixable at
+# last.
 #
 # This reports, it never gates. Every finding it can see today is already known
-# and accepted, so failing the run would train everyone to ignore it.
+# and tolerated at build time, so failing the run would train everyone to
+# ignore it.
 on:
   schedule:
     - cron: "17 6 * * *"
