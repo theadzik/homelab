@@ -24,10 +24,9 @@ experimental:
       moduleName: github.com/agence-gaya/traefik-plugin-cloudflare
       version: v1.2.0
 
-logs:
-  access:
-    enabled: true
-    format: json
+accessLog:
+  enabled: true
+  format: json
   fields:
     headers:
       names:
@@ -66,7 +65,3 @@ ports:
       trustedIPs: *trustedIPs
     proxyProtocol:
       trustedIPs: *trustedIPs
-
-service:
-  type: LoadBalancer
-  loadBalancerClass: io.cilium/l2-announcer
