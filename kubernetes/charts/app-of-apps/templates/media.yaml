@@ -57,7 +57,7 @@ spec:
           writeBackTarget: "helmvalues:/kubernetes/helm/media/values.yaml"
       images:
         - alias: "jellyfin"
-          imageName: "lscr.io/linuxserver/jellyfin:~10"
+          imageName: "lscr.io/linuxserver/jellyfin:~12"
           manifestTargets:
             helm:
               name: "services.jellyfin.image"
