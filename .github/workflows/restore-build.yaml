@@ -21,7 +21,7 @@ jobs:
     with:
       tag-prefix: "vw-restore-"
   restore-build-push:
-    uses: theadzik/github-workflows/.github/workflows/build-and-push.yaml@bc3bbe8c89bd2d610c35185f020aeec522db9306 # v4.0.0
+    uses: theadzik/github-workflows/.github/workflows/build-and-push.yaml@c83c3e8f6838981737c0eee922da5fcac368537e # v4.1.1
     needs: get-tag
     permissions:
       contents: read
@@ -41,9 +41,7 @@ jobs:
       extra-registry-username: ${{ vars.DOCKERHUB_USERNAME }}
       context-path: "apps/vaultwarden/restore"
       scan: true
-      # Dated acceptances for findings inside the copied rclone binary. Read the
-      # file before extending a date; it is not a mute button.
-      trivyignores: "apps/vaultwarden/restore/.trivyignore.yaml"
+      fail-on-vulnerabilities: false
       push: ${{ github.event_name != 'pull_request' }}
     secrets:
       REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}

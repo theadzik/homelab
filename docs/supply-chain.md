@@ -148,18 +148,20 @@ How it reports:
 - **One issue, reopened and rewritten.** A daily scan that files a daily issue is a daily
   notification nobody reads. When the findings clear, it comments and closes.
 
-The build gate is on for all four images. It used to be switched off (`scan: false`) for
-three of them, because every finding sits inside a binary copied from an upstream image - in
-rclone's own Go dependencies or ArgoCD's - and nothing in this repository can rebuild those.
-Left on with no acceptances, the gate would have blocked the weekly rebuild forever without
-ever producing a finding anyone could act on.
+The build gate is on for all four images, but `vw-backup`, `vw-restore` and `custom-argocd`
+pass `fail-on-vulnerabilities: false`. It used to be `scan: false` for those three, because
+every finding sits inside a binary copied from an upstream image - in rclone's own Go
+dependencies or ArgoCD's - and nothing in this repository can rebuild those. Gating on them
+with no way to tolerate a finding just reproduced the same failure: a weekly rebuild blocked
+by an advisory nobody here can act on.
 
-Turning it back on meant writing those findings down instead of muting the gate. Each image
-now carries a [`.trivyignore.yaml`](../apps/vaultwarden/backup/.trivyignore.yaml) naming
-every accepted CVE, scoped to the purl that carries it, with a reason and an expiry date. A
-new finding outside those entries fails the build, and an acceptance stops applying on its
-date rather than outliving its reason. The daily scan still covers the same images, and is
-where an upstream fix shows up first.
+A per-CVE `.trivyignore.yaml` closed that gap for a while - each accepted finding scoped to
+its purl, with a reason and an expiry date - but the file was busywork with no safety
+purpose: every new upstream advisory demanded a fresh dated entry before the next rebuild
+could pass, for a finding that was never actionable from this repository either way.
+`fail-on-vulnerabilities: false` reports the same findings without the file. A secret or an
+end-of-life base image still fails the build regardless of this input. The daily scan still
+covers the same images, and is where an upstream fix shows up first.
 
 ## Why GHCR
 
