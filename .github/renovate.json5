@@ -42,6 +42,14 @@
   // be a silent gate that has to be kept in sync with it. Set one here if
   // Renovate ever moves to the hosted GitHub App instead.
 
+  // Dependabot owns the ecosystems where this repository wants security
+  // advisories. Renovate is here only to pin ArgoCD chart targetRevision
+  // values, so asking it for vulnerability alerts just produces a permissions
+  // warning on the Dependency Dashboard.
+  vulnerabilityAlerts: {
+    enabled: false,
+  },
+
   // A chart major is where the breaking changes are, and reviewing one next to
   // three patch bumps is how it gets skimmed. Patches and minors group into a
   // single PR; majors each get their own.
