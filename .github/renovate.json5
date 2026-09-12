@@ -14,8 +14,14 @@
   argocd: {
     // The argocd manager matches no files at all by default - without this it
     // silently does nothing.
+    //
+    // The leading `[^_]` skips underscore-prefixed templates. Helm does not
+    // render those, so `_trivy-operator.yaml` is a disabled Application (it was
+    // renamed that way in 158c4ec, "Remove trivy"), and bumping the chart of
+    // something that never deploys is pure PR noise. Its pin stays where it is
+    // until the file is renamed back.
     managerFilePatterns: [
-      "/^kubernetes/charts/app-of-apps/templates/.+\\.yaml$/",
+      "/^kubernetes/charts/app-of-apps/templates/[^_].+\\.yaml$/",
     ],
   },
 
