@@ -11,7 +11,7 @@ spec:
   sources:
     - path: .
       repoURL: oci://ghcr.io/aquasecurity/helm-charts/trivy-operator
-      targetRevision: "*"
+      targetRevision: 0.32.1
       helm:
         releaseName: trivy-operator
         valueFiles:

@@ -1,0 +1,51 @@
+name: Renovate
+
+# Dependabot cannot see these versions. Its Helm support reads `dependencies:`
+# out of a Chart.yaml and nothing else, so the chart versions that actually
+# decide what this cluster runs - the `targetRevision` fields in the ArgoCD
+# Application manifests - are invisible to it. Reaching them with Dependabot
+# would mean wrapping every upstream chart in a local umbrella chart first.
+# Renovate reads them directly, and `enabledManagers` in renovate.json5 holds it
+# to that one job so it never races Dependabot over a file Dependabot owns.
+on:
+  schedule:
+    # Fridays, alongside the pip and docker Dependabot entries - the ones that
+    # pin `day: "friday"`. The github-actions and pre-commit entries give only
+    # `interval: "weekly"`, which Dependabot resolves to Monday, so those arrive
+    # separately rather than with this run. This cron is the only schedule:
+    # renovate.json5 sets none, so there is no second gate to keep in step.
+    - cron: "0 6 * * 5"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  renovate:
+    name: Renovate
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      # A PAT here would tie every chart bump to whoever minted it, and its
+      # scope would follow that account to every other repo it can reach. The
+      # App token is scoped to this repo and expires with the run, the same
+      # reason update-sync-waves-inventory uses one.
+      - name: Generate GitHub App token
+        id: generate-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ secrets.RENOVATE_CLIENT_ID }}
+          private-key: ${{ secrets.RENOVATE_KEY }}
+
+      # No checkout step: Renovate clones the repository itself and reads
+      # .github/renovate.json5 from that clone.
+      - name: Renovate
+        uses: renovatebot/github-action@c314dda4a9a93b08239ec978f2043b9a433b9ac4 # v46.3.0
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
+        env:
+          RENOVATE_REPOSITORIES: ${{ github.repository }}
+          LOG_LEVEL: info
