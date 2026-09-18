@@ -82,9 +82,9 @@ can assert about itself:
 ```yaml
 securityContext:
   runAsNonRoot: true
-  runAsUser: 10003
-  runAsGroup: 20003
-  fsGroup: 20003
+  runAsUser: 65532
+  runAsGroup: 65532
+  fsGroup: 65532
   seccompProfile:
     type: RuntimeDefault
 # per container
@@ -96,7 +96,9 @@ securityContext:
 
 `readOnlyRootFilesystem` is the one that takes work. Everything the process needs to write
 becomes an explicit `emptyDir`, so every writable path is listed in the manifest. For the
-blog that is nginx's cache and run directories, and nothing else.
+blog that is nginx's temp and pid directories, and nothing else. The UID is the nginx
+image's own user, because the image keeps its temp directory under a path only that user
+can enter.
 
 Container images built here follow the same rule from the other side. They are non-root by
 default, minimal, and carry no shell to inherit. See

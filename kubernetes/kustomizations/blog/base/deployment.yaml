@@ -34,10 +34,14 @@ spec:
             capabilities:
               drop:
                 - ALL
+          # The image uses Alpine's nginx layout: temp files under
+          # /var/lib/nginx/tmp, pid in /run/nginx. /var/lib/nginx is 0750
+          # nginx:nginx, so the pod must run as the image's nginx user (65532)
+          # to reach the tmp mount at all.
           volumeMounts:
-            - mountPath: /var/cache/nginx
-              name: cache
-            - mountPath: /var/run
+            - mountPath: /var/lib/nginx/tmp
+              name: tmp
+            - mountPath: /run/nginx
               name: run
           # Without a readinessProbe the pod is Ready as soon as nginx starts, so
           # an image that boots but serves nothing (an empty document root from a
@@ -77,13 +81,13 @@ spec:
               memory: 128Mi
       securityContext:
         runAsNonRoot: true
-        runAsUser: 10003
-        runAsGroup: 20003
-        fsGroup: 20003
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
         seccompProfile:
           type: RuntimeDefault
       volumes:
-        - name: cache
+        - name: tmp
           emptyDir: {}
         - name: run
           emptyDir: {}
