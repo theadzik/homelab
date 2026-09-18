@@ -148,9 +148,40 @@ A replacement node is a PXE boot and a `talosctl apply-config`. No data lives on
 configuration.
 
 ```bash
-./ansible/install-scripts/bootstrap.sh              # fresh machine: git identity, brew, pipx, ansible
+./ansible/install-scripts/bootstrap.sh              # ssh key, brew, pipx, ansible
 ansible-playbook ansible/playbooks/local-setup.yaml -K
+./ansible/install-scripts/post-install.sh <git-crypt-key.asc>   # github, git-crypt
 ```
+
+The scripts do only what ansible cannot do for itself. Git identity, signing and
+`~/.config/git/allowed-signers` are the `git` role's, so they are applied on every run
+rather than typed once into a machine and forgotten on the next one, and `pipx` - which
+`bootstrap.sh` installs to get ansible - is kept current by the `general` role afterwards.
+
+The key pair is new on each machine, so nothing is carried over from the old one except the
+git-crypt key, which cannot be regenerated - pass it to `post-install.sh`, or import it
+into your keyring beforehand and leave the argument off.
+
+The three steps split where the tools do. `bootstrap.sh` generates `~/.ssh/id_ed25519`,
+because the `git` role writes `allowed-signers` from its public half during the play and
+fails without it - the key has to exist before the playbook, though not before the clone,
+since cloning a public repository needs nothing. `post-install.sh` comes
+after, because `gh`, `git-crypt` and the rest arrive with the playbook. It registers the
+public half with GitHub twice, as an authentication key and as a signing key: GitHub holds
+those separately, the first is what lets you push, the second is what puts **Verified** on
+your commits. It also asks for the `admin:public_key` and `admin:ssh_signing_key` scopes,
+which a plain `gh auth login` does not grant.
+
+Both scripts check before they act - an existing key is not regenerated, a key already on
+the account is not re-added, an unlocked repository is not unlocked again - so either can be
+run twice without harm.
+
+A new key means the commits you signed on the *old* machine no longer verify here:
+`allowed-signers` is written with one line, this machine's, so anything signed by a retired
+key reads as `U` rather than `G`. To verify them locally too, keep the retired public keys as
+extra lines in that file. On GitHub the same thing hangs on the key still being registered:
+delete a retired SSH signing key there and every commit it signed drops back to Unverified,
+so leave them on the account.
 
 Roles: `general`, `wsl`, `oh-my-zsh`, `git`, `k8s-tools`, `docker`, `node`, `vscode`. The
 playbook asserts a supported distribution (Ubuntu or Fedora) before it changes anything, and

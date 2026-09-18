@@ -1,23 +1,21 @@
 #!/usr/bin/env bash
 set -e
 
+# The least that has to happen before `ansible-playbook` will run: an SSH key,
+# then brew, pipx and ansible itself. Git identity, signing and the
+# allowed-signers file used to be here too - the git role owns those now, so
+# they are applied on every run rather than once on a machine's first day.
+#
+# The key stays here because the git role reads its public half during the play
+# and fails without it. It is this machine's own, generated fresh rather than
+# carried over from the last one. Registering it with GitHub and importing the
+# GPG key git-crypt unlocks with are post-install.sh's, since both need tools
+# the playbook installs. See docs/operations.md.
+
 key_path="$HOME/.ssh/id_ed25519"
-key_path_pub="$key_path.pub"
-git_config="$HOME/.config/git"
-
-email="adam@zmuda.pro"
-name="Adam Żmuda"
-
-git config --global user.name "$name"
-git config --global user.email "$email"
-git config --global core.editor "vim"
-git config --global --add --bool push.autoSetupRemote true
-
-mkdir -p "$git_config"
-echo "$email $(cat "$key_path_pub")" > "$git_config/allowed-signers"
-git config --global commit.gpgsign true
-git config --global gpg.format ssh
-git config --global user.signingkey "$key_path_pub"
+if [[ ! -f "$key_path" ]]; then
+  ssh-keygen -t ed25519 -C "adam@zmuda.pro" -f "$key_path"
+fi
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 echo >> ~/.bashrc

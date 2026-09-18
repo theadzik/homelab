@@ -1,3 +1,24 @@
+- name: Ensure git config directory exists.
+  ansible.builtin.file:
+    path: "{{ git_config_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Ensure the signing key is trusted to verify your own commits.
+  ansible.builtin.copy:
+    content: "{{ git_user_email }} {{ lookup('ansible.builtin.file', git_signing_key) }}\n"
+    dest: "{{ git_allowed_signers }}"
+    mode: "0644"
+
+- name: Ensure global git settings.
+  community.general.git_config:
+    name: "{{ item.name }}"
+    scope: global
+    value: "{{ item.value }}"
+  loop: "{{ git_global_settings }}"
+  loop_control:
+    label: "{{ item.name }}"
+
 - name: Create git-crypt version file.
   ansible.builtin.copy:
     content: ""

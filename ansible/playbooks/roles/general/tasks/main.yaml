@@ -14,3 +14,6 @@
     - bat
     - eza
     - gh
+    # Installed by bootstrap.sh to get ansible onto a new machine; kept current
+    # from here, since every pipx task in the other roles runs through it.
+    - pipx
