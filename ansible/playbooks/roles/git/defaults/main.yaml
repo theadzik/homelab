@@ -1,3 +1,39 @@
+git_user_name: "Adam Żmuda"
+git_user_email: "adam@zmuda.pro"
+git_signing_key: "/home/{{ ansible_user }}/.ssh/id_ed25519.pub"
+git_config_dir: "/home/{{ ansible_user }}/.config/git"
+git_allowed_signers: "{{ git_config_dir }}/allowed-signers"
+
+# Everything `git config --global` should hold, so a new machine needs no
+# memory of what was typed into the old one.
+git_global_settings:
+  - name: "user.name"
+    value: "{{ git_user_name }}"
+  - name: "user.email"
+    value: "{{ git_user_email }}"
+  - name: "user.signingkey"
+    value: "{{ git_signing_key }}"
+  - name: "core.editor"
+    value: "vim"
+  - name: "commit.gpgsign"
+    value: "true"
+  - name: "gpg.format"
+    value: "ssh"
+  # Without this the allowed-signers file is written and never read: your own
+  # commits come back as U, a good signature of unknown validity, rather than
+  # G with the name of whoever made it.
+  - name: "gpg.ssh.allowedSignersFile"
+    value: "{{ git_allowed_signers }}"
+  - name: "init.defaultBranch"
+    value: "main"
+  # First push of a branch with no upstream creates origin/<name> and tracks it.
+  - name: "push.autoSetupRemote"
+    value: "true"
+  # Tracking only when the names match, so a branch started off origin/main -
+  # which `git worktree add` does - does not end up tracking main.
+  - name: "branch.autoSetupMerge"
+    value: "simple"
+
 gitcrypt_version: "0.8.0"
 gitcrypt_sha256: "522683f89693ad2da1f3fa7e1076f5e8934619a55ff2e1246866eeb2ad587b0c"
 gitcrypt_asset_suffix: "linux-x86_64"
