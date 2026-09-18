@@ -34,4 +34,4 @@ labels:
       app.kubernetes.io/instance: dev
 images:
   - name: ghcr.io/theadzik/zmuda-pro-blog
-    newTag: sha-dc598f6
+    newTag: sha-55e51de
