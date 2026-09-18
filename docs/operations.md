@@ -157,23 +157,33 @@ identity, signing and `~/.config/git/allowed-signers` are the `git` role's, so t
 applied on every run rather than typed once into a machine and forgotten on the next one,
 and `pipx` is kept current by the `general` role afterwards.
 
-Two steps stay manual on a new machine, because neither can live in a public repository:
+Two steps stay manual on a new machine. The key pair is new each time - nothing is carried
+over from the old machine except the git-crypt key, which cannot be regenerated:
 
 ```bash
-# 1. restore the SSH key: it is your GitHub access and your signing identity,
-#    so bring the existing one back rather than generating another
-cp <backup>/id_ed25519{,.pub} ~/.ssh/ && chmod 600 ~/.ssh/id_ed25519
+# 1. before the playbook: a key of this machine's own, which the git role reads
+ssh-keygen -t ed25519 -C "adam@zmuda.pro"
 
-# 2. after the playbook has installed git-crypt, import the GPG key it unlocks
-#    with and decrypt the working tree
+# 2. after the playbook, once git-crypt and gh are installed
+gh auth login
+gh ssh-key add ~/.ssh/id_ed25519.pub --type authentication
+gh ssh-key add ~/.ssh/id_ed25519.pub --type signing   # a separate entry, not a duplicate
 gpg --import <backup>/git-crypt-key.asc
 git-crypt unlock
 ```
 
-The SSH key comes first: the `git` role writes `allowed-signers` from `~/.ssh/id_ed25519.pub`,
-and fails the play if it is not there. The GPG key comes last, because `git-crypt` itself
-arrives with that role. Clone over HTTPS until the key is in place - the repository is
-public, and its encrypted files are readable as ciphertext by anyone anyway.
+The key has to exist before the play, not before the clone: the `git` role writes
+`allowed-signers` from `~/.ssh/id_ed25519.pub` and fails without it, while cloning needs
+nothing - the repository is public, and its encrypted files are ciphertext to everyone
+anyway. GitHub wants the public half twice, as an authentication key and as a signing key;
+the first is what lets you push, the second is what puts **Verified** on the commits.
+
+A new key means the commits you signed on the *old* machine no longer verify here:
+`allowed-signers` is written with one line, this machine's, so anything signed by a retired
+key reads as `U` rather than `G`. To verify them locally too, keep the retired public keys as
+extra lines in that file. On GitHub the same thing hangs on the key still being registered:
+delete a retired SSH signing key there and every commit it signed drops back to Unverified,
+so leave them on the account.
 
 Roles: `general`, `wsl`, `oh-my-zsh`, `git`, `k8s-tools`, `docker`, `node`, `vscode`. The
 playbook asserts a supported distribution (Ubuntu or Fedora) before it changes anything, and
