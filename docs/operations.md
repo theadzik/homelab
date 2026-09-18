@@ -148,9 +148,32 @@ A replacement node is a PXE boot and a `talosctl apply-config`. No data lives on
 configuration.
 
 ```bash
-./ansible/install-scripts/bootstrap.sh              # fresh machine: git identity, brew, pipx, ansible
+./ansible/install-scripts/bootstrap.sh              # fresh machine: brew, pipx, ansible
 ansible-playbook ansible/playbooks/local-setup.yaml -K
 ```
+
+The script does only what has to happen before `ansible-playbook` exists to be run. Git
+identity, signing and `~/.config/git/allowed-signers` are the `git` role's, so they are
+applied on every run rather than typed once into a machine and forgotten on the next one,
+and `pipx` is kept current by the `general` role afterwards.
+
+Two steps stay manual on a new machine, because neither can live in a public repository:
+
+```bash
+# 1. restore the SSH key: it is your GitHub access and your signing identity,
+#    so bring the existing one back rather than generating another
+cp <backup>/id_ed25519{,.pub} ~/.ssh/ && chmod 600 ~/.ssh/id_ed25519
+
+# 2. after the playbook has installed git-crypt, import the GPG key it unlocks
+#    with and decrypt the working tree
+gpg --import <backup>/git-crypt-key.asc
+git-crypt unlock
+```
+
+The SSH key comes first: the `git` role writes `allowed-signers` from `~/.ssh/id_ed25519.pub`,
+and fails the play if it is not there. The GPG key comes last, because `git-crypt` itself
+arrives with that role. Clone over HTTPS until the key is in place - the repository is
+public, and its encrypted files are readable as ciphertext by anyone anyway.
 
 Roles: `general`, `wsl`, `oh-my-zsh`, `git`, `k8s-tools`, `docker`, `node`, `vscode`. The
 playbook asserts a supported distribution (Ubuntu or Fedora) before it changes anything, and

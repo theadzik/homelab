@@ -1,23 +1,14 @@
 #!/usr/bin/env bash
 set -e
 
-key_path="$HOME/.ssh/id_ed25519"
-key_path_pub="$key_path.pub"
-git_config="$HOME/.config/git"
-
-email="adam@zmuda.pro"
-name="Adam Żmuda"
-
-git config --global user.name "$name"
-git config --global user.email "$email"
-git config --global core.editor "vim"
-git config --global --add --bool push.autoSetupRemote true
-
-mkdir -p "$git_config"
-echo "$email $(cat "$key_path_pub")" > "$git_config/allowed-signers"
-git config --global commit.gpgsign true
-git config --global gpg.format ssh
-git config --global user.signingkey "$key_path_pub"
+# The least that has to happen before `ansible-playbook` will run: brew, pipx,
+# ansible. Git identity, signing and the allowed-signers file used to be here
+# too - the git role owns them now, so they are applied on every run instead of
+# once on a machine's first day, and this script is only about getting ansible.
+#
+# Two things stay manual, because a public repository cannot hold either:
+# restore ~/.ssh/id_ed25519 from your backup, and import the GPG key that
+# git-crypt unlocks with. See docs/operations.md.
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 echo >> ~/.bashrc

@@ -75,7 +75,7 @@ Documentation for each, with the reasoning:
 | [Storage and backups](docs/storage-and-backups.md) | Storage classes, Velero, application-level backup, what is recoverable |
 | [Supply chain](docs/supply-chain.md) | Build, scan, sign, attest, admit, rescan |
 | [Security](docs/security.md) | Posture, layers, and known gaps |
-| [Operations](docs/operations.md) | Bootstrap, adding an application, day-2 runbook |
+| [Operations](docs/operations.md) | Bootstrap, adding an application, day-2 runbook, setting up a workstation |
 | [Conventions](docs/conventions.md) | Layout, quality gates, review rules |
 | [Talos](docs/talos.md) | Node config generation, version pinning, bootstrapping Cilium and ArgoCD |
 | [Synology](docs/synology.md) | What is configured on the NAS by hand |
