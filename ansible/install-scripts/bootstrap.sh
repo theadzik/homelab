@@ -1,15 +1,21 @@
 #!/usr/bin/env bash
 set -e
 
-# The least that has to happen before `ansible-playbook` will run: brew, pipx,
-# ansible. Git identity, signing and the allowed-signers file used to be here
-# too - the git role owns them now, so they are applied on every run instead of
-# once on a machine's first day, and this script is only about getting ansible.
+# The least that has to happen before `ansible-playbook` will run: an SSH key,
+# then brew, pipx and ansible itself. Git identity, signing and the
+# allowed-signers file used to be here too - the git role owns those now, so
+# they are applied on every run rather than once on a machine's first day.
 #
-# Two things stay manual: generating this machine's ~/.ssh/id_ed25519 and
-# registering its public half with GitHub, and importing the GPG key that
-# git-crypt unlocks with - which a public repository cannot hold for you.
-# See docs/operations.md.
+# The key stays here because the git role reads its public half during the play
+# and fails without it. It is this machine's own, generated fresh rather than
+# carried over from the last one. Registering it with GitHub and importing the
+# GPG key git-crypt unlocks with are post-install.sh's, since both need tools
+# the playbook installs. See docs/operations.md.
+
+key_path="$HOME/.ssh/id_ed25519"
+if [[ ! -f "$key_path" ]]; then
+  ssh-keygen -t ed25519 -C "adam@zmuda.pro" -f "$key_path"
+fi
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 echo >> ~/.bashrc
