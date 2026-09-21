@@ -11,7 +11,7 @@ spec:
   sources:
     - path: .
       repoURL: oci://quay.io/cilium/charts/cilium
-      targetRevision: 1.20.1
+      targetRevision: 1.20.2
       helm:
         releaseName: cilium
         valueFiles:
