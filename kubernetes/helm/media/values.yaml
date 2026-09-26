@@ -194,7 +194,7 @@ services:
   bazarr:
     enabled: true
     image: lscr.io/linuxserver/bazarr
-    tag: "1.6.1"
+    tag: "1.6.2"
     port: 6767
     resources:
       requests:
