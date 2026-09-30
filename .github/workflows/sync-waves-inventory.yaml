@@ -2,12 +2,19 @@ name: update-sync-waves-inventory
 permissions: {}
 
 on:
+  pull_request:
+    branches:
+      - "main"
+    paths:
+      - "kubernetes/charts/app-of-apps/templates/**"
+      - ".github/scripts/sync-waves-inventory/**"
+      - ".github/workflows/sync-waves-inventory.yaml"
   push:
     branches:
       - "main"
     paths:
-      - "kubernetes/charts/app-of-apps/templates/*"
-      - "./github/scripts/sync-waves-inventory/**"
+      - "kubernetes/charts/app-of-apps/templates/**"
+      - ".github/scripts/sync-waves-inventory/**"
       - ".github/workflows/sync-waves-inventory.yaml"
   workflow_dispatch:
 
