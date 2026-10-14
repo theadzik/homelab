@@ -43,7 +43,7 @@ jobs:
       # No checkout step: Renovate clones the repository itself and reads
       # .github/renovate.json5 from that clone.
       - name: Renovate
-        uses: renovatebot/github-action@9fea9f0fbf80401026d11d03911d62b1f70fef1f # v46.3.3
+        uses: renovatebot/github-action@6d26fcf0275dc65624cbc3d51fe78bc773f98321 # v46.3.6
         with:
           token: ${{ steps.generate-token.outputs.token }}
         env:
