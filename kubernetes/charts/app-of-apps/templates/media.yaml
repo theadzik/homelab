@@ -57,13 +57,14 @@ spec:
           writeBackTarget: "helmvalues:/kubernetes/helm/media/values.yaml"
       images:
         - alias: "jellyfin"
-          imageName: "lscr.io/linuxserver/jellyfin:~12"
+          imageName: "lscr.io/linuxserver/jellyfin"
           manifestTargets:
             helm:
               name: "services.jellyfin.image"
               tag: "services.jellyfin.tag"
           commonUpdateSettings:
-            updateStrategy: "semver"
+            updateStrategy: "newest-build"
+            allowTags: "regexp:^12\\.[0-9]+(\\.[0-9]+)?ubu[0-9]+-ls[0-9]+$"
         - alias: "bazarr"
           imageName: "lscr.io/linuxserver/bazarr:~1"
           manifestTargets:
