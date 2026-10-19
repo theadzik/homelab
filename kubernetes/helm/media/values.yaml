@@ -56,7 +56,7 @@ services:
   jellyfin:
     enabled: true
     image: lscr.io/linuxserver/jellyfin
-    tag: "12.2ubu2604-ls54"
+    tag: "12.2ubu2604-ls55"
     port: 8096
     priorityClassName: high-priority
     resources:
