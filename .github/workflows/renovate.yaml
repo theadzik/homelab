@@ -35,7 +35,7 @@ jobs:
       # reason update-sync-waves-inventory uses one.
       - name: Generate GitHub App token
         id: generate-token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         with:
           client-id: ${{ secrets.RENOVATE_CLIENT_ID }}
           private-key: ${{ secrets.RENOVATE_KEY }}
@@ -43,7 +43,7 @@ jobs:
       # No checkout step: Renovate clones the repository itself and reads
       # .github/renovate.json5 from that clone.
       - name: Renovate
-        uses: renovatebot/github-action@6d26fcf0275dc65624cbc3d51fe78bc773f98321 # v46.3.6
+        uses: renovatebot/github-action@f0f41e5f2e706165f6814b1d0f0d0e319de7d1d9 # v46.3.8
         with:
           token: ${{ steps.generate-token.outputs.token }}
         env:
