@@ -66,14 +66,36 @@
   // be a silent gate that has to be kept in sync with it. Set one here if
   // Renovate ever moves to the hosted GitHub App instead.
 
+  // For the same reason, no hourly PR limit. config:recommended allows two
+  // new PRs an hour, which assumes Renovate runs every hour; run once a day
+  // it means two PRs a day, and the rest wait on the Dependency Dashboard as
+  // "Rate-Limited". prConcurrentLimit (10 open at once) still applies.
+  prHourlyLimit: 0,
+
   // A chart major is where the breaking changes are, and reviewing one next to
-  // three patch bumps is how it gets skimmed. Patches and minors group into a
-  // single PR; majors each get their own.
+  // three patch bumps is how it gets skimmed. Minors group into one PR,
+  // patches into another that merges itself, and majors each get their own.
   packageRules: [
     {
       matchManagers: ["argocd"],
-      matchUpdateTypes: ["minor", "patch"],
+      matchUpdateTypes: ["minor"],
       groupName: "argocd charts",
+    },
+    {
+      // Merging is deploying here, so this is the one class of update that
+      // reaches the cluster without a review: a patch, at least
+      // minimumReleaseAge old, with every check on the PR green. Renovate
+      // merges it itself on its next run rather than through GitHub's
+      // auto-merge, which would wait forever on the code-owner review the
+      // protect-default ruleset requires; the Renovate app has to be on that
+      // ruleset's bypass list for the merge to go through. Squash is the only
+      // merge method the ruleset allows.
+      matchManagers: ["argocd"],
+      matchUpdateTypes: ["patch"],
+      groupName: "argocd chart patches",
+      automerge: true,
+      platformAutomerge: false,
+      automergeStrategy: "squash",
     },
     {
       matchManagers: ["argocd"],

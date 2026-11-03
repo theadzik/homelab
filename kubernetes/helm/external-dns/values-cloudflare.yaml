@@ -12,3 +12,4 @@ env:
         name: cloudflare-secret
         key: CF_API_EMAIL
 labelFilter: dns-type in (external)
+policy: sync

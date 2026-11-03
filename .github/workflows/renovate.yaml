@@ -10,12 +10,12 @@ name: Renovate
 # jobs so it never races Dependabot over a file Dependabot owns.
 on:
   schedule:
-    # Fridays, alongside the pip and docker Dependabot entries - the ones that
-    # pin `day: "friday"`. The github-actions and pre-commit entries give only
-    # `interval: "weekly"`, which Dependabot resolves to Monday, so those arrive
-    # separately rather than with this run. This cron is the only schedule:
-    # renovate.json5 sets none, so there is no second gate to keep in step.
-    - cron: "0 6 * * 5"
+    # Daily, because Renovate only merges during a run: the automerged chart
+    # patches land on the first run after their checks go green, so a weekly
+    # cron would hold each one for up to a week after it was ready. This cron
+    # is the only schedule: renovate.json5 sets none, so there is no second
+    # gate to keep in step.
+    - cron: "0 6 * * *"
   workflow_dispatch:
 
 permissions: {}
