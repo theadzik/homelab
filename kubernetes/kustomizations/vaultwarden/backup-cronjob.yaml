@@ -7,6 +7,10 @@ spec:
   successfulJobsHistoryLimit: 2
   failedJobsHistoryLimit: 4
   concurrencyPolicy: Forbid
+  # Explicit so ArgoCD reverts a manual `kubectl patch` suspend. Left unset, the
+  # field is not in the desired state, the app stays Synced, and selfHeal never
+  # notices that backups stopped.
+  suspend: false
   jobTemplate:
     spec:
       backoffLimit: 0
