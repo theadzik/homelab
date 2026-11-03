@@ -10,7 +10,7 @@
 CLUSTER_NAME="homelab-prod"
 CONTROLPLANE_IP="192.168.0.2"
 KUBERNETES_VERSION="1.36.3"
-TALOS_VERSION="v1.13.7"
+TALOS_VERSION="v1.13.12"
 
 # The machine config schema `gen config --talos-version` renders against, kept
 # apart from TALOS_VERSION on purpose. From 1.14, gen config emits the new
