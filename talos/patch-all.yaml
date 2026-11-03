@@ -20,6 +20,13 @@ machine:
           cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
   install:
     disk: /dev/nvme0n1
+  # The btrfs extension in schematic.yaml only puts the module on disk. Every
+  # Synology iSCSI volume is btrfs, and from Talos 1.14.5 a mount can no longer
+  # load the module on demand (`fs-*` alias requests are refused), so it has to
+  # be loaded at boot.
+  kernel:
+    modules:
+      - name: btrfs
 cluster:
   network:
     cni:
