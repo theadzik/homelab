@@ -8,7 +8,6 @@ env:
         key: EXTERNAL_DNS_PIHOLE_PASSWORD
 extraArgs:
   pihole-server: "https://pihole.zmuda.pro:8443"
-  pihole-api-version: "6"
 labelFilter: dns-type in (internal)
 registry: noop
 policy: upsert-only
