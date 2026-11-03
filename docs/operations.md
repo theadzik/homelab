@@ -118,7 +118,7 @@ For a single application, ArgoCD's UI can target a branch for that app alone.
 | Pod cannot reach something | Hubble UI, filter to drops | A `CiliumNetworkPolicy` doing exactly what it says |
 | Kyverno reports a verification failure | The image's tags in GHCR | An image published before the current attestation format, or one built by a workflow the policy does not trust |
 | PVC will not bind | Storage class name, then the CSI controller logs | Wrong protocol for the access mode. `ReadWriteMany` needs NFS |
-| Kubernetes version rolls back after `apply-config` | `KUBERNETES_VERSION` in `talos/generate.sh` | `talosctl upgrade-k8s` writes the new version to the nodes but not to the script. See [Talos](talos.md#version-pinning) |
+| Kubernetes version rolls back after `apply-config` | `KUBERNETES_VERSION` in `talos/common.sh` | `talosctl upgrade-k8s` was run by hand, so the nodes moved and the pin did not. Upgrade through `talos/upgrade.sh` instead. See [Talos](talos.md#upgrading) |
 
 ### Restoring a volume
 
