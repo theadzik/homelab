@@ -9,7 +9,10 @@
   // so reaching those versions with it would mean wrapping every upstream
   // chart in a local umbrella chart first. Any manager enabled beyond argocd
   // would race Dependabot for files it is already updating.
-  enabledManagers: ["argocd"],
+  //
+  // custom.regex is the second exception: the Talos and Kubernetes pins in
+  // talos/common.sh are shell variables, which no Dependabot ecosystem reads.
+  enabledManagers: ["argocd", "custom.regex"],
 
   argocd: {
     // The argocd manager matches no files at all by default - without this it
@@ -24,6 +27,27 @@
       "/^kubernetes/charts/app-of-apps/templates/[^_].+\\.yaml$/",
     ],
   },
+
+  // Only the two version pins. TALOS_CONFIG_SCHEMA in the same file is held
+  // back on purpose (see its comment) and must not be matched.
+  customManagers: [
+    {
+      customType: "regex",
+      managerFilePatterns: ["/^talos/common\\.sh$/"],
+      matchStrings: ['\\nTALOS_VERSION="(?<currentValue>[^"]+)"'],
+      datasourceTemplate: "github-releases",
+      depNameTemplate: "siderolabs/talos",
+    },
+    {
+      customType: "regex",
+      managerFilePatterns: ["/^talos/common\\.sh$/"],
+      matchStrings: ['\\nKUBERNETES_VERSION="(?<currentValue>[^"]+)"'],
+      datasourceTemplate: "github-releases",
+      depNameTemplate: "kubernetes/kubernetes",
+      // Tags are `v1.36.3`; the pin is `1.36.3`, as talosctl wants it.
+      extractVersionTemplate: "^v(?<version>.+)$",
+    },
+  ],
 
   // The point of the exercise. `targetRevision: 40.*.*` resolves to whatever
   // upstream published most recently, so what is deployed can change without a
@@ -57,6 +81,19 @@
       // Majors in this repo have needed values changes (traefik 40 -> 41
       // renamed the whole `logs:` block). Keep the upgrade notes in the PR.
       commitMessagePrefix: "bump(major):",
+    },
+    {
+      // Talos and Kubernetes both move one minor at a time, through the
+      // latest patch of each (docs/talos.md#upgrading), and upgrade.sh refuses
+      // anything else. Without these Renovate offers one PR straight to the
+      // newest release; with them a patch and each next minor arrive as
+      // separate PRs, to be merged and run in order.
+      matchDepNames: ["siderolabs/talos", "kubernetes/kubernetes"],
+      separateMinorPatch: true,
+      separateMultipleMinor: true,
+      prBodyNotes: [
+        "Merging only moves the pin. The nodes stay where they are until `./talos/upgrade.sh` is run from `main`, Talos before Kubernetes: see [Upgrading](https://github.com/theadzik/homelab/blob/main/docs/talos.md#upgrading). For a new minor, work through *Before bumping a pin* there first.",
+      ],
     },
   ],
 }

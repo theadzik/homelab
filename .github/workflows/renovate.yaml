@@ -5,8 +5,9 @@ name: Renovate
 # decide what this cluster runs - the `targetRevision` fields in the ArgoCD
 # Application manifests - are invisible to it. Reaching them with Dependabot
 # would mean wrapping every upstream chart in a local umbrella chart first.
-# Renovate reads them directly, and `enabledManagers` in renovate.json5 holds it
-# to that one job so it never races Dependabot over a file Dependabot owns.
+# Renovate reads them directly, along with the Talos and Kubernetes pins in
+# talos/common.sh, and `enabledManagers` in renovate.json5 holds it to those
+# jobs so it never races Dependabot over a file Dependabot owns.
 on:
   schedule:
     # Fridays, alongside the pip and docker Dependabot entries - the ones that

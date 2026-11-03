@@ -163,6 +163,12 @@ API into a temporary file instead of using kubectl's current context.
 the health checks, then stops. Without it the script asks for a typed `yes`, takes an
 etcd snapshot to `~/.local/state/homelab/etcd-snapshots/`, and then starts.
 
+The pin bumps come from Renovate, which reads `TALOS_VERSION` and `KUBERNETES_VERSION` out
+of `common.sh` and opens a pull request for the next patch and one for each next minor,
+seven days after release. Merging one is not an upgrade: until `upgrade.sh` runs, `main`
+says one version and the nodes run another, and the next `apply-config` would move them
+without the health checks.
+
 ### Order
 
 1. **Talos first, Kubernetes second.** Each Talos release supports a range of Kubernetes
