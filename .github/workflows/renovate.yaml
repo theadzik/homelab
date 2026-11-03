@@ -48,4 +48,7 @@ jobs:
           token: ${{ steps.generate-token.outputs.token }}
         env:
           RENOVATE_REPOSITORIES: ${{ github.repository }}
-          LOG_LEVEL: info
+          # Every run since late September pushes renovate/argocd-charts and
+          # then aborts with "Repository has changed during renovation" before
+          # opening a PR. Info level does not say which call failed.
+          LOG_LEVEL: debug
