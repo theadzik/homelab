@@ -9,7 +9,9 @@ not committed.
 
 | File | Purpose |
 | --- | --- |
+| `common.sh` | Version pins and install image derivation, sourced by both scripts |
 | `generate.sh` | Regenerates the machine configs and `talosconfig` from the inputs below |
+| `upgrade.sh` | Moves the nodes to the pinned Talos or Kubernetes version, one step at a time |
 | `schematic.yaml` | Image Factory schematic (system extensions), posted fresh to the Factory API on every run to derive the install image |
 | `patch-all.yaml` | Config patch applied to all node types |
 | `bootstrap/` | Kustomization rendering Cilium and ArgoCD into the control plane's inline manifest |
@@ -21,5 +23,5 @@ not committed.
 from it.
 
 Full documentation is in [docs/talos.md](../docs/talos.md): the regeneration procedure, the
-version pins and how they interact with `talosctl upgrade-k8s`, and how Cilium and ArgoCD
-get onto a fresh cluster with nothing applied by hand.
+version pins, the upgrade procedure, and how Cilium and ArgoCD get onto a fresh cluster with
+nothing applied by hand.

@@ -7,16 +7,10 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$REPO_ROOT/talos"
 
-CLUSTER_NAME="homelab-prod"
-CONTROLPLANE_IP="192.168.0.2"
-KUBERNETES_VERSION="1.36.3"
-TALOS_VERSION="v1.13.7"
+# shellcheck source=/dev/null # common.sh is checked on its own; the hook runs without -x
+source "$REPO_ROOT/talos/common.sh"
 
-# Derived from schematic.yaml's actual content rather than trusted as a
-# hardcoded copy, so a schematic change can't leave install-image pointing at
-# stale extensions.
-SCHEMATIC_ID="$(curl -sS -X POST --data-binary @schematic.yaml https://factory.talos.dev/schematics | jq -er '.id')"
-INSTALL_IMAGE="factory.talos.dev/metal-installer/${SCHEMATIC_ID}:${TALOS_VERSION}"
+INSTALL_IMAGE="$(install_image)"
 
 # Cilium and ArgoCD (values.yaml only - see talos/bootstrap/kustomization.yaml
 # for why values-secret.yaml never appears here) get rendered and embedded as
@@ -39,7 +33,7 @@ talosctl gen config \
     "$CLUSTER_NAME" "https://${CONTROLPLANE_IP}:6443" \
     --with-secrets secret-certs.yaml \
     --kubernetes-version "$KUBERNETES_VERSION" \
-    --talos-version "$TALOS_VERSION" \
+    --talos-version "$TALOS_CONFIG_SCHEMA" \
     --install-image "$INSTALL_IMAGE" \
     --config-patch @patch-all.yaml \
     --config-patch @secret-nut-client.yaml \
