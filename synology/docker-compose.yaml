@@ -17,9 +17,7 @@ services:
       FTLCONF_dns_hostRecord: pihole.zmuda.pro,192.168.0.6,192.168.0.7
       FTLCONF_ntp_ipv4_active: "false"
       FTLCONF_ntp_ipv6_active: "false"
-      # 8080: plain HTTP for DSM's reverse proxy, loopback only.
-      # 8443s: PiHole's own HTTPS, until external-dns moves to the proxy.
-      FTLCONF_webserver_port: 127.0.0.1:8080,8443s
+      FTLCONF_webserver_port: 127.0.0.1:8080
       FTLCONF_webserver_domain: pihole.zmuda.pro
       FTLCONF_webserver_interface_theme: default-darker
     env_file: pihole.secret.env
@@ -38,7 +36,6 @@ services:
       - 1.1.1.1
     volumes:
       - /volume1/docker-compose/acme-sh:/acme.sh
-      - /volume2/pihole:/pihole
     restart: always
 
   garage:
