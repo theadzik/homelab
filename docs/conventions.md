@@ -14,6 +14,7 @@ silently.
 | [`apps/`](../apps/) | Dockerfiles and the scripts they package | One directory per image, matching a build workflow |
 | [`talos/`](../talos/) | Node config inputs | The machine configs are generated from these and never committed |
 | [`ansible/`](../ansible/) | Workstation setup | Not cluster configuration |
+| [`synology/`](../synology/) | Scripts for the NAS | Copied into DSM Task Scheduler by hand; see [Synology](synology.md) |
 | [`docs/`](.) | These pages | Reasoning that outlives any single manifest |
 
 ## Quality gates
