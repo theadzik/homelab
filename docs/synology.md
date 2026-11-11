@@ -15,14 +15,13 @@ Everything below is applied through the DSM web interface or over SSH.
 | S3 object storage ([Garage](https://garagehq.deuxfleurs.fr/documentation/quick-start/)) | Velero backups |
 | DNS ([PiHole](https://pi-hole.net/)) | The LAN, and external-dns for internal records |
 | DHCP and TFTP | PXE booting the Talos nodes |
-| ACME client (`acme.sh`) | DSM's own certificate, since it is not in the cluster |
+| ACME client (`acme.sh`) | DSM's certificates, for its own UI and its reverse proxy, since neither is in the cluster |
 
 PiHole is reachable at <https://pihole.zmuda.pro/admin/>, through a DSM reverse proxy rule
 (**Control Panel → Login Portal → Advanced → Reverse Proxy**) from HTTPS
-`pihole.zmuda.pro:443` to HTTP `127.0.0.1:8080`, a port PiHole serves on loopback only. Its own
-HTTPS on 8443 stays up until external-dns is confirmed working through the proxy. The NAS
-itself is at
-`synology.zmuda.pro`. That A record comes from a pair of `ExternalName` services in the
+`pihole.zmuda.pro:443` to HTTP `127.0.0.1:8080`, a port PiHole serves on loopback only.
+external-dns uses the same address. The NAS itself is at `synology.zmuda.pro`. That A record
+comes from a pair of `ExternalName` services in the
 [CSI kustomization](../kubernetes/kustomizations/synology-csi/external-service.yaml), which
 exist purely so external-dns publishes the name.
 
@@ -40,6 +39,26 @@ To change a container, edit the files here, copy `docker-compose.yaml` and the `
 files to `/volume1/docker-compose/` on the NAS, then open **Container Manager → Project → infrastructure → Action → Build**.
 Recreating `pihole` takes LAN DNS down for a few seconds, and recreating `garage` interrupts
 any Velero backup that is running.
+
+## Certificates
+
+`acme.sh` issues one certificate per name and its `synology_dsm` deploy hook uploads each to
+DSM after every renewal, logging in to `https://synology.zmuda.pro` (DSM's API is not served
+on `localhost:443`) as the `letsencrypt` admin account. DSM then serves them for its own UI
+and for the reverse proxy rules, assigned under **Control Panel → Security → Certificate →
+Settings**.
+
+Every certificate needs `SYNO_CERTIFICATE` set to its description in DSM. Left empty, the
+hook replaces whichever DSM certificate has no description, which can be DSM's own. To add
+one, from a shell in the container (`sudo docker exec -it acme-sh sh`):
+
+```bash
+SYNO_USERNAME=letsencrypt SYNO_HOSTNAME=synology.zmuda.pro SYNO_CERTIFICATE=<name> SYNO_CREATE=1 \
+  acme.sh --deploy -d <name> --deploy-hook synology_dsm
+```
+
+The hook saves these settings in the certificate's config under
+`/volume1/docker-compose/acme-sh/` once a login succeeds, so renewals need nothing further.
 
 ## Running PiHole and DSM's DHCP server together
 
