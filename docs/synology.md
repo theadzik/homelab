@@ -17,7 +17,11 @@ Everything below is applied through the DSM web interface or over SSH.
 | DHCP and TFTP | PXE booting the Talos nodes |
 | ACME client (`acme.sh`) | DSM's own certificate, since it is not in the cluster |
 
-PiHole is reachable at <https://pihole.zmuda.pro:8443/admin/>, and the NAS itself at
+PiHole is reachable at <https://pihole.zmuda.pro/admin/>, through a DSM reverse proxy rule
+(**Control Panel → Login Portal → Advanced → Reverse Proxy**) from HTTPS
+`pihole.zmuda.pro:443` to HTTP `127.0.0.1:8080`, a port PiHole serves on loopback only. Its own
+HTTPS on 8443 stays up until external-dns is confirmed working through the proxy. The NAS
+itself is at
 `synology.zmuda.pro`. That A record comes from a pair of `ExternalName` services in the
 [CSI kustomization](../kubernetes/kustomizations/synology-csi/external-service.yaml), which
 exist purely so external-dns publishes the name.
@@ -25,6 +29,17 @@ exist purely so external-dns publishes the name.
 The dependency is worth stating plainly. The NAS is a single point of failure for storage,
 DNS, DHCP and node boot. The cluster survives losing any node. It does not survive losing
 this.
+
+## Containers
+
+PiHole, Garage and `acme.sh` run as one Container Manager project, `infrastructure`, from
+[`synology/docker-compose.yaml`](../synology/docker-compose.yaml). Their passwords and keys,
+and Garage's `garage.toml`, are in the `*.secret.*` files beside it, which git-crypt encrypts.
+
+To change a container, edit the files here, copy `docker-compose.yaml` and the `*.secret.*`
+files to `/volume1/docker-compose/` on the NAS, then open **Container Manager → Project → infrastructure → Action → Build**.
+Recreating `pihole` takes LAN DNS down for a few seconds, and recreating `garage` interrupts
+any Velero backup that is running.
 
 ## Running PiHole and DSM's DHCP server together
 
