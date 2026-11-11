@@ -89,7 +89,7 @@ kubernetes/kustomizations/  manifests for apps deployed without a chart
 apps/                   Dockerfiles and the scripts they package
 talos/                  node configuration: schematic and machine config patch
 ansible/                workstation setup, not cluster configuration
-synology/               scripts run on the NAS by DSM Task Scheduler
+synology/               NAS Compose project and Task Scheduler scripts
 docs/                   the pages above
 ```
 

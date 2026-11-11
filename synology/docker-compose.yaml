@@ -1,0 +1,58 @@
+# Container Manager project "infrastructure", deployed from /volume1/docker-compose.
+# See docs/synology.md.
+services:
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+      - SYS_NICE
+    environment:
+      DNSMASQ_USER: root
+      PIHOLE_UID: "1000"
+      PIHOLE_GID: "1000"
+      FTLCONF_dns_listeningMode: ALL
+      FTLCONF_dns_upstreams: 1.1.1.1;8.8.8.8;9.9.9.9
+      FTLCONF_dns_hostRecord: pihole.zmuda.pro,192.168.0.6,192.168.0.7
+      FTLCONF_ntp_ipv4_active: "false"
+      FTLCONF_ntp_ipv6_active: "false"
+      FTLCONF_webserver_port: 8443s
+      FTLCONF_webserver_domain: pihole.zmuda.pro
+      FTLCONF_webserver_interface_theme: default-darker
+    env_file: pihole.secret.env
+    volumes:
+      - /volume2/pihole:/etc/pihole
+    restart: always
+
+  acme-sh:
+    image: ghcr.io/acmesh-official/acme.sh:latest
+    container_name: acme-sh
+    command: daemon
+    network_mode: host
+    dns:
+      - 192.168.0.6
+      - 192.168.0.7
+      - 1.1.1.1
+    volumes:
+      - /volume1/docker-compose/acme-sh:/acme.sh
+      - /volume2/pihole:/pihole
+    restart: always
+
+  garage:
+    image: dxflrs/garage:v2.5.0
+    container_name: garage
+    command: [/garage, server, --single-node, --default-bucket]
+    environment:
+      GARAGE_DEFAULT_BUCKET: default-bucket
+      NO_COLOR: "1"
+    env_file: garage.secret.env
+    healthcheck:
+      test: [CMD, /garage, health]
+    ports:
+      - 3900-3903:3900-3903
+    volumes:
+      - /volume1/docker-compose/garage.secret.toml:/etc/garage.toml
+      - /volume1/docker/garage-metadata/meta:/var/lib/garage/meta
+      - /volume1/garage-data:/var/lib/garage/data
+    restart: always

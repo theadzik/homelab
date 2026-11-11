@@ -26,6 +26,17 @@ The dependency is worth stating plainly. The NAS is a single point of failure fo
 DNS, DHCP and node boot. The cluster survives losing any node. It does not survive losing
 this.
 
+## Containers
+
+PiHole, Garage and `acme.sh` run as one Container Manager project, `infrastructure`, from
+[`synology/docker-compose.yaml`](../synology/docker-compose.yaml). Their passwords and keys,
+and Garage's `garage.toml`, are in the `*.secret.*` files beside it, which git-crypt encrypts.
+
+To change a container, edit the files here, copy `docker-compose.yaml` and the `*.secret.*`
+files to `/volume1/docker-compose/` on the NAS, then open **Container Manager → Project → infrastructure → Action → Build**.
+Recreating `pihole` takes LAN DNS down for a few seconds, and recreating `garage` interrupts
+any Velero backup that is running.
+
 ## Running PiHole and DSM's DHCP server together
 
 PiHole needs port 53. DSM's DHCP server package runs `dnsmasq`, which binds port 53 for DNS
