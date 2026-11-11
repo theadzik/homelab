@@ -55,29 +55,15 @@ systemctl restart pkg-dhcpserver
 ### Making it survive an update
 
 DSM rewrites that unit file on package updates and reboots, silently taking DNS down for
-the whole LAN. **Control Panel → Task Scheduler → Create → Triggered task** puts it back:
+the whole LAN. [`synology/dhcpserver-port.sh`](../synology/dhcpserver-port.sh) puts the flag
+back. It is idempotent: it does nothing if `--port=0` is already there, and only reloads and
+restarts the service when it had to fix the file.
 
-```bash
-#!/usr/bin/env bash
-set -euo pipefail
+Run it as root from two tasks in **Control Panel → Task Scheduler**, pasting the script into
+each:
 
-SERVICE="pkg-dhcpserver"
-FILE="/usr/local/lib/systemd/system/$SERVICE.service"
-PORT="0"
-
-if grep -qP '^ExecStart=.*--port=' "$FILE"; then
-    sed -i -E "s/(ExecStart=.*)(--port=[^ ]*)(.*)/\1--port=${PORT}\3/" "$FILE"
-else
-    sed -i -E "s/(ExecStart=.*)/\1 --port=${PORT}/" "$FILE"
-fi
-
-systemctl daemon-reload
-systemctl restart "$SERVICE"
-exit 0
-```
-
-The script rewrites an existing `--port=` flag instead of appending a second one, so it is
-safe on every boot and not only the ones that follow an update.
+- **Triggered task**, event *Boot-up*, so a reboot is fixed straight away.
+- **Scheduled task**, every hour, to catch package updates, which do not reboot.
 
 ## Storage tiers
 
