@@ -17,7 +17,11 @@ Everything below is applied through the DSM web interface or over SSH.
 | DHCP and TFTP | PXE booting the Talos nodes |
 | ACME client (`acme.sh`) | DSM's own certificate, since it is not in the cluster |
 
-PiHole is reachable at <https://pihole.zmuda.pro:8443/admin/>, and the NAS itself at
+PiHole is reachable at <https://pihole.zmuda.pro/admin/>, through a DSM reverse proxy rule
+(**Control Panel → Login Portal → Advanced → Reverse Proxy**) from HTTPS
+`pihole.zmuda.pro:443` to HTTP `127.0.0.1:8080`, a port PiHole serves on loopback only. Its own
+HTTPS on 8443 stays up until external-dns is confirmed working through the proxy. The NAS
+itself is at
 `synology.zmuda.pro`. That A record comes from a pair of `ExternalName` services in the
 [CSI kustomization](../kubernetes/kustomizations/synology-csi/external-service.yaml), which
 exist purely so external-dns publishes the name.
