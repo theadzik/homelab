@@ -142,14 +142,16 @@ place by hand, and each step shows whether the one before it worked:
    [`configs/oauth2-proxy-secret.env`](../kubernetes/kustomizations/repwise/configs/). Open
    the page, sign in, and press the button: this first run downloads `workouts.yaml` and
    then stops with `No cached Garmin session`. The sign-in lasts a month.
-3. **A Garmin session.** Logging in takes a password and an MFA code, so it is done once
-   from a terminal, and the tokens stay on the volume:
+3. **A Garmin session.** Open *Garmin login* on the page and give it the email, the
+   password and the code Garmin sends. The tokens stay on the volume. The password is
+   handed to Garmin and kept nowhere, but it does cross Cloudflare in the clear, because
+   that is where TLS for a proxied hostname ends. Logging in from a terminal avoids that:
 
    ```bash
    kubectl -n repwise exec -it deploy/repwise-trigger -c repwise-trigger -- repwise list
    ```
 
-Run it again when the page reports that the session is unusable. Nothing else on the volume
+Log in again when the page reports that the session is unusable. Nothing else on the volume
 matters: lose it and step 3 is the whole recovery.
 
 The page refuses to run while a workout in the file has no `garmin_workout_id`. repwise would
