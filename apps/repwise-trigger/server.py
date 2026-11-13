@@ -80,6 +80,7 @@ PAGE = b"""<!doctype html>
   // takes that redirect, to the sign-in and back.
   async function call(method, path, body) {
     const headers = {Accept: "application/json"};
+    if (body) headers["Content-Type"] = "application/json";
     const response = await fetch(path, {method, headers, body: body && JSON.stringify(body)});
     if (response.status === 401) {
       location.reload();

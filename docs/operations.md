@@ -144,8 +144,9 @@ place by hand, and each step shows whether the one before it worked:
    then stops with `No cached Garmin session`. The sign-in lasts a month.
 3. **A Garmin session.** Open *Garmin login* on the page and give it the email, the
    password and the code Garmin sends. The tokens stay on the volume. The password is
-   handed to Garmin and kept nowhere, but it does cross Cloudflare in the clear, because
-   that is where TLS for a proxied hostname ends. Logging in from a terminal avoids that:
+   handed to Garmin and kept nowhere, but Cloudflare can read it on the way: TLS for a
+   proxied hostname ends at their edge, so the form is decrypted there before it enters the
+   tunnel. Logging in from a terminal avoids that:
 
    ```bash
    kubectl -n repwise exec -it deploy/repwise-trigger -c repwise-trigger -- repwise list
