@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: repwise-data
+spec:
+  # Holds the Garmin tokens, which are rewritten whenever they are refreshed and
+  # so cannot be a Secret, and nothing that is not replaced by logging in again
+  # or by the next run. Hence no backup label, and a class that deletes.
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: "synology-iscsi-delete"

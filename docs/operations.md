@@ -120,6 +120,36 @@ For a single application, ArgoCD's UI can target a branch for that app alone.
 | PVC will not bind | Storage class name, then the CSI controller logs | Wrong protocol for the access mode. `ReadWriteMany` needs NFS |
 | Kubernetes version rolls back after `apply-config` | `KUBERNETES_VERSION` in `talos/common.sh` | `talosctl upgrade-k8s` was run by hand, so the nodes moved and the pin did not. Upgrade through `talos/upgrade.sh` instead. See [Talos](talos.md#upgrading) |
 
+### Setting up the repwise trigger
+
+[`repwise.zmuda.pro`](../kubernetes/kustomizations/repwise/) is a page with one button, which
+runs `repwise update --apply --push` for the days the laptop stayed closed before the gym.
+It is on the internet and it writes to a Garmin account, so every request but the page
+itself must carry a key. Three things have to be put in place by hand, and each step shows
+whether the one before it worked:
+
+1. **A token that can read `workouts.yaml`.** A fine-grained GitHub token for
+   `theadzik/workouts` alone, with `Contents: Read-only`, as `GITHUB_TOKEN` in
+   [`configs/trigger-secret.env`](../kubernetes/kustomizations/repwise/configs/). The file is
+   downloaded on every run and never kept, because repwise reshapes the Garmin workouts to
+   match the file it is given, and a stale copy would undo an edit made since.
+2. **The key, on the phone.** Open the page and press the button. It asks once for
+   `TRIGGER_KEY` from the same file and keeps it in the browser. This first run downloads
+   `workouts.yaml` and then stops with `No cached Garmin session`.
+3. **A Garmin session.** Logging in takes a password and an MFA code, so it is done once
+   from a terminal, and the tokens stay on the volume:
+
+   ```bash
+   kubectl -n repwise exec -it deploy/repwise-trigger -- repwise list
+   ```
+
+Run it again when the page reports that the session is unusable. Nothing else on the volume
+matters: lose it and step 3 is the whole recovery.
+
+The page refuses to run while a workout in the file has no `garmin_workout_id`. repwise would
+build it in Garmin and write the id into a copy that the next run replaces, and so build it
+a second time. Run repwise wherever the file is edited, and push the id it records.
+
 ### Restoring a volume
 
 Velero holds CSI snapshots for labelled PVCs, 12-hourly, for 7 days:

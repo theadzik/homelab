@@ -40,6 +40,7 @@ flowchart LR
 | `vw-backup` | [apps/vaultwarden/backup](../apps/vaultwarden/backup/) | Git tag `vw-backup-<CalVer>` |
 | `vw-restore` | [apps/vaultwarden/restore](../apps/vaultwarden/restore/) | Git tag `vw-restore-<CalVer>` |
 | `custom-argocd` | [apps/custom-argocd](../apps/custom-argocd/) | The ArgoCD app version it patches |
+| `repwise-trigger` | [apps/repwise-trigger](../apps/repwise-trigger/) | Git tag `repwise-trigger-<CalVer>` |
 | `zmuda-pro-blog` | [theadzik/blog](https://github.com/theadzik/blog) | CalVer for releases, `sha-<commit>` for `main` |
 
 `custom-argocd` works out its own tag. The
@@ -55,7 +56,7 @@ version and asserts the download against a pinned SHA256, failing the build on a
 instead of installing whatever arrived. It is the same pattern the Ansible `git` role uses
 for the same binary on a workstation; see [Conventions](conventions.md#ansible).
 
-The two Vaultwarden images also rebuild weekly on a schedule. Base images gain fixes
+The two Vaultwarden images and `repwise-trigger` also rebuild weekly on a schedule. Base images gain fixes
 between releases, and an image that is only rebuilt when its source changes gets steadily
 older than its own base.
 
@@ -148,7 +149,7 @@ How it reports:
 - **One issue, reopened and rewritten.** A daily scan that files a daily issue is a daily
   notification nobody reads. When the findings clear, it comments and closes.
 
-The build gate is on for all four images, but `vw-backup`, `vw-restore` and `custom-argocd`
+The build gate is on for all five images, but `vw-backup`, `vw-restore` and `custom-argocd`
 pass `fail-on-vulnerabilities: false`. It used to be `scan: false` for those three, because
 every finding sits inside a binary copied from an upstream image - in rclone's own Go
 dependencies or ArgoCD's - and nothing in this repository can rebuild those. Gating on them

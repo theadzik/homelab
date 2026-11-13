@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: repwise
+resources:
+  - deployment.yaml
+  - ingress.yaml
+  - namespace.yaml
+  - netpol.yaml
+  - pvc.yaml
+  - service.yaml
+secretGenerator:
+  - name: trigger-secret
+    envs:
+      - configs/trigger-secret.env
+    type: Opaque
+images:
+  - name: ghcr.io/theadzik/repwise-trigger
+    newTag: 2026.11.1
