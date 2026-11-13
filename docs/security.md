@@ -64,7 +64,7 @@ definition, not a step someone has to remember:
 
 | Level | Namespaces | Why |
 | --- | --- | --- |
-| `restricted` | blog, kyverno | The workload can meet it, so it must |
+| `restricted` | blog, kyverno, repwise | The workload can meet it, so it must |
 | `baseline` | descheduler | Needs more than restricted allows, but nothing privileged |
 | `privileged` | falco, intel-gpu-resource-driver | Reading syscalls and driving a GPU require it |
 
@@ -211,7 +211,7 @@ treat that as best effort and not a commitment.
 
 - The manifests, Helm values and charts in this repository, meaning anything that would run
   in a cluster built from them
-- The container images published from here: `vw-backup`, `vw-restore`, `custom-argocd`
+- The container images published from here: `vw-backup`, `vw-restore`, `custom-argocd`, `repwise-trigger`
 - The GitHub Actions workflows under `.github/workflows/`
 - The admission policy and the secret-handling arrangement, including cases where the
   git-crypt pattern can be made to miss a file

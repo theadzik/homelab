@@ -76,7 +76,7 @@ templates, so it cannot drift from what is actually deployed.
 | -25 | Trust and entry | cert-manager, Kyverno, Traefik, kubelet cert approver |
 | -15 | Cluster services | external-dns, metrics-server |
 | -5 | Data services | CloudNativePG operator |
-| 0 | Workloads | Media stack, Vaultwarden, Tandoor, Audiobookshelf, blog |
+| 0 | Workloads | Media stack, Vaultwarden, Tandoor, Audiobookshelf, blog, repwise |
 | 1 | External exposure | Cloudflare Tunnel, once there is something to expose |
 | 5 | Day-2 automation | Velero, VPA, ArgoCD Image Updater |
 | 10 | Optimisation | Descheduler, last, so it rebalances a settled cluster |
@@ -116,6 +116,7 @@ harmful.
 | [Tandoor](../kubernetes/kustomizations/tandoor/) | Recipe manager | PostgreSQL from the CloudNativePG operator |
 | [Audiobookshelf](../kubernetes/kustomizations/audiobookshelf/) | Audiobook and podcast server | |
 | [blog](../kubernetes/kustomizations/blog/) | [zmuda.pro](https://zmuda.pro), built from [theadzik/blog](https://github.com/theadzik/blog) | One ApplicationSet, two environments, two update strategies |
+| [repwise](../kubernetes/kustomizations/repwise/) | A button that runs [repwise](https://github.com/theadzik/repwise) from a phone | Public, behind a GitHub sign-in that oauth2-proxy handles in the same pod as the [application](../apps/repwise-trigger/). See [Operations](operations.md#setting-up-the-repwise-trigger) |
 
 ## Where the state lives
 
