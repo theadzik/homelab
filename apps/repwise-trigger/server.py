@@ -1,11 +1,11 @@
 """A page with one button, which runs `repwise update --apply --push`.
 
-For the days the laptop was left closed before the gym. Every request but the
-page itself must carry TRIGGER_KEY, because the button writes to a Garmin
-account and this is served on the internet.
+For the days the laptop was left closed before the gym. The button writes to a
+Garmin account and the page is on the internet, so who may press it has to be
+decided, and that is not done here: this listens on localhost alone, and the
+oauth2-proxy beside it in the pod is the only way in.
 """
 
-import hmac
 import json
 import os
 import signal
@@ -21,7 +21,6 @@ from http.server import ThreadingHTTPServer
 
 import yaml
 
-KEY = os.environ["TRIGGER_KEY"].encode()
 GITHUB_TOKEN = os.environ["GITHUB_TOKEN"]
 CONFIG_URL = os.environ["CONFIG_URL"]
 CONFIG_PATH = os.environ["REPWISE_CONFIG"]
@@ -50,17 +49,16 @@ PAGE = b"""<!doctype html>
   const state = document.getElementById("state");
   const output = document.getElementById("output");
 
-  // The key is asked for once and kept on this device. It travels in a header,
-  // never in the URL, so it stays out of history and access logs.
+  // oauth2-proxy answers a request that asks for JSON with 401 once the session
+  // has run out, where it would redirect a page. Loading the page again is what
+  // takes that redirect, to the sign-in and back.
   async function call(method, path) {
-    for (;;) {
-      const headers = {Authorization: "Bearer " + localStorage.getItem("key")};
-      const response = await fetch(path, {method, headers});
-      if (response.status !== 401) return response;
-      const key = prompt("Key");
-      if (!key) throw new Error("A key is needed.");
-      localStorage.setItem("key", key.trim());
+    const response = await fetch(path, {method, headers: {Accept: "application/json"}});
+    if (response.status === 401) {
+      location.reload();
+      await new Promise(() => {});
     }
+    return response;
   }
 
   async function refresh() {
@@ -164,17 +162,11 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
-    def authorised(self) -> bool:
-        sent = self.headers.get("Authorization", "").encode()
-        return hmac.compare_digest(sent, b"Bearer " + KEY)
-
     def do_GET(self) -> None:
         if self.path == "/":
             self.reply(HTTPStatus.OK, PAGE, "text/html; charset=utf-8")
         elif self.path != "/status":
             self.reply(HTTPStatus.NOT_FOUND)
-        elif not self.authorised():
-            self.reply(HTTPStatus.UNAUTHORIZED)
         else:
             status = {"running": running.locked(), **last}
             self.reply(HTTPStatus.OK, json.dumps(status).encode(), "application/json")
@@ -182,8 +174,6 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self) -> None:
         if self.path != "/run":
             self.reply(HTTPStatus.NOT_FOUND)
-        elif not self.authorised():
-            self.reply(HTTPStatus.UNAUTHORIZED)
         elif not running.acquire(blocking=False):
             self.reply(HTTPStatus.CONFLICT)
         else:
@@ -197,4 +187,4 @@ if __name__ == "__main__":
     # As PID 1 a process gets no default SIGTERM handling, so without this every
     # rollout would wait out the grace period.
     signal.signal(signal.SIGTERM, lambda *_: sys.exit(0))
-    ThreadingHTTPServer(("", 8080), Handler).serve_forever()
+    ThreadingHTTPServer(("127.0.0.1", 8080), Handler).serve_forever()

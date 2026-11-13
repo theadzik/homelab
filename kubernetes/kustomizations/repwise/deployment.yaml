@@ -24,9 +24,6 @@ spec:
           # maintains.
           image: ghcr.io/theadzik/repwise-trigger:main
           imagePullPolicy: Always
-          ports:
-            - containerPort: 8080
-              protocol: "TCP"
           env:
             # workouts.yaml names its paths from the home directory of the
             # laptop it is edited on: ~/.config/repwise for the Garmin tokens,
@@ -42,11 +39,6 @@ spec:
           envFrom:
             - secretRef:
                 name: trigger-secret
-          # A TCP check, because an HTTP one would be a line in the log every
-          # few seconds, between the runs that log is kept for.
-          readinessProbe:
-            tcpSocket:
-              port: 8080
           securityContext:
             runAsNonRoot: true
             readOnlyRootFilesystem: true
@@ -65,6 +57,55 @@ spec:
               name: data
             - mountPath: /tmp
               name: tmp
+        # Decides who may press the button. A container in this pod rather than
+        # a middleware on the Ingress, because the application listens on
+        # localhost alone: there is then no route to it that skips the sign-in,
+        # whatever becomes of the Ingress.
+        - name: oauth2-proxy
+          image: quay.io/oauth2-proxy/oauth2-proxy:v7.15.6
+          args:
+            - --provider=github
+            # With no organisation or repository named, this list is the whole
+            # of who gets in. The provider wants an email rule as well, and
+            # GitHub usernames are the one that means something here.
+            - --github-user=theadzik
+            - --email-domain=*
+            - --upstream=http://127.0.0.1:8080
+            - --http-address=0.0.0.0:4180
+            - --redirect-url=https://repwise.zmuda.pro/oauth2/callback
+            - --reverse-proxy=true
+            - --skip-provider-button=true
+            # The session is a cookie, so the button is a cross-site request
+            # away from anyone's page unless the browser is told otherwise.
+            - --cookie-samesite=lax
+            # A month. The default week would have the sign-in turn up at the
+            # gym, which is where this is used.
+            - --cookie-expire=720h
+            # The readiness probe, which would otherwise be most of the log.
+            - --silence-ping-logging=true
+          envFrom:
+            - secretRef:
+                name: oauth2-proxy-secret
+          ports:
+            - containerPort: 4180
+              protocol: "TCP"
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: 4180
+          securityContext:
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              memory: 128Mi
       securityContext:
         runAsNonRoot: true
         runAsUser: 65532

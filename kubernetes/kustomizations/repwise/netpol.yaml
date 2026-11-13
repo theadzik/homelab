@@ -22,9 +22,12 @@ spec:
           rules:
             dns:
               - matchPattern: "*"
-    # workouts.yaml, from the repository it is kept in.
+    # workouts.yaml, from the repository it is kept in, and the sign-in:
+    # oauth2-proxy trades the code for a token at github.com and asks the API
+    # whose it is.
     - toFQDNs:
         - matchName: api.github.com
+        - matchName: github.com
       toPorts:
         - ports:
             - port: "443"

@@ -124,23 +124,29 @@ For a single application, ArgoCD's UI can target a branch for that app alone.
 
 [`repwise.zmuda.pro`](../kubernetes/kustomizations/repwise/) is a page with one button, which
 runs `repwise update --apply --push` for the days the laptop stayed closed before the gym.
-It is on the internet and it writes to a Garmin account, so every request but the page
-itself must carry a key. Three things have to be put in place by hand, and each step shows
-whether the one before it worked:
+It is on the internet and it writes to a Garmin account, so
+[oauth2-proxy](https://oauth2-proxy.github.io/oauth2-proxy/) in the same pod signs the
+visitor in with GitHub and admits one account, named by `--github-user` in the
+[Deployment](../kubernetes/kustomizations/repwise/deployment.yaml). The application listens
+on localhost alone, so no route to it skips the sign-in. Three things have to be put in
+place by hand, and each step shows whether the one before it worked:
 
 1. **A token that can read `workouts.yaml`.** A fine-grained GitHub token for
    `theadzik/workouts` alone, with `Contents: Read-only`, as `GITHUB_TOKEN` in
    [`configs/trigger-secret.env`](../kubernetes/kustomizations/repwise/configs/). The file is
    downloaded on every run and never kept, because repwise reshapes the Garmin workouts to
    match the file it is given, and a stale copy would undo an edit made since.
-2. **The key, on the phone.** Open the page and press the button. It asks once for
-   `TRIGGER_KEY` from the same file and keeps it in the browser. This first run downloads
-   `workouts.yaml` and then stops with `No cached Garmin session`.
+2. **A GitHub OAuth App to sign in with.** Created under Settings, Developer settings,
+   with `https://repwise.zmuda.pro/oauth2/callback` as its callback URL. Its client ID and
+   a client secret go in
+   [`configs/oauth2-proxy-secret.env`](../kubernetes/kustomizations/repwise/configs/). Open
+   the page, sign in, and press the button: this first run downloads `workouts.yaml` and
+   then stops with `No cached Garmin session`. The sign-in lasts a month.
 3. **A Garmin session.** Logging in takes a password and an MFA code, so it is done once
    from a terminal, and the tokens stay on the volume:
 
    ```bash
-   kubectl -n repwise exec -it deploy/repwise-trigger -- repwise list
+   kubectl -n repwise exec -it deploy/repwise-trigger -c repwise-trigger -- repwise list
    ```
 
 Run it again when the page reports that the session is unusable. Nothing else on the volume

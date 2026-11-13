@@ -13,6 +13,12 @@ secretGenerator:
     envs:
       - configs/trigger-secret.env
     type: Opaque
+  - name: oauth2-proxy-secret
+    envs:
+      - configs/oauth2-proxy-secret.env
+    type: Opaque
 images:
   - name: ghcr.io/theadzik/repwise-trigger
     newTag: 2026.11.1
+  - name: quay.io/oauth2-proxy/oauth2-proxy
+    newTag: v7.15.6

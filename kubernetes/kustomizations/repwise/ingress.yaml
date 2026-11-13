@@ -9,7 +9,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.middlewares: "traefik-cloudflare@kubernetescrd"
   labels:
     # External, because the point is to reach it from the gym. What keeps it
-    # from being anyone's button is the key the application itself requires.
+    # from being anyone's button is the oauth2-proxy the Service points at.
     dns-type: external
 spec:
   ingressClassName: traefik
@@ -27,4 +27,4 @@ spec:
               service:
                 name: repwise-trigger-http
                 port:
-                  number: 8080
+                  number: 4180

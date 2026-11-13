@@ -116,7 +116,7 @@ harmful.
 | [Tandoor](../kubernetes/kustomizations/tandoor/) | Recipe manager | PostgreSQL from the CloudNativePG operator |
 | [Audiobookshelf](../kubernetes/kustomizations/audiobookshelf/) | Audiobook and podcast server | |
 | [blog](../kubernetes/kustomizations/blog/) | [zmuda.pro](https://zmuda.pro), built from [theadzik/blog](https://github.com/theadzik/blog) | One ApplicationSet, two environments, two update strategies |
-| [repwise](../kubernetes/kustomizations/repwise/) | A button that runs [repwise](https://github.com/theadzik/repwise) from a phone | Public, behind a key the [application](../apps/repwise-trigger/) checks itself. See [Operations](operations.md#setting-up-the-repwise-trigger) |
+| [repwise](../kubernetes/kustomizations/repwise/) | A button that runs [repwise](https://github.com/theadzik/repwise) from a phone | Public, behind a GitHub sign-in that oauth2-proxy handles in the same pod as the [application](../apps/repwise-trigger/). See [Operations](operations.md#setting-up-the-repwise-trigger) |
 
 ## Where the state lives
 
