@@ -1,14 +1,17 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: repwise-data
+  name: repwise-home
 spec:
   # Holds the Garmin tokens, which are rewritten whenever they are refreshed and
   # so cannot be a Secret, and nothing that is not replaced by logging in again
   # or by the next run. Hence no backup label, and a class that deletes.
+  #
+  # ReadWriteMany so that a replacement pod on another node is not held up
+  # waiting for the old one's node to let go of the volume.
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 1Gi
-  storageClassName: "synology-iscsi-delete"
+  storageClassName: "synology-nfs-delete"

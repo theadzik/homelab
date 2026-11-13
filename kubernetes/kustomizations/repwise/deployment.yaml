@@ -9,8 +9,8 @@ spec:
   selector:
     matchLabels:
       app: repwise-trigger
-  # The volume is ReadWriteOnce, so the old pod has to let go of it before a new
-  # one can start.
+  # The run lock is held in the process, so an old pod finishing a run and a new
+  # one accepting another must never overlap.
   strategy:
     type: Recreate
   template:
@@ -124,6 +124,6 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: repwise-data
+            claimName: repwise-home
         - name: tmp
           emptyDir: {}
