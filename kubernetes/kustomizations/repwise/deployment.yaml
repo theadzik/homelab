@@ -18,6 +18,10 @@ spec:
       labels:
         app: repwise-trigger
     spec:
+      # Longer than the ten minutes server.py allows a run, which it finishes
+      # before exiting. With no run in progress both containers stop at once,
+      # so this is only ever waited out by one.
+      terminationGracePeriodSeconds: 630
       containers:
         - name: repwise-trigger
           # Replaced by `images:` in kustomization.yaml, which Image Updater
