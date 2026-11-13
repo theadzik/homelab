@@ -19,7 +19,7 @@ from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler
 from http.server import ThreadingHTTPServer
 
-import yaml  # not declared in requirements.txt: repwise depends on it
+import yaml
 
 KEY = os.environ["TRIGGER_KEY"].encode()
 GITHUB_TOKEN = os.environ["GITHUB_TOKEN"]

@@ -1,1 +1,4 @@
 repwise==3.5.0
+# Imported by server.py. Unpinned on purpose: repwise pins the exact version it
+# was tested with, and a second pin here could only come to disagree with it.
+pyyaml
