@@ -114,16 +114,11 @@ spec:
         runAsNonRoot: true
         runAsUser: 65532
         runAsGroup: 65532
-        fsGroup: 65532
-        # Only while the volume is new. A recursive change on every mount would
-        # add group access to the Garmin tokens, which garminconnect writes
-        # 0600 and repwise warns about finding otherwise.
-        fsGroupChangePolicy: OnRootMismatch
         seccompProfile:
           type: RuntimeDefault
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: repwise-home
+            claimName: repwise-trigger-home
         - name: tmp
           emptyDir: {}

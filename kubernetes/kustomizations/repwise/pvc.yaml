@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: repwise-home
+  name: repwise-trigger-home
 spec:
   # Holds the Garmin tokens, which are rewritten whenever they are refreshed and
   # so cannot be a Secret, and nothing that is not replaced by logging in again
@@ -14,4 +14,7 @@ spec:
   resources:
     requests:
       storage: 1Gi
-  storageClassName: "synology-nfs-delete"
+  # The -anyuid class, because the pod does not own the share it is given and
+  # may not run anything as root to change that: the other NFS classes leave
+  # the volume's root writable by its owner alone.
+  storageClassName: "synology-nfs-delete-anyuid"

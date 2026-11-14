@@ -7,7 +7,7 @@ anyone has to be careful with.
 ## Storage classes
 
 The [Synology CSI driver](../kubernetes/kustomizations/synology-csi/) provisions both iSCSI
-LUNs and NFS shares from the NAS. Nine storage classes exist, and their names follow a
+LUNs and NFS shares from the NAS. Ten storage classes exist, and their names follow a
 pattern instead of being a list to memorise:
 
 ```text
@@ -23,7 +23,7 @@ synology-<protocol>-<reclaim>[-<tier>][-<purpose>]
 `synology-nfs-delete` is the cluster default. The safe thing to get by accident is a volume
 that goes away with its claim, not one that quietly accumulates on the NAS forever.
 
-Two of the parameters took some working out:
+Three of the parameters took some working out:
 
 - **iSCSI volumes are btrfs, formatted `--nodiscard`.** Discard during format on a
   thin-provisioned LUN issues a very large number of UNMAPs to the NAS for no benefit,
@@ -33,6 +33,15 @@ Two of the parameters took some working out:
   database that receives an I/O error where it expected a pause can corrupt its data files.
   Everywhere else the mount options are a preference. Here they are a correctness
   requirement.
+- **`synology-nfs-delete-anyuid` is for a pod that cannot `chown` its own volume.** The
+  driver sets the mode of an NFS volume's root every time it mounts it, to the class's
+  `mountPermissions`, and never its owner. `fsGroup` does not reach these volumes either:
+  with no `fsGroupPolicy` declared for the driver, the kubelet applies it only where a
+  volume has an `fsType`, and an NFS one has none.
+  Under `0755` that leaves the root writable by whoever owns the share, which a pod in a
+  `restricted` namespace cannot become, having no root container to change it with. This
+  class mounts the root `0777`. The value is fixed into a volume when it is provisioned, so
+  moving a claim here means a new claim.
 
 All classes allow volume expansion, so growing a volume is an edit to a PVC.
 
