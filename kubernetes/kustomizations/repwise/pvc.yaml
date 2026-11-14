@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: repwise-home
+  name: repwise-trigger-home
 spec:
   # Holds the Garmin tokens, which are rewritten whenever they are refreshed and
   # so cannot be a Secret, and nothing that is not replaced by logging in again
@@ -14,4 +14,9 @@ spec:
   resources:
     requests:
       storage: 1Gi
-  storageClassName: "synology-nfs-delete"
+  # The -fsgroup class, whose mode for the volume's root is the one the kubelet
+  # leaves after giving the volume to the pod's fsGroup. Under the other NFS
+  # classes the driver takes group write off the root on every mount, and the
+  # kubelet answers by going over every file again: the Garmin tokens would
+  # come out 0660 after each restart.
+  storageClassName: "synology-nfs-delete-fsgroup"

@@ -124,6 +124,6 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: repwise-home
+            claimName: repwise-trigger-home
         - name: tmp
           emptyDir: {}
