@@ -58,11 +58,11 @@ allowVolumeExpansion: true
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: synology-nfs-delete-anyuid
+  name: synology-nfs-delete-fsgroup
 provisioner: csi.san.synology.com
 parameters:
   protocol: "nfs"
-  mountPermissions: "0777"
+  mountPermissions: "0770"
 mountOptions:
   - nfsvers=4.1
 reclaimPolicy: Delete

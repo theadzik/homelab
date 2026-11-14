@@ -5,5 +5,10 @@ metadata:
 spec:
   attachRequired: true # Indicates the driver requires an attach operation (TODO: ControllerPublishVolume should be implemented)
   podInfoOnMount: true
+  # The kubelet gives a volume to the pod's fsGroup whatever its protocol. The
+  # default does that only where a volume has an fsType, which no NFS one has,
+  # and the driver itself sets the mode of an NFS volume's root and never its
+  # owner: a pod that was not root could not write to a share it did not own.
+  fsGroupPolicy: File
   volumeLifecycleModes:
     - Persistent

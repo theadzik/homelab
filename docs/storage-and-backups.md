@@ -33,17 +33,34 @@ Three of the parameters took some working out:
   database that receives an I/O error where it expected a pause can corrupt its data files.
   Everywhere else the mount options are a preference. Here they are a correctness
   requirement.
-- **`synology-nfs-delete-anyuid` is for a pod that cannot `chown` its own volume.** The
-  driver sets the mode of an NFS volume's root every time it mounts it, to the class's
-  `mountPermissions`, and never its owner. `fsGroup` does not reach these volumes either:
-  with no `fsGroupPolicy` declared for the driver, the kubelet applies it only where a
-  volume has an `fsType`, and an NFS one has none.
-  Under `0755` that leaves the root writable by whoever owns the share, which a pod in a
-  `restricted` namespace cannot become, having no root container to change it with. This
-  class mounts the root `0777`. The value is fixed into a volume when it is provisioned, so
-  moving a claim here means a new claim.
+- **`synology-nfs-delete-fsgroup` is the NFS class that agrees with `fsGroup`.** See
+  [below](#who-may-write-to-a-volume).
 
 All classes allow volume expansion, so growing a volume is an edit to a PVC.
+
+## Who may write to a volume
+
+A pod that is not root can write to its volume when the pod declares an `fsGroup`. The
+[`CSIDriver`](../kubernetes/kustomizations/synology-csi/csi-driver.yml) sets
+`fsGroupPolicy: File`, so the kubelet gives a volume to that group as it mounts it, NFS
+included. Left at its default the kubelet does so only for a volume with an `fsType`, which
+no NFS volume has, and the driver for its part sets the mode of an NFS volume's root and
+never its owner. A pod could then write only to a share it happened to own, or needed a root
+init container to `chown` it, which a namespace enforcing `restricted` does not allow.
+
+The driver's `mountPermissions` works against this unless the class is chosen for it. The
+mode is applied on every mount, so `0755` takes group write off the root each time. The
+kubelet reads that as a volume not yet prepared and goes over every file again, whatever
+`fsGroupChangePolicy: OnRootMismatch` asks, adding group access as it goes. Two things
+follow:
+
+- **A new NFS volume for a pod with an `fsGroup` belongs in `synology-nfs-delete-fsgroup`.**
+  It mounts `0770`, which is the mode the kubelet leaves, so the two agree and a volume is
+  gone over once, while it is empty. A file written `0600` afterwards stays `0600`.
+- **On the older NFS classes a pod with an `fsGroup` has its whole volume gone over at every
+  start.** The mode is fixed into a volume when it is provisioned, so the volumes those
+  classes already made keep it. That costs nothing noticeable on a small volume. nzbget
+  mounts the 7 TiB downloads claim and declares no `fsGroup` for this reason.
 
 ## Snapshots
 
