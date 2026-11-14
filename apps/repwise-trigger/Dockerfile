@@ -14,6 +14,7 @@ FROM dhi.io/python:3.15.2-alpine3.24
 
 COPY --from=build /opt/repwise /opt/repwise
 COPY server.py /server.py
+COPY templates /templates
 
 # Unbuffered, so that what a run prints reaches the pod's log when it happens.
 ENV PATH=/opt/repwise/bin:$PATH \
