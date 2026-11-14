@@ -24,6 +24,7 @@ from http.server import BaseHTTPRequestHandler
 from http.server import ThreadingHTTPServer
 
 import garminconnect
+import jinja2
 import yaml
 
 GITHUB_TOKEN = os.environ["GITHUB_TOKEN"]
@@ -39,102 +40,15 @@ last = {"finished": None, "result": "Not run since the pod started", "output": "
 # A login that Garmin wants an MFA code for, and where its tokens are to go.
 pending = None
 
-PAGE = b"""<!doctype html>
-<html lang="en">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light dark">
-<title>repwise</title>
-<style>
-  body { font: 16px system-ui, sans-serif; margin: 1rem; }
-  button, input { font: inherit; width: 100%; box-sizing: border-box; padding: 0.5rem; margin: 0.25rem 0; }
-  #run { font-size: 1.5rem; padding: 1.5rem; }
-  pre { font-size: 0.75rem; overflow-x: auto; }
-</style>
-<button id="run">Update</button>
-<p id="state"></p>
-<pre id="output"></pre>
-<details>
-  <summary>Garmin login</summary>
-  <form id="login">
-    <input name="email" type="email" autocomplete="username" placeholder="Email" required>
-    <input name="password" type="password" autocomplete="current-password" placeholder="Password" required>
-    <button>Log in</button>
-  </form>
-  <form id="mfa" hidden>
-    <input name="code" inputmode="numeric" autocomplete="one-time-code" placeholder="Code" required>
-    <button>Send code</button>
-  </form>
-  <p id="login-state"></p>
-</details>
-<script>
-  const button = document.getElementById("run");
-  const state = document.getElementById("state");
-  const output = document.getElementById("output");
-  const login = document.getElementById("login");
-  const mfa = document.getElementById("mfa");
-  const loginState = document.getElementById("login-state");
-
-  // oauth2-proxy answers a request that asks for JSON with 401 once the session
-  // has run out, where it would redirect a page. Loading the page again is what
-  // takes that redirect, to the sign-in and back.
-  async function call(method, path, body) {
-    const headers = {Accept: "application/json"};
-    if (body) headers["Content-Type"] = "application/json";
-    const response = await fetch(path, {method, headers, body: body && JSON.stringify(body)});
-    if (response.status === 401) {
-      location.reload();
-      await new Promise(() => {});
-    }
-    return response;
-  }
-
-  async function refresh() {
-    try {
-      const status = await (await call("GET", "status")).json();
-      const when = status.finished ? " - " + new Date(status.finished).toLocaleString() : "";
-      button.disabled = status.running;
-      state.textContent = status.running ? "Running..." : status.result + when;
-      output.textContent = status.running ? "" : status.output;
-      if (status.running) setTimeout(refresh, 2000);
-    } catch (error) {
-      state.textContent = error.message + " Reload to try again.";
-    }
-  }
-
-  button.onclick = async () => {
-    button.disabled = true;
-    try {
-      await call("POST", "run");
-    } finally {
-      await refresh();
-    }
-  };
-  refresh();
-
-  // Both steps of a Garmin login: the password, then the code if Garmin asks
-  // for one. A code that was wrong can be sent again without starting over.
-  async function send(form, path) {
-    loginState.textContent = "Working...";
-    try {
-      const response = await call("POST", path, Object.fromEntries(new FormData(form)));
-      form.reset();
-      if (!response.ok) {
-        loginState.textContent = await response.text();
-        return;
-      }
-      const wantsCode = (await response.json()).mfa;
-      login.hidden = wantsCode;
-      mfa.hidden = !wantsCode;
-      loginState.textContent = wantsCode ? "Garmin wants a code." : "Logged in.";
-    } catch (error) {
-      loginState.textContent = error.message;
-    }
-  }
-  login.onsubmit = (event) => { event.preventDefault(); send(login, "login"); };
-  mfa.onsubmit = (event) => { event.preventDefault(); send(mfa, "mfa"); };
-</script>
-"""
+# Loaded as the process starts, so that an image built without the page fails
+# there and not at the first visit. Nothing is put into the page yet, and
+# whatever comes to be is escaped.
+PAGE = jinja2.Environment(
+    loader=jinja2.FileSystemLoader(
+        os.path.join(os.path.dirname(__file__), "templates")
+    ),
+    autoescape=True,
+).get_template("index.html")
 
 
 def fetch_config() -> dict:
@@ -250,7 +164,9 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self) -> None:
         if self.path == "/":
-            self.reply(HTTPStatus.OK, PAGE, "text/html; charset=utf-8")
+            self.reply(
+                HTTPStatus.OK, PAGE.render().encode(), "text/html; charset=utf-8"
+            )
         elif self.path != "/status":
             self.reply(HTTPStatus.NOT_FOUND)
         else:
