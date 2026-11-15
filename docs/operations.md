@@ -132,7 +132,7 @@ It writes to a Garmin account, so [oauth2-proxy](https://oauth2-proxy.github.io/
 in each [api pod](../kubernetes/kustomizations/repwise/api.yaml) signs the visitor in with
 GitHub and admits one account, named by `--github-user`. The API listens on localhost alone,
 so no route to it skips the sign-in. A button queues a run, and the
-[worker](../kubernetes/kustomizations/repwise/worker.yaml) takes it from PostgreSQL and runs
+[worker](../kubernetes/kustomizations/repwise/repwise-worker.yaml) takes it from PostgreSQL and runs
 repwise. Everything the site remembers is in the database, so any pod can be replaced at any
 time. A rollout of the worker waits for the run it holds. Four things have to be put in
 place by hand, and each step shows whether the one before it worked:
