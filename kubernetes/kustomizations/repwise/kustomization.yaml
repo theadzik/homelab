@@ -9,8 +9,10 @@ resources:
   - namespace.yaml
   - netpol.yaml
   - pvc.yaml
+  # Not worker.yaml: .gitignore keeps every file of that name out, for the
+  # machine config Talos generates.
+  - repwise-worker.yaml
   - service.yaml
-  - worker.yaml
 secretGenerator:
   - name: workouts-secret
     envs:
