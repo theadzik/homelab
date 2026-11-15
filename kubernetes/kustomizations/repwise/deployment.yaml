@@ -42,7 +42,7 @@ spec:
               value: https://api.github.com/repos/theadzik/workouts/contents/workouts.yaml
           envFrom:
             - secretRef:
-                name: trigger-secret
+                name: workouts-secret
           securityContext:
             runAsNonRoot: true
             readOnlyRootFilesystem: true

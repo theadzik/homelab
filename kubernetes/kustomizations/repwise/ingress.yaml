@@ -4,12 +4,10 @@ metadata:
   name: repwise-trigger
   annotations:
     cert-manager.io/cluster-issuer: "lets-encrypt-prod"
-    # external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
-    # external-dns.alpha.kubernetes.io/target: "e48d5ef2-41f9-4ca5-a8bf-f60af8d77921.cfargotunnel.com"
-    # traefik.ingress.kubernetes.io/router.middlewares: "traefik-cloudflare@kubernetescrd"
   labels:
-    # External, because the point is to reach it from the gym. What keeps it
-    # from being anyone's button is the oauth2-proxy the Service points at.
+    # The home network only. Signing in with GitHub still works on a name the
+    # internet cannot resolve: GitHub sends the browser back to the callback,
+    # and never calls the site itself.
     dns-type: internal
 spec:
   ingressClassName: traefik
@@ -24,7 +22,9 @@ spec:
           - path: /
             pathType: Prefix
             backend:
+              # oauth2-proxy in the api pods, which signs the visitor in before
+              # anything reaches the API.
               service:
-                name: repwise-trigger-http
+                name: repwise-api
                 port:
-                  number: 4180
+                  name: http
