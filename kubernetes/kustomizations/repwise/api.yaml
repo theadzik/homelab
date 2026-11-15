@@ -137,6 +137,12 @@ metadata:
   name: repwise-api
   labels:
     app: repwise-api
+  annotations:
+    # A Garmin login waiting on its code lives in one replica's memory, and a
+    # phone reconnects to send the code. The cookie brings it back there.
+    traefik.ingress.kubernetes.io/service.sticky.cookie: "true"
+    traefik.ingress.kubernetes.io/service.sticky.cookie.secure: "true"
+    traefik.ingress.kubernetes.io/service.sticky.cookie.httponly: "true"
 spec:
   selector:
     app: repwise-api
