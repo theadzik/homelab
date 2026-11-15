@@ -120,44 +120,60 @@ For a single application, ArgoCD's UI can target a branch for that app alone.
 | PVC will not bind | Storage class name, then the CSI controller logs | Wrong protocol for the access mode. `ReadWriteMany` needs NFS |
 | Kubernetes version rolls back after `apply-config` | `KUBERNETES_VERSION` in `talos/common.sh` | `talosctl upgrade-k8s` was run by hand, so the nodes moved and the pin did not. Upgrade through `talos/upgrade.sh` instead. See [Talos](talos.md#upgrading) |
 
-### Setting up the repwise trigger
+### Setting up repwise
 
-[`repwise.zmuda.pro`](../kubernetes/kustomizations/repwise/) is a page with one button, which
-runs `repwise update --apply --push` for the days the laptop stayed closed before the gym.
-It is on the internet and it writes to a Garmin account, so
-[oauth2-proxy](https://oauth2-proxy.github.io/oauth2-proxy/) in the same pod signs the
-visitor in with GitHub and admits one account, named by `--github-user` in the
-[Deployment](../kubernetes/kustomizations/repwise/deployment.yaml). The application listens
-on localhost alone, so no route to it skips the sign-in. Three things have to be put in
+[`repwise.zmuda.pro`](../kubernetes/kustomizations/repwise/) is a site with an Update
+button, which runs `repwise update --apply --push` for the days the laptop stayed closed
+before the gym, and keeps the result of every run. It is built in the repwise repository,
+under [`web/`](https://github.com/theadzik/repwise/tree/main/web), and reachable from the
+home network only.
+
+It writes to a Garmin account, so [oauth2-proxy](https://oauth2-proxy.github.io/oauth2-proxy/)
+in each [api pod](../kubernetes/kustomizations/repwise/api.yaml) signs the visitor in with
+GitHub and admits one account, named by `--github-user`. The API listens on localhost alone,
+so no route to it skips the sign-in. A button queues a run, and the
+[worker](../kubernetes/kustomizations/repwise/worker.yaml) takes it from PostgreSQL and runs
+repwise. Everything the site remembers is in the database, so any pod can be replaced at any
+time. A rollout of the worker waits for the run it holds. Four things have to be put in
 place by hand, and each step shows whether the one before it worked:
 
 1. **A token that can read `workouts.yaml`.** A fine-grained GitHub token for
    `theadzik/workouts` alone, with `Contents: Read-only`, as `GITHUB_TOKEN` in
-   [`configs/trigger-secret.env`](../kubernetes/kustomizations/repwise/configs/). The file is
-   downloaded on every run and never kept, because repwise reshapes the Garmin workouts to
-   match the file it is given, and a stale copy would undo an edit made since.
+   [`configs/workouts-secret.env`](../kubernetes/kustomizations/repwise/configs/). The file
+   is downloaded on every run and never kept, because repwise reshapes the Garmin workouts
+   to match the file it is given, and a stale copy would undo an edit made since.
 2. **A GitHub OAuth App to sign in with.** Created under Settings, Developer settings,
-   with `https://repwise.zmuda.pro/oauth2/callback` as its callback URL. Its client ID and
-   a client secret go in
+   with `https://repwise.zmuda.pro/oauth2/callback` as its callback URL. GitHub only sends
+   the browser there, so a name the internet cannot resolve is fine. Its client ID, a client
+   secret and a cookie secret go in
    [`configs/oauth2-proxy-secret.env`](../kubernetes/kustomizations/repwise/configs/). Open
-   the page, sign in, and press the button: this first run downloads `workouts.yaml` and
-   then stops with `No cached Garmin session`. The sign-in lasts a month.
-3. **A Garmin session.** Open *Garmin login* on the page and give it the email, the
-   password and the code Garmin sends. The tokens stay on the volume. The password is
-   handed to Garmin and kept nowhere, but Cloudflare can read it on the way: TLS for a
-   proxied hostname ends at their edge, so the form is decrypted there before it enters the
-   tunnel. Logging in from a terminal avoids that:
+   the site, sign in, and create the account it offers. The sign-in lasts a month.
+3. **A key for the Garmin session**, which is stored encrypted, as `TOKEN_KEYS` in
+   [`configs/web-secret.env`](../kubernetes/kustomizations/repwise/configs/):
 
    ```bash
-   kubectl -n repwise exec -it deploy/repwise-trigger -c repwise-trigger -- repwise list
+   python3 -c 'import base64, os; print(base64.urlsafe_b64encode(os.urandom(32)).decode())'
    ```
 
-Log in again when the page reports that the session is unusable. Nothing else on the volume
-matters: lose it and step 3 is the whole recovery.
+   To replace it, put the new key first, separated by a space, and remove the old one once
+   Garmin has been signed in to again. Lose the key and step 4 is the whole recovery.
+4. **A Garmin session.** On the Garmin screen give the email, the password and the code
+   Garmin sends. The password is handed to Garmin and kept nowhere. The session goes to
+   the database, encrypted, and is written to memory for the length of each run.
 
-The page refuses to run while a workout in the file has no `garmin_workout_id`. repwise would
+Sign in to Garmin again when a run reports that the session is unusable. *Sign out of
+Garmin* makes the site forget the session. *Sign out*, on the account screen, ends the
+sign-in to the site.
+
+The site refuses to run while a workout in the file has no `garmin_workout_id`. repwise would
 build it in Garmin and write the id into a copy that the next run replaces, and so build it
 a second time. Run repwise wherever the file is edited, and push the id it records.
+
+The database is the CloudNativePG cluster `repwise-db`:
+
+```bash
+kubectl -n repwise exec -it repwise-db-1 -- psql -d app
+```
 
 ### Restoring a volume
 
