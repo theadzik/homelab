@@ -51,11 +51,6 @@ spec:
           branch: "{{ .Values.spec.sources.targetRevision }}"
           writeBackTarget: "kustomization:/kubernetes/kustomizations/repwise"
       images:
-        - alias: "repwise-trigger"
-          imageName: "ghcr.io/theadzik/repwise-trigger"
-          commonUpdateSettings:
-            updateStrategy: "semver"
-            allowTags: "regexp:^[0-9]{4}\\.([1-9]|1[0-2])\\.[1-9][0-9]*$"
         - alias: "repwise-web"
           imageName: "ghcr.io/theadzik/repwise-web"
           commonUpdateSettings:

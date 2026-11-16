@@ -19,7 +19,6 @@ updates:
   - package-ecosystem: "pip"
     directories:
       - "/.github/scripts/sync-waves-inventory"
-      - "/apps/repwise-trigger"
     schedule:
       interval: "weekly"
       day: "friday"
@@ -59,23 +58,6 @@ updates:
       - docker-hub
     groups:
       vaultwarden-dockerfiles:
-        patterns:
-          - "*"
-  # Grouped so that both stages of the Dockerfile move to the same Python in one
-  # pull request: the venv built in the first only runs in the second while they
-  # match.
-  - package-ecosystem: "docker"
-    directories:
-      - "/apps/repwise-trigger"
-    schedule:
-      interval: "weekly"
-      day: "friday"
-    cooldown:
-      default-days: 7
-    registries:
-      - dhi-io
-    groups:
-      repwise-trigger-dockerfile:
         patterns:
           - "*"
   - package-ecosystem: "github-actions"
