@@ -30,6 +30,6 @@ images:
   - name: ghcr.io/theadzik/repwise-trigger
     newTag: 2026.11.4
   - name: ghcr.io/theadzik/repwise-web
-    newTag: 2026.11.3
+    newTag: 2026.11.4
   - name: quay.io/oauth2-proxy/oauth2-proxy
     newTag: v7.15.6
