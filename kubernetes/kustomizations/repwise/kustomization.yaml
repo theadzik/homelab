@@ -4,15 +4,12 @@ namespace: repwise
 resources:
   - api.yaml
   - database.yaml
-  - deployment.yaml
   - ingress.yaml
   - namespace.yaml
   - netpol.yaml
-  - pvc.yaml
   # Not worker.yaml: .gitignore keeps every file of that name out, for the
   # machine config Talos generates.
   - repwise-worker.yaml
-  - service.yaml
 secretGenerator:
   - name: workouts-secret
     envs:
@@ -27,8 +24,6 @@ secretGenerator:
       - configs/web-secret.env
     type: Opaque
 images:
-  - name: ghcr.io/theadzik/repwise-trigger
-    newTag: 2026.11.4
   - name: ghcr.io/theadzik/repwise-web
     newTag: 2026.11.4
   - name: quay.io/oauth2-proxy/oauth2-proxy

@@ -1,6 +1,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  # Named for the trigger it used to serve. A new name would mean a new TLS
+  # secret and certificate for the same host.
   name: repwise-trigger
   annotations:
     cert-manager.io/cluster-issuer: "lets-encrypt-prod"
