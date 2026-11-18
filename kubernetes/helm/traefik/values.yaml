@@ -33,7 +33,11 @@ accessLog:
         User-Agent: keep
 
 ports:
+  # The two below are the default entry points, so a router whose Ingress names
+  # none lands on them alone and never on `tunnel`. Without a default, Traefik
+  # puts such a router on every entry point there is.
   web:
+    asDefault: true
     forwardedHeaders:
       trustedIPs: &trustedIPs
         - 10.0.0.0/8
@@ -61,7 +65,32 @@ ports:
           scheme: https
           permanent: true
   websecure:
+    asDefault: true
     forwardedHeaders:
       trustedIPs: *trustedIPs
     proxyProtocol:
       trustedIPs: *trustedIPs
+  # What the Cloudflare tunnel reaches. Only routers that name it serve on it,
+  # with `traefik.ingress.kubernetes.io/router.entrypoints: websecure,tunnel`,
+  # so an internal site cannot be reached through the tunnel whatever hostname
+  # a request arrives with. On the ClusterIP Service `traefik-tunnel` alone,
+  # not on the LoadBalancer the home network uses.
+  tunnel:
+    port: 9443
+    exposedPort: 443
+    expose:
+      default: false
+      tunnel: true
+    forwardedHeaders:
+      # cloudflared, from the pod network. Nothing else connects here.
+      trustedIPs:
+        - 10.0.0.0/8
+    http:
+      tls:
+        enabled: true
+
+service:
+  additionalServices:
+    tunnel:
+      spec:
+        type: ClusterIP
