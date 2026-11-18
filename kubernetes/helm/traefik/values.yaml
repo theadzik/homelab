@@ -77,6 +77,13 @@ ports:
     http:
       tls:
         enabled: true
+      # Everything here came through Cloudflare, so every request gets the
+      # visitor's address back from CF-Connecting-IP. On the entry point rather
+      # than on each Ingress, because the plugin also refuses whatever did not
+      # come from Cloudflare or the pod network - the home network, on
+      # websecure.
+      middlewares:
+        - traefik-cloudflare@kubernetescrd
 
 service:
   additionalServices:

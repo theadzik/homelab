@@ -141,9 +141,12 @@ the visitor's address, and both trust the pod network, `10.0.0.0/8`, and nothing
   rewrites the request header from `CF-Connecting-IP`, which Cloudflare sets and
   `cloudflared` passes on.
 
-Ingresses that are exposed externally opt into the middleware by annotation. Trusting a
-forwarded header from anywhere is how access logs, rate limits and IP-based rules all stop
-meaning anything at once, so the trust boundary is written down in both places.
+The middleware is attached to the `tunnel` entry point, so it runs on everything that came
+through Cloudflare and on nothing else. It also refuses any request that did not come from
+Cloudflare or the pod network, which on `websecure` would be the whole home network, with
+`403 cf:Forbidden`. An Ingress therefore never names it. Trusting a forwarded header from
+anywhere is how access logs, rate limits and IP-based rules all stop meaning anything at once,
+so the trust boundary is written down in both places.
 
 HTTP is redirected to HTTPS permanently at the entry point, and access logs are JSON with
 `User-Agent` retained.
@@ -185,7 +188,6 @@ metadata:
   annotations:
     external-dns.kubernetes.io/cloudflare-proxied: "true"
     external-dns.kubernetes.io/target: "e48d5ef2-41f9-4ca5-a8bf-f60af8d77921.cfargotunnel.com"
-    traefik.ingress.kubernetes.io/router.middlewares: "traefik-cloudflare@kubernetescrd"
     traefik.ingress.kubernetes.io/router.entrypoints: "websecure,tunnel"
   labels:
     dns-type: external
