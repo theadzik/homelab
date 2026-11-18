@@ -193,6 +193,11 @@ PiHole gets `registry: noop` and `upsert-only` because it has no TXT registry to
 record ownership, so external-dns must not be allowed to conclude that a record it cannot
 account for should be deleted.
 
+Annotations use the `external-dns.kubernetes.io/` prefix, the default since external-dns
+v0.22.0. The `external-dns.alpha.kubernetes.io/` keys from before it are ignored without a
+word, so a `target` written that way publishes the Ingress's own load-balancer address
+instead of the tunnel, unproxied: `192.168.0.210` on the internet.
+
 ## Certificates
 
 cert-manager issues from Let's Encrypt using a **DNS-01** solver with a Cloudflare API

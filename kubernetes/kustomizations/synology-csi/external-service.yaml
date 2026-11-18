@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: nas-1
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: "synology.zmuda.pro"
+    external-dns.kubernetes.io/hostname: "synology.zmuda.pro"
   labels:
     dns-type: internal
 spec:
@@ -18,7 +18,7 @@ kind: Service
 metadata:
   name: nas-2
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: "synology.zmuda.pro"
+    external-dns.kubernetes.io/hostname: "synology.zmuda.pro"
   labels:
     dns-type: internal
 spec:
