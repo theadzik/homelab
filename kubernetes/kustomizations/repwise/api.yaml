@@ -85,6 +85,10 @@ spec:
             - --http-address=0.0.0.0:4180
             - --redirect-url=https://repwise.zmuda.pro/oauth2/callback
             - --reverse-proxy=true
+            # Whose X-Forwarded-* to believe: Traefik's, from the pod network.
+            # Without it every address is, and the log says so at start-up.
+            # The network policy already lets nothing else in.
+            - --trusted-proxy-ip=10.0.0.0/8
             # Its own page with a button, where signing out lands. Sent
             # straight to GitHub instead, a browser GitHub still knows would be
             # signed back in at once.
