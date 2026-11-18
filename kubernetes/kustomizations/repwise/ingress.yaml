@@ -6,11 +6,9 @@ metadata:
   name: repwise-trigger
   annotations:
     cert-manager.io/cluster-issuer: "lets-encrypt-prod"
-    # Published through the tunnel, as the blog is: a proxied CNAME to it, and
-    # the visitor's address put back from what Cloudflare says it was.
+    # Published through the tunnel, as the blog is: a proxied CNAME to it.
     external-dns.kubernetes.io/cloudflare-proxied: "true"
     external-dns.kubernetes.io/target: "e48d5ef2-41f9-4ca5-a8bf-f60af8d77921.cfargotunnel.com"
-    traefik.ingress.kubernetes.io/router.middlewares: "traefik-cloudflare@kubernetescrd"
     # tunnel is what the Cloudflare tunnel reaches, websecure what the home
     # network does through PiHole.
     traefik.ingress.kubernetes.io/router.entrypoints: "websecure,tunnel"
