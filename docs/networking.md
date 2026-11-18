@@ -17,8 +17,8 @@ flowchart LR
         ph --> vip["LoadBalancer IP<br/>192.168.0.50-100"]
     end
 
-    tun --> tsvc[Traefik]
-    vip --> tsvc
+    tun -->|tunnel entry point| tsvc[Traefik]
+    vip -->|websecure| tsvc
     tsvc --> app[application pod]
 ```
 
@@ -32,8 +32,9 @@ from the Cilium load-balancer pool, announced on the LAN by ARP. Those addresses
 and the tunnel only forwards to Traefik. There is no route from the internet to them at all,
 so no rule has to deny one.
 
-Both paths terminate at the same Traefik service, so an application is configured once and
-its exposure is decided entirely by which DNS record points at it.
+Both paths terminate at the same Traefik pods, on different entry points: the tunnel at
+`tunnel`, the LAN at `websecure`. An application is configured once, and is public when its
+Ingress both has a record pointing at the tunnel and names the `tunnel` entry point.
 
 ## Cilium
 
@@ -126,18 +127,19 @@ a control-plane component's than an application's:
 | `podDisruptionBudget: minAvailable: 1` | Voluntary eviction cannot drain both |
 | `priorityClassName: system-cluster-critical` | Under memory pressure, something else is evicted first |
 | `minReadySeconds: 10` | A rollout that crash-loops slowly is still caught before both replicas are gone |
+| `web` and `websecure` `asDefault`, plus a `tunnel` entry point on its own ClusterIP Service | Only an Ingress that names `tunnel` can be reached through the [Cloudflare tunnel](#cloudflare-tunnel) |
 
 ### Getting the real client IP back
 
-A request that arrives through Cloudflare has Cloudflare's address as its source. Two
-mechanisms restore the original, and both are needed:
+A request that arrives through Cloudflare reaches Traefik from a `cloudflared` pod, so its
+source is a pod address. Cloudflare itself never connects to Traefik. Two settings restore
+the visitor's address, and both trust the pod network, `10.0.0.0/8`, and nothing else:
 
-- `forwardedHeaders.trustedIPs` and `proxyProtocol.trustedIPs` list every Cloudflare
-  address range, so `X-Forwarded-For` from those sources is believed and from anywhere else
-  is not.
+- `forwardedHeaders.trustedIPs` on every entry point, so `X-Forwarded-For` from
+  `cloudflared` is believed and from anywhere else is not.
 - The [`cloudflare` plugin middleware](../kubernetes/kustomizations/traefik/cloudflare-middleware.yaml)
-  rewrites the request header from `CF-Connecting-IP`, trusting only `10.0.0.0/8`. That is
-  the pod network, which is where `cloudflared` sits.
+  rewrites the request header from `CF-Connecting-IP`, which Cloudflare sets and
+  `cloudflared` passes on.
 
 Ingresses that are exposed externally opt into the middleware by annotation. Trusting a
 forwarded header from anywhere is how access logs, rate limits and IP-based rules all stop
@@ -149,17 +151,48 @@ HTTP is redirected to HTTPS permanently at the entry point, and access logs are 
 ## Cloudflare Tunnel
 
 [`cloudflared`](../kubernetes/kustomizations/cloudflared/) runs two replicas, spread across
-nodes, at `high-priority`, with a single ingress rule:
+nodes, at `high-priority`. The tunnel is managed in the Cloudflare dashboard, so its routes
+live there and the ingress rule in the local
+[`config.yaml`](../kubernetes/kustomizations/cloudflared/configs/config.yaml) is ignored. It is
+kept identical to them anyway. Two routes, both to the same place:
+
+| Route | Service | Origin settings |
+| --- | --- | --- |
+| `zmuda.pro` | `https://traefik-tunnel.traefik.svc.cluster.local:443` | Match SNI to Host |
+| `*.zmuda.pro` | `https://traefik-tunnel.traefik.svc.cluster.local:443` | Match SNI to Host |
+
+The wildcard does not cover the apex, hence two. With them in place the tunnel is a dumb pipe:
+adding a public hostname is an Ingress change, never a tunnel change.
+
+Three things decide what is reachable through it, and each would be enough on its own:
+
+- **DNS.** Cloudflare sends a request into the tunnel only for a hostname with a proxied record
+  pointing at it, and makes that decision from its own DNS, not from the Host header. The
+  internal hostnames have no public record. A wildcard DNS record would undo this, so there
+  must never be a `*.zmuda.pro` record in Cloudflare.
+- **The entry point.** The tunnel reaches Traefik's `tunnel` entry point, on the ClusterIP
+  Service `traefik-tunnel` and not on the LoadBalancer. `web` and `websecure` are the default
+  entry points, so a router serves on `tunnel` only when its Ingress names it. An internal site
+  is a 404 there whatever hostname a request carries.
+- **TLS.** Match SNI to Host makes cloudflared ask Traefik for the visitor's hostname and check
+  the certificate against it, so every route is end-to-end TLS with the same certificate the
+  home network sees.
+
+Publishing a site is one Ingress:
 
 ```yaml
-ingress:
-  - service: https://traefik.traefik.svc.cluster.local:443
+metadata:
+  annotations:
+    external-dns.kubernetes.io/cloudflare-proxied: "true"
+    external-dns.kubernetes.io/target: "e48d5ef2-41f9-4ca5-a8bf-f60af8d77921.cfargotunnel.com"
+    traefik.ingress.kubernetes.io/router.middlewares: "traefik-cloudflare@kubernetescrd"
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure,tunnel"
+  labels:
+    dns-type: external
 ```
 
-The tunnel is a dumb pipe. It does not know about applications, and adding a public hostname
-is a DNS change plus an ingress label, never a tunnel config change. Its liveness probe hits
-`/ready` on the metrics port, so a tunnel that is running but not connected gets restarted
-instead of looking healthy.
+The liveness probe hits `/ready` on the metrics port, so a tunnel that is running but not
+connected gets restarted instead of looking healthy.
 
 Credentials come from a git-crypt encrypted secret, and the image tag is pinned by
 kustomize and moved by [Image Updater](gitops.md#image-updates-that-leave-a-trail).
