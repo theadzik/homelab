@@ -4,11 +4,15 @@ metadata:
   name: repwise-trigger
   annotations:
     cert-manager.io/cluster-issuer: "lets-encrypt-prod"
+    # Published through the tunnel, as the blog is: a proxied CNAME to it, and
+    # the visitor's address put back from what Cloudflare says it was.
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+    external-dns.alpha.kubernetes.io/target: "e48d5ef2-41f9-4ca5-a8bf-f60af8d77921.cfargotunnel.com"
+    traefik.ingress.kubernetes.io/router.middlewares: "traefik-cloudflare@kubernetescrd"
   labels:
-    # The home network only. Signing in with GitHub still works on a name the
-    # internet cannot resolve: GitHub sends the browser back to the callback,
-    # and never calls the site itself.
-    dns-type: internal
+    # On the internet, so that it works at the gym. What keeps it from being
+    # anyone's button is the GitHub sign-in in front of the API.
+    dns-type: external
 spec:
   ingressClassName: traefik
   tls:
