@@ -6,8 +6,8 @@ metadata:
     cert-manager.io/cluster-issuer: "lets-encrypt-prod"
     # Published through the tunnel, as the blog is: a proxied CNAME to it, and
     # the visitor's address put back from what Cloudflare says it was.
-    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
-    external-dns.alpha.kubernetes.io/target: "e48d5ef2-41f9-4ca5-a8bf-f60af8d77921.cfargotunnel.com"
+    external-dns.kubernetes.io/cloudflare-proxied: "true"
+    external-dns.kubernetes.io/target: "e48d5ef2-41f9-4ca5-a8bf-f60af8d77921.cfargotunnel.com"
     traefik.ingress.kubernetes.io/router.middlewares: "traefik-cloudflare@kubernetescrd"
   labels:
     # On the internet, so that it works at the gym. What keeps it from being
