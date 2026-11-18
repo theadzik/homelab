@@ -131,15 +131,15 @@ a control-plane component's than an application's:
 
 ### Getting the real client IP back
 
-A request that arrives through Cloudflare has Cloudflare's address as its source. Two
-mechanisms restore the original, and both are needed:
+A request that arrives through Cloudflare reaches Traefik from a `cloudflared` pod, so its
+source is a pod address. Cloudflare itself never connects to Traefik. Two settings restore
+the visitor's address, and both trust the pod network, `10.0.0.0/8`, and nothing else:
 
-- `forwardedHeaders.trustedIPs` and `proxyProtocol.trustedIPs` list every Cloudflare
-  address range, so `X-Forwarded-For` from those sources is believed and from anywhere else
-  is not.
+- `forwardedHeaders.trustedIPs` on every entry point, so `X-Forwarded-For` from
+  `cloudflared` is believed and from anywhere else is not.
 - The [`cloudflare` plugin middleware](../kubernetes/kustomizations/traefik/cloudflare-middleware.yaml)
-  rewrites the request header from `CF-Connecting-IP`, trusting only `10.0.0.0/8`. That is
-  the pod network, which is where `cloudflared` sits.
+  rewrites the request header from `CF-Connecting-IP`, which Cloudflare sets and
+  `cloudflared` passes on.
 
 Ingresses that are exposed externally opt into the middleware by annotation. Trusting a
 forwarded header from anywhere is how access logs, rate limits and IP-based rules all stop
