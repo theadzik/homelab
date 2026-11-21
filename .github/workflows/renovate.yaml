@@ -10,12 +10,12 @@ name: Renovate
 # jobs so it never races Dependabot over a file Dependabot owns.
 on:
   schedule:
-    # Daily, because Renovate only merges during a run: the automerged chart
-    # patches land on the first run after their checks go green, so a weekly
-    # cron would hold each one for up to a week after it was ready. This cron
+    # Every 8 hours, because Renovate only merges during a run: the automerged
+    # chart patches land on the first run after their checks go green, so a
+    # sparse cron holds each one for up to that long after it was ready. This cron
     # is the only schedule: renovate.json5 sets none, so there is no second
     # gate to keep in step.
-    - cron: "0 6 * * *"
+    - cron: "44 */8 * * *"
   workflow_dispatch:
 
 permissions: {}

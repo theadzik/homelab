@@ -96,6 +96,15 @@
       automerge: true,
       platformAutomerge: false,
       automergeStrategy: "squash",
+      // With automerge on, the default `rebaseWhen: auto` means
+      // behind-base-branch, and argocd-image-updater pushes to main most days.
+      // So each daily run rebased this PR, restarted its checks, and found
+      // them pending when it came to merge - it never merged on its own
+      // (#450 was merged by hand; #458 was rebased the same way). The ruleset
+      // does not require branches to be up to date, and image-updater never
+      // touches the app-of-apps templates, so a PR that is merely behind is
+      // safe to squash as it stands. Rebase only on a real conflict.
+      rebaseWhen: "conflicted",
     },
     {
       matchManagers: ["argocd"],
