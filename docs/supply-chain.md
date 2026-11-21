@@ -148,7 +148,7 @@ How it reports:
 - **One issue, reopened and rewritten.** A daily scan that files a daily issue is a daily
   notification nobody reads. When the findings clear, it comments and closes.
 
-The build gate is on for all four images, but `vw-backup`, `vw-restore` and `custom-argocd`
+The build gate is on for all five images, but `vw-backup`, `vw-restore` and `custom-argocd`
 pass `fail-on-vulnerabilities: false`. It used to be `scan: false` for those three, because
 every finding sits inside a binary copied from an upstream image - in rclone's own Go
 dependencies or ArgoCD's - and nothing in this repository can rebuild those. Gating on them

@@ -1,0 +1,30 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: repwise
+resources:
+  - api.yaml
+  - database.yaml
+  - ingress.yaml
+  - namespace.yaml
+  - netpol.yaml
+  # Not worker.yaml: .gitignore keeps every file of that name out, for the
+  # machine config Talos generates.
+  - repwise-worker.yaml
+secretGenerator:
+  - name: workouts-secret
+    envs:
+      - configs/workouts-secret.env
+    type: Opaque
+  - name: oauth2-proxy-secret
+    envs:
+      - configs/oauth2-proxy-secret.env
+    type: Opaque
+  - name: web-secret
+    envs:
+      - configs/web-secret.env
+    type: Opaque
+images:
+  - name: ghcr.io/theadzik/repwise-web
+    newTag: 2026.11.4
+  - name: quay.io/oauth2-proxy/oauth2-proxy
+    newTag: v7.15.6

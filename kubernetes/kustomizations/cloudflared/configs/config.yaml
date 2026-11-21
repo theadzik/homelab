@@ -2,5 +2,12 @@ tunnel: e48d5ef2-41f9-4ca5-a8bf-f60af8d77921
 credentials-file: /etc/cloudflared/credentials/e48d5ef2-41f9-4ca5-a8bf-f60af8d77921.json
 metrics: 0.0.0.0:2000
 no-autoupdate: true
+# Not what routes traffic: the tunnel is managed in the Cloudflare dashboard,
+# and its routes there (zmuda.pro and *.zmuda.pro) replace these. Kept the
+# same as them, so that this file does not describe a different tunnel.
 ingress:
-  - service: https://traefik.traefik.svc.cluster.local:443
+  - service: https://traefik-tunnel.traefik.svc.cluster.local:443
+    originRequest:
+      # The hostname the visitor asked for, so that Traefik serves that site's
+      # certificate and cloudflared checks it against the same name.
+      matchSNIToHost: true

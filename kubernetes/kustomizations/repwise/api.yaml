@@ -1,0 +1,158 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: repwise-api
+  labels:
+    app: repwise-api
+spec:
+  # Any replica answers any request: what the site knows is in the database,
+  # and the sign-in is a cookie each oauth2-proxy can read. Two, so that a
+  # rollout never leaves none.
+  replicas: 2
+  selector:
+    matchLabels:
+      app: repwise-api
+  template:
+    metadata:
+      labels:
+        app: repwise-api
+    spec:
+      initContainers:
+        # Both pods run it as they start. A lock in the database makes the
+        # second wait for the first and then find nothing left to do.
+        - name: migrate
+          # Replaced by `images:` in kustomization.yaml, which Image Updater
+          # maintains.
+          image: ghcr.io/theadzik/repwise-web:main
+          imagePullPolicy: Always
+          args: ["migrate"]
+          env: &database
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: repwise-db-app
+                  key: uri
+            # Encrypts the Garmin session in the database. Space-separated,
+            # the one to encrypt with first: a key is replaced by putting the
+            # new one in front.
+            - name: TOKEN_KEYS
+              valueFrom:
+                secretKeyRef:
+                  name: web-secret
+                  key: TOKEN_KEYS
+          securityContext: &container
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              cpu: 10m
+              memory: 64Mi
+            limits:
+              memory: 256Mi
+      containers:
+        # The JSON API, the Garmin login and the web app's files. It listens on
+        # localhost alone, so oauth2-proxy beside it is the only way in, and
+        # the user it names in X-Forwarded-User is the one the API believes.
+        - name: api
+          image: ghcr.io/theadzik/repwise-web:main
+          imagePullPolicy: Always
+          args: ["api"]
+          env: *database
+          securityContext: *container
+          resources:
+            requests:
+              cpu: 10m
+              memory: 96Mi
+            limits:
+              memory: 256Mi
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+        - name: oauth2-proxy
+          image: quay.io/oauth2-proxy/oauth2-proxy:v7.15.6
+          args:
+            - --provider=github
+            # With no organisation or repository named, this list is the whole
+            # of who gets in. The provider wants an email rule as well, and
+            # GitHub usernames are the one that means something here.
+            - --github-user=theadzik
+            - --email-domain=*
+            - --upstream=http://127.0.0.1:8080
+            - --http-address=0.0.0.0:4180
+            - --redirect-url=https://repwise.zmuda.pro/oauth2/callback
+            - --reverse-proxy=true
+            # Whose X-Forwarded-* to believe: Traefik's, from the pod network.
+            # Without it every address is, and the log says so at start-up.
+            # The network policy already lets nothing else in.
+            - --trusted-proxy-ip=10.0.0.0/8
+            # Its own page with a button, where signing out lands. Sent
+            # straight to GitHub instead, a browser GitHub still knows would be
+            # signed back in at once.
+            - --skip-provider-button=false
+            # The readiness probe below, which has no session. It reads the
+            # database and nobody's data.
+            - --skip-auth-route=GET=^/readyz$
+            # The session is a cookie, so the button is a cross-site request
+            # away from anyone's page unless the browser is told otherwise.
+            - --cookie-samesite=lax
+            # A month. The default week would have the sign-in turn up at the
+            # gym, which is where this is used.
+            - --cookie-expire=720h
+            # The readiness probe, which would otherwise be most of the log.
+            - --silence-ping-logging=true
+          envFrom:
+            - secretRef:
+                name: oauth2-proxy-secret
+          ports:
+            - name: http
+              containerPort: 4180
+              protocol: TCP
+          # Through the proxy to the API and on to the database, since the API
+          # cannot be reached from outside the pod. Ready means both containers
+          # are up and the API can answer.
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+          securityContext: *container
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              memory: 128Mi
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      volumes:
+        - name: tmp
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: repwise-api
+  labels:
+    app: repwise-api
+  annotations:
+    # A Garmin login waiting on its code lives in one replica's memory, and a
+    # phone reconnects to send the code. The cookie brings it back there.
+    traefik.ingress.kubernetes.io/service.sticky.cookie: "true"
+    traefik.ingress.kubernetes.io/service.sticky.cookie.secure: "true"
+    traefik.ingress.kubernetes.io/service.sticky.cookie.httponly: "true"
+spec:
+  selector:
+    app: repwise-api
+  ports:
+    - name: http
+      port: 4180
+      targetPort: http
+      protocol: TCP
+  type: ClusterIP

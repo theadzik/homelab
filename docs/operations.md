@@ -120,6 +120,66 @@ For a single application, ArgoCD's UI can target a branch for that app alone.
 | PVC will not bind | Storage class name, then the CSI controller logs | Wrong protocol for the access mode. `ReadWriteMany` needs NFS |
 | Kubernetes version rolls back after `apply-config` | `KUBERNETES_VERSION` in `talos/common.sh` | `talosctl upgrade-k8s` was run by hand, so the nodes moved and the pin did not. Upgrade through `talos/upgrade.sh` instead. See [Talos](talos.md#upgrading) |
 
+### Setting up repwise
+
+[`repwise.zmuda.pro`](../kubernetes/kustomizations/repwise/) is a site with an Update
+button, which runs `repwise update --apply --push` for the days the laptop stayed closed
+before the gym, and keeps the result of every run. It is built in the repwise repository,
+under [`web/`](https://github.com/theadzik/repwise/tree/main/web), and reachable from the
+internet through the [Cloudflare tunnel](networking.md#cloudflare-tunnel), like the blog.
+On the home network PiHole still answers with Traefik's address, from the record made while
+the site was internal: the PiHole release is `upsert-only`, so it never deletes one. That
+record is nobody's now, and deleting it in PiHole sends the home network through Cloudflare
+too.
+
+It writes to a Garmin account, so [oauth2-proxy](https://oauth2-proxy.github.io/oauth2-proxy/)
+in each [api pod](../kubernetes/kustomizations/repwise/api.yaml) signs the visitor in with
+GitHub and admits one account, named by `--github-user`. The API listens on localhost alone,
+so no route to it skips the sign-in. A button queues a run, and the
+[worker](../kubernetes/kustomizations/repwise/repwise-worker.yaml) takes it from PostgreSQL and runs
+repwise. Everything the site remembers is in the database, so any pod can be replaced at any
+time. A rollout of the worker waits for the run it holds. Four things have to be put in
+place by hand, and each step shows whether the one before it worked:
+
+1. **A token that can read `workouts.yaml`.** A fine-grained GitHub token for
+   `theadzik/workouts` alone, with `Contents: Read-only`, as `GITHUB_TOKEN` in
+   [`configs/workouts-secret.env`](../kubernetes/kustomizations/repwise/configs/). The file
+   is downloaded on every run and never kept, because repwise reshapes the Garmin workouts
+   to match the file it is given, and a stale copy would undo an edit made since.
+2. **A GitHub OAuth App to sign in with.** Created under Settings, Developer settings,
+   with `https://repwise.zmuda.pro/oauth2/callback` as its callback URL. Its client ID, a client
+   secret and a cookie secret go in
+   [`configs/oauth2-proxy-secret.env`](../kubernetes/kustomizations/repwise/configs/). Open
+   the site, sign in, and create the account it offers. The sign-in lasts a month.
+3. **A key for the Garmin session**, which is stored encrypted, as `TOKEN_KEYS` in
+   [`configs/web-secret.env`](../kubernetes/kustomizations/repwise/configs/):
+
+   ```bash
+   python3 -c 'import base64, os; print(base64.urlsafe_b64encode(os.urandom(32)).decode())'
+   ```
+
+   To replace it, put the new key first, separated by a space, and remove the old one once
+   Garmin has been signed in to again. Lose the key and step 4 is the whole recovery.
+4. **A Garmin session.** On the Garmin screen give the email, the password and the code
+   Garmin sends. The password is handed to Garmin and kept nowhere, but from outside the
+   home network it passes through Cloudflare, which ends TLS at its edge and so can read
+   it. The session goes to the database, encrypted, and is written to memory for the
+   length of each run.
+
+Sign in to Garmin again when a run reports that the session is unusable. *Sign out of
+Garmin* makes the site forget the session. *Sign out*, on the account screen, ends the
+sign-in to the site.
+
+The site refuses to run while a workout in the file has no `garmin_workout_id`. repwise would
+build it in Garmin and write the id into a copy that the next run replaces, and so build it
+a second time. Run repwise wherever the file is edited, and push the id it records.
+
+The database is the CloudNativePG cluster `repwise-db`:
+
+```bash
+kubectl -n repwise exec -it repwise-db-1 -- psql -d app
+```
+
 ### Restoring a volume
 
 Velero holds CSI snapshots for labelled PVCs, 12-hourly, for 7 days:

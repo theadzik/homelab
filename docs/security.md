@@ -64,7 +64,7 @@ definition, not a step someone has to remember:
 
 | Level | Namespaces | Why |
 | --- | --- | --- |
-| `restricted` | blog, kyverno | The workload can meet it, so it must |
+| `restricted` | blog, kyverno, repwise | The workload can meet it, so it must |
 | `baseline` | descheduler | Needs more than restricted allows, but nothing privileged |
 | `privileged` | falco, intel-gpu-resource-driver | Reading syscalls and driving a GPU require it |
 

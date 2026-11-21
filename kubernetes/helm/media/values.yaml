@@ -56,7 +56,7 @@ services:
   jellyfin:
     enabled: true
     image: lscr.io/linuxserver/jellyfin
-    tag: "12.4ubu2604-ls58"
+    tag: "12.4ubu2604-ls60"
     port: 8096
     priorityClassName: high-priority
     resources:
@@ -239,7 +239,7 @@ services:
   nzbget:
     enabled: true
     image: lscr.io/linuxserver/nzbget
-    tag: "26.3.20261030"
+    tag: "26.3.20261120"
     port: 6789
     resources:
       requests:
@@ -254,8 +254,14 @@ services:
     podSecurityContext:
       runAsUser: 1000
       runAsGroup: 1000
-      fsGroup: 1000
-      fsGroupChangePolicy: OnRootMismatch
+      # Null, to take out what the chart sets. With an fsGroup the kubelet
+      # would go over the whole of the downloads volume every time this pod
+      # starts: that volume's class has the driver reset the root's mode on
+      # each mount, which OnRootMismatch reads as a volume not yet prepared.
+      # The two volumes of nzbget's own already belong to the group. Made
+      # anew, they would need the fsGroup back for their first mount.
+      fsGroup: null
+      fsGroupChangePolicy: null
     pvc:
       config:
         name: nzbget-config-ssd

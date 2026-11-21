@@ -1,0 +1,19 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: repwise-db
+spec:
+  # Everything the site remembers: the account, every run and its output, and
+  # the Garmin session, encrypted with a key the database does not hold. The
+  # operator makes the database `app`, its owner `app`, and the secret
+  # repwise-db-app, whose `uri` the api and the worker connect with.
+  #
+  # One instance: while it restarts the site is down. Three, as tandoor has, is
+  # this one line.
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:18
+  # Retain, as tandoor's: losing the claim should not lose the run history. The
+  # Garmin session is the one thing in it that signing in again replaces.
+  storage:
+    size: 1Gi
+    storageClass: synology-iscsi-retain

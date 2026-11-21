@@ -1,0 +1,176 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: repwise-api
+spec:
+  description: >-
+    The site: oauth2-proxy and the API. In from Traefik to oauth2-proxy only,
+    out to the database, to GitHub for the sign-in, and to Garmin for the
+    Garmin login.
+  endpointSelector:
+    matchLabels:
+      app: repwise-api
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: traefik
+      toPorts:
+        - ports:
+            - port: "4180"
+              protocol: TCP
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+            - port: "53"
+              protocol: TCP
+          rules:
+            dns:
+              - matchPattern: "*"
+    - toEndpoints:
+        - matchLabels:
+            cnpg.io/cluster: repwise-db
+      toPorts:
+        - ports:
+            - port: "5432"
+              protocol: TCP
+    # oauth2-proxy trades the code for a token at github.com and asks the API
+    # whose it is.
+    - toFQDNs:
+        - matchName: api.github.com
+        - matchName: github.com
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP
+    # Signing in to Garmin from the page. A pattern matches one label, so the
+    # host that sits two levels down is named.
+    - toFQDNs:
+        - matchPattern: "*.garmin.com"
+        - matchName: mobile.integration.garmin.com
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: repwise-worker
+spec:
+  description: >-
+    Runs repwise. Nothing comes in. Out to the database, to the GitHub API for
+    workouts.yaml, and to Garmin.
+  endpointSelector:
+    matchLabels:
+      app: repwise-worker
+  # It serves nothing. Without this, a policy with no ingress rules would leave
+  # ingress open rather than closed.
+  enableDefaultDeny:
+    ingress: true
+    egress: true
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+            - port: "53"
+              protocol: TCP
+          rules:
+            dns:
+              - matchPattern: "*"
+    - toEndpoints:
+        - matchLabels:
+            cnpg.io/cluster: repwise-db
+      toPorts:
+        - ports:
+            - port: "5432"
+              protocol: TCP
+    - toFQDNs:
+        - matchName: api.github.com
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP
+    - toFQDNs:
+        - matchPattern: "*.garmin.com"
+        - matchName: mobile.integration.garmin.com
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: repwise-db
+spec:
+  description: >-
+    CloudNativePG instances: 5432 from the api and the worker, 5432 and 8000
+    between instances, 8000 from the operator.
+  endpointSelector:
+    matchLabels:
+      cnpg.io/cluster: repwise-db
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            app: repwise-api
+        - matchLabels:
+            app: repwise-worker
+      toPorts:
+        - ports:
+            - port: "5432"
+              protocol: TCP
+    # Replicas streaming from the primary on 5432, and the primary polling
+    # their instance managers on 8000. Nothing while there is one instance.
+    - fromEndpoints:
+        - matchLabels:
+            cnpg.io/cluster: repwise-db
+      toPorts:
+        - ports:
+            - port: "5432"
+              protocol: TCP
+            - port: "8000"
+              protocol: TCP
+    # The operator polls each instance manager for status. Without this it
+    # cannot reconcile the cluster.
+    - fromEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: cnpg-system
+      toPorts:
+        - ports:
+            - port: "8000"
+              protocol: TCP
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+            - port: "53"
+              protocol: TCP
+    - toEndpoints:
+        - matchLabels:
+            cnpg.io/cluster: repwise-db
+      toPorts:
+        - ports:
+            - port: "5432"
+              protocol: TCP
+            - port: "8000"
+              protocol: TCP
+    # The instance manager watches the API server to coordinate failover and
+    # publish its own status.
+    - toEntities:
+        - kube-apiserver

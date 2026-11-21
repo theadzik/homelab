@@ -15,16 +15,50 @@ Everything below is applied through the DSM web interface or over SSH.
 | S3 object storage ([Garage](https://garagehq.deuxfleurs.fr/documentation/quick-start/)) | Velero backups |
 | DNS ([PiHole](https://pi-hole.net/)) | The LAN, and external-dns for internal records |
 | DHCP and TFTP | PXE booting the Talos nodes |
-| ACME client (`acme.sh`) | DSM's own certificate, since it is not in the cluster |
+| ACME client (`acme.sh`) | DSM's certificates, for its own UI and its reverse proxy, since neither is in the cluster |
 
-PiHole is reachable at <https://pihole.zmuda.pro:8443/admin/>, and the NAS itself at
-`synology.zmuda.pro`. That A record comes from a pair of `ExternalName` services in the
+PiHole is reachable at <https://pihole.zmuda.pro/admin/>, through a DSM reverse proxy rule
+(**Control Panel → Login Portal → Advanced → Reverse Proxy**) from HTTPS
+`pihole.zmuda.pro:443` to HTTP `127.0.0.1:8080`, a port PiHole serves on loopback only.
+external-dns uses the same address. The NAS itself is at `synology.zmuda.pro`. That A record
+comes from a pair of `ExternalName` services in the
 [CSI kustomization](../kubernetes/kustomizations/synology-csi/external-service.yaml), which
 exist purely so external-dns publishes the name.
 
 The dependency is worth stating plainly. The NAS is a single point of failure for storage,
 DNS, DHCP and node boot. The cluster survives losing any node. It does not survive losing
 this.
+
+## Containers
+
+PiHole, Garage and `acme.sh` run as one Container Manager project, `infrastructure`, from
+[`synology/docker-compose.yaml`](../synology/docker-compose.yaml). Their passwords and keys,
+and Garage's `garage.toml`, are in the `*.secret.*` files beside it, which git-crypt encrypts.
+
+To change a container, edit the files here, copy `docker-compose.yaml` and the `*.secret.*`
+files to `/volume1/docker-compose/` on the NAS, then open **Container Manager → Project → infrastructure → Action → Build**.
+Recreating `pihole` takes LAN DNS down for a few seconds, and recreating `garage` interrupts
+any Velero backup that is running.
+
+## Certificates
+
+`acme.sh` issues one certificate per name and its `synology_dsm` deploy hook uploads each to
+DSM after every renewal, logging in to `https://synology.zmuda.pro` (DSM's API is not served
+on `localhost:443`) as the `letsencrypt` admin account. DSM then serves them for its own UI
+and for the reverse proxy rules, assigned under **Control Panel → Security → Certificate →
+Settings**.
+
+Every certificate needs `SYNO_CERTIFICATE` set to its description in DSM. Left empty, the
+hook replaces whichever DSM certificate has no description, which can be DSM's own. To add
+one, from a shell in the container (`sudo docker exec -it acme-sh sh`):
+
+```bash
+SYNO_USERNAME=letsencrypt SYNO_HOSTNAME=synology.zmuda.pro SYNO_CERTIFICATE=<name> SYNO_CREATE=1 \
+  acme.sh --deploy -d <name> --deploy-hook synology_dsm
+```
+
+The hook saves these settings in the certificate's config under
+`/volume1/docker-compose/acme-sh/` once a login succeeds, so renewals need nothing further.
 
 ## Running PiHole and DSM's DHCP server together
 
@@ -55,29 +89,15 @@ systemctl restart pkg-dhcpserver
 ### Making it survive an update
 
 DSM rewrites that unit file on package updates and reboots, silently taking DNS down for
-the whole LAN. **Control Panel → Task Scheduler → Create → Triggered task** puts it back:
+the whole LAN. [`synology/dhcpserver-port.sh`](../synology/dhcpserver-port.sh) puts the flag
+back. It is idempotent: it does nothing if `--port=0` is already there, and only reloads and
+restarts the service when it had to fix the file.
 
-```bash
-#!/usr/bin/env bash
-set -euo pipefail
+Run it as root from two tasks in **Control Panel → Task Scheduler**, pasting the script into
+each:
 
-SERVICE="pkg-dhcpserver"
-FILE="/usr/local/lib/systemd/system/$SERVICE.service"
-PORT="0"
-
-if grep -qP '^ExecStart=.*--port=' "$FILE"; then
-    sed -i -E "s/(ExecStart=.*)(--port=[^ ]*)(.*)/\1--port=${PORT}\3/" "$FILE"
-else
-    sed -i -E "s/(ExecStart=.*)/\1 --port=${PORT}/" "$FILE"
-fi
-
-systemctl daemon-reload
-systemctl restart "$SERVICE"
-exit 0
-```
-
-The script rewrites an existing `--port=` flag instead of appending a second one, so it is
-safe on every boot and not only the ones that follow an update.
+- **Triggered task**, event *Boot-up*, so a reboot is fixed straight away.
+- **Scheduled task**, every hour, to catch package updates, which do not reboot.
 
 ## Storage tiers
 

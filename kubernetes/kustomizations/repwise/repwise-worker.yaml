@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: repwise-worker
+  labels:
+    app: repwise-worker
+spec:
+  # Takes the runs the button queues, oldest first, and runs repwise for each.
+  # More replicas would share the queue. Each athlete still has one run at a
+  # time, which the database enforces.
+  replicas: 1
+  selector:
+    matchLabels:
+      app: repwise-worker
+  template:
+    metadata:
+      labels:
+        app: repwise-worker
+    spec:
+      # Longer than the ten minutes a run may take. On SIGTERM the worker
+      # stops taking runs and finishes the one it holds, so a rollout never
+      # cuts a run short.
+      terminationGracePeriodSeconds: 630
+      containers:
+        - name: worker
+          # Replaced by `images:` in kustomization.yaml, which Image Updater
+          # maintains.
+          image: ghcr.io/theadzik/repwise-web:main
+          imagePullPolicy: Always
+          args: ["worker"]
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: repwise-db-app
+                  key: uri
+            - name: TOKEN_KEYS
+              valueFrom:
+                secretKeyRef:
+                  name: web-secret
+                  key: TOKEN_KEYS
+            # Downloaded for every run, because repwise reshapes the Garmin
+            # workouts to match the file it is given, and a stale copy would
+            # undo an edit made since.
+            - name: CONFIG_URL
+              value: https://api.github.com/repos/theadzik/workouts/contents/workouts.yaml
+            - name: GITHUB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: workouts-secret
+                  key: GITHUB_TOKEN
+          securityContext:
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          # Memory-backed volumes count against this limit, so it holds the
+          # scratch below as well as the worker and repwise.
+          resources:
+            requests:
+              cpu: 10m
+              memory: 128Mi
+            limits:
+              memory: 512Mi
+          volumeMounts:
+            - mountPath: /scratch
+              name: scratch
+            - mountPath: /tmp
+              name: tmp
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      volumes:
+        # Each run is given a home here with workouts.yaml and the decrypted
+        # Garmin session in it, and repwise's caches, and it is deleted when
+        # the run ends. Memory, so the session never reaches a disk.
+        - name: scratch
+          emptyDir:
+            medium: Memory
+            sizeLimit: 256Mi
+        # Memory as well: repwise runs with the session to hand, and anything
+        # it writes to a temporary file lands here.
+        - name: tmp
+          emptyDir:
+            medium: Memory
+            sizeLimit: 16Mi
