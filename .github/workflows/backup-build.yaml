@@ -21,7 +21,7 @@ jobs:
     with:
       tag-prefix: "vw-backup-"
   backup-build-push:
-    uses: theadzik/github-workflows/.github/workflows/build-and-push.yaml@c83c3e8f6838981737c0eee922da5fcac368537e # v4.1.1
+    uses: theadzik/github-workflows/.github/workflows/build-and-push.yaml@fe4b50e00556e7cae1d1057048a2cc337b9a1404 # v4.1.2
     needs: get-tag
     permissions:
       contents: read
